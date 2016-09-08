@@ -31,5 +31,9 @@ mymodel <- lm(y~x)
 # Let's extract the coefficients. 
 coef(mymodel)
 
+summary(mymodel)
 # Now let's plot them
 abline(coef(mymodel))
+
+# Add text of results
+text(10, 40, "test")
