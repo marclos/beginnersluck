@@ -32,8 +32,18 @@ mymodel <- lm(y~x)
 coef(mymodel)
 
 summary(mymodel)
+
+(rsq <- round(summary(mymodel)$r.squared, 2))
+
+summary(mymodel)$fstatistic
+
+as.vector(summary(mymodel)$fstatistic)
+(pvalue <- round(pf(10.31, 1, 6, lower.tail=F), 3))
+
+# Below doesn't work, I don't know why!
+# pf(as.vector(summary(mymodel)$fstatistic), lower.tail=F)
 # Now let's plot them
 abline(coef(mymodel))
 
 # Add text of results
-text(10, 40, "test")
+text(20, 40, paste("R^2 =", rsq, ", p-value = ", pvalue))
