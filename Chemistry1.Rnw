@@ -80,9 +80,9 @@ At this point, I am doing something wrong, because it's hard to belive that this
 
 
 
-$\lambda/\angstrom$ is in the units of wavelenth per meter or meter/second/meter thus we are left with a time unit! Neat. I am not sure why they can tell us that!  The symbolism is totally weird, because the author has the \angstrom is a demonintor, but actually it's just refering to the units. 
+$\lambda/\angstrom$ is in the units of wavelenth per meter or meter/second/meter thus we are left with a time unit! Neat. I am not sure why they can tell us that!  The symbolism is totally weird, because the author has the \angstrom is a demoninator, but actually it's just referring to the units. 
 
-$V_s/V$ is the stopping voltage, but the demominator is confusing, and is only refering to the units, which are in volts!
+$V_s/V$ is the stopping voltage, but the demominator is confusing, and is again referring to the units, which are in volts!
 
 Finally, the hint is anything but a real hint -- basically driving more questions that it answers. 
 
@@ -99,6 +99,10 @@ We might be able to use the photo-electric equation,
 \begin{equation}
 E = h\nu
 \end{equation}
+
+\noindent E is the energy of the particle -- I think this might be related to KE and the velocity is derived from...not sure where.
+
+
 
 <<fig=TRUE>>=
 one=c(2536, 2830, 3039, 3302, 3663, 4358)
