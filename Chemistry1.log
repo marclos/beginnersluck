@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2015.10.2)  13 SEP 2016 21:06
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2015.10.2)  14 SEP 2016 08:27
 entering extended mode
  %&-line parsing enabled.
 **Chemistry1.tex
@@ -311,46 +311,60 @@ LaTeX Info: Redefining \pageref on input line 8.
 
 LaTeX Warning: No \author given.
 
-LaTeX Font Info:    Try loading font information for T1+aett on input line 23.
+[1
+
+{/usr/share/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+LaTeX Font Info:    Try loading font information for T1+aett on input line 46.
+
 (/usr/share/texmf/tex/latex/ae/t1aett.fd
 File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
 )
-Overfull \hbox (33.7532pt too wide) in paragraph at lines 23--24
-[]\T1/aer/m/n/10 using this site: []$\T1/aett/m/n/10 http : / / chem . libretex
+Overfull \hbox (2.16806pt too wide) in paragraph at lines 46--47
+[]\T1/aer/m/n/10 where $\OML/cmm/m/it/10 ^^V[]$ \T1/aer/m/n/10 is room-mean-spe
+ed (m/s), $\OML/cmm/m/it/10 k[]$ \T1/aer/m/n/10 is Boltz-mann's Con-stant ($\OT
+1/cmr/m/n/10 1\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 38\OML/cmm/m/it/10 e[]$
+ []
+
+[2]
+Overfull \hbox (35.70328pt too wide) in paragraph at lines 70--71
+[]\T1/aer/m/n/10 Using this site: []$\T1/aett/m/n/10 http : / / chem . libretex
 ts . org / Core / Physical _ and _ Theoretical _
  []
 
 
-Overfull \hbox (42.75928pt too wide) in paragraph at lines 23--24
+Overfull \hbox (42.75928pt too wide) in paragraph at lines 70--71
 \T1/aett/m/n/10 Chemistry / Quantum _ Mechanics / 02 . _Fundamental _ Concepts 
 _ of _ Quantum _ Mechanics /
  []
 
-[1
-
-{/usr/share/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<Chemistry1-002.pdf, id=40, 433.62pt x 433.62pt>
-File: Chemistry1-002.pdf Graphic file (type pdf)
- <use Chemistry1-002.pdf>
-[2 <./Chemistry1-002.pdf>] (./Chemistry1.aux) ) 
+[3] <Chemistry1-003.pdf, id=64, 433.62pt x 433.62pt>
+File: Chemistry1-003.pdf Graphic file (type pdf)
+ <use Chemistry1-003.pdf>
+<Chemistry1-004.pdf, id=65, 433.62pt x 433.62pt>
+File: Chemistry1-004.pdf Graphic file (type pdf)
+ <use Chemistry1-004.pdf>
+[4 <./Chemistry1-003.pdf>] [5 <./Chemistry1-004.pdf>] (./Chemistry1.aux) ) 
 Here is how much of TeX's memory you used:
- 4232 strings out of 256214
- 57122 string characters out of 1917000
- 110798 words of memory out of 1500000
- 7445 multiletter control sequences out of 10000+200000
- 24905 words of font info for 56 fonts, out of 1200000 for 2000
+ 4255 strings out of 256214
+ 57400 string characters out of 1917000
+ 111798 words of memory out of 1500000
+ 7453 multiletter control sequences out of 10000+200000
+ 30535 words of font info for 65 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
- 35i,6n,36p,352b,338s stack positions out of 5000i,500n,6000p,200000b,15000s
-</usr/share/texmf/fonts/type1/bl
-uesky/cm/cmbx12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmex10.pfb></usr/s
-hare/texmf/fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/texmf/fonts/type1/blue
-sky/cm/cmmi7.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr10.pfb></usr/share
-/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/fonts/type1/bluesky/c
-m/cmr17.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsltt10.pfb></usr/share/t
-exmf/fonts/type1/bluesky/cm/cmtt10.pfb>
-Output written on Chemistry1.pdf (2 pages, 67865 bytes).
+ 35i,6n,36p,854b,472s stack positions out of 5000i,500n,6000p,200000b,15000s
+</usr
+/share/texmf/fonts/type1/bluesky/cm/cmbx12.pfb></usr/share/texmf/fonts/type1/bl
+uesky/cm/cmex10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmmi10.pfb></usr/s
+hare/texmf/fonts/type1/bluesky/cm/cmmi7.pfb></usr/share/texmf/fonts/type1/blues
+ky/cm/cmr10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/
+texmf/fonts/type1/bluesky/cm/cmr17.pfb></usr/share/texmf/fonts/type1/bluesky/cm
+/cmr7.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsltt10.pfb></usr/share/tex
+mf/fonts/type1/bluesky/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/c
+msy7.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmti10.pfb></usr/share/texmf/
+fonts/type1/bluesky/cm/cmtt10.pfb>
+Output written on Chemistry1.pdf (5 pages, 100371 bytes).
 PDF statistics:
- 84 PDF objects out of 1000 (max. 8388607)
- 9 named destinations out of 1000 (max. 131072)
- 50 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 130 PDF objects out of 1000 (max. 8388607)
+ 15 named destinations out of 1000 (max. 131072)
+ 71 words of extra memory for PDF output out of 10000 (max. 10000000)
 
