@@ -45,10 +45,10 @@ We are given the a number that includes temperature, as measured in Kelvin. Okay
 We are given the following equation to determine velocity of the nuetron
 
 \begin{equation}
-\nu_{rms} = \sqrt{(3k_BT/m)}
+v_{rms} = \sqrt{(3k_BT/m)}
 \end{equation}
 
-where $\nu_{rms}$ is room-mean-speed (m/s), $k_B$ is Boltzmann's Constant ($1.38e^{-23}$ J/K or $m^2kg s^{-2} K{-1}$) and T is temperature (degrees K) and m is the mass of the particle (kg). This equation is the root-mean square of speed (velocity) of particles -- it's a kind of an average speed, see \url{http://www.studyphysics.ca/2007/20/ap_thermodynamics/42a_ap_kinetic_theory_gases.pdf} for a decent explanation. For now, we'll use $\mu_{rms}$ as arithmetic mean of the squares of a set of numbers). The RMS is also known as the quadratic mean and is a particular case of the generalized mean with exponent.
+where $v_{rms}$ is room-mean-speed (m/s), $k_B$ is Boltzmann's Constant ($1.38e^{-23}$ J/K or $m^2kg s^{-2} K{-1}$) and T is temperature (degrees K) and m is the mass of the particle (kg). This equation is the root-mean square of speed (velocity) of particles -- it's a kind of an average speed, see \url{http://www.studyphysics.ca/2007/20/ap_thermodynamics/42a_ap_kinetic_theory_gases.pdf} for a decent explanation. For now, we'll use $v_{rms}$ as arithmetic mean of the squares of a set of numbers). The RMS is also known as the quadratic mean and is a particular case of the generalized mean with exponent.
 
 The mass of a nuetron, m, is 1.6750e-27 (kg) and $k_B$ = 1.38e-23 ($m^2kg s^{-2} K{-1}$). Using the equation above, we can do a dimensional analysis where
 
@@ -63,10 +63,10 @@ Thus, the $\nu_{rms}$ is
 k_B = 1.38e-23
 T = 2500
 m = 1.6750e-27; m
-nu = sqrt(3*k_B*T/m); nu
+v = sqrt(3*k_B*T/m); v
 @
 
-Thus, we have now calculated the speed as \Sexpr{round(nu, 2)}.\footnote{However, I am not sure this is right. Did you get this as a intermediate answer with your prof? I need to figure out the units too!}
+Thus, we have now calculated the speed as \Sexpr{round(v, 2)}.\footnote{However, I am not sure this is right. Did you get this as a intermediate answer with your prof? I need to figure out the units too!}
 
 \subsection{Calculating $\lambda$}
 
@@ -75,7 +75,7 @@ Next, what do we do with the velocity?
 Using this site: \url{http://chem.libretexts.org/Core/Physical_and_Theoretical_Chemistry/Quantum_Mechanics/02._Fundamental_Concepts_of_Quantum_Mechanics/De_Broglie_Wavelength}, we might be able to evaluate the question with some sense that we understand what in the world is happening:
 
 \begin{equation}
-\lambda = \frac{h}{p} = \frac{h}{ m \nu}
+\lambda = \frac{h}{p} = \frac{h}{ m v}
 \end{equation}
 
 \noindent where h is planck's constant, p is the particle momentum and m is the particle's mass and $\nu$ is the particles' velocity. Using a dimensional analysis we have
@@ -90,10 +90,10 @@ Based on this equation, we have velocity, $\nu$, and we know the mass of the nue
 
 <<>>=
 h = 6.626e-34
-lambda = h /(m * nu); lambda
+lambda = h /(m * v); lambda
 @
 
-At this point, I am doing something wrong, because it's hard to belive that this wavelength is so small, \Sexpr{round(lambda, 2)}. I suspect I didn't calculate the velocity correctly, seems way too slow!
+I calcualted a wavelength that seems small, but might be reasonable, \Sexpr{round(lambda, 13)}.\footnote{How does this compare with the answer you calculated?}
 
 \section{On Planck's Constant}
 
@@ -101,37 +101,120 @@ Planck's Constant is a very powerful parameter... with units as $m^2 \cdot kg \c
 
 For background on Planck's constant, check out \url{https://en.wikipedia.org/wiki/Planck_constant}. 
 
+\subsection{Stopping Voltage and Wavelength}
+
 The goals of this problem is to determine the constant using stopping voltages for various wavelengths. I am not sure how this is done, for now, let's say in a fancy machine and leave it at that.
+
+The real value of this experiment is it allows physicist to estimate Planck's Constant, which is used to calculate a range of physical and chemical processes, for example the speed of light!
 
 We given a table to measurements: 
 \begin{itemize}
-\item $\lambda/\angstrom$ is in the units of wavelenth per meter or meter/second/meter thus we are left with a time unit! Neat. I am not sure why they can tell us that!  The symbolism is totally weird, because the author has the \angstrom is a demoninator, but actually it's just referring to the units. 
+\item $\lambda/\angstrom$ is in the units of lenth and in this case is is in \angstrom, or Angstroms. Unfortunately, the symbolism is non-standard here, where it looks like we are dividing the wavelength by the \angstrom, but after several attempts to use the demominator, I discoverd that it was only referring to the units. 
 
 \item $V_s/V$ is the stopping voltage, but the demominator is confusing, and is again referring to the units, which are in volts!
 \end{itemize}
 
-We are told to create a line, but the predicted by the photoelectric equation: 
+We are told to create a line, but the predicted by the photoelectric equation. There are several versions of the equation, e.g.,
 
 \begin{equation}
-E = h \nu
+E = h \cdot \nu
 \end{equation}
 
-\noindent but we don't have E or $\nu$. Using a dimensional analysis we obtain
+\noindent E or $\nu$ are not given. 
+
+Alternatively, we might calculate the maximum energy of an electron ejected,
 
 \begin{equation}
-m^2 \cdot kg \cdot s^{-1} \cdot m s^{-1} = m^3 kg s^{-2} = kg m^2 s^{-2}
+K_{max} = h \cdot \nu - \phi
 \end{equation}
 
-\noindent the units don't cancel as espected and what should be a joule, is a joule-meter. something is wrong here, but I am not sure what.
+\noindent where $\nu$ is the frequency, $\phi$ is the work function, h is Plank's constant. 
 
-However, with the following given equation, 
+So, we'll need to figure out how to manipulate our equation for parameters we have measured. 
+
+This equation was proposed by Einstein -- where energy is proporation to freqency and h. Now, first, there is something that is tricky about this equation, where frequency is often denoted as $\nu$, which is not the same as v used for velocity as above. This is an annoying part of science, there just aren't enough letters for them to represent one thing and even worse many of them look a like! So, you have to be careful. 
+
+According to wikipedia, E is a work function. I am not sure what that means, so, for now, we'll let then be -- perhaps it will be clear later!
+
+Using a dimensional analysis, where frequency is $s{-1}$, we obtain
 
 \begin{equation}
-KE = EV_s
+m^2 \cdot kg \cdot s^{-1} \cdot s^{-1} = kg m^2 s^{-2} = Joule
 \end{equation}
 
-We might be able to move forward to determine what to do next. 
+\noindent the units as espected is a joule. 
 
+Next, we can convert wavelength (m) to frequency (s) using this simple equation:
+
+\begin{equation}
+\nu = \frac{v}{\lambda}
+\end{equation}
+
+\noindent, now however, we need to figure out the v, velocity!  Dang!  Another set of steps. 
+
+For now, let's do some substuting and see where we end up: 
+
+\begin{equation}
+E = h \nu = h \frac{v}{\lambda}
+\end{equation}
+
+Now, we to deal with E. It's not clear what this is really in relation to the equation below, perhaps, KE = E? For now, I'll assume that, but from what I have read there isn't any reason that I can make that assumption.
+
+\begin{equation}
+KE = e \cdot V_s 
+\end{equation}
+
+\noindent where KE is kenetic energy (units?) and E is the charge of an electron (volts) and $V_s$ is stopping voltage. KE is $1/2 mv^2$. e is the charge of an electron. Let's start with a simple approach:
+
+\begin{equation}
+KE = e \cdot V_s = h \frac{v}{\lambda}
+\end{equation}
+ 
+\begin{equation}
+e \cdot V_s \cdot v = h \lambda
+\end{equation}
+
+I suspect this is the velocity of light -- of course, light's speed will vary with what is travels through and we are not given that information. Bummer. Perhaps, we can assume it's traveling through a vacuum... where v = 299792458 meters per second. e is the charge of an electron, which is measured in Coulumbs, 1.602e-19. 
+
+Using dimensional analysis then we have 
+
+\begin{equation}
+columbs \cdot volts
+\end{equation}
+
+<<>>=
+e = 1.602e-19
+v = 299702458
+lambda=c(2536, 2830, 3039, 3302, 3663, 4358)
+Vs=c(2.6, 2.11, 1.81, 1.47, 1.1, .57)
+
+left = Vs * e * v 
+right = lambda
+@
+
+<<fig=TRUE>>=
+coef(lm(left~right))
+plot(left~right)
+abline(coef(lm(left~right)))
+@
+
+and then e =mc2?  somehow we need to involve the speed of light? Geez, I am completely lost!
+
+
+
+Alternatively, we can substitute E, from the photoelectric equation:
+
+\begin{equation}
+KE = \cdot h \cdot freq \cdot V_s
+\end{equation}
+
+and solving for h, we get
+
+\begin{equation}
+h = freq \cdot V_s /KE
+\end{equation}
+
+Here, I am stuck again...
 
 <<fig=TRUE>>=
 lambda=c(2536, 2830, 3039, 3302, 3663, 4358)
@@ -141,19 +224,18 @@ plot(lambda~volts)
 abline(coef(lm(lambda~volts)))
 @
 
-The the slope should be h!  where h is \Sexpr{round(coef(lm(lambda~volts))[1], 2)}
+The the slope is not h!  where h is \Sexpr{round(coef(lm(lambda~volts))[1], 2)}, based on the relationship:
 
+\begin{equation}
+\lambda = f(V_s)
+\end{equation}
+
+This doesn't seem to be doing anything useful. 
 
 \noindent where E is the energy of the radiation and $\nu$ is the velocity of the particle. 
 
 
 
-
-
-\noindent where KE is kenetic energy (units?) and E is the charge of an electron (volts) and $V_s$ is stopping voltage.
-
-
-\noindent E is the energy of the particle -- I think this might be related to KE and the velocity is derived from...not sure where.
 
 
 
