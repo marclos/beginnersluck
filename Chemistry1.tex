@@ -11,12 +11,18 @@
 
 \section{Introduction}
 
-There are several concepts in \emph{physical chemistry} that turn out to have wide applications and we are going to explore some of them here. 
+There are several concepts in \emph{physical chemistry}, i.e. the physics of atoms and chemical properties, that turn out to have wide applications and we are going to explore some of them here. 
 
 First, we should acknowledge that the early history is filled with people who had the luxury to explore rather esoteric topics, while we might be learning these as a matter of our own `development' and with a sense of what for!  I'll try to make an argument that this stuff really does matter, but for now, let's start the problem set!
 
 Second, we also need to understand that these assignments have been developed as hurtles that have almost nothing to do with the end-goal of being a health-care professional. Instead, it's better to reflect that being able to think about problem solving is actually the real goal here and we need to learn to problem solve in a systematic way.
 
+
+\section{Problem Sets}
+
+\begin{figure}
+\includegraphics{ProblemSet}
+\end{figure}
 
 \section{Problem \#2}
 
@@ -27,7 +33,7 @@ Cold, thermal and hot neutron radiation is most commonly used for scattering and
 
 The imaging is a function of the particles wavelength, $\lambda$, where higher freqencies resolve higher resolution. It's rare that one would ever have to calculate this from scratch, but the value of the exercise is ??? 
 
-\subsection{de Brogie Wavelenth}
+\subsection{de Broglie Wavelenth}
 
 In 1923, Louis de Broglie, a French physicist, proposed a hypothesis to explain the theory of the atomic structure. By using a series of substitution de Broglie hypothesizes particles to hold properties of waves. Within a few years, de Broglie's hypothesis was tested by scientists shooting electrons and rays of lights through slits. What scientists discovered was the electron stream acted the same was as light proving de Broglie correct.
 
@@ -40,50 +46,66 @@ We are given the a number that includes temperature, as measured in Kelvin. Okay
 We are given the following equation to determine velocity of the nuetron
 
 \begin{equation}
-\mu_{rms} = \sqrt{(3k_BT/m)}
+\nu_{rms} = \sqrt{(3k_BT/m)}
 \end{equation}
 
-where $\mu_{rms}$ is room-mean-speed (m/s), $k_B$ is Boltzmann's Constant ($1.38e^{-23}$ J/K) and T is temperature (degrees K) and m is the mass of the particle (kg). This equation is the root-mean square of speed (velocity) of particles -- it's a kind of an average speed, see \url{http://www.studyphysics.ca/2007/20/ap_thermodynamics/42a_ap_kinetic_theory_gases.pdf} for a decent explanation. For now, we'll use $\mu_{rms}$ as arithmetic mean of the squares of a set of numbers). The RMS is also known as the quadratic mean and is a particular case of the generalized mean with exponent.
+where $\nu_{rms}$ is room-mean-speed (m/s), $k_B$ is Boltzmann's Constant ($1.38e^{-23}$ J/K or $m^2kg s^{-2} K{-1}$) and T is temperature (degrees K) and m is the mass of the particle (kg). This equation is the root-mean square of speed (velocity) of particles -- it's a kind of an average speed, see \url{http://www.studyphysics.ca/2007/20/ap_thermodynamics/42a_ap_kinetic_theory_gases.pdf} for a decent explanation. For now, we'll use $\mu_{rms}$ as arithmetic mean of the squares of a set of numbers). The RMS is also known as the quadratic mean and is a particular case of the generalized mean with exponent.
 
-Thus, the $\mu_{rms}$ is
+The mass of a nuetron, m, is 1.6750e-27 (kg) and $k_B$ = 1.38e-23 ($m^2kg s^{-2} K{-1}$). Using the equation above, we can do a dimensional analysis where
+
+\begin{equation}
+\sqrt{3  m^2\cdot kg\cdot s^{-2} \cdot K^{-1} \cdot K/ kg} = \sqrt{3m^2 \cdot s^{-2}} = \sqrt{3}m/s
+\end{equation}
+
+\noindent thus, we have units in terms of velocity! 
+
+Thus, the $\nu_{rms}$ is
 \begin{Schunk}
 \begin{Sinput}
 > k_B = 1.38e-23
 > T = 2500
-> m = 1.6750e-24; m
+> m = 1.6750e-27; m
 \end{Sinput}
 \begin{Soutput}
-[1] 1.675e-24
+[1] 1.675e-27
 \end{Soutput}
 \begin{Sinput}
-> mu = sqrt(3*k_B*T/m); mu
+> nu = sqrt(3*k_B*T/m); nu
 \end{Sinput}
 \begin{Soutput}
-[1] 248.578
+[1] 7860.728
 \end{Soutput}
 \end{Schunk}
 
-Thus, we have now calculated the speed as 248.58. However, I am not sure this is right. Did you get this as a intermediate answer with your prof? I need to figure out the units too!
+Thus, we have now calculated the speed as 7860.73.\footnote{However, I am not sure this is right. Did you get this as a intermediate answer with your prof? I need to figure out the units too!}
+
+\subsection{Calculating $\lambda$}
 
 Next, what do we do with the velocity?  
 
 Using this site: \url{http://chem.libretexts.org/Core/Physical_and_Theoretical_Chemistry/Quantum_Mechanics/02._Fundamental_Concepts_of_Quantum_Mechanics/De_Broglie_Wavelength}, we might be able to evaluate the question with some sense that we understand what in the world is happening:
 
 \begin{equation}
-\lambda = hp = h m \nu
+\lambda = \frac{h}{p} = \frac{h}{ m \nu}
 \end{equation}
 
-\noindent where h is planck's constant, p is the particle momentum and m is the particle's mass and $\mu$ is the particles' velocity. 
+\noindent where h is planck's constant, p is the particle momentum and m is the particle's mass and $\nu$ is the particles' velocity. Using a dimensional analysis we have
 
-Based on this equation, we have velocity, $\mu$, and we know the mass of the nuetron, which is 0. Thankfully, h, or Planck's Constant is a known quanity, altough we derive it in problem \#4!
+\begin{equation}
+\frac{m^2 \cdot kg \cdot s^{-1}}{kg \cdot m /s} = m  
+\end{equation}
+
+\noindent and we have meters, which is how wavelengths are measured!
+
+Based on this equation, we have velocity, $\nu$, and we know the mass of the nuetron, which is 0. Thankfully, h, or Planck's Constant is a known quanity, altough we derive it in problem \#4!
 
 \begin{Schunk}
 \begin{Sinput}
 > h = 6.626e-34
-> lambda = h * m * mu; lambda
+> lambda = h /(m * nu); lambda
 \end{Sinput}
 \begin{Soutput}
-[1] 2.758856e-55
+[1] 5.032385e-11
 \end{Soutput}
 \end{Schunk}
 
@@ -91,64 +113,74 @@ At this point, I am doing something wrong, because it's hard to belive that this
 
 \section{On Planck's Constant}
 
-\url{https://en.wikipedia.org/wiki/Planck_constant}
+Planck's Constant is a very powerful parameter... with units as $m^2 \cdot kg \cdot s^{-1}$. 
 
+For background on Planck's constant, check out \url{https://en.wikipedia.org/wiki/Planck_constant}. 
 
+The goals of this problem is to determine the constant using stopping voltages for various wavelengths. I am not sure how this is done, for now, let's say in a fancy machine and leave it at that.
 
-$\lambda/\angstrom$ is in the units of wavelenth per meter or meter/second/meter thus we are left with a time unit! Neat. I am not sure why they can tell us that!  The symbolism is totally weird, because the author has the \angstrom is a demoninator, but actually it's just referring to the units. 
+We given a table to measurements: 
+\begin{itemize}
+\item $\lambda/\angstrom$ is in the units of wavelenth per meter or meter/second/meter thus we are left with a time unit! Neat. I am not sure why they can tell us that!  The symbolism is totally weird, because the author has the \angstrom is a demoninator, but actually it's just referring to the units. 
 
-$V_s/V$ is the stopping voltage, but the demominator is confusing, and is again referring to the units, which are in volts!
+\item $V_s/V$ is the stopping voltage, but the demominator is confusing, and is again referring to the units, which are in volts!
+\end{itemize}
 
-Finally, the hint is anything but a real hint -- basically driving more questions that it answers. 
+We are told to create a line, but the predicted by the photoelectric equation: 
 
-The equation given is 
+\begin{equation}
+E = h \nu
+\end{equation}
+
+\noindent but we don't have E or $\nu$. Using a dimensional analysis we obtain
+
+\begin{equation}
+m^2 \cdot kg \cdot s^{-1} \cdot m s^{-1} = m^3 kg s^{-2} = kg m^2 s^{-2}
+\end{equation}
+
+\noindent the units don't cancel as espected and what should be a joule, is a joule-meter. something is wrong here, but I am not sure what.
+
+However, with the following given equation, 
 
 \begin{equation}
 KE = EV_s
 \end{equation}
 
+We might be able to move forward to determine what to do next. 
+
+
+\begin{Schunk}
+\begin{Sinput}
+> lambda=c(2536, 2830, 3039, 3302, 3663, 4358)
+> volts=c(2.6, 2.11, 1.81, 1.47, 1.1, .57)
+> coef(lm(lambda~volts))
+\end{Sinput}
+\begin{Soutput}
+(Intercept)       volts 
+  4713.1565   -885.1904 
+\end{Soutput}
+\begin{Sinput}
+> plot(lambda~volts)
+> abline(coef(lm(lambda~volts)))
+\end{Sinput}
+\end{Schunk}
+\includegraphics{Chemistry1-003}
+
+The the slope should be h!  where h is 4713.16
+
+
+\noindent where E is the energy of the radiation and $\nu$ is the velocity of the particle. 
+
+
+
+
+
 \noindent where KE is kenetic energy (units?) and E is the charge of an electron (volts) and $V_s$ is stopping voltage.
 
-We might be able to use the photo-electric equation,
-
-\begin{equation}
-E = h\nu
-\end{equation}
 
 \noindent E is the energy of the particle -- I think this might be related to KE and the velocity is derived from...not sure where.
 
 
 
-\begin{Schunk}
-\begin{Sinput}
-> one=c(2536, 2830, 3039, 3302, 3663, 4358)
-> two=c(2.6, 2.11, 1.81, 1.47, 1.1, .57)
-> coef(lm(one~two))
-\end{Sinput}
-\begin{Soutput}
-(Intercept)         two 
-  4713.1565   -885.1904 
-\end{Soutput}
-\begin{Sinput}
-> plot(one,two)
-\end{Sinput}
-\end{Schunk}
-\includegraphics{Chemistry1-003}
-
-OR?
-
-\begin{Schunk}
-\begin{Sinput}
-> plot(two,one)
-> coef(lm(two~one))
-\end{Sinput}
-\begin{Soutput}
- (Intercept)          one 
- 5.217508994 -0.001097174 
-\end{Soutput}
-\end{Schunk}
-\includegraphics{Chemistry1-004}
-
-The intercept might be E?  I didn't have time to sort this out last night and without a textbook, I am a bit lost as to what formulas we need. More later today -- i.e. Wed.
 
 \end{document}
