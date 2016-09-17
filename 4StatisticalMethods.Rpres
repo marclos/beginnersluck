@@ -3,7 +3,7 @@
 author: Marc Los Huertos
 date: Sept. 17, 2016
 autosize: true
-
+font-family: 'Helvetica'
 Science and Method
 =======================================================
 
@@ -30,6 +30,11 @@ An Example of a Null Hypothesis
 ```{r random}
 set.seed(123)
 randomdata <-round(rnorm(10, 0, 1), 1); randomdata
+```
+
+Displaying the Data
+===========================================================
+```{r histogram}
 hist(randomdata)
 ```
 
@@ -37,26 +42,24 @@ Question: Is a value >=2 within the random variation?
 
 Assuming a Probability Distrbution
 =================================================
-```{r theory}
+```{r theory, echo=F}
 set.seed(123)
-x <- seq(-3, 3, .2)
-y <- dnorm(x, 0, 1)
+x <- seq(-3, 3, .2); y <- dnorm(x, 0, 1)
 plot(x,y, type="l", lwd=3)
 abline(v=2, col="green", lwd=5)
 ```
 
-asdfasd
+Density Plot and a "Theoretical Distribition"
 =================================================
-
-```{r density}
+```{r density, echo=F}
 plot(x,y, type="l", lwd=3)
-abline(v=2, col="green", lwd=5)
-x1 <- x[x <= 2]
-y1 <- dnorm(x1, 0, 1)
-polygon(x=c(x1), y=(y1), col="gray")
+x1 <- x[x <= 2]; y1 <- dnorm(x1, 0, 1); x2 <- 2
+polygon(x=c(x1, x2), y=c(y1, 0), col="lightblue")
+abline(v=2, col="red", lwd=5)
 ```
 
-The gray area has `r round(pnorm(2, 0, 1), 2)`, so the ungrayed has an area of `r round(1- pnorm(2, 0, 1), 2)`. Is this a statistical rarity? 
+The gray area has `r round(pnorm(2, 0, 1), 2)`, so the ungrayed has an area of `r round(1- pnorm(2, 0, 1), 2)`.
+Is this a statistical rarity? 
 
 
 "The Matrix" of Variable Types
@@ -69,9 +72,9 @@ Creating Some Vectors
 ========================================================
 
 ```{r}
-IndependCAT =c(0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1)
-DependCAT =   c(T,  F, F, F, F, F, T,  F,  T,  F,  T,  F,  T,  F, T,  F, F, F, T, T, F, T)
-IndependCON = c(55, 3, 5, 2, 7, 8, 43, 12, 51, 10, 30, 31, 43, 6, 11, 2, 9, 13, 44, 32, 8, 55)
+IndependCAT = c(0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0)
+DependCAT =   c(T,  F, T, F, T, F, T,  F,  T,  F,  T,  F,  T,  F, T,  F, F, F, T, F, F, T)
+IndependCON = c(55, 3, 5, 2, 7, 8, 40, 12, 51, 10, 28, 31, 43, 6, 11, 2, 12, 13, 46, 32, 19, 68)
 DependCON = c(2, 4, 2, 5, 6, 14, 23, 21, 42, 12, 45, 35, 77, 4, 5, 6, 3, 6, 9, 11, 22, 32)
 
 
@@ -91,11 +94,7 @@ Checking Vectors -- Do each have the same length?
 ========================================================
 
 ```{r, echo=T}
-length(DependCAT)
-length(DependCON)
-length(IndependCAT)
-length(IndependCON)
-length(IndependCAT2)
+length(DependCAT); length(DependCON); length(IndependCAT); length(IndependCON); length(IndependCAT2)
 ```
 
 
@@ -112,7 +111,7 @@ chisq.test(DependCAT, IndependCAT2)
 Predictor = Categorical, Response = Continuous 
 ======================================================
 left: 30%
-```{r, echo=T}
+```{r, echo=F}
 boxplot(DependCON ~ IndependCAT2, col=c("red", "blue"))
 ```
 ***
@@ -122,35 +121,46 @@ t.test(DependCON ~ IndependCAT2)
 
 Predictor = Continuous, Response = Continuous 
 ======================================================
-left: 35%
+left: 25%
 ```{r, echo=F}
 plot(DependCON ~ IndependCON, las=1)
-abline(coef(lm(DependCON ~ IndependCON)), col="red", lwd=2)
+abline(coef(lm(DependCON ~ IndependCON)), col="red", lwd=3)
 ```
 ***
-```{r}
-summary(lm(DependCON ~ IndependCON))
+DependCON = f(IndependCON) or 
+
+DependCON ~ IndpendCON
+```{r, echo=F}
+summary(lm(DependCON ~ IndependCON))$coefficients
 ```
+where the slope is `r round(coef(lm(DependCON ~ IndependCON))[2], 2)` and an intercept of `r round(coef(lm(DependCON ~ IndependCON))[1], 1)` with an r^2 of `r round(summary(lm(DependCON ~ IndependCON))$r.squared, 3)`.
+
 
 Predictor = Continuous, Response = Categorical 
 ======================================================
 ```{r, echo=F}
-plot(DependCAT ~ IndependCON, xlim=c(-10,80))
+plot(DependCAT ~ IndependCON, xlim=c(-10,80), ylim=c(-1, 2))
 abline(coef(lm(DependCAT ~ IndependCON)), col="orange", lwd=3)
 ```
 Predictor = Continuous, Response = Categorical 
 ======================================================
 ```{r, echo=F}
 glm.out <- glm(DependCAT ~ IndependCON, family=binomial(link='logit'))
-summary(glm.out)
+summary(glm.out)$coefficients
 ```
 
 Predictor = Continuous, Response = Categorical 
 ======================================================
 ```{r, echo=F}
-plot(DependCAT ~ IndependCON, xlim=c(-10,80), las=1)
+plot(DependCAT ~ IndependCON, xlim=c(-10,80), , ylim=c(-.5, 1.5),las=1, cex.axis=1.9)
 abline(coef(lm(DependCAT ~ IndependCON)), col="orange", lwd=3)
 lines(sort(IndependCON), sort(glm.out$fitted), type="l", col="red", lwd=4)
+
+newdata = data.frame(IndependCON = c(5, 30, 40))
+newdata$Prob <- round(predict(glm.out, newdata, type="response"),2)
+
+newdata
+
 ```
 
 
