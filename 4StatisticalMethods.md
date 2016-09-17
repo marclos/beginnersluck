@@ -1,13 +1,82 @@
-4StatisticalMethods
+4 Statistical Frameworks
 ========================================================
-author: 
-date: 
+author: Marc Los Huertos
+date: Sept. 17, 2016
 autosize: true
+
+Science and Method
+=======================================================
+
+What is the Scientific Method?
+- Make Observations
+- Articulate Hypothesis
+- Collect Data
+- Confront Hypothesis with Data (or Confront Data with Models)
+- Interpret Results
+- Create New Hypotheses
+
+How do we confront a hypothesis?
+========================================================
+
+There are several methods -- We will begin with the popular "frequentists" approach:
+
+Articulate a Null hypothesis (expectation if patterns don't exists, if processes are random...); where altnerative hypothesis suggest a pattern that is non-random.
+
+Test the Null. If we reject, then it leads to....??
+
+An Example of a Null Hypothesis
+=======================================================
+
+
+```r
+set.seed(123)
+randomdata <-round(rnorm(10, 0, 1), 1); randomdata
+```
+
+```
+ [1] -0.6 -0.2  1.6  0.1  0.1  1.7  0.5 -1.3 -0.7 -0.4
+```
+
+```r
+hist(randomdata)
+```
+
+![plot of chunk random](4StatisticalMethods-figure/random-1.png)
+
+Question: Is a value >=2 within the random variation?  
+
+Assuming a Probability Distrbution
+=================================================
+
+```r
+set.seed(123)
+x <- seq(-3, 3, .2)
+y <- dnorm(x, 0, 1)
+plot(x,y, type="l", lwd=3)
+abline(v=2, col="green", lwd=5)
+```
+
+![plot of chunk theory](4StatisticalMethods-figure/theory-1.png)
+
+asdfasd
+=================================================
+
+
+```r
+plot(x,y, type="l", lwd=3)
+abline(v=2, col="green", lwd=5)
+x1 <- x[x <= 2]
+y1 <- dnorm(x1, 0, 1)
+polygon(x=c(x1), y=(y1), col="gray")
+```
+
+![plot of chunk density](4StatisticalMethods-figure/density-1.png)
+
+The gray area has 0.98, so the ungrayed has an area of 0.02. Is this a statistical rarity? 
+
 
 "The Matrix" of Variable Types
 ========================================================
-
-For more details on authoring R presentations please visit <https://support.rstudio.com/hc/en-us/articles/200486468>.
 
 - Predictors -- Categorical OR Continuous
 - Response -- Categorical OR Continusous
@@ -23,49 +92,79 @@ IndependCON = c(55, 3, 5, 2, 7, 8, 43, 12, 51, 10, 30, 31, 43, 6, 11, 2, 9, 13, 
 DependCON = c(2, 4, 2, 5, 6, 14, 23, 21, 42, 12, 45, 35, 77, 4, 5, 6, 3, 6, 9, 11, 22, 32)
 ```
 
+Converting 1s and 0s to Absent and Present
+========================================================
 
+
+```r
+IndependCAT2 <- NULL
+IndependCAT2[IndependCAT==0] <- "Absent"
+IndependCAT2[IndependCAT==1] <- "Present"
+IndependCAT2
+```
+
+```
+ [1] "Absent"  "Present" "Absent"  "Absent"  "Present" "Absent"  "Absent" 
+ [8] "Present" "Present" "Present" "Present" "Present" "Present" "Present"
+[15] "Absent"  "Absent"  "Absent"  "Absent"  "Absent"  "Absent"  "Present"
+[22] "Present"
+```
 Checking Vectors -- Do each have the same length?
 ========================================================
 
 
-```
-[1] 22
-```
-
-```
-[1] 22
+```r
+length(DependCAT)
 ```
 
 ```
 [1] 22
 ```
 
-```
-[1] 22
+```r
+length(DependCON)
 ```
 
 ```
 [1] 22
 ```
+
+```r
+length(IndependCAT)
+```
+
+```
+[1] 22
+```
+
+```r
+length(IndependCON)
+```
+
+```
+[1] 22
+```
+
+```r
+length(IndependCAT2)
+```
+
+```
+[1] 22
+```
+
+
 
 Yup!
 
-Categorical-Categorical
+Predictor = Categorical, Response = Categorical
 =======================================================
-
-```r
-table.CAT <- table(DependCAT, IndependCAT2); table.CAT
-```
 
 ```
          IndependCAT2
 DependCAT Absent Present
     FALSE      6       7
     TRUE       5       4
-```
-
-```r
-chisq.test(DependCAT, IndependCAT2)
 ```
 
 ```
@@ -76,7 +175,7 @@ data:  DependCAT and IndependCAT2
 X-squared = 0, df = 1, p-value = 1
 ```
 
-Categorical-Predictor, Continuous Response
+Predictor = Categorical, Response = Continuous 
 ======================================================
 left: 30%
 
@@ -84,7 +183,7 @@ left: 30%
 boxplot(DependCON ~ IndependCAT2, col=c("red", "blue"))
 ```
 
-![plot of chunk unnamed-chunk-4](4StatisticalMethods-figure/unnamed-chunk-4-1.png)
+![plot of chunk unnamed-chunk-5](4StatisticalMethods-figure/unnamed-chunk-5-1.png)
 ***
 
 ```r
@@ -105,16 +204,10 @@ sample estimates:
              7.818182             27.272727 
 ```
 
-Predictor= Continuous, Response = Continuous 
+Predictor = Continuous, Response = Continuous 
 ======================================================
-left: 30%
-
-```r
-plot(DependCON ~ IndependCON, las=1)
-abline(coef(lm(DependCON ~ IndependCON)), col="red", lwd=2)
-```
-
-![plot of chunk unnamed-chunk-6](4StatisticalMethods-figure/unnamed-chunk-6-1.png)
+left: 35%
+![plot of chunk unnamed-chunk-7](4StatisticalMethods-figure/unnamed-chunk-7-1.png)
 ***
 
 ```r
@@ -144,20 +237,9 @@ F-statistic: 8.022 on 1 and 20 DF,  p-value: 0.01029
 
 Predictor = Continuous, Response = Categorical 
 ======================================================
-
-```r
-plot(DependCAT ~ IndependCON, xlim=c(-10,80))
-abline(coef(lm(DependCAT ~ IndependCON)), col="orange", lwd=3)
-```
-
-![plot of chunk unnamed-chunk-8](4StatisticalMethods-figure/unnamed-chunk-8-1.png)
+![plot of chunk unnamed-chunk-9](4StatisticalMethods-figure/unnamed-chunk-9-1.png)
 Predictor = Continuous, Response = Categorical 
 ======================================================
-
-```r
-glm.out <- glm(DependCAT ~ IndependCON, family=binomial(link='logit'))
-summary(glm.out)
-```
 
 ```
 
@@ -186,13 +268,6 @@ Number of Fisher Scoring iterations: 6
 
 Predictor = Continuous, Response = Categorical 
 ======================================================
-
-```r
-plot(DependCAT ~ IndependCON, xlim=c(-10,80))
-abline(coef(lm(DependCAT ~ IndependCON)), col="orange", lwd=3)
-lines(sort(IndependCON), sort(glm.out$fitted), type="l", col="red", lwd=4)
-```
-
-![plot of chunk unnamed-chunk-10](4StatisticalMethods-figure/unnamed-chunk-10-1.png)
+![plot of chunk unnamed-chunk-11](4StatisticalMethods-figure/unnamed-chunk-11-1.png)
 
 
