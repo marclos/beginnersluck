@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2015.10.2)  16 SEP 2016 09:10
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2015.10.2)  16 SEP 2016 11:04
 entering extended mode
  %&-line parsing enabled.
 **Chemistry1.tex
@@ -315,24 +315,24 @@ LaTeX Warning: No \author given.
 
 pdfTeX warning: /usr/bin/pdflatex (file ./ProblemSet.pdf): PDF inclusion: found
  PDF version <1.5>, but at most version <1.4> allowed
-<ProblemSet.pdf, id=40, 794.97pt x 614.295pt>
+<ProblemSet.pdf, id=45, 794.97pt x 614.295pt>
 File: ProblemSet.pdf Graphic file (type pdf)
  <use ProblemSet.pdf> [1
 
 {/usr/share/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2 <./ProblemSet.pdf, pa
 ge is rotated 90 degrees>]
-LaTeX Font Info:    Try loading font information for T1+aett on input line 52.
+LaTeX Font Info:    Try loading font information for T1+aett on input line 55.
  (/usr/share/texmf/tex/latex/ae/t1aett.fd
 File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
 )
-Overfull \hbox (0.9898pt too wide) in paragraph at lines 52--53
+Overfull \hbox (0.9898pt too wide) in paragraph at lines 55--56
 []\T1/aer/m/n/10 where $\OML/cmm/m/it/10 v[]$ \T1/aer/m/n/10 is room-mean-speed
  (m/s), $\OML/cmm/m/it/10 k[]$ \T1/aer/m/n/10 is Boltz-mann's Con-stant ($\OT1/
 cmr/m/n/10 1\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 38\OML/cmm/m/it/10 e[]$
  []
 
 
-Overfull \hbox (11.8854pt too wide) in paragraph at lines 54--55
+Overfull \hbox (11.8854pt too wide) in paragraph at lines 57--58
 []\T1/aer/m/n/10 The mass of a nuetron, m, is 1.6750e-27 (kg) and $\OML/cmm/m/i
 t/10 k[]$ \T1/aer/m/n/10 = 1.38e-23 ($\OML/cmm/m/it/10 m[]kgs[]K[]$\T1/aer/m/n/
 10 ).
@@ -340,68 +340,65 @@ t/10 k[]$ \T1/aer/m/n/10 = 1.38e-23 ($\OML/cmm/m/it/10 m[]kgs[]K[]$\T1/aer/m/n/
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `math shift' on input line 82.
+(hyperref)                removing `math shift' on input line 85.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\lambda' on input line 82.
+(hyperref)                removing `\lambda' on input line 85.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `math shift' on input line 82.
+(hyperref)                removing `math shift' on input line 85.
 
 
-Overfull \hbox (35.70328pt too wide) in paragraph at lines 86--87
-[]\T1/aer/m/n/10 Using this site: []$\T1/aett/m/n/10 http : / / chem . libretex
-ts . org / Core / Physical _ and _ Theoretical _
+Overfull \hbox (11.95335pt too wide) in paragraph at lines 87--88
+\T1/aer/m/n/10 Next, what do we do with the ve-loc-ity? Us-ing this site: []$\T
+1/aett/m/n/10 http : / / chem . libretexts .
  []
 
 
-Overfull \hbox (42.75928pt too wide) in paragraph at lines 86--87
-\T1/aett/m/n/10 Chemistry / Quantum _ Mechanics / 02 . _Fundamental _ Concepts 
-_ of _ Quantum _ Mechanics /
+Overfull \hbox (63.71924pt too wide) in paragraph at lines 87--88
+\T1/aett/m/n/10 org / Core / Physical _ and _ Theoretical _ Chemistry / Quantum
+ _ Mechanics / 02 . _Fundamental _
  []
 
 [3]
-LaTeX Font Info:    Try loading font information for TS1+aer on input line 128.
+LaTeX Font Info:    Try loading font information for TS1+aer on input line 131.
 
  (/usr/share/R/texmf/tex/latex/ts1aer.fd
 File: ts1aer.fd 
 )
 LaTeX Font Info:    Font shape `TS1/aer/m/n' in size <10> not available
-(Font)              Font shape `TS1/cmr/m/n' tried instead on input line 128.
+(Font)              Font shape `TS1/cmr/m/n' tried instead on input line 131.
  [4] [5]
-<Chemistry1-004.pdf, id=108, 433.62pt x 433.62pt>
-File: Chemistry1-004.pdf Graphic file (type pdf)
- <use Chemistry1-004.pdf>
-[6 <./Chemistry1-004.pdf>] <Chemistry1-005.pdf, id=119, 433.62pt x 433.62pt>
+<Chemistry1-005.pdf, id=111, 433.62pt x 433.62pt>
 File: Chemistry1-005.pdf Graphic file (type pdf)
-
-<use Chemistry1-005.pdf> [7 <./Chemistry1-005.pdf>] (./Chemistry1.aux) ) 
+ <use Chemistry1-005.pdf>
+[6] [7 <./Chemistry1-005.pdf>] (./Chemistry1.aux) ) 
 Here is how much of TeX's memory you used:
  4315 strings out of 256214
- 58141 string characters out of 1917000
+ 58091 string characters out of 1917000
  112798 words of memory out of 1500000
  7481 multiletter control sequences out of 10000+200000
  35827 words of font info for 74 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
- 35i,8n,39p,854b,338s stack positions out of 5000i,500n,6000p,200000b,15000s
- </home
-/CAMPUS/mwl04747/.texlive2007/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.60
-0pk></usr/share/texmf/fonts/type1/bluesky/cm/cmbx12.pfb></usr/share/texmf/fonts
-/type1/bluesky/cm/cmex10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmmi10.pf
-b></usr/share/texmf/fonts/type1/bluesky/cm/cmmi12.pfb></usr/share/texmf/fonts/t
-ype1/bluesky/cm/cmmi7.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr10.pfb></
-usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/fonts/type1/
-bluesky/cm/cmr17.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr6.pfb></usr/sh
-are/texmf/fonts/type1/bluesky/cm/cmr7.pfb></usr/share/texmf/fonts/type1/bluesky
-/cm/cmr8.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsltt10.pfb></usr/share/
-texmf/fonts/type1/bluesky/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/bluesky/c
-m/cmsy7.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmti10.pfb></usr/share/tex
-mf/fonts/type1/bluesky/cm/cmtt10.pfb>
-Output written on Chemistry1.pdf (7 pages, 351651 bytes).
+ 35i,8n,39p,854b,367s stack positions out of 5000i,500n,6000p,200000b,15000s
+ </home/CAMPUS/mwl04747/.tex
+live2007/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk></usr/share/texmf
+/fonts/type1/bluesky/cm/cmbx12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cme
+x10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/texmf/f
+onts/type1/bluesky/cm/cmmi12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmmi7
+.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr10.pfb></usr/share/texmf/fonts
+/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr17.pfb>
+</usr/share/texmf/fonts/type1/bluesky/cm/cmr6.pfb></usr/share/texmf/fonts/type1
+/bluesky/cm/cmr7.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr8.pfb></usr/sh
+are/texmf/fonts/type1/bluesky/cm/cmsltt10.pfb></usr/share/texmf/fonts/type1/blu
+esky/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy7.pfb></usr/sha
+re/texmf/fonts/type1/bluesky/cm/cmti10.pfb></usr/share/texmf/fonts/type1/bluesk
+y/cm/cmtt10.pfb>
+Output written on Chemistry1.pdf (7 pages, 347467 bytes).
 PDF statistics:
- 196 PDF objects out of 1000 (max. 8388607)
- 34 named destinations out of 1000 (max. 131072)
- 100 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 195 PDF objects out of 1000 (max. 8388607)
+ 35 named destinations out of 1000 (max. 131072)
+ 103 words of extra memory for PDF output out of 10000 (max. 10000000)
 

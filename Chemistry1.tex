@@ -17,11 +17,14 @@ First, we should acknowledge that the early history is filled with people who ha
 
 Second, we also need to understand that these assignments have been developed as hurtles that have almost nothing to do with the end-goal of being a health-care professional. Instead, it's better to reflect that being able to think about problem solving is actually the real goal here and we need to learn to problem solve in a systematic way.
 
-
 \section{Problem Sets}
+
+Below is a screenshot of some problems, whose source is unknown (Figure \ref{fig:problemset}).
 
 \begin{figure}
 \includegraphics{ProblemSet}
+\label{fig:problemset}
+\caption{Problem Set of Interest}
 \end{figure}
 
 \section{Problem \#2}
@@ -81,9 +84,7 @@ Thus, we have now calculated the speed as 7860.73.\footnote{However, I am not su
 
 \subsection{Calculating $\lambda$}
 
-Next, what do we do with the velocity?  
-
-Using this site: \url{http://chem.libretexts.org/Core/Physical_and_Theoretical_Chemistry/Quantum_Mechanics/02._Fundamental_Concepts_of_Quantum_Mechanics/De_Broglie_Wavelength}, we might be able to evaluate the question with some sense that we understand what in the world is happening:
+Next, what do we do with the velocity? Using this site: \url{http://chem.libretexts.org/Core/Physical_and_Theoretical_Chemistry/Quantum_Mechanics/02._Fundamental_Concepts_of_Quantum_Mechanics/De_Broglie_Wavelength}, we might be able to evaluate the question with some understanding about what in the world is happening. Next, we can use a simple equation to use the velocity and mass of a nuetron to calculate the waveenght:
 
 \begin{equation}
 \lambda = \frac{h}{p} = \frac{h}{ m v}
@@ -111,7 +112,9 @@ Based on this equation, we have velocity, $\nu$, and we know the mass of the nue
 
 I calcualted a wavelength that seems small, but might be reasonable, 5.03e-11.\footnote{How does this compare with the answer you calculated?}
 
-\section{On Planck's Constant}
+\section{Problem \#4}
+
+\subsection{Planck's Constant}
 
 Planck's Constant is a very powerful parameter... with units as $m^2 \cdot kg \cdot s^{-1}$. 
 
@@ -130,25 +133,29 @@ We given a table to measurements:
 \item $V_s/V$ is the stopping voltage, but the demominator is confusing, and is again referring to the units, which are in volts!
 \end{itemize}
 
-We are told to create a line, but the predicted by the photoelectric equation. There are several versions of the equation, e.g.,
+We are told to create a line, but the predicted by the photoelectric equation which might be generally written as 
 
 \begin{equation}
-E = h \cdot \nu
+\lambda = f(V_s)
 \end{equation}
 
-\noindent E or $\nu$ are not given. 
+There are several versions of the equation, e.g.,
 
-Alternatively, we might calculate the maximum energy of an electron ejected,
+We might calculate the maximum energy of an electron ejected,
 
 \begin{equation}
 K_{max} = h \cdot \nu - \phi
 \end{equation}
 
-\noindent where $\nu$ is the frequency, $\phi$ is the work function, h is Plank's constant. 
+\noindent where $\nu$ is the frequency, $\phi$ is the work function, h is Plank's constant. Alternatively, I found the following: 
 
-So, we'll need to figure out how to manipulate our equation for parameters we have measured. 
+\begin{equation}
+E = h \cdot \nu
+\end{equation}
 
-This equation was proposed by Einstein -- where energy is proporation to freqency and h. Now, first, there is something that is tricky about this equation, where frequency is often denoted as $\nu$, which is not the same as v used for velocity as above. This is an annoying part of science, there just aren't enough letters for them to represent one thing and even worse many of them look a like! So, you have to be careful. 
+\noindent where E (work function) or $\nu$ (frequency) have not been given. So, we'll need to figure out how to manipulate our equation for parameters we have measured. 
+
+This second equation was proposed by Einstein -- where energy is proporation to freqency and h. Now, first, there is something that is tricky about this equation, where frequency is often denoted as $\nu$, which is not the same as v used for velocity as above. This is an annoying part of science, there just aren't enough letters for them to represent one thing and even worse many of them look a like! So, you have to be careful. 
 
 According to wikipedia, E is a work function. I am not sure what that means, so, for now, we'll let then be -- perhaps it will be clear later!
 
@@ -158,21 +165,28 @@ Using a dimensional analysis, where frequency is $s{-1}$, we obtain
 m^2 \cdot kg \cdot s^{-1} \cdot s^{-1} = kg m^2 s^{-2} = Joule
 \end{equation}
 
-\noindent the units as espected is a joule. 
+\noindent the units as expected is a joule. 
 
 Next, we can convert wavelength (m) to frequency (s) using this simple equation:
 
 \begin{equation}
-\nu = \frac{v}{\lambda}
+\nu = \frac{\text{v}}{\lambda}
 \end{equation}
 
-\noindent, now however, we need to figure out the v, velocity!  Dang!  Another set of steps. 
+\noindent, now however, we need to figure out the v, velocity!  Dang!  Another set of steps. I suspect this is the velocity of light -- of course, light's speed will vary with what is travels through and we are not given that information. Bummer. Perhaps, we can assume it's traveling through a vacuum... where v = 299792458 meters per second. e is the charge of an electron, which is measured in Coulumbs, 1.602e-19. 
 
-For now, let's do some substuting and see where we end up: 
+Using our wavelength measurments, let's convert them to frequency
 
-\begin{equation}
-E = h \nu = h \frac{v}{\lambda}
-\end{equation}
+\begin{Schunk}
+\begin{Sinput}
+> lambda=c(2536, 2830, 3039, 3302, 3663, 4358)
+> v = 299792458
+> nu = v/lambda; nu
+\end{Sinput}
+\begin{Soutput}
+[1] 118214.69 105933.73  98648.39  90791.17  81843.42  68791.29
+\end{Soutput}
+\end{Schunk}
 
 Now, we to deal with E. It's not clear what this is really in relation to the equation below, perhaps, KE = E? For now, I'll assume that, but from what I have read there isn't any reason that I can make that assumption.
 
@@ -183,25 +197,22 @@ KE = e \cdot V_s
 \noindent where KE is kenetic energy (units?) and E is the charge of an electron (volts) and $V_s$ is stopping voltage. KE is $1/2 mv^2$. e is the charge of an electron. Let's start with a simple approach:
 
 \begin{equation}
-KE = e \cdot V_s = h \frac{v}{\lambda}
+KE = e \cdot V_s = h \nu
 \end{equation}
  
 \begin{equation}
-e \cdot V_s \cdot v = h \lambda
+e \cdot V_s  = h \nu
 \end{equation}
-
-I suspect this is the velocity of light -- of course, light's speed will vary with what is travels through and we are not given that information. Bummer. Perhaps, we can assume it's traveling through a vacuum... where v = 299792458 meters per second. e is the charge of an electron, which is measured in Coulumbs, 1.602e-19. 
 
 Using dimensional analysis then we have 
 
 \begin{equation}
-columbs \cdot volts
+columbs \cdot volts \neq m^2 \cdot kg \cdot s^{-1} \cdot s
 \end{equation}
 
 \begin{Schunk}
 \begin{Sinput}
 > e = 1.602e-19
-> v = 299702458
 > lambda=c(2536, 2830, 3039, 3302, 3663, 4358)
 > Vs=c(2.6, 2.11, 1.81, 1.47, 1.1, .57)
 > left = Vs * e * v 
@@ -215,18 +226,14 @@ columbs \cdot volts
 \end{Sinput}
 \begin{Soutput}
   (Intercept)         right 
- 2.505048e-10 -5.267790e-14 
+ 2.505800e-10 -5.269372e-14 
 \end{Soutput}
 \begin{Sinput}
 > plot(left~right)
 > abline(coef(lm(left~right)))
 \end{Sinput}
 \end{Schunk}
-\includegraphics{Chemistry1-004}
-
-and then e =mc2?  somehow we need to involve the speed of light? Geez, I am completely lost!
-
-
+\includegraphics{Chemistry1-005}
 
 Alternatively, we can substitute E, from the photoelectric equation:
 
@@ -241,38 +248,5 @@ h = freq \cdot V_s /KE
 \end{equation}
 
 Here, I am stuck again...
-
-\begin{Schunk}
-\begin{Sinput}
-> lambda=c(2536, 2830, 3039, 3302, 3663, 4358)
-> volts=c(2.6, 2.11, 1.81, 1.47, 1.1, .57)
-> coef(lm(lambda~volts))
-\end{Sinput}
-\begin{Soutput}
-(Intercept)       volts 
-  4713.1565   -885.1904 
-\end{Soutput}
-\begin{Sinput}
-> plot(lambda~volts)
-> abline(coef(lm(lambda~volts)))
-\end{Sinput}
-\end{Schunk}
-\includegraphics{Chemistry1-005}
-
-The the slope is not h!  where h is 4713.16, based on the relationship:
-
-\begin{equation}
-\lambda = f(V_s)
-\end{equation}
-
-This doesn't seem to be doing anything useful. 
-
-\noindent where E is the energy of the radiation and $\nu$ is the velocity of the particle. 
-
-
-
-
-
-
 
 \end{document}
