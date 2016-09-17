@@ -17,7 +17,9 @@
 \section*{Getting help}
 
 \begin{description}
-  \item[help.start()]
+  \item[help.start()] Opens an interactive html page with several help resources
+  \item[?'function'] to get help with a specific function, don't include the quotation marks!
+  \item[args()] to see the arguments that a function is expecting
 \end{description}
 
 \section*{Creating and Importing Data}
@@ -39,37 +41,40 @@
 \subsection*{ANOVA, t-test, etc}
 
 \begin{description}
+\item[t.test()]
 \item[aov()]
 \end{description}
 
 \subsection*{Tests for Association}
 
 \begin{description}
+\item[chisq.test()]
 \item[fisher.test()]
 \end{description}
 
 \subsection*{Logistic Regression}
 
 \begin{description}
-\item[lm()]
+\item[glm(y ~ x, family=binomial(link='logit'))]
 \end{description}
 
 \subsection*{Statistical Results}
 \begin{description}
 \item[summary()]
 \item[coef()]
-\item[plot()]
-\item[()]
+\item[plot()] when you plot a model, you'll get four diagnostic plots that can be used to evaluate the assumptions.
+\item[predict()]
 \end{description}
 
 \section*{Visual Display}
 
 \begin{description}
-\item[plot()]
-\item[abline{}]
+\item[plot()] arguments can be in x,y or in a y ~ x formula to create scatter plots
+\item[boxplot()] boxplots are used for categorical predictors
+\item[abline()]
+\item[]
 
 \end{description}
-
 
   lots of text
   \ldots
