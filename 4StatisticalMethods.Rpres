@@ -58,7 +58,7 @@ polygon(x=c(x1, x2), y=c(y1, 0), col="lightblue")
 abline(v=2, col="red", lwd=5)
 ```
 
-The gray area has `r round(pnorm(2, 0, 1), 2)`, so the ungrayed has an area of `r round(1- pnorm(2, 0, 1), 2)`.
+The blue area has `r round(pnorm(2, 0, 1), 2)`, so the ungrayed has an area of `r round(1- pnorm(2, 0, 1), 2)`.
 Is this a statistical rarity? 
 
 

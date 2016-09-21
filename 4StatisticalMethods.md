@@ -56,7 +56,7 @@ Density Plot and a "Theoretical Distribition"
 =================================================
 ![plot of chunk density](4StatisticalMethods-figure/density-1.png)
 
-The gray area has 0.98, so the ungrayed has an area of 0.02.
+The blue area has 0.98, so the ungrayed has an area of 0.02.
 Is this a statistical rarity? 
 
 
