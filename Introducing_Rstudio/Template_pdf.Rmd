@@ -1,25 +1,19 @@
 ---
 title: "Untitled"
 author: "Marc Los Huertos"
-date: "2/7/2017"
-output:
-  pdf_document: default
-  html_document: default
-  word_document: default
+date: "10/30/2016"
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+# To compile we need to download the framed.sty because the Rstudio version at Pomona can't find the style on its own. 
+
+# http://mirrors.ctan.org/macros/latex/contrib/framed/framed.sty
 ```
 
 ## R Markdown
 
-```{r}
-marcsobject <- c(1, 3, 5, 12, 44, 26)
-#print(myobject)
-```
-
-The mean of marcsobject is `r round(mean(marcsobject), 1)`.
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
@@ -32,8 +26,19 @@ summary(cars)
 
 You can also embed plots, for example:
 
-```{r pressure, echo=TRUE}
-plot(pressure, xlab="Temperature (C)", ylab="Pressure (Pa)", las=1)
+```{r pressure, echo=FALSE}
+plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+```{r maunaloa}
+maunaloa <- read.csv("http://pages.pomona.edu/~mwl04747/Mauna_Loa.csv")
+head(maunaloa)
+str(maunaloa)
+plot(maunaloa$average ~ maunaloa$decimal.date, ty="l")
+maunaloa.lm <- lm(average ~ decimal.date, data=maunaloa)
+summary(maunaloa.lm)
+abline(coef(maunaloa.lm), col="red")
+```
