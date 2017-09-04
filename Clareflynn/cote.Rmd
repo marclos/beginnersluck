@@ -68,6 +68,8 @@ joined$Region[joined$Island.Alpha=="MR"] <- "Outer"
 joined$Region[joined$Island.Alpha=="EER"] <- "Outer"
 
 boxplot(LGR ~ Region, data=joined)
+
+summary(aov(LGR ~ Region, data=joined))
 #inner <- rbind(PINWR, OGI, JI, STI)
 #outer <- rbind(SINWR, MR, EER)
 
