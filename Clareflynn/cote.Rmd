@@ -11,56 +11,69 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 
-#eer.csv <- "../Clareflynn/EERLGR.csv"
-eer.csv = "/home/CAMPUS/mwl04747/github/beginnersluck/Clareflynn/EERLGR.csv"
+eer.csv <- "../Clareflynn/EERLGR.csv"
 EER <- read.csv(eer.csv)
 
 ji.csv = "../Clareflynn/JILGRnew.csv"
 JI <- read.csv(ji.csv)
 
+mr.csv <- "../Clareflynn/MRLGRnew.csv"
+MR <- read.csv(mr.csv)
+
+ogi.csv <- "../Clareflynn/OGI.csv"
+OGI <- read.csv(ogi.csv)
+
+pi.csv <- "../Clareflynn/PINWR.csv"
+PINWR <- read.csv(pi.csv)
+
+sinwr.csv <- "../Clareflynn/SINWR.csv"
+SINWR <- read.csv(sinwr.csv)
+
+sti.csv <- "../Clareflynn/STI.csv"
+STI <- read.csv(sti.csv)
+
+
+
+
 names(JI)
 names(EER)
+names(MR)
+names(OGI)
+names(PINWR)
+names(SINWR)
+names(STI)
 
-joined = rbind(JI, EER)
+joined = rbind(JI, EER, MR, OGI, PINWR, SINWR, STI)
 
 boxplot(LGR ~ Hatch_Order, data=joined)
 
 summary(aov(LGR ~ Hatch_Order, data=joined))
 
 #EER <- read.csv("/Users/clareflynn/Desktop/EERLGR.csv")
-JI <- read.csv("/Users/clareflynn/Desktop/JILGRnew.csv")
-MR <- read.csv("/Users/clareflynn/Desktop/MRLGRnew.csv")
-OGI <- read.csv("/Users/clareflynn/Desktop/OGILGRnew.csv")
-PI <- read.csv("/Users/clareflynn/Desktop/PINWR.csv")
-SINWR <- read.csv("/Users/clareflynn/Desktop/SINWR.csv")
-STI <- read.csv("/Users/clareflynn/Desktop/STI.csv")
+#JI <- read.csv("/Users/clareflynn/Desktop/JILGRnew.csv")
+#MR <- read.csv("/Users/clareflynn/Desktop/MRLGRnew.csv")
+#OGI <- read.csv("/Users/clareflynn/Desktop/OGILGRnew.csv")
+#PI <- read.csv("/Users/clareflynn/Desktop/PINWR.csv")
+#SINWR <- read.csv("/Users/clareflynn/Desktop/SINWR.csv")
+#STI <- read.csv("/Users/clareflynn/Desktop/STI.csv")
 
-boxplot(EER$LGR,EER$Hatch_Order)
-boxplot(JI$LGR,JI$Hatch_Order)
-boxplot(MR$LGR,MR$Hatch_Order)
-OGI$Hatch_Order <- OGI$A
-OGI$LGR <- OGI$X4.142857143
-boxplot(OGI$LGR,OGI$Hatch_Order)
-boxplot(PI$LGR,PI$Hatch_Order)
-boxplot(SINWR$LGR,SINWR$Hatch_Order)
-boxplot(STI$LGR,STI$Hatch_Order)
 
-EERA <- EER$LGR[which(EER$Hatch_Order=='A')]
-EERB <- EER$LGR[which(EER$Hatch_Order=='B')]
-JIA <- JI$LGR[which(JI$Hatch_Order=='A')]
-JIB <- JI$LGR[which(JI$Hatch_Order=='B')]
-MRA <- MR$LGR[which(MR$Hatch_Order=='A')]
-MRB <- MR$LGR[which(MR$Hatch_Order=='B')]
-OGIA <- OGI$LGR[which(OGI$Hatch_Order=='A')]
-OGIB <- OGI$LGR[which(OGI$Hatch_Order=='B')]
-PIA <- PI$LGR[which(PI$Hatch_Order=='A')]
-PIB <- PI$LGR[which(PI$Hatch_Order=='B')]
-SINWRA <- SINWR$LGR[which(SINWR$Hatch_Order=='A')]
-SINWRB <- SINWR$LGR[which(SINWR$Hatch_Order=='B')]
-STIA <- STI$LGR[which(STI$Hatch_Order=='A')]
-STIB <- STI$LGR[which(STI$Hatch_Order=='B')]
+#EERA <- EER$LGR[which(EER$Hatch_Order=='A')]
+#EERB <- EER$LGR[which(EER$Hatch_Order=='B')]
+#JIA <- JI$LGR[which(JI$Hatch_Order=='A')]
+#JIB <- JI$LGR[which(JI$Hatch_Order=='B')]
+#MRA <- MR$LGR[which(MR$Hatch_Order=='A')]
+#MRB <- MR$LGR[which(MR$Hatch_Order=='B')]
+#OGIA <- OGI$LGR[which(OGI$Hatch_Order=='A')]
+#OGIB <- OGI$LGR[which(OGI$Hatch_Order=='B')]
+#PIA <- PI$LGR[which(PI$Hatch_Order=='A')]
+#PIB <- PI$LGR[which(PI$Hatch_Order=='B')]
+#SINWRA <- SINWR$LGR[which(SINWR$Hatch_Order=='A')]
+#SINWRB <- SINWR$LGR[which(SINWR$Hatch_Order=='B')]
+#STIA <- STI$LGR[which(STI$Hatch_Order=='A')]
+#STIB <- STI$LGR[which(STI$Hatch_Order=='B')]
 
-comb <- cbind(EERA, JIA, MRA, OGIA, PIA, SINWRA, STIA, EERB, JIB, MRB, OGIB, PIB, SINWRB, STIB)
-PIcomb <- cbind(PIA, PIB)
-SINWRcomb <- cbind(SINWRA, SINWRB)
+#comb <- cbind(EERA, JIA, MRA, OGIA, PIA, SINWRA, STIA, EERB, JIB, MRB, OGIB, PIB, SINWRB, STIB)
+#PIcomb <- cbind(PIA, PIB)
+#SINWRcomb <- cbind(SINWRA, SINWRB)
 ```
