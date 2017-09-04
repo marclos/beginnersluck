@@ -58,6 +58,11 @@ boxplot(LGR ~ Hatch_Order, data=joined)
 
 summary(aov(LGR ~ Hatch_Order, data=joined))
 
+inner <- rbind(PINWR, OGI, JI, STI)
+outer <- rbind(SINWR, MR, EER)
+
+levels(inner$Hatch_Order) <- list(A=c("A" , "A1"), O=c("B", "C"))
+levels(outer$Hatch_Order) <- list(A=c("A" , "A1"), O=c("B", "C"))
 
 #EER <- read.csv("/Users/clareflynn/Desktop/EERLGR.csv")
 #JI <- read.csv("/Users/clareflynn/Desktop/JILGRnew.csv")
