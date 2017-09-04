@@ -10,7 +10,24 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-EER <- read.csv("/Users/clareflynn/Desktop/EERLGR.csv")
+
+#eer.csv <- "../Clareflynn/EERLGR.csv"
+eer.csv = "/home/CAMPUS/mwl04747/github/beginnersluck/Clareflynn/EERLGR.csv"
+EER <- read.csv(eer.csv)
+
+ji.csv = "../Clareflynn/JILGRnew.csv"
+JI <- read.csv(ji.csv)
+
+names(JI)
+names(EER)
+
+joined = rbind(JI, EER)
+
+boxplot(LGR ~ Hatch_Order, data=joined)
+
+summary(aov(LGR ~ Hatch_Order, data=joined))
+
+#EER <- read.csv("/Users/clareflynn/Desktop/EERLGR.csv")
 JI <- read.csv("/Users/clareflynn/Desktop/JILGRnew.csv")
 MR <- read.csv("/Users/clareflynn/Desktop/MRLGRnew.csv")
 OGI <- read.csv("/Users/clareflynn/Desktop/OGILGRnew.csv")
