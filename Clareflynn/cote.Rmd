@@ -49,6 +49,16 @@ boxplot(LGR ~ Hatch_Order, data=joined)
 
 summary(aov(LGR ~ Hatch_Order, data=joined))
 
+boxplot(joined$LGR~joined$Island.Alpha)
+
+	
+levels(joined$Hatch_Order) <- list(A=c("A" , "A1"), O=c("B", "C"))
+
+boxplot(LGR ~ Hatch_Order, data=joined)
+
+summary(aov(LGR ~ Hatch_Order, data=joined))
+
+
 #EER <- read.csv("/Users/clareflynn/Desktop/EERLGR.csv")
 #JI <- read.csv("/Users/clareflynn/Desktop/JILGRnew.csv")
 #MR <- read.csv("/Users/clareflynn/Desktop/MRLGRnew.csv")
