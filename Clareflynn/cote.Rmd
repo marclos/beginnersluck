@@ -65,11 +65,27 @@ summary(aov(LGR ~ Hatch_Order, data=joined))
 joined$Region <- "Inner"
 joined$Region[joined$Island.Alpha=="SINWR"] <- "Outer"
 joined$Region[joined$Island.Alpha=="MR"] <- "Outer"
-joined$Region[joined$Island.Alpha=="EER"] <- "Outer"
+#joined$Region[joined$Island.Alpha=="EER"] <- "Outer"
 
 boxplot(LGR ~ Region, data=joined)
 
-summary(aov(LGR ~ Region, data=joined))
+summary(aov(LGR ~ Region, data=joined[joined$Hatch_Order=='A',]))
+summary(aov(LGR ~ Region, data=joined[joined$Hatch_Order=='O',]))
+boxplot(LGR ~ Region, data=joined[joined$Hatch_Order=='A',])
+boxplot(LGR ~ Region, data=joined[joined$Hatch_Order=='O',])
+
+summary(test <- aov(LGR ~ Island.Alpha, data=joined))
+TukeyHSD(test, "Island.Alpha", ordered = FALSE)
+plot(TukeyHSD(test, "Alpha.Island"))
+
+summary(test <- aov(LGR ~ Region + Hatch_Order, data=joined))
+TukeyHSD(test, "Region", ordered = FALSE)
+plot(TukeyHSD(test, "Region"))
+
+summary(test <- aov(LGR ~ Island.Alpha + Region, data=joined))
+TukeyHSD(test, "Island.Alpha", ordered = FALSE)
+plot(TukeyHSD(test, "Alpha.Island"))
+
 #inner <- rbind(PINWR, OGI, JI, STI)
 #outer <- rbind(SINWR, MR, EER)
 
