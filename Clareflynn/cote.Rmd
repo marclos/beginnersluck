@@ -67,6 +67,9 @@ joined$Region[joined$Island.Alpha=="SINWR"] <- "Outer"
 joined$Region[joined$Island.Alpha=="MR"] <- "Outer"
 #joined$Region[joined$Island.Alpha=="EER"] <- "Outer"
 
+joined$Distance[joined$Island.Alpha=="SINWR"] <- 10 
+
+
 boxplot(LGR ~ Region, data=joined)
 
 summary(aov(LGR ~ Region, data=joined[joined$Hatch_Order=='A',]))
