@@ -79,7 +79,7 @@ boxplot(LGR ~ Region, data=joined[joined$Hatch_Order=='O',])
 
 summary(test <- aov(LGR ~ Island.Alpha, data=joined))
 TukeyHSD(test, "Island.Alpha", ordered = FALSE)
-plot(TukeyHSD(test, "Alpha.Island"))
+plot(TukeyHSD(test, "joined$Alpha.Island"))
 
 summary(test <- aov(LGR ~ Region + Hatch_Order, data=joined))
 TukeyHSD(test, "Region", ordered = FALSE)
