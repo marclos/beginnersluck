@@ -79,7 +79,9 @@ boxplot(LGR ~ Region, data=joined[joined$Hatch_Order=='O',])
 
 summary(test <- aov(LGR ~ Island.Alpha, data=joined))
 TukeyHSD(test, "Island.Alpha", ordered = FALSE)
-plot(TukeyHSD(test, "joined$Alpha.Island"))
+plot(TukeyHSD(test, "Island.Alpha", ordered = FALSE))
+
+#406
 
 summary(test <- aov(LGR ~ Region + Hatch_Order, data=joined))
 TukeyHSD(test, "Region", ordered = FALSE)
@@ -87,7 +89,7 @@ plot(TukeyHSD(test, "Region"))
 
 summary(test <- aov(LGR ~ Island.Alpha + Region, data=joined))
 TukeyHSD(test, "Island.Alpha", ordered = FALSE)
-plot(TukeyHSD(test, "Alpha.Island"))
+plot(TukeyHSD(test, "Island.Alpha"))
 
 #inner <- rbind(PINWR, OGI, JI, STI)
 #outer <- rbind(SINWR, MR, EER)
