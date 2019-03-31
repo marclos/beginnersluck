@@ -6,23 +6,29 @@ offpeak_hrs = 8 * 5 + 14 * 2
 superoff_hrs = 10 * 5 + 10 * 2
 
 categories = c("Peak", "Off", "Super")
-TOU = data.frame(TOU = categories, Hours = c(peak, offpeak, superoff)); TOU
+TOU = data.frame(TOU = categories, Hours = c(peak_hrs, offpeak_hrs, superoff_hrs)); TOU
+TOU
 
-TOU$Percent = round(TOU$Hours/total*100, 0)
-
-TOU$Rate_summer = c(.36538, 0.16255, 0.11835)
-TOU$Rate_winter = c(.33, .22, .22); TOU
+TOU$Rate_summer = c(0.36538, 0.16255, 0.11835)
+TOU$Rate_winter = c(0.24795, 0.15350, 0.12149); TOU
 total = sum(TOU$Hours); total
 
+TOU$Percent = round(TOU$Hours/total*100, 0)
 # My Data csv?
 
 july = c(396, 823, 924); 
-aug = c(500, 1000, 1000)
+aug = c(358, 880, 1011)
 sep = c(600, 1220, 950)
+oct = c(156, 377, 483)
+nov = c(147, 375, 453)
+dec = c(200, 400, 600)
+jan = c(200, 400, 500)
+feb = c(152, 389, 481)
 
-my.usage = data.frame(Year = 2018, Month = c("July", "Aug", "Sept"), 
-                      rbind(july, aug, sep), 
-                      Total=c(sum(july), sum(aug), sum(sep))); my.usage 
+my.usage = data.frame(Year = 2018, Month = c("July", "Aug", "Sept", "Oct", "Nov"), 
+                      rbind(july, aug, sep, oct, nov), 
+                      Total=c(sum(july), sum(aug), sum(sep), sum(oct), sum(nov))); 
+                      my.usage 
 names(my.usage) = c("Year", "Month", categories, "Total"); my.usage
 #my.usage$Total = sum(my.usage$Peak, my.usage$`Off peak`); my.usage
 
@@ -31,13 +37,15 @@ names(my.usage) = c("Year", "Month", categories, "Total"); my.usage
 # Calculate TOU Pricing
 ###########################
 
-(my = t(my.usage[, c(3:5)]))
+(my = t(my.usage[, c(3:5)])) # hours matrix
 
-(tou = (TOU[,4]))
+(tou.sum = (TOU[,3])) # pricing matrix for summer
+(tou.wtr = (TOU[,4])) # pricing matrix for winter
 
-(my.tou = round(t(tou * my), 2))
+(my.tou = rbind(round(t(tou.sum * my[,1:3]), 2), round(t(tou.wtr * my[, 4:5]), 2)))  # calculate cost
 
-(my.tou.total = rowSums(my.tou))
+
+(my.tou.total = rowSums(my.tou))  # total monthly cost for TOU
 
 (temp = cbind(my.usage, my.tou, my.tou.total))
 rownames(temp) <- c()
@@ -57,12 +65,14 @@ if(Total > tiered_rates$MaxUse[1]) {
   Tier2 <- Total - tiered_rates$MaxUse[1]  
   if(Tier2 > tiered_rates$MaxUse[2]) {
     Tier3 <- Tier2 - tiered_rates$MaxUse[2]
-    Tier2 <- tiered$MaxUse[2]
+    Tier2 <- tiered_rates$MaxUse[2]
   } else
   { Tier3 = 0
   } 
   } else {
   Tier1 <- Total
+  Tier2 = 0
+  Tier3 = 0
   }
 tiered_hours <- c(Tier1, Tier2, Tier3, Total)
 
