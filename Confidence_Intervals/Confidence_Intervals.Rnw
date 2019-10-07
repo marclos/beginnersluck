@@ -141,8 +141,6 @@ sem<-sd(n10)/sqrt(length(n10))
 
 NOTE: If the sample size approaches the size of the population, we must use a "finite-population correction". Apparently the Central Limit Theorum gets wonky and the correction factor ensures better estimates. We don't need to worry about in in our case.
 
-
- 
 \section{Selecting $\alpha$: The Level of Confidence}
 
 First, it is important to note that the selection of the interval depends on your decision as to what level of confidence you want. Since probability ranges from 0 to 1, the confidence intervals of the parameter can also vary within this range. However, we usually are trying to constrain the confidence interval to something narrow, for example, we usually specify confidence intervals of 0.90, 0.95, and 0.99. For normally distributed data the standard deviation has some extra information, namely the 68-95-99.7 rule which tells us the percentage of data lying within 1, 2 or 3 standard deviation from the mean.

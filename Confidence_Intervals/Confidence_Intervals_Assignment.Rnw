@@ -1,0 +1,110 @@
+\documentclass{tufte-handout}
+
+%\geometry{showframe}% for debugging purposes -- displays the margins
+\usepackage{verbatim}
+\usepackage{amsmath}
+%\usepackage{natbib}
+%\bibfont{\small} % Doesn't see to work...
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+% \graphicspath{{graphics/}}
+
+\title{Confidence Interval Tutorial Assignment %\thanks{}
+}
+\author[Marc Los Huertos]{Marc Los Huertos}
+%\date{}  % if the \date{} command is left out, the current date will be used
+
+
+% \SweaveOpts{prefix.string=graphics/plot} % Created a "graphics" subdirectory to 
+
+\setsidenotefont{\color{blue}}
+% \setcaptionfont{hfont commandsi}
+% \setmarginnotefont{\color{blue}}
+% \setcitationfont{\color{gray}}
+
+% The following package makes prettier tables.  We're all about the bling!
+%\usepackage{booktabs}
+
+% Small sections of multiple columns
+%\usepackage{multicol}
+
+% These commands are used to pretty-print LaTeX commands
+% command name -- adds backslash automatically
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\begin{document}
+%\SweaveOpts{concordance=TRUE}
+
+\maketitle% this prints the handout title, author, and date
+\begin{abstract}
+\noindent One of the most important considerations with univariate data are the development of confidence intervals. As you can probably guess, confidence intervals are based on the distribution of the data. There are two main approaches in developing confidence intervals. One relies on the use of theoretical probability distributions but there are a number of methods that do not rely on theoretical distributions. We will learn several methods because each are used in environmental sciences to varying degrees.
+\end{abstract}
+
+%\printclassoptions
+
+% Setting up the margins, etc for R
+<<echo = F, results = 'hide'>>=
+options(width=60)
+rm(list = ls())
+@
+
+\section{Assignment}
+
+To create a guide for your peers about what are confidence intervals and how to create them using a univarite dataset (one set of numbers). 
+
+Using R-studio, write up an short description and demonstration of how to do a confidence interval.
+
+\subsection{Rational}
+
+\begin{marginfigure}
+	\centering
+		\includegraphics[width=1.00\textwidth]{Investor_confidence500.jpg}
+	\caption{Confidence abounds without bounds.}
+	\label{fig:Investor_confidence500}
+\end{marginfigure}
+
+Learning statistics is challenging and teaching it even more so. But I'm convinced that we learn better if we are asked to teach a topic. 
+
+\subsection{Resources}
+
+There are tons of resources to complete this assigment. For example, I have several statistics textbooks that might help you figure out how to talk about confidence intervals. 
+There are numerous cheatsheets avaialble, which you can get from Rstudio (\texttt{Help/Cheetsheets}) or from Sakai (\texttt{Resources/Project 0 General Resources/Software Resources}).
+
+Finally, there are some good (and some terrible -- Read: Wrong) resources on the web as well. 
+
+\subsection{Assignment Steps}
+
+\begin{enumerate}
+  \item (1 pnt) Successfully Use R-studio to create a pdf from markdown; 
+  \item (1 pnt) Use your random number for the author name AND the file name;
+  \item (1 pnt) Describe what a confidence interval is and how it depends on probability distributions; 
+  \item (1 pnt) Describe ``how'' we talk about confidence intervals, relative to the population and sample means;
+  \item (1 pnt) Generate a vector of 5 random numbers with a mean of 10 and standard deviation of 1;
+  \item (1 pnt) Report the sample mean and standard deviation;
+  \item (2 pnts) Calculate the confidence intervals for 95\% and 90\% and how we should report the results correctly in each case.
+  \item (2 pnts) Create a probability distribution that shows the confidence intervals.
+  
+\end{enumerate}
+
+Finally, I will also grade your guide based on clarity and robustness of your approach (2 pnts). 
+
+\section{Working an Example}
+
+You can see that I have created a working example for myself, which you might find helpful or completely not!
+
+here's the link for my \href{https://github.com/marclos/beginnersluck/raw/master/Confidence_Intervals/Confidence_Intervals.pdf}{guideline on confidence invervals}. 
+
+As you work through your guide and find problems with mine, please point them out and I'll fix them!
+
+\FloatBarrier 
+\begin{fullwidth}
+% \renewcommand{\bibfont}{\small}
+%\bibliography{LosHuertos_Complete_100420}
+%\bibliographystyle{cbe}
+\end{fullwidth}
+
+\end{document}
