@@ -62,7 +62,7 @@ Confidence intervals can be calculated for a range of statistics, including the 
 
 \begin{marginfigure}
 	\centering
-		\includegraphics{Investor_confidence500.jpg}
+		\includegraphics[width=1.00\textwidth]{Investor_confidence500.jpg}
 	\caption{Confidence abounds without bounds.}
 	\label{fig:Investor_confidence500}
 \end{marginfigure}
@@ -112,9 +112,11 @@ n10
 \label{fig:default_bp}
 <<fig=T, echo=F>>=
 par(las=1, cex=2)
-boxplot(n10, col="yellow")
+boxplot(n10, col="yellow", ylim=c(-1, 3))
 @
 \end{figure}
+
+Let's see if we can label the graphic directly!
 
 
 \subsection{Measuring the Spread}
@@ -240,6 +242,26 @@ Sorted.Confidence <- droplevels(Sorted.Confidence)
 
 Now, we are going to use the t-distribution instead of our estimates so we can create exact probabilities. 
 
+\subsection{Normal versus the t-Distribution}
+
+For demonstration purposes, we should compare the standard normal distribution to the t-distribuition so we understand what the implications of ditribution might mean in hypothesis testing!
+
+<<>>=
+xrange = seq(-4, 4, by=.02)
+plot(xrange, dnorm(xrange, 0, sd=1), ty='l', ylim=c(0,.4), xlim=c(-4,4))
+
+lines(xrange, dt(xrange, df=1), ty='l', col='red')
+lines(xrange, dt(xrange, df=3), ty='l', col='orange')
+lines(xrange, dt(xrange, df=10), ty='l', col='blue')
+
+
+@
+
+Notice that the t-distribution is squatter in the middle and fatter at the edges. This means there is more probability "area" at the ends. But as you approach the n=20, the curves are increasingly overlapping. 
+
+Let's create a legend for this...
+
+
 \subsection{Calculating a Parametric Confidence Interval}
 
 To explore our waste audit data, we will determine the 95\% confidence intervals for the mean for each mean. As usual there are dozens of way to accomplish this, but for now, let's start by getting a t-statistic by our is that we use our $\alpha$ value of 0.05. Since we calculate CI for the lower and upper limit, we need to split the probability in half and determine the intervals for 0.025 and 0.975 of the probably distribution.  
@@ -296,6 +318,9 @@ legend(2, 105, legend=c("Recycling", "Trash"),
 @	
 \end{figure*}
 
+\section{t-test}
+
+TBD
 
 
 \begin{comment}

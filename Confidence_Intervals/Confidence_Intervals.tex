@@ -109,7 +109,7 @@ Confidence intervals can be calculated for a range of statistics, including the 
 
 \begin{marginfigure}
 	\centering
-		\includegraphics{Investor_confidence500.jpg}
+		\includegraphics[width=1.00\textwidth]{Investor_confidence500.jpg}
 	\caption{Confidence abounds without bounds.}
 	\label{fig:Investor_confidence500}
 \end{marginfigure}
@@ -179,6 +179,8 @@ We get the following sample from our population:
 
 \end{knitrout}
 \end{figure}
+
+Let's see if we can label the graphic directly!
 
 
 \subsection{Measuring the Spread}
@@ -354,6 +356,30 @@ In the case of Figure~\ref{fig:percent_bp}, we can easily see that there is a pr
 
 Now, we are going to use the t-distribution instead of our estimates so we can create exact probabilities. 
 
+\subsection{Normal versus the t-Distribution}
+
+For demonstration purposes, we should compare the standard normal distribution to the t-distribuition so we understand what the implications of ditribution might mean in hypothesis testing!
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{xrange} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlopt{-}\hlnum{4}\hlstd{,} \hlnum{4}\hlstd{,} \hlkwc{by}\hlstd{=}\hlnum{.02}\hlstd{)}
+\hlkwd{plot}\hlstd{(xrange,} \hlkwd{dnorm}\hlstd{(xrange,} \hlnum{0}\hlstd{,} \hlkwc{sd}\hlstd{=}\hlnum{1}\hlstd{),} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{,} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{.4}\hlstd{),} \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{4}\hlstd{,}\hlnum{4}\hlstd{))}
+
+\hlkwd{lines}\hlstd{(xrange,} \hlkwd{dt}\hlstd{(xrange,} \hlkwc{df}\hlstd{=}\hlnum{1}\hlstd{),} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)}
+\hlkwd{lines}\hlstd{(xrange,} \hlkwd{dt}\hlstd{(xrange,} \hlkwc{df}\hlstd{=}\hlnum{3}\hlstd{),} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'orange'}\hlstd{)}
+\hlkwd{lines}\hlstd{(xrange,} \hlkwd{dt}\hlstd{(xrange,} \hlkwc{df}\hlstd{=}\hlnum{10}\hlstd{),} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'blue'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-14-1} 
+
+\end{knitrout}
+
+Notice that the t-distribution is squatter in the middle and fatter at the edges. This means there is more probability "area" at the ends. But as you approach the n=20, the curves are increasingly overlapping. 
+
+Let's create a legend for this...
+
+
 \subsection{Calculating a Parametric Confidence Interval}
 
 To explore our waste audit data, we will determine the 95\% confidence intervals for the mean for each mean. As usual there are dozens of way to accomplish this, but for now, let's start by getting a t-statistic by our is that we use our $\alpha$ value of 0.05. Since we calculate CI for the lower and upper limit, we need to split the probability in half and determine the intervals for 0.025 and 0.975 of the probably distribution.  
@@ -409,11 +435,14 @@ We begin by using the t-Distribution, which is a specialized case of the normal 
        \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"darkgreen"}\hlstd{,} \hlstr{"red"}\hlstd{),} \hlkwc{pch}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{19}\hlstd{,} \hlnum{2}\hlstd{),} \hlkwc{cex}\hlstd{=}\hlnum{1}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-15-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-16-1} 
 
 \end{knitrout}
 \end{figure*}
 
+\section{t-test}
+
+TBD
 
 
 \begin{comment}
