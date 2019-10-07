@@ -24,11 +24,13 @@ nov = c(147, 375, 453)
 dec = c(200, 400, 600)
 jan = c(200, 400, 500)
 feb = c(152, 389, 481)
+mar = c(127, 311, 444)
 
-my.usage = data.frame(Year = 2018, Month = c("July", "Aug", "Sept", "Oct", "Nov"), 
-                      rbind(july, aug, sep, oct, nov), 
-                      Total=c(sum(july), sum(aug), sum(sep), sum(oct), sum(nov))); 
-                      my.usage 
+my.usage = data.frame(Year = 2018,
+        Month = c("July", "Aug", "Sept", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar"), 
+        rbind(july, aug, sep, oct, nov, dec, jan, feb, mar), 
+        Total=c(sum(july), sum(aug), sum(sep), sum(oct), sum(nov),
+              sum(dec), sum(jan), sum(feb), sum(mar)));  my.usage 
 names(my.usage) = c("Year", "Month", categories, "Total"); my.usage
 #my.usage$Total = sum(my.usage$Peak, my.usage$`Off peak`); my.usage
 
@@ -42,7 +44,7 @@ names(my.usage) = c("Year", "Month", categories, "Total"); my.usage
 (tou.sum = (TOU[,3])) # pricing matrix for summer
 (tou.wtr = (TOU[,4])) # pricing matrix for winter
 
-(my.tou = rbind(round(t(tou.sum * my[,1:3]), 2), round(t(tou.wtr * my[, 4:5]), 2)))  # calculate cost
+(my.tou = rbind(round(t(tou.sum * my[,1:3]), 2), round(t(tou.wtr * my[, 4:9]), 2)))  # calculate cost
 
 
 (my.tou.total = rowSums(my.tou))  # total monthly cost for TOU

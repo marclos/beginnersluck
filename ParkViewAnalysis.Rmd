@@ -1,0 +1,29 @@
+---
+title: "ParkView_Analysis"
+author: "marc"
+date: "7/4/2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+dayson = read.csv("/home/CAMPUS/mwl04747/github/beginnersluck/DaysOnZillow_County.csv")
+```
+
+```{r}
+par(las=1)
+plot(Los.Angeles.County~RegionName, data=dayson, ylim=c(40,160))
+plot(Orange.County~RegionName, data=dayson, ylim=c(40,160), col="blue")
+
+#daysonCA = dayson[dayson$StateName == "CA", c(3, 6:117)]
+
+#library(tidyr)
+#library(dplyr)
+
+#yearmo = noquote(names(daysonCA)[2:113])
+#::spread(daysonCA, RegionName, "X2019.04")
+```
+

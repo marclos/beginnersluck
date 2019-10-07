@@ -1,0 +1,777 @@
+\documentclass{tufte-handout}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+%\geometry{showframe}% for debugging purposes -- displays the margins
+\usepackage{verbatim}
+\usepackage{amsmath}
+%\usepackage{natbib}
+%\bibfont{\small} % Doesn't see to work...
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+% \graphicspath{{graphics/}}
+
+\title{Confidence Intervals %\thanks{}
+}
+\author[Marc Los Huertos]{Marc Los Huertos}
+%\date{}  % if the \date{} command is left out, the current date will be used
+
+
+% \SweaveOpts{prefix.string=graphics/plot} % Created a "graphics" subdirectory to 
+
+\setsidenotefont{\color{blue}}
+% \setcaptionfont{hfont commandsi}
+% \setmarginnotefont{\color{blue}}
+% \setcitationfont{\color{gray}}
+
+% The following package makes prettier tables.  We're all about the bling!
+%\usepackage{booktabs}
+
+% Small sections of multiple columns
+%\usepackage{multicol}
+
+% These commands are used to pretty-print LaTeX commands
+% command name -- adds backslash automatically
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+%\SweaveOpts{concordance=TRUE}
+
+\maketitle% this prints the handout title, author, and date
+\begin{abstract}
+\noindent One of the most important considerations with univariate data are the development of confidence intervals. As you can probably guess, confidence intervals are based on the distribution of the data. There are two main approaches in developing confidence intervals. One relies on the use of theoretical probability distributions but there are a number of methods that do not rely on theoretical distributions. We will learn several methods because each are used in environmental sciences to varying degrees.
+\end{abstract}
+
+%\printclassoptions
+
+% Setting up the margins, etc for R
+
+
+\section{Why Confidence Intervals?}
+
+Confidence intervals are used to indicate the reliability of an estimate. How likely the interval is to contain the parameter is determined by the confidence level or confidence coefficient. Increasing the desired confidence level will widen the confidence interval. These are key in presenting quantitative data because they allow us to interpret the data from a hypothesis perspective, which we'll get into more during the semester.
+
+\section{Where are Confidence Intervals Used?}
+
+Confidence intervals can be calculated for a range of statistics, including the mean, slope and intercept of a linear model, among other things. We'll concentrate on the what confidence intervals of the mean at this point, but keep in mind the concept can be applied to many parameter estimates.
+
+\begin{marginfigure}
+	\centering
+		\includegraphics{Investor_confidence500.jpg}
+	\caption{Confidence abounds without bounds.}
+	\label{fig:Investor_confidence500}
+\end{marginfigure}
+
+\section{Working an Example}
+
+\subsection{Populations and Samples}
+
+In general, environmental scientists can't measure the entire population. For example, a complete audit of all the recycling would be impossible for our class!  Instead, we sample from the population. Statisticians have have developed semi-consistant symbology for various statistics based on populations and samples. 
+
+A population mean for example is usually referred to by the Greek letter, $\mu$. While for a sample, it might be referred to as $\bar{x}$. The spread of data, or variance, in a population is referred to as $\sigma^2$, again a Greek letter. The population variance is often referred to as $s^2$. In general, we don't know $\mu$ or $\sigma^2$, so we can estimate it and develop confidence intervals that probably include the true $\mu$. Notice the word, ''probably.''  In other words, we our intervals in terms of probabilities!
+
+\subsection{The difference between $\mu$ and $\bar{x}$}
+
+To illustrate the difference, let's create a dataset of random numbers from a normal distribution with a mean of 1 and standard deviation of 1. 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed}\hlstd{(}\hlnum{123}\hlstd{)}
+\hlstd{N1000} \hlkwb{=} \hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{marginfigure}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
+
+\end{knitrout}
+\caption{Frequency distribution of population.}
+\label{fig:hist_pop}
+\end{marginfigure}
+
+These data will represent the population (N) and has a mean or $\mu$ of 1.0161. The values range from -1.81 to 4.24 (Figure~\ref{fig:hist_pop}). From this dataset, we sample 10 numbers randomly. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{n10} \hlkwb{=} \hlkwd{sample}\hlstd{(N1000,} \hlnum{10}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+We get the following sample from our population: 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{n10}
+\end{alltt}
+\begin{verbatim}
+##  [1]  0.6254191 -0.6015362  3.1001089  1.8824652  0.8942158
+##  [6]  0.9839975  0.3548860  2.5164706  2.7150650 -0.2847157
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\noindent and a mean or $\bar{y}$ = 1.219. These values certainly fall within the range of values in the population.
+
+\subsection{R's Default Boxplot}
+
+\begin{figure}
+\caption{Default Boxplot where the following are shown: median =0.94; Range = -0.6, 3.1; and interquartile range = 0.42, 2.36.}
+\label{fig:default_bp}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
+
+\end{knitrout}
+\end{figure}
+
+
+\subsection{Measuring the Spread}
+
+We can calculate the variance of the sample using the following formula: 
+
+\begin{equation}
+s^2 = \frac{\sum(y_i - \bar{y})^2}{n-1}
+\end{equation}
+
+\noindent (1.637) and the standard deviation (1.28), which is the square root of $s^2$. Then, we can calculate the standard error of the sample using the following equation: 
+
+\begin{equation}
+\textrm{Standard Error of the Sample} = SE_s = \sigma/\sqrt{n}
+\end{equation}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#computation of the standard error of the sample mean}
+\hlstd{sem}\hlkwb{<-}\hlkwd{sd}\hlstd{(n10)}\hlopt{/}\hlkwd{sqrt}\hlstd{(}\hlkwd{length}\hlstd{(n10))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+NOTE: If the sample size approaches the size of the population, we must use a "finite-population correction". Apparently the Central Limit Theorum gets wonky and the correction factor ensures better estimates. We don't need to worry about in in our case.
+
+
+ 
+\section{Selecting $\alpha$: The Level of Confidence}
+
+First, it is important to note that the selection of the interval depends on your decision as to what level of confidence you want. Since probability ranges from 0 to 1, the confidence intervals of the parameter can also vary within this range. However, we usually are trying to constrain the confidence interval to something narrow, for example, we usually specify confidence intervals of 0.90, 0.95, and 0.99. For normally distributed data the standard deviation has some extra information, namely the 68-95-99.7 rule which tells us the percentage of data lying within 1, 2 or 3 standard deviation from the mean.
+
+\begin{figure*}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-8-1} 
+
+\end{knitrout}
+\end{figure*}
+
+
+In the context of a probability density function, these levels correspond to percentages of the area of the normal density curve. For example, a 95\% confidence interval covers 95\% of the normal curve -- the probability of observing a value outside of this area is less than 0.05. So, following standards in statistics, we use $\alpha$ to signify the as the criteria, such that
+
+\begin{equation}
+\textrm{Confidence Interval \% } = 100 * (1-\alpha)
+\end{equation}
+
+Yet, this is still ambiguous. Because the normal curve is symmetric, half of the area is in the left tail of the curve, and the other half of the area is in the right tail of the curve. Thus, if we want to generate confidence intervals that cover both tails of the curve we need to split $\alpha$ for each side of curve. Thus for a for a 95\% confidence interval, the area in each tail is equal to 0.05/2 = 0.025. 
+
+\section{Estimating Confidence Intervals for Waste Audit}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{Unsorted.csv} \hlkwb{=} \hlstr{"/home/CAMPUS/mwl04747/github/beginnersluck/Confidence_Intervals/2019_EA30F_Waste_Audit_Unsorted.csv"}
+
+\hlstd{Sorted.csv} \hlkwb{=} \hlstr{"/home/CAMPUS/mwl04747/github/beginnersluck/Confidence_Intervals/2019_EA30F_Waste_Audit_Sorted.csv"}
+\hlcom{# Read Raw Data}
+\hlstd{Unsorted} \hlkwb{=} \hlkwd{read.csv}\hlstd{(Unsorted.csv)}
+\hlstd{Sorted} \hlkwb{=} \hlkwd{read.csv}\hlstd{(Sorted.csv)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Now that we have imported the data into R, we will not process some of the data to prepare for the analysis. For example, let's caculate the percentage of sorted items, remove the plastic film category, and shorten the compostable name to simply compost. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{Sorted}\hlopt{$}\hlstd{Percent} \hlkwb{=} \hlstd{(Sorted}\hlopt{$}\hlstd{NetMass}\hlopt{/}\hlstd{Sorted}\hlopt{$}\hlstd{Total)}\hlopt{*}\hlnum{100}
+\hlstd{Sorted} \hlkwb{=} \hlkwd{subset}\hlstd{(Sorted,} \hlkwc{subset}\hlstd{=Type}\hlopt{!=}\hlstr{"Plastic Film"}\hlstd{)}
+\hlkwd{levels}\hlstd{(Sorted}\hlopt{$}\hlstd{Type)[}\hlkwd{levels}\hlstd{(Sorted}\hlopt{$}\hlstd{Type)}\hlopt{==}\hlstr{"Compostable"}\hlstd{]} \hlkwb{<-} \hlstr{"Compost"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Be sure to check the results as you go and convince yourself how these work by looking online to see how these functions work. 
+
+\subsection{Exploring the Data}
+
+Anyone who has worked with quantitiative data knows that data entry errors can be a major headache if they are not caught early. Thus, we'll use a couple of methods to evaluate potential data entry errors. 
+
+\begin{figure*}
+\caption{Sorted Percent Mass from Recycling Bags}
+\label{fig:percent_bp}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-11-1} 
+
+\end{knitrout}
+\end{figure*}
+
+In the case of Figure~\ref{fig:percent_bp}, we can easily see that there is a problem with the Trash sources. We simple are not getting all the trash out of the bags and weighed. This is something that we'll need to sort out how the problem was created, how it might be remedied, or if the work needs to be done over to improve the quaulity of the results. 
+
+
+\subsection{Calculating Summary Statitics}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{Sorted.mean} \hlkwb{<-} \hlkwd{aggregate}\hlstd{(Sorted}\hlopt{$}\hlstd{Percent,}
+  \hlkwc{by}\hlstd{=}\hlkwd{list}\hlstd{(}\hlkwc{Type} \hlstd{= Sorted}\hlopt{$}\hlstd{Type,}  \hlkwc{Trash_Recycle} \hlstd{= Sorted}\hlopt{$}\hlstd{Trash_Recycle),}
+  \hlstd{mean)}
+\hlstd{Sorted.sd} \hlkwb{<-} \hlkwd{aggregate}\hlstd{(Sorted}\hlopt{$}\hlstd{Percent,}
+  \hlkwc{by}\hlstd{=}\hlkwd{list}\hlstd{(}\hlkwc{Type} \hlstd{= Sorted}\hlopt{$}\hlstd{Type,} \hlkwc{Trash_Recycle} \hlstd{= Sorted}\hlopt{$}\hlstd{Trash_Recycle),}
+  \hlstd{sd)}
+\hlstd{Sorted.n} \hlkwb{<-} \hlkwd{aggregate}\hlstd{(Sorted}\hlopt{$}\hlstd{Percent,}
+  \hlkwc{by}\hlstd{=}\hlkwd{list}\hlstd{(}\hlkwc{Type} \hlstd{= Sorted}\hlopt{$}\hlstd{Type,} \hlkwc{Trash_Recycle} \hlstd{= Sorted}\hlopt{$}\hlstd{Trash_Recycle),}
+  \hlstd{length)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{names}\hlstd{(Sorted.sd)}\hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"Type"}\hlstd{,} \hlstr{"Trash_Recycle"}\hlstd{,} \hlstr{"sd"}\hlstd{);} \hlkwd{head}\hlstd{(Sorted.sd)}
+\end{alltt}
+\begin{verbatim}
+##        Type Trash_Recycle          sd
+## 1 Cardboard             R 22.56671944
+## 2   Compost             R  0.01848429
+## 3     Glass             R  7.36818369
+## 4     Metal             R  0.90058168
+## 5     Paper             R  0.95707298
+## 6  Plastics             R  2.36304529
+\end{verbatim}
+\begin{alltt}
+\hlkwd{names}\hlstd{(Sorted.n)}\hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"Type"}\hlstd{,} \hlstr{"Trash_Recycle"}\hlstd{,} \hlstr{"n"}\hlstd{);} \hlkwd{head}\hlstd{(Sorted.n)}
+\end{alltt}
+\begin{verbatim}
+##        Type Trash_Recycle n
+## 1 Cardboard             R 4
+## 2   Compost             R 4
+## 3     Glass             R 4
+## 4     Metal             R 4
+## 5     Paper             R 4
+## 6  Plastics             R 4
+\end{verbatim}
+\begin{alltt}
+\hlstd{Sorted.mean}
+\end{alltt}
+\begin{verbatim}
+##         Type Trash_Recycle            x
+## 1  Cardboard             R 19.844355824
+## 2    Compost             R  0.009242144
+## 3      Glass             R  9.188614632
+## 4      Metal             R  0.900428236
+## 5      Paper             R  3.346022133
+## 6   Plastics             R  2.771715635
+## 7      Trash             R 66.744612153
+## 8  Cardboard             T  7.219242440
+## 9    Compost             T  2.036823227
+## 10     Glass             T  2.129499618
+## 11     Metal             T  0.214627476
+## 12     Paper             T  0.304364752
+## 13  Plastics             T  1.065179585
+## 14     Trash             T 39.601450481
+\end{verbatim}
+\begin{alltt}
+\hlstd{Sorted.SEM} \hlkwb{=} \hlkwd{merge}\hlstd{(Sorted.sd, Sorted.n)}
+\hlstd{Sorted.Confidence} \hlkwb{=} \hlkwd{merge}\hlstd{(Sorted.mean, Sorted.SEM)}
+\hlstd{Sorted.Confidence}\hlopt{$}\hlstd{SEM} \hlkwb{=} \hlstd{Sorted.Confidence}\hlopt{$}\hlstd{sd}\hlopt{/}\hlkwd{sqrt}\hlstd{(Sorted.Confidence}\hlopt{$}\hlstd{n)}
+
+\hlstd{Sorted.Confidence} \hlkwb{<-} \hlkwd{droplevels}\hlstd{(Sorted.Confidence)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Now, we are going to use the t-distribution instead of our estimates so we can create exact probabilities. 
+
+\subsection{Calculating a Parametric Confidence Interval}
+
+To explore our waste audit data, we will determine the 95\% confidence intervals for the mean for each mean. As usual there are dozens of way to accomplish this, but for now, let's start by getting a t-statistic by our is that we use our $\alpha$ value of 0.05. Since we calculate CI for the lower and upper limit, we need to split the probability in half and determine the intervals for 0.025 and 0.975 of the probably distribution.  
+
+We begin by using the t-Distribution, which is a specialized case of the normal distribution (standard normal distribution that is corrected for sample size with change in the degrees of freedom). 
+
+\begin{equation}
+\bar{x} - t_{\alpha/2, n-1}(sd/\sqrt{n}) < \mu < \bar{x} + t_{\alpha/2, n-1}(sd/\sqrt{n}) 
+\end{equation}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{alpha} \hlkwb{=} \hlnum{0.05}
+\hlstd{degfree} \hlkwb{=} \hlnum{4} \hlopt{-} \hlnum{1}
+\hlkwd{qt}\hlstd{(alpha}\hlopt{/}\hlnum{2}\hlstd{, degfree)}
+\end{alltt}
+\begin{verbatim}
+## [1] -3.182446
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+\begin{figure*}
+\caption{Sorted Percent Mass from Unsorted Recycling and Trash Sources, (97.5\% Confidence Intevals).}
+\label{fig:percent_ci}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{par}\hlstd{(}\hlkwc{cex}\hlstd{=}\hlnum{1.3}\hlstd{,} \hlkwc{cex.axis}\hlstd{=}\hlnum{1}\hlstd{)}
+\hlkwd{plot}\hlstd{(xvalues,} \hlkwc{ylim}\hlstd{=Ylim,} \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0.5}\hlstd{,}\hlnum{7.5}\hlstd{),}\hlkwc{ty}\hlstd{=}\hlstr{"n"}\hlstd{,} \hlkwc{xaxt}\hlstd{=}\hlstr{'none'}\hlstd{,}
+    \hlkwc{xlab}\hlstd{=}\hlstr{"Type"}\hlstd{,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Percent Mass of Unsorted"}\hlstd{)}
+\hlkwd{axis}\hlstd{(}\hlkwc{side}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{at}\hlstd{=}\hlnum{1}\hlopt{:}\hlnum{7}\hlstd{,} \hlkwc{label}\hlstd{=}\hlkwd{levels}\hlstd{(Sorted.Confidence}\hlopt{$}\hlstd{Type),}
+    \hlkwc{cex.axis}\hlstd{=}\hlnum{.5}\hlstd{)}
+\hlkwd{points}\hlstd{(xvalues,}
+    \hlstd{Sorted.Confidence}\hlopt{$}\hlstd{x[Sorted.Confidence}\hlopt{$}\hlstd{Trash_Recycle}\hlopt{==}\hlstr{"R"}\hlstd{],}
+    \hlkwc{col}\hlstd{=}\hlstr{"darkgreen"}\hlstd{,} \hlkwc{pch}\hlstd{=}\hlnum{19}\hlstd{)}
+
+\hlkwd{points}\hlstd{(x1, Sorted.Confidence}\hlopt{$}\hlstd{x[Sorted.Confidence}\hlopt{$}\hlstd{Trash_Recycle}\hlopt{==}\hlstr{"T"}\hlstd{],}
+    \hlkwc{col}\hlstd{=}\hlstr{"Red"}\hlstd{,} \hlkwc{pch}\hlstd{=}\hlnum{2}\hlstd{)}
+
+\hlkwd{with}\hlstd{(Sorted.Confidence[Sorted.Confidence}\hlopt{$}\hlstd{Trash_Recycle}\hlopt{==}\hlstr{"R"}\hlstd{,],}
+     \hlkwd{arrows}\hlstd{(xvalues, CI.low, xvalues, CI.high,} \hlkwc{length}\hlstd{=}\hlnum{0.05}\hlstd{,}
+            \hlkwc{angle}\hlstd{=}\hlnum{90}\hlstd{,} \hlkwc{code}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"darkgreen"}\hlstd{))}
+\hlkwd{with}\hlstd{(Sorted.Confidence[Sorted.Confidence}\hlopt{$}\hlstd{Trash_Recycle}\hlopt{==}\hlstr{"T"}\hlstd{,],}
+     \hlkwd{arrows}\hlstd{(x1, CI.low, x1, CI.high,} \hlkwc{length}\hlstd{=}\hlnum{0.05}\hlstd{,}
+            \hlkwc{angle}\hlstd{=}\hlnum{90}\hlstd{,} \hlkwc{code}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{))}
+
+\hlcom{# Add a legend}
+\hlkwd{legend}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{105}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"Recycling"}\hlstd{,} \hlstr{"Trash"}\hlstd{),}
+       \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"darkgreen"}\hlstd{,} \hlstr{"red"}\hlstd{),} \hlkwc{pch}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{19}\hlstd{,} \hlnum{2}\hlstd{),} \hlkwc{cex}\hlstd{=}\hlnum{1}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-15-1} 
+
+\end{knitrout}
+\end{figure*}
+
+
+
+\begin{comment}
+
+\section{Confidence Intervals and Expectations}
+
+We should, however, be explicit in examining the nature of confidence interval within a framework of probability.  A confidence interval (CI) is population parameter estimate. Instead of estimating the parameter by a single value, an interval is likely to include the given parameter. A confidence interval is always qualified by a particular confidence level, usually expressed as a percentage; thus one speaks of a ''95\% confidence interval.'' The end points of the confidence interval are referred to as confidence limits.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{TcCB_ref} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{0.60}\hlstd{,} \hlnum{0.50}\hlstd{,} \hlnum{0.39}\hlstd{,} \hlnum{0.84}\hlstd{,} \hlnum{0.46}\hlstd{,} \hlnum{0.39}\hlstd{,} \hlnum{0.62}\hlstd{,} \hlnum{0.67}\hlstd{,}
+\hlnum{0.69}\hlstd{,} \hlnum{0.81}\hlstd{,} \hlnum{0.38}\hlstd{,} \hlnum{0.79}\hlstd{,} \hlnum{0.43}\hlstd{,} \hlnum{0.57}\hlstd{,} \hlnum{0.74}\hlstd{,} \hlnum{0.27}\hlstd{,} \hlnum{0.51}\hlstd{,}
+\hlnum{0.35}\hlstd{,} \hlnum{0.28}\hlstd{,} \hlnum{0.45}\hlstd{,} \hlnum{0.42}\hlstd{,} \hlnum{1.14}\hlstd{,} \hlnum{0.23}\hlstd{,} \hlnum{0.72}\hlstd{,} \hlnum{0.63}\hlstd{,} \hlnum{0.50}\hlstd{,}
+\hlnum{0.29}\hlstd{,} \hlnum{0.82}\hlstd{,} \hlnum{0.54}\hlstd{,} \hlnum{1.13}\hlstd{,} \hlnum{0.56}\hlstd{,} \hlnum{1.33}\hlstd{,} \hlnum{0.56}\hlstd{,} \hlnum{1.11}\hlstd{,} \hlnum{0.57}\hlstd{,}
+\hlnum{0.89}\hlstd{,} \hlnum{0.28}\hlstd{,} \hlnum{1.20}\hlstd{,} \hlnum{0.76}\hlstd{,} \hlnum{0.26}\hlstd{,} \hlnum{0.34}\hlstd{,} \hlnum{0.52}\hlstd{,} \hlnum{0.42}\hlstd{,} \hlnum{0.22}\hlstd{,}
+\hlnum{0.33}\hlstd{,} \hlnum{1.14}\hlstd{,} \hlnum{0.48}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+
+When we develop a confidence 95\% confidence interval, we expect the \textbf{mean} to fall within the 95\% confidence intervals.  To illustrate, let's look at the copper data from the reference site we have looked at before, where the mean is 0.6. Thus, for a 95\% confidence interval, we expect the mean to be within the bounds 19 out of 20 times.
+
+
+The calculation of a confidence interval generally requires assumptions about the nature of the estimation process. Within a parametric method, the confidence intervals depend on an assumption that the distribution of the population from which the sample came is theoretical distribution. If there no assumptions made about the distribution i.e. distribution free, then the confidence intervals are considered robust statistics. 
+
+\subsection{Characteristics of Reliable Confidence Intervals}
+
+Confidence intervals rely on three properties: validity, optimality, and invariance. When these properties are met, then the assumptions for the methods hold and the confidence intervals are thought to be more reliable. 
+
+\begin{description}
+	\item[Validity] means that the nominal coverage probability (confidence level) of the confidence interval should hold, either exactly or to a good approximation.
+	\item[Optimality] means that the rule for constructing the confidence interval should make as much use of the information in the data-set as possible. For example, one could throw away half of a dataset and still be able to derive a valid confidence interval. One way of assessing optimality is by the length of the interval, so that a rule for constructing a confidence interval is judged better than another if it leads to intervals whose lengths are typically shorter.
+	
+
+\begin{marginfigure}
+	\centering
+		\includegraphics{Shoptalk_comic.jpg}
+	\caption{Censored data make it difficult to ascertain parameter estimates -- so, more data high quality data is best. But if you have knowledge of low quality data, you might be able to justify removing it to create confidence intervals. But be careful!}
+	\label{fig:Shoptalk_comic}
+\end{marginfigure}
+
+	\item[Invariance] In many applications the quantity being estimated might not be tightly defined as such. For example, a survey might result in an estimate of the median income in a population, but it might equally be considered as providing an estimate of the logarithm of the median income, given that this is a common scale for presenting graphical results. It would be desirable that the method used for constructing a confidence interval for the median income would give equivalent results when applied to constructing a confidence interval for the logarithm of the median income: Specifically the values at the ends of the latter interval would be the logarithms of the values at the ends of former interval.
+\end{description}
+
+\subsection{Calculating a Parametric Confidence Interval}
+
+To explore our examples, we determine the 95\% confidence intervals for the mean of the copper data. As usual there are dozens of way to accomplish this, but for now, let's start by getting a t-statistic by our is that we use our $\alpha$ value of 0.05. Since we calculate CI for the lower and upper limit, we need to split the probability in half and determine the intervals for 0.025 and 0.975 of the probably distribution.  
+
+We begin by using the t-Distribution, which is a specialized case of the normal distribution (standard normal distribution that is corrected for sample size with change in the degrees of freedom). 
+
+
+\begin{equation}
+\bar{x} - t_{\alpha/2, n-1}(s/\sqrt{n}) < \mu < \bar{x} + t_{\alpha/2, n-1}(s/\sqrt{n}) 
+\end{equation}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{alpha} \hlkwb{=} \hlnum{0.05}
+\hlstd{degfree} \hlkwb{=} \hlkwd{length}\hlstd{(TcCB_ref)} \hlopt{-} \hlnum{1}
+\hlkwd{qt}\hlstd{(alpha}\hlopt{/}\hlnum{2}\hlstd{, degfree)}
+\end{alltt}
+\begin{verbatim}
+## [1] -2.012896
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+Using the \texttt{qt()} in R function we find that confidence intervals are 0.68 and 0.52. Remember, we have created confidence intervals where we expect the mean to fall 95\% of the time.
+
+\begin{marginfigure}
+\label{fig:ci}
+\caption{95\% confidence intervals for the mean using the t-Distribution.}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/parmetricfigure-1} 
+
+\end{knitrout}
+
+\end{marginfigure}
+
+\section{Is the value outside the expected range?}
+
+When our sample size is small relative to the population size, we can use the following formula to calculate a z-value, 
+
+\begin{equation}
+z = \frac{\bar{y}-\mu}{\sigma/\sqrt{n}}
+\end{equation}
+
+z follows a z-distribution or a standard normal distribution ($z\sim(0,1)$), thus can be used to evaluate probilities.  
+
+With our ten numbers, we can then compare z to the standard normal distribution, 
+
+
+
+
+
+\subsection{Distribution Free Confidence Intervals}
+
+The simplest way to calculate a distribution-free confidence interval is to simply calculate the percentile of the data. However, rarely do we have enough data to have these percentages represented. So, what can we do?
+
+In progress...
+
+\subsection{Bootstrapping Confidence Intervals}
+
+Similar to the distribution-free methods, the bootstrapping method creates confidence intervals based on the data themselves without the use of a theoretical distribution. In this case, we ''sample'' our dataset over and over again to create a distribution of t-values from which to create confidence intervals. 
+
+Let's begin to sampling the copper data. First, we want to sample the data (with replacement) to create a sample. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{sample}\hlstd{(TcCB_ref,} \hlkwd{length}\hlstd{(TcCB_ref),} \hlkwc{replace}\hlstd{=T)}
+\end{alltt}
+\begin{verbatim}
+##  [1] 0.26 0.43 0.54 0.54 0.48 0.69 0.89 0.79 0.27 0.60 0.48
+## [12] 0.42 0.48 0.81 0.39 0.79 1.33 0.82 0.45 0.57 0.29 0.82
+## [23] 0.82 0.38 0.46 0.57 0.54 0.33 1.14 0.89 0.42 0.69 0.42
+## [34] 0.89 0.22 0.42 0.76 0.81 0.39 0.23 0.82 0.46 0.33 0.67
+## [45] 0.22 0.62 1.33
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+We'll call it sample.bs (bs = bootstrapped)
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{sample.bs} \hlkwb{<-} \hlkwd{sample}\hlstd{(TcCB_ref,} \hlkwd{length}\hlstd{(TcCB_ref),} \hlkwc{replace}\hlstd{=T)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+From this, we can create a t-value using the following formula
+
+\begin{equation}
+t = (\bar{x} - \mu)/(s/sqrt{n})
+\end{equation}
+
+where $\mu$ is the population mean, 0.5985106, calculated from the original dataset. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{mean.bs} \hlkwb{<-} \hlkwd{mean}\hlstd{(sample.bs);}
+\hlstd{sd.bs} \hlkwb{<-} \hlkwd{sd}\hlstd{(sample.bs);}
+\hlstd{n.bs} \hlkwb{<-} \hlkwd{length}\hlstd{(sample.bs)}
+\hlstd{t} \hlkwb{=} \hlstd{(mean.bs} \hlopt{-} \hlstd{TcCB_ref_mean)}\hlopt{/}\hlstd{(sd.bs}\hlopt{/}\hlkwd{sqrt}\hlstd{(n.bs)); t}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.9274581
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+And now, we want to do this lots of time to create a distribution of $t_i$ that we can find the bottom 0.025\% and top 0.975\%. 
+
+First, let's create a loop to iterate 20 times.\sidenote{Notice that I complicated the t calculation by putting in the mean, sd, and length functions within the formula.}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{t} \hlkwb{<-} \hlkwd{vector}\hlstd{()}
+\hlstd{iterations} \hlkwb{=} \hlnum{20}
+\hlkwd{set.seed}\hlstd{(}\hlnum{666}\hlstd{)}
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlstd{iterations)\{}
+  \hlstd{sample.bs} \hlkwb{<-} \hlkwd{sample}\hlstd{(}\hlkwc{x}\hlstd{=TcCB_ref,} \hlkwc{size}\hlstd{=}\hlkwd{length}\hlstd{(TcCB_ref),} \hlkwc{replace}\hlstd{=T)}
+  \hlstd{t[i]} \hlkwb{<-} \hlstd{(}\hlkwd{mean}\hlstd{(sample.bs)} \hlopt{-} \hlstd{TcCB_ref_mean)}\hlopt{/}\hlstd{(}\hlkwd{sd}\hlstd{(sample.bs)}\hlopt{/}\hlkwd{sqrt}\hlstd{(}\hlkwd{length}\hlstd{(sample.bs)))}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Note that with 20 samples how ''bumpy'' the line looks (Figure \ref{fig:t20}). In fact, it appears to look nothing like the t-Distribution. Let's increase the number of iterations to 5000 and see what happens next.
+
+\begin{marginfigure}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/cdf_20-1} 
+
+\end{knitrout}
+	\caption{t-values with 20 interactions}
+	\label{fig:t20}
+\end{marginfigure}
+
+
+
+
+
+So, let's look at a histogram of the t-values we bootstrapped (Table \ref{fig:hist-bs}). Notice that the distribution approximates a normal distribution. In spite of this, the confidence intervals using this method will vary.
+
+
+\begin{marginfigure}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/histbs-1} 
+
+\end{knitrout}
+	\caption{Histogram of 5,000 bootstrapped t-values.}
+	\label{fig:hist-bs}
+\end{marginfigure}
+
+Now, let's create a cumulative distribution of our t-values. First, we put them in order and create a sequence of probabilities for each t-value (each one is equally probable, so this is pretty easy. We create a sequence of probabilities, y, that is the same number of interactions.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{t} \hlkwb{<-} \hlkwd{sort}\hlstd{(t)}
+\hlstd{y} \hlkwb{<-} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{1}\hlstd{,} \hlkwc{length.out} \hlstd{= iterations)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\begin{figure}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/cdf_5000-1} 
+
+\end{knitrout}
+	\caption{Cumlative with CIs}
+	\label{CumCI}
+\end{figure}
+
+So, finally, we can query the t-values themselves to find the 0.025\% and 0.975\% percentiles. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{t.low}  \hlkwb{<-} \hlstd{t[}\hlnum{0.025} \hlopt{*} \hlstd{iterations]}
+\hlstd{t.high} \hlkwb{<-} \hlstd{t[}\hlnum{0.975} \hlopt{*} \hlstd{iterations]}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Then we plug these into the following formula to get the confidence intervals
+
+\begin{equation}
+\bar{x} - t_{high}(s/\sqrt{n}) < \mu < \bar{x} - t_{low}(s/\sqrt{n}) 
+\end{equation}
+
+
+
+And I get 0.522 $ < \mu < $ 0.693. 
+
+% Calculate values for clean up site.
+
+
+
+Your answer may vary if you did not set the seed the same as I did. These are fairly close to the parametric estimates. Because these data are fairly well behaved, we didn't see a big difference, but when you do the same analysis with the cleaned up site the results are quite different. For the parametric results, the confidence intervals are -0.611 and 8.534 and for the bootstrapped values, 0.846 and 58.56. 
+
+
+
+
+% Book example -- but I didn't get the same results, but Manly may not have extrapolated carefully?
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/bookexample-1} 
+
+\includegraphics[width=\maxwidth]{figure/bookexample-2} 
+
+\end{knitrout}
+
+
+
+\subsection{Maximum Likelihood Methods}
+
+To be developed!
+
+
+\subsection{Bayesian Confidence Intervals}
+
+To be developed!
+
+Confidence intervals are one method of interval estimation, and the most widely used in frequentist statistics. An analogous concept in Bayesian statistics is credible intervals, while an alternative frequentist method is prediction interval, which, rather than estimating parameters, estimates the outcome of future samples.
+
+There is disagreement about which of these methods produces the most useful results: the mathematics of the computations are rarely in question Ö confidence intervals being based on sampling distributions, credible intervals being based on Bayes' theorem Ö but the application of these methods, the utility and interpretation of the produced statistics, is debated.
+
+Users of Bayesian methods, if they produced an interval estimate, would in contrast to confidence intervals, want to say "My degree of belief that the parameter is in fact in this interval is 90\%," while users of prediction intervals would instead say "I predict that the next sample will fall in this interval 90\% of the time."
+
+Confidence intervals are an expression of probability and are subject to the normal laws of probability. If several statistics are presented with confidence intervals, each calculated separately on the assumption of independence, that assumption must be honored or the calculations will be rendered invalid. For example, if the statistic with the narrowest interval were selected for attention, that interval would no longer be the true interval for that statistic. The act of selection changes the probability and in this case widens the interval.
+
+This is particularly important when confidence intervals are generated in order to perform statistical tests. If multiple tests are done and those that return positive results are selected from amongst them, the intervals used to conduct the test will change, and in most situations the tests will be rendered invalid.
+
+A Bayesian interval estimate is called a credible interval. Using much of the same notation as above, the definition of a credible interval for the unknown true value of ? is, for a given ?[4],
+
+  $  \Pr(u(x)<\Theta<v(x) | X = x)=1-\alpha. \, $
+
+Here ? is used to emphasize that the unknown value of ? is being treated as a random variable. The definitions of the two types of intervals may be compared as follows.
+
+    * The definition of a confidence interval involves probabilities calculated from the distribution of X for given (?, ?) (or conditional on these values) and the condition needs to hold for all values of (?, ?).
+    * The definition of a credible interval involves probabilities calculated from the distribution of ? conditional on the observed values of X = x and marginalised (or averaged) over the values of ?, where this last quantity is the random variable corresponding to the uncertainty about the nuisance parameters in ?.
+
+Note that the treatment of the nuisance parameters above is often omitted from discussions comparing confidence and credible intervals but it is markedly different between the two cases.
+
+In some simple standard cases, the intervals produced as confidence and credible intervals from the same data set can be identical. They are always very different if moderate or strong prior information is included in the Bayesian analysis.
+
+
+
+\section{Confidence Intervals Applied to Accuracy}
+
+To be developed!
+
+Accuracy is also used as a statistical measure of how well a binary classification test correctly identifies or excludes a condition. This can be explicitly categorized in determine detection limits (Table \ref{tab:HypothesisTesting}).
+
+\begin{table}
+	\centering
+		\begin{tabular}{l |l | l | l | l}
+&&True Condition&& \\
+&& True & False & \\
+Test Outcome& Positive & True Positive & False Positive & Positive predictive value \\
+Test Outcome& Negative & False Positive & True Negative & Negative predictive value \\
+&& Sensitivity & Specificity & Accuracy	
+		\end{tabular}
+	\caption{Hypothesis Testing}
+	\label{tab:HypothesisTesting}
+\end{table}
+
+
+That is, the accuracy is the proportion of true results (both true positives and true negatives) in the population. It is a parameter of the test.
+
+\begin{equation}
+accuracy=\frac{\text{number of true positives}+\text{number of true negatives}}{\text{numbers of true positives}+\text{false positives} + \text{false negatives} + \text{true negatives}}
+\end{equation}
+
+On the other hand, precision is defined as the proportion of the true positives against all the positive results (both true positives and false positives)
+
+\begin{equation}
+precision=\frac{\text{number of true positives}}{\text{number of true positives}+\text{false positives}}
+\end{equation}
+
+An accuracy of 100\% means that the measured values are exactly the same as the given values.
+
+Also see Sensitivity and specificity.
+
+Accuracy may be determined from Sensitivity and Specificity, provided Prevalence is known, using the equation:
+
+    accuracy = (sensitivity)(prevalence) + (specificity)(1 - prevalence)
+
+The accuracy paradox for predictive analytics states that predictive models with a given level of accuracy may have greater predictive power than models with higher accuracy. It may be better to avoid the accuracy metric in favor of other metrics such as precision and recall.
+
+
+
+\end{comment}
+
+\FloatBarrier 
+\begin{fullwidth}
+% \renewcommand{\bibfont}{\small}
+%\bibliography{LosHuertos_Complete_100420}
+%\bibliographystyle{cbe}
+\end{fullwidth}
+
+\end{document}

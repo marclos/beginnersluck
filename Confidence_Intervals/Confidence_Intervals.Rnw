@@ -1,0 +1,698 @@
+\documentclass{tufte-handout}
+
+%\geometry{showframe}% for debugging purposes -- displays the margins
+\usepackage{verbatim}
+\usepackage{amsmath}
+%\usepackage{natbib}
+%\bibfont{\small} % Doesn't see to work...
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+%\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+% \graphicspath{{graphics/}}
+
+\title{Confidence Intervals %\thanks{}
+}
+\author[Marc Los Huertos]{Marc Los Huertos}
+%\date{}  % if the \date{} command is left out, the current date will be used
+
+
+% \SweaveOpts{prefix.string=graphics/plot} % Created a "graphics" subdirectory to 
+
+\setsidenotefont{\color{blue}}
+% \setcaptionfont{hfont commandsi}
+% \setmarginnotefont{\color{blue}}
+% \setcitationfont{\color{gray}}
+
+% The following package makes prettier tables.  We're all about the bling!
+%\usepackage{booktabs}
+
+% Small sections of multiple columns
+%\usepackage{multicol}
+
+% These commands are used to pretty-print LaTeX commands
+% command name -- adds backslash automatically
+%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\begin{document}
+%\SweaveOpts{concordance=TRUE}
+
+\maketitle% this prints the handout title, author, and date
+\begin{abstract}
+\noindent One of the most important considerations with univariate data are the development of confidence intervals. As you can probably guess, confidence intervals are based on the distribution of the data. There are two main approaches in developing confidence intervals. One relies on the use of theoretical probability distributions but there are a number of methods that do not rely on theoretical distributions. We will learn several methods because each are used in environmental sciences to varying degrees.
+\end{abstract}
+
+%\printclassoptions
+
+% Setting up the margins, etc for R
+<<echo = F, results = 'hide'>>=
+options(width=60)
+rm(list = ls())
+@
+
+\section{Why Confidence Intervals?}
+
+Confidence intervals are used to indicate the reliability of an estimate. How likely the interval is to contain the parameter is determined by the confidence level or confidence coefficient. Increasing the desired confidence level will widen the confidence interval. These are key in presenting quantitative data because they allow us to interpret the data from a hypothesis perspective, which we'll get into more during the semester.
+
+\section{Where are Confidence Intervals Used?}
+
+Confidence intervals can be calculated for a range of statistics, including the mean, slope and intercept of a linear model, among other things. We'll concentrate on the what confidence intervals of the mean at this point, but keep in mind the concept can be applied to many parameter estimates.
+
+\begin{marginfigure}
+	\centering
+		\includegraphics{Investor_confidence500.jpg}
+	\caption{Confidence abounds without bounds.}
+	\label{fig:Investor_confidence500}
+\end{marginfigure}
+
+\section{Working an Example}
+
+\subsection{Populations and Samples}
+
+In general, environmental scientists can't measure the entire population. For example, a complete audit of all the recycling would be impossible for our class!  Instead, we sample from the population. Statisticians have have developed semi-consistant symbology for various statistics based on populations and samples. 
+
+A population mean for example is usually referred to by the Greek letter, $\mu$. While for a sample, it might be referred to as $\bar{x}$. The spread of data, or variance, in a population is referred to as $\sigma^2$, again a Greek letter. The population variance is often referred to as $s^2$. In general, we don't know $\mu$ or $\sigma^2$, so we can estimate it and develop confidence intervals that probably include the true $\mu$. Notice the word, ''probably.''  In other words, we our intervals in terms of probabilities!
+
+\subsection{The difference between $\mu$ and $\bar{x}$}
+
+To illustrate the difference, let's create a dataset of random numbers from a normal distribution with a mean of 1 and standard deviation of 1. 
+<<>>=
+set.seed(123)
+N1000 = rnorm(1000, 1, 1)
+@
+
+\begin{marginfigure}
+<<echo=FALSE, fig=TRUE>>=
+par(cex=1.7, las=1)
+hist(N1000, main=NA, xlab="Values", xlim=c(-2,5), ylim=c(0,250), breaks=20, col='gray')
+#box()
+@
+\caption{Frequency distribution of population.}
+\label{fig:hist_pop}
+\end{marginfigure}
+
+These data will represent the population (N) and has a mean or $\mu$ of \Sexpr{round(mean(N1000), 4)}. The values range from \Sexpr{round(range(N1000)[1],2)} to \Sexpr{round(range(N1000)[2],2)} (Figure~\ref{fig:hist_pop}). From this dataset, we sample 10 numbers randomly. 
+
+<<>>=
+n10 = sample(N1000, 10)
+@
+
+We get the following sample from our population: 
+<<>>=
+n10
+@ 
+\noindent and a mean or $\bar{y}$ = \Sexpr{round(mean(n10),3)}. These values certainly fall within the range of values in the population.
+
+\subsection{R's Default Boxplot}
+
+\begin{figure}
+\caption{Default Boxplot where the following are shown: median =\Sexpr{round(median(n10),2)}; Range = \Sexpr{round(range(n10), 2)}; and interquartile range = \Sexpr{round(quantile(n10)[c(2,4)], 2)}.}
+\label{fig:default_bp}
+<<fig=T, echo=F>>=
+par(las=1, cex=2)
+boxplot(n10, col="yellow")
+@
+\end{figure}
+
+
+\subsection{Measuring the Spread}
+
+We can calculate the variance of the sample using the following formula: 
+
+\begin{equation}
+s^2 = \frac{\sum(y_i - \bar{y})^2}{n-1}
+\end{equation}
+
+\noindent (\Sexpr{round(var(n10), 3)}) and the standard deviation (\Sexpr{round(sd(n10), 3)}), which is the square root of $s^2$. Then, we can calculate the standard error of the sample using the following equation: 
+
+\begin{equation}
+\textrm{Standard Error of the Sample} = SE_s = \sigma/\sqrt{n}
+\end{equation}
+
+
+<<>>=
+#computation of the standard error of the sample mean
+sem<-sd(n10)/sqrt(length(n10))
+@
+
+NOTE: If the sample size approaches the size of the population, we must use a "finite-population correction". Apparently the Central Limit Theorum gets wonky and the correction factor ensures better estimates. We don't need to worry about in in our case.
+
+
+ 
+\section{Selecting $\alpha$: The Level of Confidence}
+
+First, it is important to note that the selection of the interval depends on your decision as to what level of confidence you want. Since probability ranges from 0 to 1, the confidence intervals of the parameter can also vary within this range. However, we usually are trying to constrain the confidence interval to something narrow, for example, we usually specify confidence intervals of 0.90, 0.95, and 0.99. For normally distributed data the standard deviation has some extra information, namely the 68-95-99.7 rule which tells us the percentage of data lying within 1, 2 or 3 standard deviation from the mean.
+
+\begin{figure*}
+<<echo=FALSE, fig=TRUE, fig.height=3>>=
+par(las=1)
+plot(seq(-3,5,length=50),dnorm(seq(-3,5,length=50),1,1),type="l",xlab="",ylab="",ylim=c(0,0.5))
+segments(x0 = c(-2,4),y0 = c(0,0),x1 = c(-2,4),y1=c(2,1))
+text(x=1,y=0.45,cex=.8, labels = expression("99.7% of the data within 3" ~ sigma))
+arrows(x0=c(-1,3),y0=c(0.45,0.45),x1=c(-2,4),y1=c(0.45,0.45))
+
+segments(x0 = c(-1,3),y0 = c(0,0),x1 = c(-1,3),y1=c(0.4,0.4))
+text(x=1,y=0.3, cex=.8, labels = expression("95% of the data within 2" ~ sigma))
+arrows(x0=c(-0.5,2.5),y0=c(0.3,0.3),x1=c(-1,3),y1=c(0.3,0.3))
+
+segments(x0 = c(0,2),y0 = c(0,0),x1 = c(0,2),y1=c(0.25,0.25))
+text(x=1,y=0.15, cex=.8, labels = expression("68% of the data within 1" * sigma))
+@
+\end{figure*}
+
+
+In the context of a probability density function, these levels correspond to percentages of the area of the normal density curve. For example, a 95\% confidence interval covers 95\% of the normal curve -- the probability of observing a value outside of this area is less than 0.05. So, following standards in statistics, we use $\alpha$ to signify the as the criteria, such that
+
+\begin{equation}
+\textrm{Confidence Interval \% } = 100 * (1-\alpha)
+\end{equation}
+
+Yet, this is still ambiguous. Because the normal curve is symmetric, half of the area is in the left tail of the curve, and the other half of the area is in the right tail of the curve. Thus, if we want to generate confidence intervals that cover both tails of the curve we need to split $\alpha$ for each side of curve. Thus for a for a 95\% confidence interval, the area in each tail is equal to 0.05/2 = 0.025. 
+
+\section{Estimating Confidence Intervals for Waste Audit}
+
+<<>>=
+Unsorted.csv = "/home/CAMPUS/mwl04747/github/beginnersluck/Confidence_Intervals/2019_EA30F_Waste_Audit_Unsorted.csv"
+
+Sorted.csv = "/home/CAMPUS/mwl04747/github/beginnersluck/Confidence_Intervals/2019_EA30F_Waste_Audit_Sorted.csv"
+# Read Raw Data
+Unsorted = read.csv(Unsorted.csv)
+Sorted = read.csv(Sorted.csv)
+@
+
+Now that we have imported the data into R, we will not process some of the data to prepare for the analysis. For example, let's caculate the percentage of sorted items, remove the plastic film category, and shorten the compostable name to simply compost. 
+
+<<>>=
+Sorted$Percent = (Sorted$NetMass/Sorted$Total)*100
+Sorted = subset(Sorted, subset=Type!="Plastic Film")
+levels(Sorted$Type)[levels(Sorted$Type)=="Compostable"] <- "Compost"
+@
+
+Be sure to check the results as you go and convince yourself how these work by looking online to see how these functions work. 
+
+\subsection{Exploring the Data}
+
+Anyone who has worked with quantitiative data knows that data entry errors can be a major headache if they are not caught early. Thus, we'll use a couple of methods to evaluate potential data entry errors. 
+
+\begin{figure*}
+\caption{Sorted Percent Mass from Recycling Bags}
+\label{fig:percent_bp}
+<<fig=T, echo=F, fig.height=5>>=
+par(mfrow=c(1,2), las=1)
+boxplot(Percent ~ Type, data=droplevels(Sorted[Sorted$Trash_Recycle=="R",]))
+boxplot(Percent ~ Type, data=droplevels(Sorted[Sorted$Trash_Recycle=="T",]))
+@
+\end{figure*}
+
+In the case of Figure~\ref{fig:percent_bp}, we can easily see that there is a problem with the Trash sources. We simple are not getting all the trash out of the bags and weighed. This is something that we'll need to sort out how the problem was created, how it might be remedied, or if the work needs to be done over to improve the quaulity of the results. 
+
+
+\subsection{Calculating Summary Statitics}
+
+
+<<>>=
+Sorted.mean <- aggregate(Sorted$Percent, 
+  by=list(Type = Sorted$Type,  Trash_Recycle = Sorted$Trash_Recycle),
+  mean)
+Sorted.sd <- aggregate(Sorted$Percent, 
+  by=list(Type = Sorted$Type, Trash_Recycle = Sorted$Trash_Recycle), 
+  sd)
+Sorted.n <- aggregate(Sorted$Percent, 
+  by=list(Type = Sorted$Type, Trash_Recycle = Sorted$Trash_Recycle),
+  length)
+
+@
+
+
+<<>>=
+  
+names(Sorted.sd)= c("Type", "Trash_Recycle", "sd"); head(Sorted.sd)
+names(Sorted.n)= c("Type", "Trash_Recycle", "n"); head(Sorted.n)
+Sorted.mean
+Sorted.SEM = merge(Sorted.sd, Sorted.n)
+Sorted.Confidence = merge(Sorted.mean, Sorted.SEM)
+Sorted.Confidence$SEM = Sorted.Confidence$sd/sqrt(Sorted.Confidence$n)
+
+Sorted.Confidence <- droplevels(Sorted.Confidence)
+@
+
+Now, we are going to use the t-distribution instead of our estimates so we can create exact probabilities. 
+
+\subsection{Calculating a Parametric Confidence Interval}
+
+To explore our waste audit data, we will determine the 95\% confidence intervals for the mean for each mean. As usual there are dozens of way to accomplish this, but for now, let's start by getting a t-statistic by our is that we use our $\alpha$ value of 0.05. Since we calculate CI for the lower and upper limit, we need to split the probability in half and determine the intervals for 0.025 and 0.975 of the probably distribution.  
+
+We begin by using the t-Distribution, which is a specialized case of the normal distribution (standard normal distribution that is corrected for sample size with change in the degrees of freedom). 
+
+\begin{equation}
+\bar{x} - t_{\alpha/2, n-1}(sd/\sqrt{n}) < \mu < \bar{x} + t_{\alpha/2, n-1}(sd/\sqrt{n}) 
+\end{equation}
+
+<<>>=
+alpha = 0.05
+degfree = 4 - 1
+qt(alpha/2, degfree)
+@ 
+
+<<echo=F, results='hide', label=parametricCI >>=	
+Sorted.Confidence$CI.low  <- Sorted.Confidence$x + 
+  qt(alpha/2, degfree)*Sorted.Confidence$SEM; Sorted.Confidence$CI.low
+Sorted.Confidence$CI.high <- Sorted.Confidence$x + 
+  qt(1-alpha/2, degfree)*Sorted.Confidence$SEM; Sorted.Confidence$CI.high
+
+xvalues = as.numeric(Sorted.Confidence$Type[Sorted.Confidence$Trash_Recycle=="R"])-0.05
+x1 = xvalues + 0.15; x1
+Ylim = c(min(Sorted.Confidence$CI.low, na.rm=T), max(Sorted.Confidence$CI.high, na.rm=T))
+@
+
+\begin{figure*}
+\caption{Sorted Percent Mass from Unsorted Recycling and Trash Sources, (97.5\% Confidence Intevals).}
+\label{fig:percent_ci}
+<<fig=T, fig.height=6>>=
+par(cex=1.3, cex.axis=1)
+plot(xvalues, ylim=Ylim, xlim=c(0.5,7.5),ty="n", xaxt='none', 
+    xlab="Type", las=1, ylab="Percent Mass of Unsorted")
+axis(side=1, at=1:7, label=levels(Sorted.Confidence$Type), 
+    cex.axis=.5)
+points(xvalues, 
+    Sorted.Confidence$x[Sorted.Confidence$Trash_Recycle=="R"], 
+    col="darkgreen", pch=19)
+
+points(x1, Sorted.Confidence$x[Sorted.Confidence$Trash_Recycle=="T"], 
+    col="Red", pch=2)
+
+with(Sorted.Confidence[Sorted.Confidence$Trash_Recycle=="R",], 
+     arrows(xvalues, CI.low, xvalues, CI.high, length=0.05, 
+            angle=90, code=3, lwd=2, col="darkgreen"))
+with(Sorted.Confidence[Sorted.Confidence$Trash_Recycle=="T",], 
+     arrows(x1, CI.low, x1, CI.high, length=0.05, 
+            angle=90, code=3, lwd=2, col="red"))
+
+# Add a legend
+legend(2, 105, legend=c("Recycling", "Trash"),
+       col=c("darkgreen", "red"), pch=c(19, 2), cex=1)
+@	
+\end{figure*}
+
+
+
+\begin{comment}
+
+\section{Confidence Intervals and Expectations}
+
+We should, however, be explicit in examining the nature of confidence interval within a framework of probability.  A confidence interval (CI) is population parameter estimate. Instead of estimating the parameter by a single value, an interval is likely to include the given parameter. A confidence interval is always qualified by a particular confidence level, usually expressed as a percentage; thus one speaks of a ''95\% confidence interval.'' The end points of the confidence interval are referred to as confidence limits.
+
+<<echo = T, results = 'hide'>>=
+TcCB_ref <- c(0.60, 0.50, 0.39, 0.84, 0.46, 0.39, 0.62, 0.67, 
+0.69, 0.81, 0.38, 0.79, 0.43, 0.57, 0.74, 0.27, 0.51, 
+0.35, 0.28, 0.45, 0.42, 1.14, 0.23, 0.72, 0.63, 0.50, 
+0.29, 0.82, 0.54, 1.13, 0.56, 1.33, 0.56, 1.11, 0.57, 
+0.89, 0.28, 1.20, 0.76, 0.26, 0.34, 0.52, 0.42, 0.22, 
+0.33, 1.14, 0.48)
+@
+
+
+<<echo=F, results='hide'>>=
+TcCB_cleanup <- c(NA, 0.09, 0.09, 0.12, 0.12, 0.14, 0.16, 
+0.17, 0.17, 0.17, 0.18, 0.19, 0.20, 0.20, 
+0.21, 0.21, 0.22, 0.22, 0.22, 0.23, 0.24, 
+0.25, 0.25, 0.25, 0.25, 0.26, 0.28, 0.28, 
+0.29, 0.31, 0.33, 0.33, 0.33, 0.34, 0.37,
+0.38, 0.39, 0.40, 0.43, 0.43, 0.47, 0.48, 
+0.48, 0.49, 0.51, 0.51, 0.54, 0.50, 0.61,
+0.62, 0.75, 0.82, 0.85, 0.92, 0.94, 1.05,
+1.10, 1.10, 1.19, 1.22, 1.33, 1.39, 1.39,
+1.52, 1.53, 1.73, 2.35, 2.26, 2.59, 2.61,
+3.06, 3.29,5.56, 6.61, 18.40, 51.97, 168.64) 
+
+TcCB_ref_mean=mean(TcCB_ref)
+TcCB_cleanup_mean = mean(TcCB_cleanup, na.rm=T)
+@
+
+When we develop a confidence 95\% confidence interval, we expect the \textbf{mean} to fall within the 95\% confidence intervals.  To illustrate, let's look at the copper data from the reference site we have looked at before, where the mean is \Sexpr{round(mean(TcCB_ref), 2)}. Thus, for a 95\% confidence interval, we expect the mean to be within the bounds 19 out of 20 times.
+
+
+The calculation of a confidence interval generally requires assumptions about the nature of the estimation process. Within a parametric method, the confidence intervals depend on an assumption that the distribution of the population from which the sample came is theoretical distribution. If there no assumptions made about the distribution i.e. distribution free, then the confidence intervals are considered robust statistics. 
+
+\subsection{Characteristics of Reliable Confidence Intervals}
+
+Confidence intervals rely on three properties: validity, optimality, and invariance. When these properties are met, then the assumptions for the methods hold and the confidence intervals are thought to be more reliable. 
+
+\begin{description}
+	\item[Validity] means that the nominal coverage probability (confidence level) of the confidence interval should hold, either exactly or to a good approximation.
+	\item[Optimality] means that the rule for constructing the confidence interval should make as much use of the information in the data-set as possible. For example, one could throw away half of a dataset and still be able to derive a valid confidence interval. One way of assessing optimality is by the length of the interval, so that a rule for constructing a confidence interval is judged better than another if it leads to intervals whose lengths are typically shorter.
+	
+
+\begin{marginfigure}
+	\centering
+		\includegraphics{Shoptalk_comic.jpg}
+	\caption{Censored data make it difficult to ascertain parameter estimates -- so, more data high quality data is best. But if you have knowledge of low quality data, you might be able to justify removing it to create confidence intervals. But be careful!}
+	\label{fig:Shoptalk_comic}
+\end{marginfigure}
+
+	\item[Invariance] In many applications the quantity being estimated might not be tightly defined as such. For example, a survey might result in an estimate of the median income in a population, but it might equally be considered as providing an estimate of the logarithm of the median income, given that this is a common scale for presenting graphical results. It would be desirable that the method used for constructing a confidence interval for the median income would give equivalent results when applied to constructing a confidence interval for the logarithm of the median income: Specifically the values at the ends of the latter interval would be the logarithms of the values at the ends of former interval.
+\end{description}
+
+\subsection{Calculating a Parametric Confidence Interval}
+
+To explore our examples, we determine the 95\% confidence intervals for the mean of the copper data. As usual there are dozens of way to accomplish this, but for now, let's start by getting a t-statistic by our is that we use our $\alpha$ value of 0.05. Since we calculate CI for the lower and upper limit, we need to split the probability in half and determine the intervals for 0.025 and 0.975 of the probably distribution.  
+
+We begin by using the t-Distribution, which is a specialized case of the normal distribution (standard normal distribution that is corrected for sample size with change in the degrees of freedom). 
+
+
+\begin{equation}
+\bar{x} - t_{\alpha/2, n-1}(s/\sqrt{n}) < \mu < \bar{x} + t_{\alpha/2, n-1}(s/\sqrt{n}) 
+\end{equation}
+
+<<>>=
+alpha = 0.05
+degfree = length(TcCB_ref) - 1
+qt(alpha/2, degfree)
+@ 
+
+<<echo=F, results='hide' >>=	
+CI.low  <- TcCB_ref_mean - qt(alpha/2, degfree)*sd(TcCB_ref)/sqrt(length(TcCB_ref)); CI.low
+CI.high <- TcCB_ref_mean - qt(1-alpha/2, degfree)*sd(TcCB_ref)/sqrt(length(TcCB_ref)); CI.high
+
+@	
+
+Using the \texttt{qt()} in R function we find that confidence intervals are \Sexpr{round(CI.low, 2)} and \Sexpr{round(CI.high, 2)}. Remember, we have created confidence intervals where we expect the mean to fall 95\% of the time.
+
+\begin{marginfigure}
+\label{fig:ci}
+\caption{95\% confidence intervals for the mean using the t-Distribution.}
+<<echo = F, fig = T, label=parmetricfigure>>=
+x=seq(-.5, 2 , by = .01)
+y=dnorm(x, mean(TcCB_ref), sd(TcCB_ref))
+plot(x,y, type="l", col="black", lwd=2)
+abline(v=CI.low, col="blue", lwd=2)
+abline(v=CI.high, col="red", lwd=2)
+rug(TcCB_ref)
+@
+
+\end{marginfigure}
+
+\section{Is the value outside the expected range?}
+
+When our sample size is small relative to the population size, we can use the following formula to calculate a z-value, 
+
+\begin{equation}
+z = \frac{\bar{y}-\mu}{\sigma/\sqrt{n}}
+\end{equation}
+
+z follows a z-distribution or a standard normal distribution ($z\sim(0,1)$), thus can be used to evaluate probilities.  
+
+With our ten numbers, we can then compare z to the standard normal distribution, 
+
+<<>>=
+
+
+@
+
+
+
+\subsection{Distribution Free Confidence Intervals}
+
+The simplest way to calculate a distribution-free confidence interval is to simply calculate the percentile of the data. However, rarely do we have enough data to have these percentages represented. So, what can we do?
+
+In progress...
+
+\subsection{Bootstrapping Confidence Intervals}
+
+Similar to the distribution-free methods, the bootstrapping method creates confidence intervals based on the data themselves without the use of a theoretical distribution. In this case, we ''sample'' our dataset over and over again to create a distribution of t-values from which to create confidence intervals. 
+
+Let's begin to sampling the copper data. First, we want to sample the data (with replacement) to create a sample. 
+
+<<>>=
+sample(TcCB_ref, length(TcCB_ref), replace=T)
+@
+
+We'll call it sample.bs (bs = bootstrapped)
+
+<<>>=
+sample.bs <- sample(TcCB_ref, length(TcCB_ref), replace=T)
+@
+
+From this, we can create a t-value using the following formula
+
+\begin{equation}
+t = (\bar{x} - \mu)/(s/sqrt{n})
+\end{equation}
+
+where $\mu$ is the population mean, \Sexpr{TcCB_ref_mean}, calculated from the original dataset. 
+
+<< >>=
+mean.bs <- mean(sample.bs); 
+sd.bs <- sd(sample.bs); 
+n.bs <- length(sample.bs)
+t = (mean.bs - TcCB_ref_mean)/(sd.bs/sqrt(n.bs)); t
+@
+
+And now, we want to do this lots of time to create a distribution of $t_i$ that we can find the bottom 0.025\% and top 0.975\%. 
+
+First, let's create a loop to iterate 20 times.\sidenote{Notice that I complicated the t calculation by putting in the mean, sd, and length functions within the formula.}
+
+<<echo=T, results='hide', label=interations>>=
+t <- vector()
+iterations = 20
+set.seed(666)
+for(i in 1:iterations){
+  sample.bs <- sample(x=TcCB_ref, size=length(TcCB_ref), replace=T)
+  t[i] <- (mean(sample.bs) - TcCB_ref_mean)/(sd(sample.bs)/sqrt(length(sample.bs)))
+}
+@
+
+Note that with 20 samples how ''bumpy'' the line looks (Figure \ref{fig:t20}). In fact, it appears to look nothing like the t-Distribution. Let's increase the number of iterations to 5000 and see what happens next.
+
+\begin{marginfigure}
+<<echo=F, fig=T, label=cdf_20>>=
+y <- seq(0, 1, length.out = iterations)
+par(las=1)
+plot(sort(t), y, ty="l", lwd=2, ylab="Cumulative Probability", xlab="t-value")
+lines(sort(t), pt(sort(t), degfree), col="green")
+@
+	\caption{t-values with 20 interactions}
+	\label{fig:t20}
+\end{marginfigure}
+
+
+<<echo=F, results='hide'>>=
+t <- vector()
+iterations = 5000
+set.seed(666)
+for(i in 1:iterations){
+  sample.bs <- sample(x=TcCB_ref, size=length(TcCB_ref), replace=T)
+  t[i] <- (mean(sample.bs) - TcCB_ref_mean)/(sd(sample.bs)/sqrt(length(sample.bs)))
+}
+@
+
+
+So, let's look at a histogram of the t-values we bootstrapped (Table \ref{fig:hist-bs}). Notice that the distribution approximates a normal distribution. In spite of this, the confidence intervals using this method will vary.
+
+
+\begin{marginfigure}
+<<echo=F, fig=T, label=histbs>>=
+hist(t, main="", xlim=c(-5, 5))
+@
+	\caption{Histogram of 5,000 bootstrapped t-values.}
+	\label{fig:hist-bs}
+\end{marginfigure}
+
+Now, let's create a cumulative distribution of our t-values. First, we put them in order and create a sequence of probabilities for each t-value (each one is equally probable, so this is pretty easy. We create a sequence of probabilities, y, that is the same number of interactions.
+
+<<>>=
+t <- sort(t)
+y <- seq(0, 1, length.out = iterations)
+@
+
+
+\begin{figure}
+<<echo=F, fig=T, label=cdf_5000>>= 
+par(las=1)
+plot(t, y, ty="l", lwd=2, ylab="Cummulative Probability", xlab="t-value")
+abline(h=0.025, col="red"); text( 0, .07,"0.025% of the cdf",col="red")
+abline(h=0.975, col="blue"); text( -3, .93,"0.975% of the cdf",col="blue")
+lines(sort(t), pt(sort(t), degfree), col="green"); text(2, .5, "t-Distribution cdf",col="green")
+@
+	\caption{Cumlative with CIs}
+	\label{CumCI}
+\end{figure}
+
+So, finally, we can query the t-values themselves to find the 0.025\% and 0.975\% percentiles. 
+
+<<>>=
+t.low  <- t[0.025 * iterations]
+t.high <- t[0.975 * iterations]
+@
+
+Then we plug these into the following formula to get the confidence intervals
+
+\begin{equation}
+\bar{x} - t_{high}(s/\sqrt{n}) < \mu < \bar{x} - t_{low}(s/\sqrt{n}) 
+\end{equation}
+
+<<echo=F, results='hide'>>=
+CI.bs.high <- TcCB_ref_mean - t.low*sd(TcCB_ref)/sqrt(length(TcCB_ref)); CI.bs.high
+CI.bs.low  <- TcCB_ref_mean - t.high*sd(TcCB_ref)/sqrt(length(TcCB_ref)); CI.bs.low
+@
+
+And I get \Sexpr{round(CI.bs.low, 3)} $ < \mu < $ \Sexpr{round(CI.bs.high, 3)}. 
+
+% Calculate values for clean up site.
+
+<<echo=F, results='hide', label='CleanupSite'>>=
+alpha = 0.05
+degfree = length(TcCB_cleanup) - 1
+qt(alpha/2, degfree)
+
+CI.low  <- TcCB_cleanup_mean + qt(alpha/2, degfree)*sd(TcCB_cleanup, na.rm=T)/sqrt(length(TcCB_cleanup)); CI.low
+CI.high <- TcCB_cleanup_mean + qt(1-alpha/2, degfree)*sd(TcCB_cleanup, na.rm=T)/sqrt(length(TcCB_cleanup)); CI.high
+
+t <- vector()
+iterations = 5000
+set.seed(666)
+for(i in 1:iterations){
+  sample.bs <- sample(x=TcCB_cleanup, size=length(TcCB_cleanup), replace=T)
+  t[i] <- (mean(sample.bs, na.rm=T) - TcCB_cleanup_mean)/(sd(sample.bs, na.rm=T)/sqrt(length(sample.bs)))
+}
+
+t <- sort(t)
+y <- seq(0, 1, length.out = iterations)
+
+t.low  <- t[0.025 * iterations]
+t.high <- t[0.975 * iterations]
+
+CI.bs.high <- TcCB_cleanup_mean - t.low*sd(TcCB_cleanup, na.rm=T)/sqrt(length(TcCB_cleanup)); CI.bs.high
+CI.bs.low  <- TcCB_cleanup_mean - t.high*sd(TcCB_cleanup, na.rm=T)/sqrt(length(TcCB_cleanup)); CI.bs.low
+@
+
+Your answer may vary if you did not set the seed the same as I did. These are fairly close to the parametric estimates. Because these data are fairly well behaved, we didn't see a big difference, but when you do the same analysis with the cleaned up site the results are quite different. For the parametric results, the confidence intervals are \Sexpr{round(CI.low, 3)} and \Sexpr{round(CI.high, 3)} and for the bootstrapped values, \Sexpr{round(CI.bs.low, 3)} and \Sexpr{round(CI.bs.high, 3)}. 
+
+
+
+
+% Book example -- but I didn't get the same results, but Manly may not have extrapolated carefully?
+
+<<echo=F, results='hide', label=bookexample>>=
+chl<-c(95,39,27,12.9,34.8,14.9,157,5.1,10.6,96,7.2,
+       130,4.7,138,24.8,50,12.7,7.4,8.6,94,3.9,5,129,86,64)
+mu <- mean(chl); mu
+sample.bs <- sample(x=chl, size=25, replace=T)
+mean.bs <- mean(sample.bs); mean.bs
+t = (mean.bs - mu)/(sd(sample.bs)/sqrt(length(sample.bs))); t
+
+t <- vector()
+interations = 5000
+set.seed(666)
+for(i in 1:interations){
+  sample.bs <- sample(x=chl, size=25, replace=T)
+  t[i] <- (mean(sample.bs) - mu)/(sd(sample.bs)/sqrt(length(sample.bs)))
+}
+
+hist(t)
+t <- sort(t)
+y <- seq(0, 1, length.out = interations)
+par(las=1)
+plot(t, y, ty="l", lwd=2, ylab="Cumulative Probability", xlab="t-value")
+abline(h=0.025, col="red"); text( -6, .07,"0.025% of the cdf",col="red")
+abline(h=0.975, col="blue"); text( -6, .93,"0.975% of the cdf",col="blue")
+
+t.low  <- t[0.025*interations]
+t.high <- t[0.975 * interations]
+
+CI.high <- mu - t.low*sd(chl)/sqrt(length(chl)); CI.high
+CI.low  <- mu - t.high*sd(chl)/sqrt(length(chl)); CI.low
+@
+
+
+
+\subsection{Maximum Likelihood Methods}
+
+To be developed!
+
+
+\subsection{Bayesian Confidence Intervals}
+
+To be developed!
+
+Confidence intervals are one method of interval estimation, and the most widely used in frequentist statistics. An analogous concept in Bayesian statistics is credible intervals, while an alternative frequentist method is prediction interval, which, rather than estimating parameters, estimates the outcome of future samples.
+
+There is disagreement about which of these methods produces the most useful results: the mathematics of the computations are rarely in question Ö confidence intervals being based on sampling distributions, credible intervals being based on Bayes' theorem Ö but the application of these methods, the utility and interpretation of the produced statistics, is debated.
+
+Users of Bayesian methods, if they produced an interval estimate, would in contrast to confidence intervals, want to say "My degree of belief that the parameter is in fact in this interval is 90\%," while users of prediction intervals would instead say "I predict that the next sample will fall in this interval 90\% of the time."
+
+Confidence intervals are an expression of probability and are subject to the normal laws of probability. If several statistics are presented with confidence intervals, each calculated separately on the assumption of independence, that assumption must be honored or the calculations will be rendered invalid. For example, if the statistic with the narrowest interval were selected for attention, that interval would no longer be the true interval for that statistic. The act of selection changes the probability and in this case widens the interval.
+
+This is particularly important when confidence intervals are generated in order to perform statistical tests. If multiple tests are done and those that return positive results are selected from amongst them, the intervals used to conduct the test will change, and in most situations the tests will be rendered invalid.
+
+A Bayesian interval estimate is called a credible interval. Using much of the same notation as above, the definition of a credible interval for the unknown true value of ? is, for a given ?[4],
+
+  $  \Pr(u(x)<\Theta<v(x) | X = x)=1-\alpha. \, $
+
+Here ? is used to emphasize that the unknown value of ? is being treated as a random variable. The definitions of the two types of intervals may be compared as follows.
+
+    * The definition of a confidence interval involves probabilities calculated from the distribution of X for given (?, ?) (or conditional on these values) and the condition needs to hold for all values of (?, ?).
+    * The definition of a credible interval involves probabilities calculated from the distribution of ? conditional on the observed values of X = x and marginalised (or averaged) over the values of ?, where this last quantity is the random variable corresponding to the uncertainty about the nuisance parameters in ?.
+
+Note that the treatment of the nuisance parameters above is often omitted from discussions comparing confidence and credible intervals but it is markedly different between the two cases.
+
+In some simple standard cases, the intervals produced as confidence and credible intervals from the same data set can be identical. They are always very different if moderate or strong prior information is included in the Bayesian analysis.
+
+
+
+\section{Confidence Intervals Applied to Accuracy}
+
+To be developed!
+
+Accuracy is also used as a statistical measure of how well a binary classification test correctly identifies or excludes a condition. This can be explicitly categorized in determine detection limits (Table \ref{tab:HypothesisTesting}).
+
+\begin{table}
+	\centering
+		\begin{tabular}{l |l | l | l | l}
+&&True Condition&& \\
+&& True & False & \\
+Test Outcome& Positive & True Positive & False Positive & Positive predictive value \\
+Test Outcome& Negative & False Positive & True Negative & Negative predictive value \\
+&& Sensitivity & Specificity & Accuracy	
+		\end{tabular}
+	\caption{Hypothesis Testing}
+	\label{tab:HypothesisTesting}
+\end{table}
+
+
+That is, the accuracy is the proportion of true results (both true positives and true negatives) in the population. It is a parameter of the test.
+
+\begin{equation}
+accuracy=\frac{\text{number of true positives}+\text{number of true negatives}}{\text{numbers of true positives}+\text{false positives} + \text{false negatives} + \text{true negatives}}
+\end{equation}
+
+On the other hand, precision is defined as the proportion of the true positives against all the positive results (both true positives and false positives)
+
+\begin{equation}
+precision=\frac{\text{number of true positives}}{\text{number of true positives}+\text{false positives}}
+\end{equation}
+
+An accuracy of 100\% means that the measured values are exactly the same as the given values.
+
+Also see Sensitivity and specificity.
+
+Accuracy may be determined from Sensitivity and Specificity, provided Prevalence is known, using the equation:
+
+    accuracy = (sensitivity)(prevalence) + (specificity)(1 - prevalence)
+
+The accuracy paradox for predictive analytics states that predictive models with a given level of accuracy may have greater predictive power than models with higher accuracy. It may be better to avoid the accuracy metric in favor of other metrics such as precision and recall.
+
+
+
+\end{comment}
+
+\FloatBarrier 
+\begin{fullwidth}
+% \renewcommand{\bibfont}{\small}
+%\bibliography{LosHuertos_Complete_100420}
+%\bibliographystyle{cbe}
+\end{fullwidth}
+
+\end{document}
