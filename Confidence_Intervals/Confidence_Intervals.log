@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2019.4.23)  8 OCT 2019 12:44
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2019.4.23)  8 OCT 2019 13:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -619,36 +619,36 @@ tim
 (./Confidence_Intervals.aux)
 \openout1 = `Confidence_Intervals.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 89.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 89.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 84.
+LaTeX Font Info:    ... okay on input line 84.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 84.
+LaTeX Font Info:    ... okay on input line 84.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 84.
+LaTeX Font Info:    ... okay on input line 84.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 84.
+LaTeX Font Info:    ... okay on input line 84.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 84.
+LaTeX Font Info:    ... okay on input line 84.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 84.
+LaTeX Font Info:    ... okay on input line 84.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 84.
+LaTeX Font Info:    ... okay on input line 84.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 84.
+LaTeX Font Info:    ... okay on input line 84.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 84.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 84.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Try loading font information for T1+pplj on input line 89.
+LaTeX Font Info:    ... okay on input line 84.
+LaTeX Font Info:    Try loading font information for T1+pplj on input line 84.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pplj.fd
 File: t1pplj.fd 2004/09/06 font definitions for T1/pplj.
 )
 \AtBeginShipoutBox=\box58
-Package hyperref Info: Link coloring OFF on input line 89.
+Package hyperref Info: Link coloring OFF on input line 84.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -658,9 +658,9 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count133
 )
-LaTeX Info: Redefining \ref on input line 89.
-LaTeX Info: Redefining \pageref on input line 89.
-LaTeX Info: Redefining \nameref on input line 89.
+LaTeX Info: Redefining \ref on input line 84.
+LaTeX Info: Redefining \pageref on input line 84.
+LaTeX Info: Redefining \nameref on input line 84.
 
 (./Confidence_Intervals.out) (./Confidence_Intervals.out)
 \@outlinefile=\write3
@@ -668,7 +668,7 @@ LaTeX Info: Redefining \nameref on input line 89.
 
 
 ABD: EverySelectfont initializing macros
-LaTeX Info: Redefining \selectfont on input line 89.
+LaTeX Info: Redefining \selectfont on input line 84.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -738,33 +738,33 @@ e
 File: Investor_confidence500.jpg Graphic file (type jpg)
 
 <use Investor_confidence500.jpg>
-Package pdftex.def Info: Investor_confidence500.jpg used on input line 112.
+Package pdftex.def Info: Investor_confidence500.jpg used on input line 107.
 (pdftex.def)             Requested size: 144.0pt x 106.56056pt.
-LaTeX Font Info:    Try loading font information for OT1+pplx on input line 115
+LaTeX Font Info:    Try loading font information for OT1+pplx on input line 110
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pplx.fd
 File: ot1pplx.fd 2004/09/06 font definitions for OT1/pplx.
 )
-LaTeX Font Info:    Try loading font information for OML+zplm on input line 115
+LaTeX Font Info:    Try loading font information for OML+zplm on input line 110
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omlzplm.fd
 File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
 )
-LaTeX Font Info:    Try loading font information for OMS+zplm on input line 115
+LaTeX Font Info:    Try loading font information for OMS+zplm on input line 110
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omszplm.fd
 File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
 )
-LaTeX Font Info:    Try loading font information for OMX+zplm on input line 115
+LaTeX Font Info:    Try loading font information for OMX+zplm on input line 110
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omxzplm.fd
 File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
 )
-LaTeX Font Info:    Try loading font information for OT1+zplm on input line 115
+LaTeX Font Info:    Try loading font information for OT1+zplm on input line 110
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1zplm.fd
@@ -773,37 +773,37 @@ File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 
 {/usr/share/texlive/texmf/fonts/map/pdftex/updmap/pdftex.map} <./Investor_confi
 dence500.jpg>]
-LaTeX Font Info:    Try loading font information for T1+fvm on input line 130.
+LaTeX Font Info:    Try loading font information for T1+fvm on input line 125.
 
 (/usr/share/texlive/texmf-dist/tex/latex/bera/t1fvm.fd
 File: t1fvm.fd 2004/09/07 scalable font definitions for T1/fvm.
 )
 LaTeX Font Info:    Font shape `T1/fvm/m/n' will be
-(Font)              scaled to size 8.50006pt on input line 130.
+(Font)              scaled to size 8.50006pt on input line 125.
 LaTeX Font Info:    Font shape `T1/fvm/bx/n' in size <10> not available
-(Font)              Font shape `T1/fvm/b/n' tried instead on input line 131.
+(Font)              Font shape `T1/fvm/b/n' tried instead on input line 126.
 LaTeX Font Info:    Font shape `T1/fvm/b/n' will be
-(Font)              scaled to size 8.50006pt on input line 131.
+(Font)              scaled to size 8.50006pt on input line 126.
 
 <figure/unnamed-chunk-3-1.pdf, id=40, 505.89pt x 505.89pt>
 File: figure/unnamed-chunk-3-1.pdf Graphic file (type pdf)
 
 <use figure/unnamed-chunk-3-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-3-1.pdf used on input line 140.
+Package pdftex.def Info: figure/unnamed-chunk-3-1.pdf used on input line 135.
 (pdftex.def)             Requested size: 144.0pt x 144.0026pt.
 
-Overfull \hbox (2.328pt too wide) in paragraph at lines 138--141
+Overfull \hbox (2.328pt too wide) in paragraph at lines 133--136
  [][]  
  []
 
 
-Overfull \hbox (5.25616pt too wide) in paragraph at lines 164--164
+Overfull \hbox (5.25616pt too wide) in paragraph at lines 159--159
 []\T1/fvm/m/n/10 ##  [1]  0.6254191 -0.6015362  3.1001089  1.8824652  0.8942158
 [] 
  []
 
 
-Overfull \hbox (5.25616pt too wide) in paragraph at lines 165--165
+Overfull \hbox (5.25616pt too wide) in paragraph at lines 160--160
 []\T1/fvm/m/n/10 ##  [6]  0.9839975  0.3548860  2.5164706  2.7150650 -0.2847157
 [] 
  []
@@ -812,47 +812,47 @@ Overfull \hbox (5.25616pt too wide) in paragraph at lines 165--165
 File: figure/unnamed-chunk-6-1.pdf Graphic file (type pdf)
 
 <use figure/unnamed-chunk-6-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-6-1.pdf used on input line 178.
+Package pdftex.def Info: figure/unnamed-chunk-6-1.pdf used on input line 173.
 (pdftex.def)             Requested size: 312.0pt x 312.00435pt.
  [2 <./figure/unnamed-chunk-3-1.pdf>]
 [3 <./figure/unnamed-chunk-6-1.pdf>]
 LaTeX Font Info:    Font shape `T1/fvm/m/it' in size <10> not available
-(Font)              Font shape `T1/fvm/m/sl' tried instead on input line 204.
+(Font)              Font shape `T1/fvm/m/sl' tried instead on input line 199.
 LaTeX Font Info:    Font shape `T1/fvm/m/sl' will be
-(Font)              scaled to size 8.50006pt on input line 204.
+(Font)              scaled to size 8.50006pt on input line 199.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 212.
+(hyperref)                removing `math shift' on input line 207.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\alpha' on input line 212.
+(hyperref)                removing `\alpha' on input line 207.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 212.
+(hyperref)                removing `math shift' on input line 207.
 
 <figure/unnamed-chunk-8-1.pdf, id=71, 505.89pt x 216.81pt>
 File: figure/unnamed-chunk-8-1.pdf Graphic file (type pdf)
 
 <use figure/unnamed-chunk-8-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-8-1.pdf used on input line 219.
+Package pdftex.def Info: figure/unnamed-chunk-8-1.pdf used on input line 214.
 (pdftex.def)             Requested size: 480.0pt x 205.71689pt.
  [4 <./figure/unnamed-chunk-8-1.pdf>]
-Overfull \hbox (281.57605pt too wide) in paragraph at lines 238--238
+Overfull \hbox (281.57605pt too wide) in paragraph at lines 233--233
 [][]\T1/fvm/m/n/10 Unsorted.csv[] []=[] []"/home/CAMPUS/mwl04747/github/beginne
 rsluck/Confidence_Intervals/2019_EA30F_Waste_Audit_Unsorted.csv"[][] 
  []
 
 
-Overfull \hbox (276.45901pt too wide) in paragraph at lines 240--240
+Overfull \hbox (276.45901pt too wide) in paragraph at lines 235--235
 [][]\T1/fvm/m/n/10 Sorted.csv[] []=[] []"/home/CAMPUS/mwl04747/github/beginners
 luck/Confidence_Intervals/2019_EA30F_Waste_Audit_Sorted_v2.csv"[][] 
  []
 
 
-Overfull \hbox (35.95837pt too wide) in paragraph at lines 255--255
+Overfull \hbox (35.95837pt too wide) in paragraph at lines 250--250
 [][]\T1/fvm/b/n/10 levels[][]\T1/fvm/m/n/10 (Sorted[][]$[][]Type)[[][]\T1/fvm/b
 /n/10 levels[][]\T1/fvm/m/n/10 (Sorted[][]$[][]Type)[][]==[][]"Compostable"[][]
 ][] []<-[] []"Compost"[][] 
@@ -862,60 +862,60 @@ Overfull \hbox (35.95837pt too wide) in paragraph at lines 255--255
 File: figure/unnamed-chunk-11-1.pdf Graphic file (type pdf)
 
 <use figure/unnamed-chunk-11-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-11-1.pdf used on input line 271.
+Package pdftex.def Info: figure/unnamed-chunk-11-1.pdf used on input line 266.
 (pdftex.def)             Requested size: 480.0pt x 342.86151pt.
 
-Overfull \hbox (41.07541pt too wide) in paragraph at lines 286--286
+Overfull \hbox (41.07541pt too wide) in paragraph at lines 281--281
 []  []\T1/fvm/m/n/10 by[][]=[][]\T1/fvm/b/n/10 list[][]\T1/fvm/m/n/10 ([][]Type
 [] []= Sorted[][]$[][]Type,[]  []Trash_Recycle[] []= Sorted[][]$[][]Trash_Recyc
 le),[][] 
  []
 
 
-Overfull \hbox (35.95837pt too wide) in paragraph at lines 289--289
+Overfull \hbox (35.95837pt too wide) in paragraph at lines 284--284
 []  []\T1/fvm/m/n/10 by[][]=[][]\T1/fvm/b/n/10 list[][]\T1/fvm/m/n/10 ([][]Type
 [] []= Sorted[][]$[][]Type,[] []Trash_Recycle[] []= Sorted[][]$[][]Trash_Recycl
 e),[][] 
  []
 
 
-Overfull \hbox (35.95837pt too wide) in paragraph at lines 292--292
+Overfull \hbox (35.95837pt too wide) in paragraph at lines 287--287
 []  []\T1/fvm/m/n/10 by[][]=[][]\T1/fvm/b/n/10 list[][]\T1/fvm/m/n/10 ([][]Type
 [] []= Sorted[][]$[][]Type,[] []Trash_Recycle[] []= Sorted[][]$[][]Trash_Recycl
 e),[][] 
  []
 
 [5] [6 <./figure/unnamed-chunk-11-1.pdf>]
-Overfull \hbox (30.84134pt too wide) in paragraph at lines 302--302
+Overfull \hbox (30.84134pt too wide) in paragraph at lines 297--297
 [][]\T1/fvm/b/n/10 names[][]\T1/fvm/m/n/10 (Sorted.sd)[][]=[] []\T1/fvm/b/n/10 
 c[][]\T1/fvm/m/n/10 ([][]"Type"[][],[] []"Trash_Recycle"[][],[] []"sd"[][]);[] 
 []\T1/fvm/b/n/10 head[][]\T1/fvm/m/n/10 (Sorted.sd)[][] 
  []
 
 
-Overfull \hbox (15.49023pt too wide) in paragraph at lines 314--314
+Overfull \hbox (15.49023pt too wide) in paragraph at lines 309--309
 [][]\T1/fvm/b/n/10 names[][]\T1/fvm/m/n/10 (Sorted.n)[][]=[] []\T1/fvm/b/n/10 c
 [][]\T1/fvm/m/n/10 ([][]"Type"[][],[] []"Trash_Recycle"[][],[] []"n"[][]);[] []
 \T1/fvm/b/n/10 head[][]\T1/fvm/m/n/10 (Sorted.n)[][] 
  []
 
 
-Overfull \hbox (46.19244pt too wide) in paragraph at lines 348--348
+Overfull \hbox (46.19244pt too wide) in paragraph at lines 343--343
 [][]\T1/fvm/m/n/10 Sorted.Confidence[][]$[][]SEM[] []=[] []Sorted.Confidence[][
 ]$[][]sd[][]/[][]\T1/fvm/b/n/10 sqrt[][]\T1/fvm/m/n/10 (Sorted.Confidence[][]$[
 ][]n)[][] 
  []
 
 [7]
-LaTeX Font Info:    Try loading font information for TS1+fvm on input line 365.
+LaTeX Font Info:    Try loading font information for TS1+fvm on input line 360.
 
  (/usr/share/texlive/texmf-dist/tex/latex/bera/ts1fvm.fd
 File: ts1fvm.fd 2004/09/07 scalable font definitions for TS1/fvm.
 )
 LaTeX Font Info:    Font shape `TS1/fvm/m/n' will be
-(Font)              scaled to size 8.50006pt on input line 365.
+(Font)              scaled to size 8.50006pt on input line 360.
 
-Overfull \hbox (56.42651pt too wide) in paragraph at lines 365--365
+Overfull \hbox (56.42651pt too wide) in paragraph at lines 360--360
 [][]\T1/fvm/b/n/10 plot[][]\T1/fvm/m/n/10 (xrange,[] []\T1/fvm/b/n/10 dnorm[][]
 \T1/fvm/m/n/10 (xrange,[] []0[][],[] []sd[][]=[][]1[][]),[] []ty[][]=[][]\TS1/f
 vm/m/n/10 '\T1/fvm/m/n/10 l\TS1/fvm/m/n/10 '[][]\T1/fvm/m/n/10 ,[] []ylim[][]=[
@@ -927,10 +927,10 @@ vm/m/n/10 '\T1/fvm/m/n/10 l\TS1/fvm/m/n/10 '[][]\T1/fvm/m/n/10 ,[] []ylim[][]=[
 File: figure/unnamed-chunk-14-1.pdf Graphic file (type pdf)
 
 <use figure/unnamed-chunk-14-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-14-1.pdf used on input line 372.
+Package pdftex.def Info: figure/unnamed-chunk-14-1.pdf used on input line 367.
 (pdftex.def)             Requested size: 312.0pt x 312.00435pt.
 
-Overfull \hbox (12.0pt too wide) in paragraph at lines 372--373
+Overfull \hbox (12.0pt too wide) in paragraph at lines 367--368
 [][]  
  []
 
@@ -939,11 +939,11 @@ Overfull \hbox (12.0pt too wide) in paragraph at lines 372--373
 File: figure/unnamed-chunk-16-1.pdf Graphic file (type pdf)
 
 <use figure/unnamed-chunk-16-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-16-1.pdf used on input line 433.
+Package pdftex.def Info: figure/unnamed-chunk-16-1.pdf used on input line 428.
 (pdftex.def)             Requested size: 480.0pt x 342.86151pt.
 
 
-LaTeX Warning: Float too large for page by 15.0088pt on input line 436.
+LaTeX Warning: Float too large for page by 15.0088pt on input line 431.
 
 [10] [11 <./figure/unnamed-chunk-16-1.pdf>]
 
@@ -953,29 +953,29 @@ LaTeX Warning: Marginpar on page 12 moved.
 
 ]
 LaTeX Font Info:    Font shape `TS1/fvm/m/it' in size <10> not available
-(Font)              Font shape `TS1/fvm/m/sl' tried instead on input line 522.
+(Font)              Font shape `TS1/fvm/m/sl' tried instead on input line 517.
 LaTeX Font Info:    Font shape `TS1/fvm/m/sl' will be
-(Font)              scaled to size 8.50006pt on input line 522.
+(Font)              scaled to size 8.50006pt on input line 517.
 
-Overfull \hbox (56.42651pt too wide) in paragraph at lines 522--522
+Overfull \hbox (56.42651pt too wide) in paragraph at lines 517--517
 [][]\T1/fvm/m/n/10 Sorted[[][]35[][],][] []\T1/fvm/m/sl/10 # Not sure why this 
 isn\TS1/fvm/m/sl/10 '\T1/fvm/m/sl/10 t #40, still sorting that out... !!![][] 
  []
 
 
-Overfull \hbox (0.13913pt too wide) in paragraph at lines 525--525
+Overfull \hbox (0.13913pt too wide) in paragraph at lines 520--520
 []\T1/fvm/m/n/10 ##    Sample.Date Trash_Recycle Location  Type Mass_Container[
 ] 
  []
 
 
-Overfull \hbox (0.13913pt too wide) in paragraph at lines 526--526
+Overfull \hbox (0.13913pt too wide) in paragraph at lines 521--521
 []\T1/fvm/m/n/10 ## 40   9/23/2019             T Dialynas Trash           43.3[
 ] 
  []
 
 
-Overfull \hbox (41.07541pt too wide) in paragraph at lines 565--565
+Overfull \hbox (41.07541pt too wide) in paragraph at lines 560--560
 []\T1/fvm/m/n/10 ## alternative hypothesis: true difference in means is not equ
 al to 0[] 
  []
@@ -986,15 +986,15 @@ Package bibentry Warning: You have used \nobibliography*
 (bibentry)                without a following \bibliography.
 (bibentry)                You may not be able to run BibTeX.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 934.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 929.
 [14]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 934.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 929.
  (./Confidence_Intervals.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 934.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 934.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 929.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 929.
 Package rerunfilecheck Info: File `Confidence_Intervals.out' has not changed.
 (rerunfilecheck)             Checksum: 586C0E712344727D8A8353CD72F5DB0F;1154.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 934.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 929.
  ) 
 Here is how much of TeX's memory you used:
  13200 strings out of 494820
@@ -1016,7 +1016,7 @@ live/texmf-dist/fonts/type1/public/bera/fvmr8a.pfb></usr/share/texlive/texmf-di
 st/fonts/type1/public/bera/fvmro8a.pfb></usr/share/texlive/texmf-dist/fonts/typ
 e1/urw/palatino/uplr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palat
 ino/uplri8a.pfb>
-Output written on Confidence_Intervals.pdf (14 pages, 192990 bytes).
+Output written on Confidence_Intervals.pdf (14 pages, 193003 bytes).
 PDF statistics:
  203 PDF objects out of 1000 (max. 8388607)
  160 compressed objects within 2 object streams

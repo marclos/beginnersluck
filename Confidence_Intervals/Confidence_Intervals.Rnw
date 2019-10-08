@@ -11,6 +11,7 @@
 %\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
 % \graphicspath{{graphics/}}
 
+
 \title{Confidence Intervals %\thanks{}
 }
 \author[Marc Los Huertos]{Marc Los Huertos}
@@ -30,14 +31,8 @@
 % Small sections of multiple columns
 %\usepackage{multicol}
 
-% These commands are used to pretty-print LaTeX commands
-% command name -- adds backslash automatically
-%\newcommand{\docpkg}[1]{\texttt{#1}}% package name
-%\newcommand{\doccls}[1]{\texttt{#1}}% document class name
-%\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
-
 \begin{document}
-%\SweaveOpts{concordance=TRUE}
+
 
 \maketitle% this prints the handout title, author, and date
 \begin{abstract}
@@ -112,7 +107,7 @@ n10
 \label{fig:default_bp}
 <<fig=T, echo=F>>=
 par(las=1, cex=2)
-boxplot(n10, col="yellow", ylim=c(-1, 3))
+boxplot(n10, col="yellow", ylim=c(-1, 4))
 @
 \end{figure}
 
@@ -173,7 +168,7 @@ Yet, this is still ambiguous. Because the normal curve is symmetric, half of the
 
 \section{Estimating Confidence Intervals for Waste Audit}
 
-<<>>=
+<<tidy=TRUE>>=
 Unsorted.csv = "/home/CAMPUS/mwl04747/github/beginnersluck/Confidence_Intervals/2019_EA30F_Waste_Audit_Unsorted.csv"
 
 Sorted.csv = "/home/CAMPUS/mwl04747/github/beginnersluck/Confidence_Intervals/2019_EA30F_Waste_Audit_Sorted_v2.csv"
