@@ -1,0 +1,65 @@
+Sample Date,Trash_Recycle,Location,Type,Mass_Container,Container,NetMass,Total
+9/23/2019,R,Dialynas,Cardboard,5.6,0,5.6,25.65
+9/23/2019,R,Dialynas,Compostable,0.02,0,0.02,25.65
+9/23/2019,R,Dialynas,Glass,10.4,0,10.4,25.65
+9/23/2019,R,Dialynas,Metal,0.2,0,0.2,25.65
+9/23/2019,R,Dialynas,Paper,1.65,0,1.65,25.65
+9/23/2019,R,Dialynas,Plastic Film,0.2,0,0.2,25.65
+9/23/2019,R,Dialynas,Plastics,1.65,0,1.65,25.65
+9/23/2019,R,Dialynas,Trash,6.4,0,6.4,25.65
+9/23/2019,R,Harwood,Cardboard,6,0,6,18.8
+9/23/2019,R,Harwood,Compostable,0,0,0,18.8
+9/23/2019,R,Harwood,Glass,4.4,0,4.4,18.8
+9/23/2019,R,Harwood,Metal,0.15,0,0.15,18.8
+9/23/2019,R,Harwood,Paper,1.85,0,1.85,18.8
+9/23/2019,R,Harwood,Plastic Film,0.3,0,0.3,18.8
+9/23/2019,R,Harwood,Plastics,0.45,0,0.45,18.8
+9/23/2019,R,Harwood,Trash,6.25,0,6.25,18.8
+9/23/2019,R,Oldenborg,Cardboard,2.45,0,2.45,9.65
+9/23/2019,R,Oldenborg,Compostable,0,0,0,9.65
+9/23/2019,R,Oldenborg,Glass,0.8,0,0.8,9.65
+9/23/2019,R,Oldenborg,Metal,1.2,0,1.2,9.65
+9/23/2019,R,Oldenborg,Paper,1.25,0,1.25,9.65
+9/23/2019,R,Oldenborg,Plastic Film,0,0,0,9.65
+9/23/2019,R,Oldenborg,Plastics,0.65,0,0.65,9.65
+9/23/2019,R,Oldenborg,Trash,3.05,0,3.05,9.65
+9/24/2019,R,Unknown,Cardboard,14.5,0,14.5,27.15
+9/24/2019,R,Unknown,Compostable,0,0,0,27.15
+9/24/2019,R,Unknown,Glass,2.95,0.8,2.15,27.15
+9/24/2019,R,Unknown,Metal,0.2,0,0.2,27.15
+9/24/2019,R,Unknown,Paper,2.85,1.6,1.25,27.15
+9/24/2019,R,Unknown,Plastic Film,NA,0,NA,27.15
+9/24/2019,R,Unknown,Plastics,1.95,0.32,1.63,27.15
+9/24/2019,R,Unknown,Trash,18.47,0,18.47,27.15
+9/23/2019,T,Dialynas,Cardboard,0.25,0,0.25,88.9
+9/23/2019,T,Dialynas,Compostable,3.2,0,3.2,88.9
+9/23/2019,T,Dialynas,Glass,0.3,0,0.3,88.9
+9/23/2019,T,Dialynas,Metal,0.17,0,0.17,88.9
+9/23/2019,T,Dialynas,Paper,0.35,0,0.35,88.9
+9/23/2019,T,Dialynas,Plastic Film,NA,0,NA,88.9
+9/23/2019,T,Dialynas,Plastics,0.55,0,0.55,88.9
+9/23/2019,T,Dialynas,Trash,43.3,0,43.3,88.9
+9/23/2019,T,Harwood,Cardboard,1.35,0,1.35,53.8
+9/23/2019,T,Harwood,Compostable,1.55,0,1.55,53.8
+9/23/2019,T,Harwood,Glass,2.5,0,2.5,53.8
+9/23/2019,T,Harwood,Metal,0.01,0,0.01,53.8
+9/23/2019,T,Harwood,Paper,0.85,0,0.85,53.8
+9/23/2019,T,Harwood,Plastic Film,NA,0,NA,53.8
+9/23/2019,T,Harwood,Plastics,0.55,0,0.55,53.8
+9/23/2019,T,Harwood,Trash,39.65,0,39.65,53.8
+9/23/2019,T,Oldenborg,Cardboard,1.1,0,1.1,33.4
+9/23/2019,T,Oldenborg,Compostable,3.2,0,3.2,33.4
+9/23/2019,T,Oldenborg,Glass,0.85,0,0.85,33.4
+9/23/2019,T,Oldenborg,Metal,0.3,0,0.3,33.4
+9/23/2019,T,Oldenborg,Paper,0.6,0,0.6,33.4
+9/23/2019,T,Oldenborg,Plastic Film,NA,0,NA,33.4
+9/23/2019,T,Oldenborg,Plastics,0.9,0,0.9,33.4
+9/23/2019,T,Oldenborg,Trash,26.3,0,26.3,33.4
+9/24/2019,T,Unknown,Cardboard,7,0,7,25.6
+9/24/2019,T,Unknown,Compostable,1.25,0.32,0.93,25.6
+9/24/2019,T,Unknown,Glass,1.65,0,1.65,25.6
+9/24/2019,T,Unknown,Metal,0.15,0,0.15,25.6
+9/24/2019,T,Unknown,Paper,0.85,0.8,0.05,25.6
+9/24/2019,T,Unknown,Plastic Film,NA,0,NA,25.6
+9/24/2019,T,Unknown,Plastics,0.8,0,0.8,25.6
+9/24/2019,T,Unknown,Trash,20.9,0,20.9,25.6

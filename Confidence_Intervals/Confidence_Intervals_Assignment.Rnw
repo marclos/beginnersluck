@@ -96,7 +96,7 @@ Finally, I will also grade your guide based on the clarity and robustness of you
 
 You can see that I have created a working example for myself, which you might find helpful or completely not!
 
-here's the link for my \href{https://github.com/marclos/beginnersluck/raw/master/Confidence_Intervals/Confidence_Intervals.pdf}{guideline on confidence invervals}. 
+here's the link for my \href{https://github.com/marclos/beginnersluck/raw/master/Confidence_Intervals/Confidence_Intervals.pdf}{Confidence Interval Guidelines}. 
 
 As you work through your guide and find problems with mine, please point them out and I'll fix them!
 

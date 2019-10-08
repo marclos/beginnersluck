@@ -176,7 +176,7 @@ Yet, this is still ambiguous. Because the normal curve is symmetric, half of the
 <<>>=
 Unsorted.csv = "/home/CAMPUS/mwl04747/github/beginnersluck/Confidence_Intervals/2019_EA30F_Waste_Audit_Unsorted.csv"
 
-Sorted.csv = "/home/CAMPUS/mwl04747/github/beginnersluck/Confidence_Intervals/2019_EA30F_Waste_Audit_Sorted.csv"
+Sorted.csv = "/home/CAMPUS/mwl04747/github/beginnersluck/Confidence_Intervals/2019_EA30F_Waste_Audit_Sorted_v2.csv"
 # Read Raw Data
 Unsorted = read.csv(Unsorted.csv)
 Sorted = read.csv(Sorted.csv)
@@ -200,9 +200,14 @@ Anyone who has worked with quantitiative data knows that data entry errors can b
 \caption{Sorted Percent Mass from Recycling Bags}
 \label{fig:percent_bp}
 <<fig=T, echo=F, fig.height=5>>=
-par(mfrow=c(1,2), las=1)
-boxplot(Percent ~ Type, data=droplevels(Sorted[Sorted$Trash_Recycle=="R",]))
-boxplot(Percent ~ Type, data=droplevels(Sorted[Sorted$Trash_Recycle=="T",]))
+par(mfrow=c(1,2), las=1, cex.axis=1)
+boxplot(Percent ~ Type, data=droplevels(Sorted[Sorted$Trash_Recycle=="R",]), xaxt='none', col="darkgreen")
+axis(side=1, at=1:7, label=levels(droplevels(Sorted$Type[Sorted$Trash_Recycle=="R"])), 
+    cex.axis=.5)
+boxplot(Percent ~ Type, data=droplevels(Sorted[Sorted$Trash_Recycle=="T",]), xaxt='none', col="red")
+axis(side=1, at=1:7, label=levels(droplevels(Sorted$Type[Sorted$Trash_Recycle=="T"])), 
+    cex.axis=.4)
+
 @
 \end{figure*}
 
@@ -288,37 +293,78 @@ Ylim = c(min(Sorted.Confidence$CI.low, na.rm=T), max(Sorted.Confidence$CI.high, 
 @
 
 \begin{figure*}
-\caption{Sorted Percent Mass from Unsorted Recycling and Trash Sources, (97.5\% Confidence Intevals).}
+\caption{\% material from unsorted recycling and trash mass (95\% Confidence Intevals).}
 \label{fig:percent_ci}
-<<fig=T, fig.height=6>>=
+<<fig=T, fig.height=5>>=
 par(cex=1.3, cex.axis=1)
 plot(xvalues, ylim=Ylim, xlim=c(0.5,7.5),ty="n", xaxt='none', 
-    xlab="Type", las=1, ylab="Percent Mass of Unsorted")
+    xlab="Type", las=1, ylab="% of Unsorted Mass")
 axis(side=1, at=1:7, label=levels(Sorted.Confidence$Type), 
     cex.axis=.5)
 points(xvalues, 
     Sorted.Confidence$x[Sorted.Confidence$Trash_Recycle=="R"], 
     col="darkgreen", pch=19)
-
 points(x1, Sorted.Confidence$x[Sorted.Confidence$Trash_Recycle=="T"], 
     col="Red", pch=2)
-
 with(Sorted.Confidence[Sorted.Confidence$Trash_Recycle=="R",], 
      arrows(xvalues, CI.low, xvalues, CI.high, length=0.05, 
             angle=90, code=3, lwd=2, col="darkgreen"))
 with(Sorted.Confidence[Sorted.Confidence$Trash_Recycle=="T",], 
      arrows(x1, CI.low, x1, CI.high, length=0.05, 
             angle=90, code=3, lwd=2, col="red"))
-
 # Add a legend
-legend(2, 105, legend=c("Recycling", "Trash"),
-       col=c("darkgreen", "red"), pch=c(19, 2), cex=1)
+legend(2, 95, legend=c("Recycling", "Trash"),
+       col=c("darkgreen", "red"), pch=c(19, 2), cex=.8, bty='n')
 @	
 \end{figure*}
 
+
+\clearpage
 \section{t-test}
 
-TBD
+\subsection{What is a (statisical) hypothesis?}
+
+A hypothesis is a prediction --- and using the frequentists approach, we make a negative prediction, i.e. that there is no pattern, to test. In our example with the waste, we can test was the the amount recycling stastically significant compared to the total waste. In other words, were students diverting waste. We can test if the confidence intervals include 100\%. 
+
+First, we'll subset the data!
+<<>>=
+trash = subset(Sorted, Type == "Trash", 
+        select = c(Trash_Recycle, Type, Percent)); trash
+@
+
+<<>>=
+t.test(trash[1:4,3], mu=100)
+@
+
+The t.test output is a bit confusioning. But let's start with the null hypothesis, which is the mean is equal to 100. The alternative is ``true mean is not equal to 100.'' Next, let's check out the p-value: \Sexpr{round(t.test(trash[1:4,3], mu=100)$p.value, 4)}.\sidenote{What should you report?  We don't need all these decimals!  Thus, we usually report p values as < 0.05, <0.01, and <0.001. It's a good practices and sufficiently informative for most purposes.}
+
+Thus, we can reject the null hypothesis, the mean is equal to 100\%. Thus, we are testing if there is a difference between the total unsorted weight of the recyling and the weight of the trash in the recycling bins. We hope there is a difference! And there is because we can reject the null hypothesis. 
+
+Thus, evidence students are diverting not just dumping stuff randomly in the recycling bins. I guess that is good news!
+
+A second question is what there a signficant amount of recyclable material that should have been recycled?  What the amount of potentially diverted material statistically significant?
+
+<<>>=
+t.test(trash[5:8,3], mu=100)
+@
+
+This is not surprising, but disappointing. The amount of recycling in the trash is significantly below 100\%, that suggests recyclelable materials are being put into the trash in a signficant fashion. We might notice that one observation \# is a big problem. What is \#40?
+
+<<>>=
+Sorted[35,] # Not sure why this isn't #40, still sorting that out... !!!
+@
+
+No surprise -- the parties is Dialynas lead to terrible recycling behavior. However, with the new rules from WMI, perhaps they were anticipating the change and are actually better performers than we think! 
+
+\subsection{Comparing Means}
+
+We can then explore if the \% trash in recycling was different than the \% trash in the recycling. We test this with a null hypothesis, that there is no difference between the percentage.
+
+<<>>=
+trash.RT = subset(Sorted, Type == "Trash", 
+            select = c(Trash_Recycle, Percent)); trash
+t.test(trash.RT[1:4,2], trash.RT[5:8,2])
+@
 
 
 \begin{comment}
