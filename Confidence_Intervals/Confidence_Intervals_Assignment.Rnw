@@ -57,7 +57,7 @@ rm(list = ls())
 
 To create a guide for your peers about what are confidence intervals and how to create them using a univarite dataset (one set of numbers). 
 
-Using R-studio, write up an short description and demonstration of how to do a confidence interval.
+Using R-studio, write up an short description and demonstration of how to do a confidence interval for the sample mean. 
 
 \subsection{Rationale}
 

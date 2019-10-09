@@ -36,7 +36,9 @@
 \maketitle% this prints the handout title, author, and date
 
 \begin{abstract}
-\noindent One of the most important considerations with univariate data are the development of confidence intervals. As you can probably guess, confidence intervals are based on the distribution of the data. There are two main approaches in developing confidence intervals. One relies on the use of theoretical probability distributions but there are a number of methods that do not rely on theoretical distributions. We will learn several methods because each are used in environmental sciences to varying degrees.
+\noindent An important considerations with univariate data is the development of confidence intervals and forms the foundation for hypothesis testing. As you can probably guess, confidence intervals are based on the distribution of the data. Data with lots of variability will have wide confidence intervals, while data with low variability will have narrow confidence intervals. 
+
+There are two main approaches in developing confidence intervals. One relies on the use of theoretical probability distributions. Another method uses the data themselves to create randomized sample subsets (bootstrapping) to create confidence intervals. We will learn several methods because each are used in environmental sciences to varying degrees. I have decribed the former in this handout, but may add bootstrapping soon. 
 \end{abstract}
 
 %\printclassoptions
@@ -49,11 +51,11 @@ rm(list = ls())
 
 \section{Why Confidence Intervals?}
 
-Confidence intervals are used to indicate the reliability of an estimate. How likely the interval is to contain the parameter is determined by the confidence level or confidence coefficient. Increasing the desired confidence level will widen the confidence interval. These are key in presenting quantitative data because they allow us to interpret the data from a hypothesis perspective, which we'll get into more during the semester.
+Confidence intervals are used to indicate the reliability of an estimate. How likely the interval is to contain the parameter is determined by the confidence level. Increasing the desired confidence level will widen the confidence interval (see Figure~\ref{fig:3rule}). Based on a foundational understanding of confidence intervals allows us to extend our interpretations of the data toward a hypothesis testing perspective, which we'll get into more during the semester.
 
 \section{Where are Confidence Intervals Used?}
 
-Confidence intervals can be calculated for a range of statistics, including the mean, slope and intercept of a linear model, among other things. We'll concentrate on the what confidence intervals of the mean at this point, but keep in mind the concept can be applied to many parameter estimates.
+Confidence intervals can be calculated for a range of statistics, including the mean, slope and intercept of a linear model, among other things. We'll concentrate on the what confidence intervals of the population and sample mean at this point, but keep in mind the concept can be applied to many parameter estimates.
 
 \begin{marginfigure}
 	\centering
@@ -68,14 +70,14 @@ Confidence intervals can be calculated for a range of statistics, including the 
 
 In general, environmental scientists can't measure the entire population. For example, a complete audit of all the recycling would be impossible for our class!  Instead, we sample from the population. Statisticians have have developed semi-consistant symbology for various statistics based on populations and samples. 
 
-A population mean for example is usually referred to by the Greek letter, $\mu$. While for a sample, it might be referred to as $\bar{x}$. The spread of data, or variance, in a population is referred to as $\sigma^2$, again a Greek letter. The population variance is often referred to as $s^2$. In general, we don't know $\mu$ or $\sigma^2$, so we can estimate it and develop confidence intervals that probably include the true $\mu$. Notice the word, ''probably.''  In other words, we our intervals in terms of probabilities!
+A population mean for example is usually referred to by the Greek letter, $\mu$. While for a sample, the mean might be referred to as $\bar{y}$ (or $\bar{x}$). The spread of data, or variance, in a population is referred to as $\sigma^2$, again a Greek letter. The population variance is often referred to as $s^2$. In general, we don't know $\mu$ or $\sigma^2$, so we can estimate them and develop confidence intervals that probably include the true $\mu$. Notice the word, ''probably.''  In other words, we our intervals in terms of probabilities!\sidenote{When you hear the word probably, it might be useful to think about how this implies a probability distribution.}
 
 \subsection{The difference between $\mu$ and $\bar{x}$}
 
-To illustrate the difference, let's create a dataset of 1000 random numbers from a normal distribution with a mean of 10 and standard deviation of 1. We'll let this represent an entire population. 
+To illustrate the difference, let's create a dataset of 1000 random numbers from a normal distribution with a mean of 10 and standard deviation of 1. We'll let this represent an entire population.\sidenote{I rounded the values to the nearest tenth, to keep the printouts more managable.} 
 <<>>=
 set.seed(123)
-N1000 = round(rnorm(1000, 10, 1), 1)
+N1000 = round(rnorm(n= 1000, mean = 10, sd = 1), 1)
 @
 
 The distribution of the data (Figure~\ref{fig:hist_pop}), resembles a normal distribution, which is reassuring since we created it using a random number generator that uses the normal probability distribution. 
@@ -90,60 +92,96 @@ hist(N1000, main=NA, xlab="Values", xlim=c(5,15), ylim=c(0,250), breaks=20, col=
 \label{fig:hist_pop}
 \end{marginfigure}
 
-These data will represent the population (N) and has a mean or $\mu$ of \Sexpr{round(mean(N1000), 2)}. The values range from \Sexpr{range(N1000)[1]} to \Sexpr{range(N1000)[2]} (Figure~\ref{fig:hist_pop}). From this dataset, we sample 10 numbers randomly. 
+These data will represent the population (N) and has a mean or $\mu$ of \Sexpr{round(mean(N1000), 2)}. The values range from \Sexpr{range(N1000)[1]} to \Sexpr{range(N1000)[2]} (Figure~\ref{fig:hist_pop}). From this dataset, we can create several dataset sets by random sampling the vector with different n (n = 100, n = 20, n = 10, n = 5). 
 
 <<>>=
-n100 = sample(N1000, 100)
-n20 = sample(N1000, 20)
-n10 = sample(N1000, 10)
-n5 = sample(N1000, 5)
+n100 = sample(N1000, size = 100)
+n20 = sample(N1000, size = 20)
+n10 = sample(N1000, size = 10)
+n5 = sample(N1000, size = 5)
 @
 
-We get the following sample of ten values from our population: 
+With a size or n of ten values from our population, I have obtained the following result: 
 <<>>=
 n10
 @ 
-\noindent and a mean or $\bar{y}$ = \Sexpr{round(mean(n10),2)}. These values certainly fall within the range of values in the population.
+\noindent and a mean or $\bar{y}$ = \Sexpr{round(mean(n10),2)}. These values certainly fall within the distribution of the population (Figure~\ref{fig:hist_pop}).
 
 \subsection{R's Default Boxplot}
 
-One of the confusing aspects for students learn R and statistics at the same time are the range of subtle discrepencies and ways of displaying data. 
+One of the confusing aspects when learning R and statistics at the same time is the range of subtle discrepencies between the vocabulary in statistics, parameter symbology, and how R implments statistics. But just as we learn a language we use content (e.g. literature), I have found it best to learn statistics while learning to use the R language. 
 
-For example, the \texttt{boxplot} function in R is easy to make and provides a lot of information, but it's not always clear what is being displayed. 
-
-For example, in Figure~\ref{fig:default_bp}A, the boxplot displays the median, interquarile range, and range. But in many cases, the sample might have some points that seem to be way outside the normal range. In those cases R creates a figure with a more complex set of rules. We won't go into these at this point, but not the differences between Figure~\ref{fig:default_bp}A and Figure~\ref{fig:default_bp}B. 
+Nevertheless, the sublties land hard on us when we are just trying to keep up with the statistical concepts. The \texttt{boxplot} function in R is easy to make and provides a lot of information, but it's not always clear what is being displayed. For example, the \texttt{boxplot()} function displays the median (for our ten sample vector = \Sexpr{median(n10)} and not the mean (\Sexpr{mean(n10)}). In Figure~\ref{fig:default_bp}A, the boxplot displays the median, interquarile range, and range. But in many cases, the sample might have some points that seem to be way outside the normal range. In those cases R creates a figure with a more complex set of rules. We won't go into these at this point, but not the differences between Figure~\ref{fig:default_bp}A and Figure~\ref{fig:default_bp}B. 
 
 \begin{figure}
-\caption{Default Boxplot where panel A displays the following information: median =\Sexpr{round(median(n10),2)}; Range = \Sexpr{range(n10)}; and interquartile range = \Sexpr{quantile(n10)[c(2,4)]}. Panel B identifies an ``outlier" using obscure rules and changing the range to exclude the outlier. I included the value of 14.8 with the vector to demonstrate this change. Weird.}
+\caption{Boxplot where panel A displays the following information for our 10 sample vector: median =\Sexpr{round(median(n10),2)}; Range = \Sexpr{range(n10)}; and interquartile range = \Sexpr{quantile(n10)[c(2,4)]}. Panel B identifies an ``outlier" using obscure rules and changing the range to exclude the outlier. I included the value of 14.8 with the vector to demonstrate this change. Weird. Note: I rotated the y-axis labels to make it easier to read. I try to do this with all my figures to make it easier to read.}
 \label{fig:default_bp}
-<<fig=T, echo=F, height=1>>=
+<<fig=T, echo=F, height=3>>=
 par(las=1, cex=2, mfrow=c(1,2))
-boxplot(n10, col="yellow", ylim=c(8,15))
+boxplot(n10, col="yellow", ylim=c(9,15))
 mtext("A", 3, line=1, at=.5, cex=3)
-boxplot(c(n10, 14.8), col="purple", ylim=c(8,15))
+boxplot(c(n10, 14.8), col="purple", ylim=c(9,15))
 mtext("B", 3, line=1, at=.5, cex=3)
 @
 \end{figure}
 
 %Let's see if we can label the graphic directly!
-In the end, the boxplot is very useful to quickly summarize the data, but in most cases, we tend to describe the data using a more precise set of measures. The standard deviation is one commonly used example to measure the variability or spread of the data. 
+In the end, the \texttt{boxplot()} function is very useful to quickly summarize the data, but in most cases, we tend to describe the data using a more precise set of measures. The standard deviation is the most commonly used parameter to measure the variability or spread of the data. 
+
+\subsection{Exploring the Waste Audit Data}
+
+Let's `read' the data into r, with the \texttt{read.csv()} function.
+<<tidy=TRUE>>=
+Unsorted.csv = "/home/CAMPUS/mwl04747/github/beginnersluck/Confidence_Intervals/2019_EA30F_Waste_Audit_Unsorted.csv"
+
+Sorted.csv = "/home/CAMPUS/mwl04747/github/beginnersluck/Confidence_Intervals/2019_EA30F_Waste_Audit_Sorted_v2.csv"
+# Read Raw Data
+Unsorted = read.csv(Unsorted.csv)
+Sorted = read.csv(Sorted.csv)
+@
+
+Now that we have imported the data into R, we will not process some of the data to prepare for the analysis. For example, let's caculate the percentage of sorted items, remove the plastic film category, and shorten the compostable name to simply compost. 
+
+<<>>=
+Sorted$Percent = (Sorted$NetMass/Sorted$Total)*100
+Sorted = subset(Sorted, subset=Type!="Plastic Film")
+levels(Sorted$Type)[levels(Sorted$Type)=="Compostable"] <- "Compost"
+@
+
+Be sure to check the results as you go and convince yourself how these work by looking online to see how these functions work. 
+
+Anyone who has worked with quantitiative data knows that data entry errors can be a major headache if they are not caught early. Thus, we'll use a couple of methods to evaluate potential data entry errors. 
+
+\begin{figure*}
+\caption{Sorted Percent Mass from Recycling Bags}
+\label{fig:percent_bp}
+<<fig=T, echo=F, fig.height=5>>=
+par(mfrow=c(1,2), las=1, cex.axis=1, mar = c(4, 2, 3, 1) + 0.1)
+boxplot(Percent ~ Type, data=droplevels(Sorted[Sorted$Trash_Recycle=="R",]), xaxt='none', col="darkgreen")
+axis(side=1, at=1:7, label=levels(droplevels(Sorted$Type[Sorted$Trash_Recycle=="R"])), 
+    cex.axis=.4)
+boxplot(Percent ~ Type, data=droplevels(Sorted[Sorted$Trash_Recycle=="T",]), xaxt='none', col="red")
+axis(side=1, at=1:7, label=levels(droplevels(Sorted$Type[Sorted$Trash_Recycle=="T"])), 
+    cex.axis=.45)
+
+@
+\end{figure*}
+
+In the case of Figure~\ref{fig:percent_bp}, We can see that the trash is relatively high in both types of unsorted bags, e.g. there a fair amount trash in both the recyling and trash containers. But I wonder if the overlapping interval is statistically significant?  If they are the same, then the percentage of trash is being put in both containers without regard of the intended use. The boxplot is useful to start with, but we can't draw statistical conclusions on this yet.  
 
 \subsection{Measuring the Spread}
 
 We can calculate the variance of the sample using the following formula: 
-
 \begin{equation}
 s^2 = \frac{\sum(y_i - \bar{y})^2}{n-1}
 \end{equation}
 
-Let's apply this equation, so you can see how it works!
-
-First, we'll take the difference between a measurment and the mean.\sidenote{We will use the vector index to subset each variable -- see ``Blue Book'' for indexing if you want more information on this procedure.} Let's start with the first.
+Let's apply this equation, so you can see how it works! First, we'll take the difference between a measurment and the mean.\sidenote{We will use the vector index to subset each variable -- see ``Blue Book'' for indexing if you want more information on this procedure.} Let's start with the first observation:
 <<>>=
 n10[1] - mean(n10)
 @
 
-Next we square the difference
+Next we square the difference\sidenote{R did scientific notation on this, I'll need to fix this in the near future.}
 <<>>=
 (n10[1] - mean(n10))^2
 @
@@ -154,18 +192,22 @@ Next we square the difference
 (n10[4] - mean(n10))^2
 (n10[4] - mean(n10))^2
 @
-These are "deviates." Then we add the deviates together (which is what the $\Sigma$ symbol is tell us to do). We'll call the sum of squeared deviates:
+These are ``deviates.'' Then we add the deviates together (which is what the $\Sigma$ symbol is tell us to do). We'll call the sum of squared deviates:
 
 <<>>=
-(sum_of_squared_deviates = (n10[1] - mean(n10))^2 + (n10[2] - mean(n10))^2 + (n10[3] - mean(n10))^2 + (n10[4] - mean(n10))^2 + (n10[5] - mean(n10))^2 +
-(n10[6] - mean(n10))^2 + (n10[7] - mean(n10))^2 + (n10[8] - mean(n10))^2 + (n10[9] - mean(n10))^2 + (n10[10] - mean(n10))^2)
+(sum_of_squared_deviates = (n10[1] - mean(n10))^2 + 
+   (n10[2] - mean(n10))^2 + (n10[3] - mean(n10))^2 + 
+   (n10[4] - mean(n10))^2 + (n10[5] - mean(n10))^2 +
+   (n10[6] - mean(n10))^2 + (n10[7] - mean(n10))^2 + 
+   (n10[8] - mean(n10))^2 + (n10[9] - mean(n10))^2 + 
+   (n10[10] - mean(n10))^2)
 @
 
-We take the sum of these and devide by the degrees of freedom.\sidenote{Degree of freedom is extremely complicated to explain without tons of theory. For now, just rest assured that it works. If we have time, we'll delve into this more.}
+We take the sum of these and divide by the degrees of freedom.\sidenote{Degree of freedom is extremely complicated to explain without tons of theory. For now, just rest assured that it works. If we have time, we'll delve into this more.}
 
 <<>>=
-sum_of_squared_deviates/(10-1); var(n10)
-sqrt(sum_of_squared_deviates/(10-1)); sd(n10)
+sum_of_squared_deviates/(10-1)
+sqrt(sum_of_squared_deviates/(10-1))
 @
 \noindent Thankfully, we don't need to use all of this tedious code to generate the variance and standard deviation. We can use \texttt{var()} and \texttt{sd()}. 
 <<>>=
@@ -204,91 +246,53 @@ Standard Deviation        & $\sigma$     & $\sqrt(\Sigma(x_i-\mu)^2/n)$ & \Sexpr
 
 \subsection{The Standard Deviation versus Standard Error}
 
-The terms ``standard error'' and ``standard deviation'' are often confused. The contrast between these two terms reflects the important distinction between data description and inference, one that all researchers should appreciate.
+The terms ``standard error'' and ``standard deviation'' are often confused. The contrast between these two terms reflects the important distinction between data description and inference, we should appreciate.
 
-For normally distributed data the standard deviation has some extra information, namely the 68-95-99.7 rule which tells us the percentage of data lying within 1, 2 or 3 standard deviation from the mean. More on this below.
+The standard deviation (often $s$) is a measure of variability. When we calculate the standard deviation of a sample (which we did above), we are using it as an \textbf{estimate of the variability of the population} from which the sample was drawn. For normally distributed data the standard deviation has some extra information, namely the 68-95-99.7 rule which tells us the percentage of data lying within 1, 2 or 3 standard deviation from the mean. For now, try to remember about 95\% of individuals will have values within 2 standard deviations of the mean, the other \% being equally scattered above and below these limits. 
 
-The standard deviation (often $s$) is a measure of variability. When we calculate the standard deviation of a sample (which we did above), we are using it as an \textbf{estimate of the variability of the population} from which the sample was drawn. For data with a normal distribution, about 95\% of individuals will have values within 2 standard deviations of the mean, the other \% being equally scattered above and below these limits. Contrary to popular misconception, the standard deviation is a valid measure of variability regardless of the distribution. About 95\% of observations of any distribution usually fall within the 2 standard deviation limits, though those outside may all be at one end. We may choose a different summary statistic, however, when data have a skewed distribution.
+Contrary to popular misconception, the standard deviation is a valid measure of variability regardless of the distribution. About 95\% of observations of any distribution usually fall within the 2 standard deviation limits, though those outside may all be at one end. We may choose a different summary statistic, however, when data have a skewed distribution.
 
 \begin{figure*}
 <<echo=FALSE, fig=TRUE, fig.height=3>>=
 par(las=1)
 plot(seq(-3,5,length=50),dnorm(seq(-3,5,length=50),1,1),type="l",xlab="",ylab="",ylim=c(0,0.5))
 segments(x0 = c(-2,4),y0 = c(0,0),x1 = c(-2,4),y1=c(2,1))
-text(x=1,y=0.45,cex=.8, labels = expression("99.7% of the data within 3" ~ sigma))
+text(x=1,y=0.45,cex=.8, labels = expression("99.7% of the data within 3" ~ s))
 arrows(x0=c(-1,3),y0=c(0.45,0.45),x1=c(-2,4),y1=c(0.45,0.45))
 
 segments(x0 = c(-1,3),y0 = c(0,0),x1 = c(-1,3),y1=c(0.4,0.4))
-text(x=1,y=0.3, cex=.8, labels = expression("95% of the data within 2" ~ sigma))
+text(x=1,y=0.3, cex=.8, labels = expression("95% of the data within 2" ~ s))
 arrows(x0=c(-0.5,2.5),y0=c(0.3,0.3),x1=c(-1,3),y1=c(0.3,0.3))
 
 segments(x0 = c(0,2),y0 = c(0,0),x1 = c(0,2),y1=c(0.25,0.25))
-text(x=1,y=0.15, cex=.8, labels = expression("68% of the data within 1" * sigma))
+text(x=1,y=0.15, cex=.8, labels = expression("68% of the data within 1" * s))
 @
+\caption{The variation of the population can be estimated with $s$, standard deviation.}
+\label{fig:3rule}
 \end{figure*}
 
-When we calculate the sample mean we are usually interested not in the mean of this particular sample, but in the mean for individuals of this type—in statistical terms, of the population from which the sample comes. We usually collect data in order to generalise from them and so use the sample mean as an estimate of the mean for the whole population. Now the sample mean will vary from sample to sample; the way this variation occurs is described by the ``sampling distribution'' of the mean. We can estimate how much sample means will vary from the standard deviation of this sampling distribution, which we call the standard error (SE) of the estimate of the mean. As the standard error is a type of standard deviation, confusion is understandable. Another way of considering the \textbf{standard error is as a measure of the precision of the sample mean}.
+When we calculate the sample mean we are usually interested not in the mean of this particular sample, but in the mean for individuals of this type---in statistical terms, of the population from which the sample comes. We usually collect data in order to generalise from them and so use the sample mean as an estimate of the mean for the whole population. Now the sample mean will vary from sample to sample; the way this variation occurs is described by the ``sampling distribution'' of the mean. We can estimate how much sample means will vary from the standard deviation of this sampling distribution, which we call the standard error (SE) of the estimate of the mean. As the standard error is a type of standard deviation, confusion is understandable. Another way of considering the \textbf{standard error is as a measure of the precision of the sample mean}.
 
-The standard error of the sample mean depends on both the standard deviation and the sample size, by the simple relation $SE = SD/\sqrt{sample size}$. The standard error falls as the sample size increases, as the extent of chance variation is reduced—this idea underlies the sample size calculation for a controlled trial, for example. By contrast the standard deviation will not tend to change as we increase the size of our sample.
+The standard error of the sample mean depends on both the standard deviation and the sample size, by the simple relation $SE = SD/\sqrt{\textrm{sample size}}$. The standard error falls as the sample size increases, as the extent of chance variation is reduced---this idea underlies the sample size calculation for a controlled trial, for example. By contrast the standard deviation will not tend to change as we increase the size of our sample.
 
 \section{Selecting $\alpha$: The Level of Confidence}
 
-First, it is important to note that the selection of the interval depends on your decision as to what level of confidence you want. Since probability ranges from 0 to 1, the confidence intervals of the parameter can also vary within this range. However, we usually are trying to constrain the confidence interval to something narrow, for example, we usually specify confidence intervals of 0.90, 0.95, and 0.99. 
+An important to note that the selection of the interval depends on your decision as to what level of confidence you want. Since probability ranges from 0 to 1, the confidence intervals of the parameter can also vary within this range. However, we usually are trying to constrain the confidence interval to something narrow, for example, we usually specify confidence intervals of 0.90, 0.95, and 0.99. 
 
 
-In the context of a probability density function, these levels correspond to percentages of the area of the normal density curve. For example, a 95\% confidence interval covers 95\% of the normal curve -- the probability of observing a value outside of this area is less than 0.05. So, following standards in statistics, we use $\alpha$ to signify the as the criteria, such that
+In the context of a probability density function, these levels correspond to percentages of the area of the normal density curve. For example, a 95\% confidence interval includes 95\% of the normal curve's area -- the probability of observing a value outside of this area is less than 0.05. So, following standards in statistics, we use $\alpha$ to signify the as the criterion, such that
 
 \begin{equation}
 \textrm{Confidence Interval \% } = 100 * (1-\alpha)
 \end{equation}
 
-Yet, this is still ambiguous. Because the normal curve is symmetric, half of the area is in the left tail of the curve, and the other half of the area is in the right tail of the curve. Thus, if we want to generate confidence intervals that cover both tails of the curve we need to split $\alpha$ for each side of curve. Thus for a for a 95\% confidence interval, the area in each tail is equal to 0.05/2 = 0.025. 
+Yet, this is still ambiguous. Because the normal curve is symmetric, half of the area is in the left tail of the curve, and the other half of the area is in the right tail of the curve. Thus, if we want to generate confidence intervals that cover both tails of the curve we need to split $\alpha$ for each side of curve. Thus for a for a 95\% confidence interval, the area in each tail is equal to 0.05/2 = 0.025.\sidenote{A figure here would be helpful!} 
 
-\section{Estimating Confidence Intervals for Waste Audit}
-
-<<tidy=TRUE>>=
-Unsorted.csv = "/home/CAMPUS/mwl04747/github/beginnersluck/Confidence_Intervals/2019_EA30F_Waste_Audit_Unsorted.csv"
-
-Sorted.csv = "/home/CAMPUS/mwl04747/github/beginnersluck/Confidence_Intervals/2019_EA30F_Waste_Audit_Sorted_v2.csv"
-# Read Raw Data
-Unsorted = read.csv(Unsorted.csv)
-Sorted = read.csv(Sorted.csv)
-@
-
-Now that we have imported the data into R, we will not process some of the data to prepare for the analysis. For example, let's caculate the percentage of sorted items, remove the plastic film category, and shorten the compostable name to simply compost. 
-
-<<>>=
-Sorted$Percent = (Sorted$NetMass/Sorted$Total)*100
-Sorted = subset(Sorted, subset=Type!="Plastic Film")
-levels(Sorted$Type)[levels(Sorted$Type)=="Compostable"] <- "Compost"
-@
-
-Be sure to check the results as you go and convince yourself how these work by looking online to see how these functions work. 
-
-\subsection{Exploring the Data}
-
-Anyone who has worked with quantitiative data knows that data entry errors can be a major headache if they are not caught early. Thus, we'll use a couple of methods to evaluate potential data entry errors. 
-
-\begin{figure*}
-\caption{Sorted Percent Mass from Recycling Bags}
-\label{fig:percent_bp}
-<<fig=T, echo=F, fig.height=5>>=
-par(mfrow=c(1,2), las=1, cex.axis=1)
-boxplot(Percent ~ Type, data=droplevels(Sorted[Sorted$Trash_Recycle=="R",]), xaxt='none', col="darkgreen")
-axis(side=1, at=1:7, label=levels(droplevels(Sorted$Type[Sorted$Trash_Recycle=="R"])), 
-    cex.axis=.5)
-boxplot(Percent ~ Type, data=droplevels(Sorted[Sorted$Trash_Recycle=="T",]), xaxt='none', col="red")
-axis(side=1, at=1:7, label=levels(droplevels(Sorted$Type[Sorted$Trash_Recycle=="T"])), 
-    cex.axis=.4)
-
-@
-\end{figure*}
-
-In the case of Figure~\ref{fig:percent_bp}, we can easily see that there is a problem with the Trash sources. We simple are not getting all the trash out of the bags and weighed. This is something that we'll need to sort out how the problem was created, how it might be remedied, or if the work needs to be done over to improve the quaulity of the results. 
-
+\section{Estimating Confidence Intervals for Waste Audit -- Preview}
 
 \subsection{Calculating Summary Statitics}
 
+First, we'll create summary statistics by each type of material: 
 
 <<>>=
 Sorted.mean <- aggregate(Sorted$Percent, 
@@ -303,7 +307,13 @@ Sorted.n <- aggregate(Sorted$Percent,
 
 @
 
+Here's the output of one of these lines: 
 
+<<>>=
+Sorted.mean
+@
+
+Next we'll put change the name of the variables and merge the datasets:\sidenote{Rarely do you need to do all this, but these data are a bit complicated. The example in the next section will be much eaiser to follow, so you can let your eyes glaze over the details here.}
 <<>>=
   
 names(Sorted.sd)= c("Type", "Trash_Recycle", "sd"); head(Sorted.sd)
@@ -316,13 +326,13 @@ Sorted.Confidence$SEM = Sorted.Confidence$sd/sqrt(Sorted.Confidence$n)
 Sorted.Confidence <- droplevels(Sorted.Confidence)
 @
 
-Now, we are going to use the t-distribution instead of our estimates so we can create exact probabilities. 
+In the next section, we are going to use the t-distribution to estimate our confidence intervals.
 
 \subsection{Calculating a Parametric Confidence Interval}
 
 To explore our waste audit data, we will determine the 95\% confidence intervals for the mean for each mean. As usual there are dozens of way to accomplish this, but for now, let's start by getting a t-statistic by our is that we use our $\alpha$ value of 0.05. Since we calculate CI for the lower and upper limit, we need to split the probability in half and determine the intervals for 0.025 and 0.975 of the probably distribution.  
 
-We begin by using the t-Distribution, which is a specialized case of the normal distribution (standard normal distribution that is corrected for sample size with change in the degrees of freedom). 
+We begin by using the t-Distribution, which is a specialized case of the normal distribution (standard normal distribution that is corrected for sample size with change in the degrees of freedom).\sidenote{A figure here would be useful!}. 
 
 \begin{equation}
 \bar{x} - t_{\alpha/2, n-1}(sd/\sqrt{n}) < \mu < \bar{x} + t_{\alpha/2, n-1}(sd/\sqrt{n}) 
@@ -372,9 +382,10 @@ legend(2, 95, legend=c("Recycling", "Trash"),
 \end{figure*}
 
 
-\section{Confidence Intervals}
+\section{Implementing Code to Create Confidence Intervals}
 
 \subsection{Steps to Create Confidence Intervals}
+
 This example assumes that the samples are drawn from a Normal distribution. The basic procedure for calculating a confidence interval for a population mean is as follows:
 \begin{enumerate}
   \item Identify the sample mean, $\bar{x}$.
@@ -479,6 +490,48 @@ abline(v=cl95.n5[2], col='red')
 qt((1-.95)/2, 4)*sd(n5)/sqrt(5)+mean(n5)
 @
 @
+
+\subsection{Misunderstandings about Confidence Intervals}
+
+Confidence intervals and levels are frequently misunderstood, and published studies have shown that even professional scientists often misinterpret them. I find myself tripped up the the vocabularly regularly. 
+
+A 95\% confidence level does not mean that for a given realized interval there is a 95\% probability that the population parameter lies within the interval (i.e., a 95\% probability that the interval covers the population parameter). According to the strict frequentist interpretation, once an interval is calculated, this interval either covers the parameter value or it does not; it is no longer a matter of probability. 
+
+The 95\% probability relates to \textbf{the reliability of the estimation procedure}, not to a specific calculated interval.
+
+Neyman himself (the original proponent of confidence intervals) made this point in his original paper:
+
+\begin{quote}
+It will be noticed that in the above description, the probability statements refer to the problems of estimation with which the statistician will be concerned in the future. In fact, I have repeatedly stated that the frequency of correct results will tend to $\alpha$. Consider now the case when a sample is already drawn, and the calculations have given [particular limits]. Can we say that in this particular case the probability of the true value [falling between these limits] is equal to $\alpha$? The answer is obviously in the negative. The parameter is an unknown constant, and no probability statement concerning its value may be made \ldots
+\end{quote}
+
+\noindent Deborah Mayo expands on this further as follows:
+
+\begin{quote}
+It must be stressed, however, that having seen the value [of the data], Neyman-Pearson theory never permits one to conclude that the specific confidence interval formed covers the true value of 0 with either $(1 - \alpha)100\%$ probability or $(1 - \alpha)100\%$ degree of confidence. Seidenfeld's remark seems rooted in a (not uncommon) desire for Neyman-Pearson confidence intervals to provide something which they cannot legitimately provide; namely, a measure of the degree of probability, belief, or support that an unknown parameter value lies in a specific interval. Following Savage (1962), the probability that a parameter lies in a specific interval may be referred to as a measure of final precision. While a measure of final precision may seem desirable, and while confidence levels are often (wrongly) interpreted as providing such a measure, no such interpretation is warranted. Admittedly, such a misinterpretation is encouraged by the word 'confidence.'
+\end{quote}
+
+\begin{itemize}
+  \item A 95\% confidence level does not mean that 95\% of the sample data lie within the confidence interval.
+  \item A confidence interval is not a definitive range of plausible values for the sample parameter, though it may be understood as an estimate of plausible values for the population parameter.
+  \item A particular confidence level of 95\% calculated from an experiment does not mean that there is a 95\% probability of a sample parameter from a repeat of the experiment falling within this interval.
+\end{itemize}
+
+\subsection{What what the heck is a confidence interval?}
+
+Various interpretations of a confidence interval can be given (taking the 90\% confidence interval as an example in the following).
+
+\begin{itemize}
+  \item The confidence interval can be expressed in terms of samples (or repeated samples): ``Were this procedure to be repeated on numerous samples, the fraction of calculated confidence intervals (which would differ for each sample) that encompass the true population parameter would tend toward 90\%.''
+
+  \item The confidence interval can be expressed in terms of a single sample: ``There is a 90\% probability that the calculated confidence interval from some future experiment encompasses the true value of the population parameter.'' Note this is a probability statement about the confidence interval, not the population parameter. This considers the probability associated with a confidence interval from a pre-experiment point of view, in the same context in which arguments for the random allocation of treatments to study items are made. Here the experimenter sets out the way in which they intend to calculate a confidence interval and to know, before they do the actual experiment, that the interval they will end up calculating has a particular chance of covering the true but unknown value. This is very similar to the ``repeated sample'' interpretation above, except that it avoids relying on considering hypothetical repeats of a sampling procedure that may not be repeatable in any meaningful sense.
+
+  \item The explanation of a confidence interval can amount to something like: ``The confidence interval represents values for the population parameter for which the difference between the parameter and the observed estimate is not statistically significant at the 10\% level.'' In fact, this relates to one particular way in which a confidence interval may be constructed.
+
+\end{itemize}
+
+In each of the above, the following applies: If the true value of the parameter lies outside the 90\% confidence interval, then a sampling event has occurred which had a probability of 10\% (or less) of happening by chance.
+
 
 
 \clearpage
