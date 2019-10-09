@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2019.4.23)  7 OCT 2019 15:49
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2019.4.23)  9 OCT 2019 08:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -776,44 +776,62 @@ File: t1fvm.fd 2004/09/07 scalable font definitions for T1/fvm.
 )
 LaTeX Font Info:    Font shape `T1/fvm/m/n' will be
 (Font)              scaled to size 8.50006pt on input line 122.
- [1
+LaTeX Font Info:    Try loading font information for TS1+pplj on input line 127
+.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1pplj.fd
+File: ts1pplj.fd 2004/09/06 font definitions for TS1/pplj.
+)
+
+LaTeX Warning: Marginpar on page 1 moved.
+
+[1
 
 {/usr/share/texlive/texmf/fonts/map/pdftex/updmap/pdftex.map} <./Investor_confi
 dence500.jpg>]
+LaTeX Font Info:    Font shape `T1/fvm/m/n' will be
+(Font)              scaled to size 6.80005pt on input line 141.
+
+
+LaTeX Warning: Marginpar on page 2 moved.
+
+
+LaTeX Warning: Marginpar on page 2 moved.
+
 
 Package bibentry Warning: You have used \nobibliography* 
 (bibentry)                without a following \bibliography.
 (bibentry)                You may not be able to run BibTeX.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 157.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 165.
 [2]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 157.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 165.
  (./Confidence_Intervals_Assignment.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 157.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 157.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 165.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 165.
 Package rerunfilecheck Info: File `Confidence_Intervals_Assignment.out' has not
  changed.
 (rerunfilecheck)             Checksum: CF51AFC9CC4A0D8FCF1BFE5BF7D99604;234.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 157.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 165.
  ) 
 Here is how much of TeX's memory you used:
- 13048 strings out of 494820
- 183417 string characters out of 3178049
- 275441 words of memory out of 3000000
- 15975 multiletter control sequences out of 15000+200000
- 42250 words of font info for 62 fonts, out of 3000000 for 9000
+ 13086 strings out of 494820
+ 183955 string characters out of 3178049
+ 277441 words of memory out of 3000000
+ 16005 multiletter control sequences out of 15000+200000
+ 52405 words of font info for 80 fonts, out of 3000000 for 9000
  198 hyphenation exceptions out of 8191
- 46i,11n,45p,553b,428s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 46i,11n,45p,553b,450s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/fpl/fplrc8a.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/public/fpl/fplrij8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/
 public/bera/fvmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/
 uplr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
 
-Output written on Confidence_Intervals_Assignment.pdf (2 pages, 92941 bytes).
+Output written on Confidence_Intervals_Assignment.pdf (2 pages, 95259 bytes).
 PDF statistics:
- 63 PDF objects out of 1000 (max. 8388607)
- 52 compressed objects within 1 object stream
+ 65 PDF objects out of 1000 (max. 8388607)
+ 54 compressed objects within 1 object stream
  16 named destinations out of 1000 (max. 500000)
  1046 words of extra memory for PDF output out of 10000 (max. 10000000)
 

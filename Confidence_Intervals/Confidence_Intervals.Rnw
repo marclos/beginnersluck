@@ -33,8 +33,8 @@
 
 \begin{document}
 
-
 \maketitle% this prints the handout title, author, and date
+
 \begin{abstract}
 \noindent One of the most important considerations with univariate data are the development of confidence intervals. As you can probably guess, confidence intervals are based on the distribution of the data. There are two main approaches in developing confidence intervals. One relies on the use of theoretical probability distributions but there are a number of methods that do not rely on theoretical distributions. We will learn several methods because each are used in environmental sciences to varying degrees.
 \end{abstract}
@@ -62,7 +62,7 @@ Confidence intervals can be calculated for a range of statistics, including the 
 	\label{fig:Investor_confidence500}
 \end{marginfigure}
 
-\section{Working an Example}
+\section{Defining Some Terms}
 
 \subsection{Populations and Samples}
 
@@ -72,47 +72,61 @@ A population mean for example is usually referred to by the Greek letter, $\mu$.
 
 \subsection{The difference between $\mu$ and $\bar{x}$}
 
-To illustrate the difference, let's create a dataset of random numbers from a normal distribution with a mean of 1 and standard deviation of 1. 
+To illustrate the difference, let's create a dataset of 1000 random numbers from a normal distribution with a mean of 10 and standard deviation of 1. We'll let this represent an entire population. 
 <<>>=
 set.seed(123)
-N1000 = rnorm(1000, 1, 1)
+N1000 = round(rnorm(1000, 10, 1), 1)
 @
+
+The distribution of the data (Figure~\ref{fig:hist_pop}), resembles a normal distribution, which is reassuring since we created it using a random number generator that uses the normal probability distribution. 
 
 \begin{marginfigure}
 <<echo=FALSE, fig=TRUE>>=
 par(cex=1.7, las=1)
-hist(N1000, main=NA, xlab="Values", xlim=c(-2,5), ylim=c(0,250), breaks=20, col='gray')
+hist(N1000, main=NA, xlab="Values", xlim=c(5,15), ylim=c(0,250), breaks=20, col='gray')
 #box()
 @
 \caption{Frequency distribution of population.}
 \label{fig:hist_pop}
 \end{marginfigure}
 
-These data will represent the population (N) and has a mean or $\mu$ of \Sexpr{round(mean(N1000), 4)}. The values range from \Sexpr{round(range(N1000)[1],2)} to \Sexpr{round(range(N1000)[2],2)} (Figure~\ref{fig:hist_pop}). From this dataset, we sample 10 numbers randomly. 
+These data will represent the population (N) and has a mean or $\mu$ of \Sexpr{round(mean(N1000), 2)}. The values range from \Sexpr{range(N1000)[1]} to \Sexpr{range(N1000)[2]} (Figure~\ref{fig:hist_pop}). From this dataset, we sample 10 numbers randomly. 
 
 <<>>=
+n100 = sample(N1000, 100)
+n20 = sample(N1000, 20)
 n10 = sample(N1000, 10)
+n5 = sample(N1000, 5)
 @
 
-We get the following sample from our population: 
+We get the following sample of ten values from our population: 
 <<>>=
 n10
 @ 
-\noindent and a mean or $\bar{y}$ = \Sexpr{round(mean(n10),3)}. These values certainly fall within the range of values in the population.
+\noindent and a mean or $\bar{y}$ = \Sexpr{round(mean(n10),2)}. These values certainly fall within the range of values in the population.
 
 \subsection{R's Default Boxplot}
 
+One of the confusing aspects for students learn R and statistics at the same time are the range of subtle discrepencies and ways of displaying data. 
+
+For example, the \texttt{boxplot} function in R is easy to make and provides a lot of information, but it's not always clear what is being displayed. 
+
+For example, in Figure~\ref{fig:default_bp}A, the boxplot displays the median, interquarile range, and range. But in many cases, the sample might have some points that seem to be way outside the normal range. In those cases R creates a figure with a more complex set of rules. We won't go into these at this point, but not the differences between Figure~\ref{fig:default_bp}A and Figure~\ref{fig:default_bp}B. 
+
 \begin{figure}
-\caption{Default Boxplot where the following are shown: median =\Sexpr{round(median(n10),2)}; Range = \Sexpr{round(range(n10), 2)}; and interquartile range = \Sexpr{round(quantile(n10)[c(2,4)], 2)}.}
+\caption{Default Boxplot where panel A displays the following information: median =\Sexpr{round(median(n10),2)}; Range = \Sexpr{range(n10)}; and interquartile range = \Sexpr{quantile(n10)[c(2,4)]}. Panel B identifies an ``outlier" using obscure rules and changing the range to exclude the outlier. I included the value of 14.8 with the vector to demonstrate this change. Weird.}
 \label{fig:default_bp}
-<<fig=T, echo=F>>=
-par(las=1, cex=2)
-boxplot(n10, col="yellow", ylim=c(-1, 4))
+<<fig=T, echo=F, height=1>>=
+par(las=1, cex=2, mfrow=c(1,2))
+boxplot(n10, col="yellow", ylim=c(8,15))
+mtext("A", 3, line=1, at=.5, cex=3)
+boxplot(c(n10, 14.8), col="purple", ylim=c(8,15))
+mtext("B", 3, line=1, at=.5, cex=3)
 @
 \end{figure}
 
-Let's see if we can label the graphic directly!
-
+%Let's see if we can label the graphic directly!
+In the end, the boxplot is very useful to quickly summarize the data, but in most cases, we tend to describe the data using a more precise set of measures. The standard deviation is one commonly used example to measure the variability or spread of the data. 
 
 \subsection{Measuring the Spread}
 
@@ -122,7 +136,47 @@ We can calculate the variance of the sample using the following formula:
 s^2 = \frac{\sum(y_i - \bar{y})^2}{n-1}
 \end{equation}
 
-\noindent (\Sexpr{round(var(n10), 3)}) and the standard deviation (\Sexpr{round(sd(n10), 3)}), which is the square root of $s^2$. Then, we can calculate the standard error of the sample using the following equation: 
+Let's apply this equation, so you can see how it works!
+
+First, we'll take the difference between a measurment and the mean.\sidenote{We will use the vector index to subset each variable -- see ``Blue Book'' for indexing if you want more information on this procedure.} Let's start with the first.
+<<>>=
+n10[1] - mean(n10)
+@
+
+Next we square the difference
+<<>>=
+(n10[1] - mean(n10))^2
+@
+\noindent Now we'll do this for each of the remaining observations:
+<<>>=
+(n10[2] - mean(n10))^2
+(n10[3] - mean(n10))^2
+(n10[4] - mean(n10))^2
+(n10[4] - mean(n10))^2
+@
+These are "deviates." Then we add the deviates together (which is what the $\Sigma$ symbol is tell us to do). We'll call the sum of squeared deviates:
+
+<<>>=
+(sum_of_squared_deviates = (n10[1] - mean(n10))^2 + (n10[2] - mean(n10))^2 + (n10[3] - mean(n10))^2 + (n10[4] - mean(n10))^2 + (n10[5] - mean(n10))^2 +
+(n10[6] - mean(n10))^2 + (n10[7] - mean(n10))^2 + (n10[8] - mean(n10))^2 + (n10[9] - mean(n10))^2 + (n10[10] - mean(n10))^2)
+@
+
+We take the sum of these and devide by the degrees of freedom.\sidenote{Degree of freedom is extremely complicated to explain without tons of theory. For now, just rest assured that it works. If we have time, we'll delve into this more.}
+
+<<>>=
+sum_of_squared_deviates/(10-1); var(n10)
+sqrt(sum_of_squared_deviates/(10-1)); sd(n10)
+@
+\noindent Thankfully, we don't need to use all of this tedious code to generate the variance and standard deviation. We can use \texttt{var()} and \texttt{sd()}. 
+<<>>=
+var(n10)
+sd(n10)
+@
+
+\noindent This value is the sample variance. 
+The $s^2$ for our sample is \Sexpr{round(var(n10), 2)}. The standard deviation is the $\sqrt(s^2)$ or just $s$. For our sample, the standard deviation is \Sexpr{round(sd(n10), 2)}. 
+
+Then, we can calculate the standard error of the sample using the following equation: 
 
 \begin{equation}
 \textrm{Standard Error of the Sample} = SE_s = \sigma/\sqrt{n}
@@ -136,9 +190,25 @@ sem<-sd(n10)/sqrt(length(n10))
 
 NOTE: If the sample size approaches the size of the population, we must use a "finite-population correction". Apparently the Central Limit Theorum gets wonky and the correction factor ensures better estimates. We don't need to worry about in in our case.
 
-\section{Selecting $\alpha$: The Level of Confidence}
+Now, it's important to note that we have calculated sample estimates. We can also calculate the population parameters as well.
 
-First, it is important to note that the selection of the interval depends on your decision as to what level of confidence you want. Since probability ranges from 0 to 1, the confidence intervals of the parameter can also vary within this range. However, we usually are trying to constrain the confidence interval to something narrow, for example, we usually specify confidence intervals of 0.90, 0.95, and 0.99. For normally distributed data the standard deviation has some extra information, namely the 68-95-99.7 rule which tells us the percentage of data lying within 1, 2 or 3 standard deviation from the mean.
+\begin{table}
+\begin{tabular}{lllr}
+Parameter    &  Symbol  & Formula   & Population value \\ \hline\hline
+Mean        & $\mu$     & $\Sigma x_i/n$ & \Sexpr{round(mean(N1000), 2)} \\
+Variance        & $\sigma^2$     & $\Sigma(x_i-\mu)^2/n$ & \Sexpr{round(var(N1000), 2)} \\
+Standard Deviation        & $\sigma$     & $\sqrt(\Sigma(x_i-\mu)^2/n)$ & \Sexpr{round(sd(N1000), 2)} \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{The Standard Deviation versus Standard Error}
+
+The terms ``standard error'' and ``standard deviation'' are often confused. The contrast between these two terms reflects the important distinction between data description and inference, one that all researchers should appreciate.
+
+For normally distributed data the standard deviation has some extra information, namely the 68-95-99.7 rule which tells us the percentage of data lying within 1, 2 or 3 standard deviation from the mean. More on this below.
+
+The standard deviation (often $s$) is a measure of variability. When we calculate the standard deviation of a sample (which we did above), we are using it as an \textbf{estimate of the variability of the population} from which the sample was drawn. For data with a normal distribution, about 95\% of individuals will have values within 2 standard deviations of the mean, the other \% being equally scattered above and below these limits. Contrary to popular misconception, the standard deviation is a valid measure of variability regardless of the distribution. About 95\% of observations of any distribution usually fall within the 2 standard deviation limits, though those outside may all be at one end. We may choose a different summary statistic, however, when data have a skewed distribution.
 
 \begin{figure*}
 <<echo=FALSE, fig=TRUE, fig.height=3>>=
@@ -156,6 +226,14 @@ segments(x0 = c(0,2),y0 = c(0,0),x1 = c(0,2),y1=c(0.25,0.25))
 text(x=1,y=0.15, cex=.8, labels = expression("68% of the data within 1" * sigma))
 @
 \end{figure*}
+
+When we calculate the sample mean we are usually interested not in the mean of this particular sample, but in the mean for individuals of this type—in statistical terms, of the population from which the sample comes. We usually collect data in order to generalise from them and so use the sample mean as an estimate of the mean for the whole population. Now the sample mean will vary from sample to sample; the way this variation occurs is described by the ``sampling distribution'' of the mean. We can estimate how much sample means will vary from the standard deviation of this sampling distribution, which we call the standard error (SE) of the estimate of the mean. As the standard error is a type of standard deviation, confusion is understandable. Another way of considering the \textbf{standard error is as a measure of the precision of the sample mean}.
+
+The standard error of the sample mean depends on both the standard deviation and the sample size, by the simple relation $SE = SD/\sqrt{sample size}$. The standard error falls as the sample size increases, as the extent of chance variation is reduced—this idea underlies the sample size calculation for a controlled trial, for example. By contrast the standard deviation will not tend to change as we increase the size of our sample.
+
+\section{Selecting $\alpha$: The Level of Confidence}
+
+First, it is important to note that the selection of the interval depends on your decision as to what level of confidence you want. Since probability ranges from 0 to 1, the confidence intervals of the parameter can also vary within this range. However, we usually are trying to constrain the confidence interval to something narrow, for example, we usually specify confidence intervals of 0.90, 0.95, and 0.99. 
 
 
 In the context of a probability density function, these levels correspond to percentages of the area of the normal density curve. For example, a 95\% confidence interval covers 95\% of the normal curve -- the probability of observing a value outside of this area is less than 0.05. So, following standards in statistics, we use $\alpha$ to signify the as the criteria, such that
@@ -240,26 +318,6 @@ Sorted.Confidence <- droplevels(Sorted.Confidence)
 
 Now, we are going to use the t-distribution instead of our estimates so we can create exact probabilities. 
 
-\subsection{Normal versus the t-Distribution}
-
-For demonstration purposes, we should compare the standard normal distribution to the t-distribuition so we understand what the implications of ditribution might mean in hypothesis testing!
-
-<<>>=
-xrange = seq(-4, 4, by=.02)
-plot(xrange, dnorm(xrange, 0, sd=1), ty='l', ylim=c(0,.4), xlim=c(-4,4))
-
-lines(xrange, dt(xrange, df=1), ty='l', col='red')
-lines(xrange, dt(xrange, df=3), ty='l', col='orange')
-lines(xrange, dt(xrange, df=10), ty='l', col='blue')
-
-
-@
-
-Notice that the t-distribution is squatter in the middle and fatter at the edges. This means there is more probability "area" at the ends. But as you approach the n=20, the curves are increasingly overlapping. 
-
-Let's create a legend for this...
-
-
 \subsection{Calculating a Parametric Confidence Interval}
 
 To explore our waste audit data, we will determine the 95\% confidence intervals for the mean for each mean. As usual there are dozens of way to accomplish this, but for now, let's start by getting a t-statistic by our is that we use our $\alpha$ value of 0.05. Since we calculate CI for the lower and upper limit, we need to split the probability in half and determine the intervals for 0.025 and 0.975 of the probably distribution.  
@@ -312,6 +370,115 @@ legend(2, 95, legend=c("Recycling", "Trash"),
        col=c("darkgreen", "red"), pch=c(19, 2), cex=.8, bty='n')
 @	
 \end{figure*}
+
+
+\section{Confidence Intervals}
+
+\subsection{Steps to Create Confidence Intervals}
+This example assumes that the samples are drawn from a Normal distribution. The basic procedure for calculating a confidence interval for a population mean is as follows:
+\begin{enumerate}
+  \item Identify the sample mean, $\bar{x}$.
+  
+  \item Identify whether the population standard deviation is known, $\sigma$, or is unknown and is estimated by the sample standard deviation $s$.
+  
+  \begin{itemize}
+    \item If the population standard deviation is known then $z^{*}=\Phi ^{-1}\left(1-{\frac {\alpha }{2}}\right)=-\Phi ^{-1}\left({\frac {\alpha }{2}}\right)$, where $C=100(1-\alpha)$ is the confidence level and $\Phi$  is the CDF of the standard normal distribution, used as the critical value. This value is only dependent on the confidence level for the test. Typical two sided confidence levels are:
+    
+\begin{table}
+\begin{tabular}{ll}
+C	    & z* \\ \hline
+99\%	  & 2.576 \\
+98\%	  & 2.326 \\
+95\%	  & 1.96 \\
+90\%	  & 1.645 \\
+\end{tabular}
+\end{table}
+
+\item If the population standard deviation is unknown then the Student's t distribution is used as the critical value. This value is dependent on the confidence level ($C$) for the test and degrees of freedom. The degrees of freedom are found by subtracting one from the number of observations, $n − 1$. The critical value is found from the t-distribution table. In this table the critical value is written as $t^{*}=t_{\alpha }(r)$, where $r$ is the degrees of freedom and $\alpha ={1-C \over 2}$.
+
+  \end{itemize}
+
+\item Plug the found values into the appropriate equations:
+
+\begin{itemize}
+  \item For a known standard deviation: $\left({\bar {x}}-z^{*}{\sigma \over {\sqrt {n}}},{\bar {x}}+z^{*}{\sigma \over {\sqrt {n}}}\right)$
+
+  \item For an unknown standard deviation: $\displaystyle \left({\bar {x}}-t^{*}{s \over {\sqrt {n}}},{\bar {x}}+t^{*}{s \over {\sqrt {n}}}\right)$
+\end{itemize}
+
+\end{enumerate}
+
+
+\subsection{Normal versus the t-Distribution}
+
+For demonstration purposes, we should compare the standard normal distribution to the t-distribuition so we understand what the implications of ditribution might mean in hypothesis testing!
+
+\begin{figure}
+<<fig=TRUE>>=
+xrange = seq(-4, 4, by=.02)
+plot(xrange, dnorm(xrange, 0, sd=1), ty='l', ylim=c(0,.4), xlim=c(-4,4))
+
+lines(xrange, dt(xrange, df=1), ty='l', col='red')
+lines(xrange, dt(xrange, df=3), ty='l', col='orange')
+lines(xrange, dt(xrange, df=10), ty='l', col='blue')
+@
+\end{figure}
+
+Notice that the t-distribution is squatter in the middle and fatter at the edges. This means there is more probability ``area'' at the ends. But as you approach the n=20, the curves are increasingly overlapping.
+
+\subsection{Calculating Confidence Intervals with known $\sigma^2$.}
+
+Because we have the values for the entire population, we can estimate confidence intervals using the normal distribution (z* scores) using the formula above. 
+
+We'll create confidence intervals using our $n$=100 sample. 
+
+The $\bar{x}$ = \Sexpr{round(mean(n100), 2)} and $\sigma$ = \Sexpr{sd(N1000)}. First, we'll create a function to calculate our confidence intervals that has the following inputs: sample vector, level of confidence ($\alpha$), and $\mu$.
+
+<<>>=
+cl<- function(sample, alpha, sigma){
+  sem <- sigma/sqrt(length(sample))
+  ucl <- mean(sample) + qnorm(1-alpha/2)*sem  
+  lcl <- mean(sample) - qnorm(1-alpha/2)*sem  
+  ci <- c(lcl, ucl)
+  return(ci)
+}
+
+(cl95.n100 <- cl(n100, 0.05, sd(N1000)))
+xvalues = seq(6,14,.1)
+plot(xvalues, dnorm(xvalues, mean(n100), sd(n100)), ty='l')
+abline(v=mean(n100))
+abline(v=cl95.n100[1], col='grey')
+abline(v=cl95.n100[2], col='grey')
+@
+
+\section{How does n influence confidence intervals?}
+
+<<>>=
+(cl95.n20 <- cl(n20, 0.05, sd(N1000)))
+(cl95.n20 <- cl(n20, 0.05, sd(N1000)))
+(cl95.n5 <- cl(n5, 0.05, sd(N1000)))
+
+xvalues = seq(6,14,.1)
+plot(xvalues, dnorm(xvalues, mean(n100), sd(n100)), ty='l', col='green', ylim=c(0, 0.6))
+abline(v=mean(n100), col='green')
+abline(v=cl95.n100[1], col='green')
+abline(v=cl95.n100[2], col='green')
+
+lines(xvalues, dnorm(xvalues, mean(n20), sd(n20)), ty='l', col='blue')
+abline(v=cl95.n20[1], col='blue')
+abline(v=cl95.n20[2], col='blue')
+
+lines(xvalues, dnorm(xvalues, mean(n5), sd(n5)), ty='l', col='red')
+abline(v=cl95.n5[1], col='red')
+abline(v=cl95.n5[2], col='red')
+@
+
+\subsection{Confidence Intervals with an unknown $\sigma$}
+
+<<>>=
+qt((1-.95)/2, 4)*sd(n5)/sqrt(5)+mean(n5)
+@
+@
 
 
 \clearpage

@@ -74,19 +74,27 @@ Learning statistics is challenging and teaching it even more so. But I'm convinc
 There are tons of resources to complete this assigment. For example, I have several statistics textbooks that might help you figure out how to talk about confidence intervals. 
 There are numerous cheatsheets avaialble, which you can get from Rstudio (\texttt{Help/Cheetsheets}) or from Sakai (\texttt{Resources/Project 0 General Resources/Software Resources}).
 
+I also suggest some good video, e.g. Khan Academy:
+
+\begin{itemize}
+  \item \href{https://www.khanacademy.org/math/ap-statistics/estimating-confidence-ap/introduction-confidence-intervals/v/confidence-intervals-and-margin-of-error}{Confidence intervals for proprotions}.
+  \item \href{https://www.youtube.com/watch?v=tFWsuO9f74o}{Understanding Confidence Intervals: Statistics Help}
+\end{itemize}
+
+
 Finally, there are some good (and some terrible -- Read: Wrong) resources on the web as well. 
 
 \subsection{Assignment Steps}
 
 \begin{enumerate}
-  \item (1 pnt) Successfully Use R-studio to create a pdf from markdown; 
-  \item (1 pnt) Use your random number for the author name AND the file name;
-  \item (1 pnt) Describe what a confidence interval is and how it depends on probability distributions; 
+  \item (1 pnt) Successfully use R-studio to create a pdf from markdown;\sidenote{To open a markdown file, go to `File/New File/R Markdown'. This will open a template for you to modify.}
+  \item (1 pnt) Create a title, e.g. ``Guide on Confidence Intervals for the Perplexed", or ``What is a Confidence Interval.'' You can changes these later if you want. Use your random number for the author name. Then select pdf to make sure your output is a pdf. You can changes these later so don't worry if you don't like your title or some other choice.
+  \item (1 pnt) Replace the template text with a description of what is a confidence interval and how it depends on probability distributions; 
   \item (1 pnt) Describe ``how'' we talk about confidence intervals, relative to the population and sample means;
-  \item (1 pnt) Generate a vector of 5 random numbers with a mean of 10 and standard deviation of 1;
+  \item (1 pnt) Generate a vector of 5 random numbers with a mean of 10 and standard deviation of 1;\sidenote{You should use \texttt{rnorm()} to accomplish this.}
   \item (1 pnt) Report the sample mean and standard deviation;
   \item (2 pnts) Calculate the confidence intervals for 95\% and 90\% and how we should report the results correctly in each case.
-  \item (2 pnts) Create a probability distribution that shows the confidence intervals. This is the hardest part and relies on create a probability density curve (i.e. \texttt{dnorm()}). 
+  \item (2 pnts) Create a probability distribution that shows the confidence intervals. This is the hardest part and relies on create a probability density curve. \sidenote{In my example this requires the use of \texttt{dnorm()}), where you'll need to create a dummy set of x values that encompose most of the potential x's in a sample and plot that relative to the height of the probability, calculated by\texttt{ dnorm()}.}. 
   
 \end{enumerate}
 

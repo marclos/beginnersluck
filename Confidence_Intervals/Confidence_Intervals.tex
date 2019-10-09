@@ -83,8 +83,8 @@
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
-
 \maketitle% this prints the handout title, author, and date
+
 \begin{abstract}
 \noindent One of the most important considerations with univariate data are the development of confidence intervals. As you can probably guess, confidence intervals are based on the distribution of the data. There are two main approaches in developing confidence intervals. One relies on the use of theoretical probability distributions but there are a number of methods that do not rely on theoretical distributions. We will learn several methods because each are used in environmental sciences to varying degrees.
 \end{abstract}
@@ -109,7 +109,7 @@ Confidence intervals can be calculated for a range of statistics, including the 
 	\label{fig:Investor_confidence500}
 \end{marginfigure}
 
-\section{Working an Example}
+\section{Defining Some Terms}
 
 \subsection{Populations and Samples}
 
@@ -119,15 +119,17 @@ A population mean for example is usually referred to by the Greek letter, $\mu$.
 
 \subsection{The difference between $\mu$ and $\bar{x}$}
 
-To illustrate the difference, let's create a dataset of random numbers from a normal distribution with a mean of 1 and standard deviation of 1. 
+To illustrate the difference, let's create a dataset of 1000 random numbers from a normal distribution with a mean of 10 and standard deviation of 1. We'll let this represent an entire population. 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{set.seed}\hlstd{(}\hlnum{123}\hlstd{)}
-\hlstd{N1000} \hlkwb{=} \hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{)}
+\hlstd{N1000} \hlkwb{=} \hlkwd{round}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{,} \hlnum{10}\hlstd{,} \hlnum{1}\hlstd{),} \hlnum{1}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
+
+The distribution of the data (Figure~\ref{fig:hist_pop}), resembles a normal distribution, which is reassuring since we created it using a random number generator that uses the normal probability distribution. 
 
 \begin{marginfigure}
 \begin{knitrout}
@@ -139,34 +141,42 @@ To illustrate the difference, let's create a dataset of random numbers from a no
 \label{fig:hist_pop}
 \end{marginfigure}
 
-These data will represent the population (N) and has a mean or $\mu$ of 1.0161. The values range from -1.81 to 4.24 (Figure~\ref{fig:hist_pop}). From this dataset, we sample 10 numbers randomly. 
+These data will represent the population (N) and has a mean or $\mu$ of 10.02. The values range from 7.2 to 13.2 (Figure~\ref{fig:hist_pop}). From this dataset, we sample 10 numbers randomly. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
+\hlstd{n100} \hlkwb{=} \hlkwd{sample}\hlstd{(N1000,} \hlnum{100}\hlstd{)}
+\hlstd{n20} \hlkwb{=} \hlkwd{sample}\hlstd{(N1000,} \hlnum{20}\hlstd{)}
 \hlstd{n10} \hlkwb{=} \hlkwd{sample}\hlstd{(N1000,} \hlnum{10}\hlstd{)}
+\hlstd{n5} \hlkwb{=} \hlkwd{sample}\hlstd{(N1000,} \hlnum{5}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
-We get the following sample from our population: 
+We get the following sample of ten values from our population: 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{n10}
 \end{alltt}
 \begin{verbatim}
-##  [1]  0.6254191 -0.6015362  3.1001089  1.8824652  0.8942158
-##  [6]  0.9839975  0.3548860  2.5164706  2.7150650 -0.2847157
+##  [1] 10.2 11.4 10.1  9.3  9.8  9.4 10.6 11.0 10.4 10.0
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-\noindent and a mean or $\bar{y}$ = 1.219. These values certainly fall within the range of values in the population.
+\noindent and a mean or $\bar{y}$ = 10.22. These values certainly fall within the range of values in the population.
 
 \subsection{R's Default Boxplot}
 
+One of the confusing aspects for students learn R and statistics at the same time are the range of subtle discrepencies and ways of displaying data. 
+
+For example, the \texttt{boxplot} function in R is easy to make and provides a lot of information, but it's not always clear what is being displayed. 
+
+For example, in Figure~\ref{fig:default_bp}A, the boxplot displays the median, interquarile range, and range. But in many cases, the sample might have some points that seem to be way outside the normal range. In those cases R creates a figure with a more complex set of rules. We won't go into these at this point, but not the differences between Figure~\ref{fig:default_bp}A and Figure~\ref{fig:default_bp}B. 
+
 \begin{figure}
-\caption{Default Boxplot where the following are shown: median =0.94; Range = -0.6, 3.1; and interquartile range = 0.42, 2.36.}
+\caption{Default Boxplot where panel A displays the following information: median =10.15; Range = 9.3, 11.4; and interquartile range = 9.85, 10.55. Panel B identifies an ``outlier" using obscure rules and changing the range to exclude the outlier. I included the value of 14.8 with the vector to demonstrate this change. Weird.}
 \label{fig:default_bp}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
@@ -175,8 +185,8 @@ We get the following sample from our population:
 \end{knitrout}
 \end{figure}
 
-Let's see if we can label the graphic directly!
-
+%Let's see if we can label the graphic directly!
+In the end, the boxplot is very useful to quickly summarize the data, but in most cases, we tend to describe the data using a more precise set of measures. The standard deviation is one commonly used example to measure the variability or spread of the data. 
 
 \subsection{Measuring the Spread}
 
@@ -186,7 +196,116 @@ We can calculate the variance of the sample using the following formula:
 s^2 = \frac{\sum(y_i - \bar{y})^2}{n-1}
 \end{equation}
 
-\noindent (1.637) and the standard deviation (1.28), which is the square root of $s^2$. Then, we can calculate the standard error of the sample using the following equation: 
+Let's apply this equation, so you can see how it works!
+
+First, we'll take the difference between a measurment and the mean.\sidenote{We will use the vector index to subset each variable -- see ``Blue Book'' for indexing if you want more information on this procedure.} Let's start with the first.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{n10[}\hlnum{1}\hlstd{]} \hlopt{-} \hlkwd{mean}\hlstd{(n10)}
+\end{alltt}
+\begin{verbatim}
+## [1] -0.02
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Next we square the difference
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{(n10[}\hlnum{1}\hlstd{]} \hlopt{-} \hlkwd{mean}\hlstd{(n10))}\hlopt{^}\hlnum{2}
+\end{alltt}
+\begin{verbatim}
+## [1] 4e-04
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\noindent Now we'll do this for each of the remaining observations:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{(n10[}\hlnum{2}\hlstd{]} \hlopt{-} \hlkwd{mean}\hlstd{(n10))}\hlopt{^}\hlnum{2}
+\end{alltt}
+\begin{verbatim}
+## [1] 1.3924
+\end{verbatim}
+\begin{alltt}
+\hlstd{(n10[}\hlnum{3}\hlstd{]} \hlopt{-} \hlkwd{mean}\hlstd{(n10))}\hlopt{^}\hlnum{2}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.0144
+\end{verbatim}
+\begin{alltt}
+\hlstd{(n10[}\hlnum{4}\hlstd{]} \hlopt{-} \hlkwd{mean}\hlstd{(n10))}\hlopt{^}\hlnum{2}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.8464
+\end{verbatim}
+\begin{alltt}
+\hlstd{(n10[}\hlnum{4}\hlstd{]} \hlopt{-} \hlkwd{mean}\hlstd{(n10))}\hlopt{^}\hlnum{2}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.8464
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+These are "deviates." Then we add the deviates together (which is what the $\Sigma$ symbol is tell us to do). We'll call the sum of squeared deviates:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{(sum_of_squared_deviates} \hlkwb{=} \hlstd{(n10[}\hlnum{1}\hlstd{]} \hlopt{-} \hlkwd{mean}\hlstd{(n10))}\hlopt{^}\hlnum{2} \hlopt{+} \hlstd{(n10[}\hlnum{2}\hlstd{]} \hlopt{-} \hlkwd{mean}\hlstd{(n10))}\hlopt{^}\hlnum{2} \hlopt{+} \hlstd{(n10[}\hlnum{3}\hlstd{]} \hlopt{-} \hlkwd{mean}\hlstd{(n10))}\hlopt{^}\hlnum{2} \hlopt{+} \hlstd{(n10[}\hlnum{4}\hlstd{]} \hlopt{-} \hlkwd{mean}\hlstd{(n10))}\hlopt{^}\hlnum{2} \hlopt{+} \hlstd{(n10[}\hlnum{5}\hlstd{]} \hlopt{-} \hlkwd{mean}\hlstd{(n10))}\hlopt{^}\hlnum{2} \hlopt{+}
+\hlstd{(n10[}\hlnum{6}\hlstd{]} \hlopt{-} \hlkwd{mean}\hlstd{(n10))}\hlopt{^}\hlnum{2} \hlopt{+} \hlstd{(n10[}\hlnum{7}\hlstd{]} \hlopt{-} \hlkwd{mean}\hlstd{(n10))}\hlopt{^}\hlnum{2} \hlopt{+} \hlstd{(n10[}\hlnum{8}\hlstd{]} \hlopt{-} \hlkwd{mean}\hlstd{(n10))}\hlopt{^}\hlnum{2} \hlopt{+} \hlstd{(n10[}\hlnum{9}\hlstd{]} \hlopt{-} \hlkwd{mean}\hlstd{(n10))}\hlopt{^}\hlnum{2} \hlopt{+} \hlstd{(n10[}\hlnum{10}\hlstd{]} \hlopt{-} \hlkwd{mean}\hlstd{(n10))}\hlopt{^}\hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 3.936
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+We take the sum of these and devide by the degrees of freedom.\sidenote{Degree of freedom is extremely complicated to explain without tons of theory. For now, just rest assured that it works. If we have time, we'll delve into this more.}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{sum_of_squared_deviates}\hlopt{/}\hlstd{(}\hlnum{10}\hlopt{-}\hlnum{1}\hlstd{);} \hlkwd{var}\hlstd{(n10)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.4373333
+## [1] 0.4373333
+\end{verbatim}
+\begin{alltt}
+\hlkwd{sqrt}\hlstd{(sum_of_squared_deviates}\hlopt{/}\hlstd{(}\hlnum{10}\hlopt{-}\hlnum{1}\hlstd{));} \hlkwd{sd}\hlstd{(n10)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.6613118
+## [1] 0.6613118
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\noindent Thankfully, we don't need to use all of this tedious code to generate the variance and standard deviation. We can use \texttt{var()} and \texttt{sd()}. 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{var}\hlstd{(n10)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.4373333
+\end{verbatim}
+\begin{alltt}
+\hlkwd{sd}\hlstd{(n10)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.6613118
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\noindent This value is the sample variance. 
+The $s^2$ for our sample is 0.44. The standard deviation is the $\sqrt(s^2)$ or just $s$. For our sample, the standard deviation is 0.66. 
+
+Then, we can calculate the standard error of the sample using the following equation: 
 
 \begin{equation}
 \textrm{Standard Error of the Sample} = SE_s = \sigma/\sqrt{n}
@@ -204,17 +323,41 @@ s^2 = \frac{\sum(y_i - \bar{y})^2}{n-1}
 
 NOTE: If the sample size approaches the size of the population, we must use a "finite-population correction". Apparently the Central Limit Theorum gets wonky and the correction factor ensures better estimates. We don't need to worry about in in our case.
 
-\section{Selecting $\alpha$: The Level of Confidence}
+Now, it's important to note that we have calculated sample estimates. We can also calculate the population parameters as well.
 
-First, it is important to note that the selection of the interval depends on your decision as to what level of confidence you want. Since probability ranges from 0 to 1, the confidence intervals of the parameter can also vary within this range. However, we usually are trying to constrain the confidence interval to something narrow, for example, we usually specify confidence intervals of 0.90, 0.95, and 0.99. For normally distributed data the standard deviation has some extra information, namely the 68-95-99.7 rule which tells us the percentage of data lying within 1, 2 or 3 standard deviation from the mean.
+\begin{table}
+\begin{tabular}{lllr}
+Parameter    &  Symbol  & Formula   & Population value \\ \hline\hline
+Mean        & $\mu$     & $\Sigma x_i/n$ & 10.02 \\
+Variance        & $\sigma^2$     & $\Sigma(x_i-\mu)^2/n$ & 0.99 \\
+Standard Deviation        & $\sigma$     & $\sqrt(\Sigma(x_i-\mu)^2/n)$ & 0.99 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{The Standard Deviation versus Standard Error}
+
+The terms ``standard error'' and ``standard deviation'' are often confused. The contrast between these two terms reflects the important distinction between data description and inference, one that all researchers should appreciate.
+
+For normally distributed data the standard deviation has some extra information, namely the 68-95-99.7 rule which tells us the percentage of data lying within 1, 2 or 3 standard deviation from the mean. More on this below.
+
+The standard deviation (often $s$) is a measure of variability. When we calculate the standard deviation of a sample (which we did above), we are using it as an \textbf{estimate of the variability of the population} from which the sample was drawn. For data with a normal distribution, about 95\% of individuals will have values within 2 standard deviations of the mean, the other \% being equally scattered above and below these limits. Contrary to popular misconception, the standard deviation is a valid measure of variability regardless of the distribution. About 95\% of observations of any distribution usually fall within the 2 standard deviation limits, though those outside may all be at one end. We may choose a different summary statistic, however, when data have a skewed distribution.
 
 \begin{figure*}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-8-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-14-1} 
 
 \end{knitrout}
 \end{figure*}
+
+When we calculate the sample mean we are usually interested not in the mean of this particular sample, but in the mean for individuals of this type—in statistical terms, of the population from which the sample comes. We usually collect data in order to generalise from them and so use the sample mean as an estimate of the mean for the whole population. Now the sample mean will vary from sample to sample; the way this variation occurs is described by the ``sampling distribution'' of the mean. We can estimate how much sample means will vary from the standard deviation of this sampling distribution, which we call the standard error (SE) of the estimate of the mean. As the standard error is a type of standard deviation, confusion is understandable. Another way of considering the \textbf{standard error is as a measure of the precision of the sample mean}.
+
+The standard error of the sample mean depends on both the standard deviation and the sample size, by the simple relation $SE = SD/\sqrt{sample size}$. The standard error falls as the sample size increases, as the extent of chance variation is reduced—this idea underlies the sample size calculation for a controlled trial, for example. By contrast the standard deviation will not tend to change as we increase the size of our sample.
+
+\section{Selecting $\alpha$: The Level of Confidence}
+
+First, it is important to note that the selection of the interval depends on your decision as to what level of confidence you want. Since probability ranges from 0 to 1, the confidence intervals of the parameter can also vary within this range. However, we usually are trying to constrain the confidence interval to something narrow, for example, we usually specify confidence intervals of 0.90, 0.95, and 0.99. 
 
 
 In the context of a probability density function, these levels correspond to percentages of the area of the normal density curve. For example, a 95\% confidence interval covers 95\% of the normal curve -- the probability of observing a value outside of this area is less than 0.05. So, following standards in statistics, we use $\alpha$ to signify the as the criteria, such that
@@ -263,7 +406,7 @@ Anyone who has worked with quantitiative data knows that data entry errors can b
 \label{fig:percent_bp}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-11-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-17-1} 
 
 \end{knitrout}
 \end{figure*}
@@ -349,30 +492,6 @@ In the case of Figure~\ref{fig:percent_bp}, we can easily see that there is a pr
 
 Now, we are going to use the t-distribution instead of our estimates so we can create exact probabilities. 
 
-\subsection{Normal versus the t-Distribution}
-
-For demonstration purposes, we should compare the standard normal distribution to the t-distribuition so we understand what the implications of ditribution might mean in hypothesis testing!
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{xrange} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlopt{-}\hlnum{4}\hlstd{,} \hlnum{4}\hlstd{,} \hlkwc{by}\hlstd{=}\hlnum{.02}\hlstd{)}
-\hlkwd{plot}\hlstd{(xrange,} \hlkwd{dnorm}\hlstd{(xrange,} \hlnum{0}\hlstd{,} \hlkwc{sd}\hlstd{=}\hlnum{1}\hlstd{),} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{,} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{.4}\hlstd{),} \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{4}\hlstd{,}\hlnum{4}\hlstd{))}
-
-\hlkwd{lines}\hlstd{(xrange,} \hlkwd{dt}\hlstd{(xrange,} \hlkwc{df}\hlstd{=}\hlnum{1}\hlstd{),} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)}
-\hlkwd{lines}\hlstd{(xrange,} \hlkwd{dt}\hlstd{(xrange,} \hlkwc{df}\hlstd{=}\hlnum{3}\hlstd{),} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'orange'}\hlstd{)}
-\hlkwd{lines}\hlstd{(xrange,} \hlkwd{dt}\hlstd{(xrange,} \hlkwc{df}\hlstd{=}\hlnum{10}\hlstd{),} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'blue'}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-14-1} 
-
-\end{knitrout}
-
-Notice that the t-distribution is squatter in the middle and fatter at the edges. This means there is more probability "area" at the ends. But as you approach the n=20, the curves are increasingly overlapping. 
-
-Let's create a legend for this...
-
-
 \subsection{Calculating a Parametric Confidence Interval}
 
 To explore our waste audit data, we will determine the 95\% confidence intervals for the mean for each mean. As usual there are dozens of way to accomplish this, but for now, let's start by getting a t-statistic by our is that we use our $\alpha$ value of 0.05. Since we calculate CI for the lower and upper limit, we need to split the probability in half and determine the intervals for 0.025 and 0.975 of the probably distribution.  
@@ -425,10 +544,163 @@ We begin by using the t-Distribution, which is a specialized case of the normal 
        \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"darkgreen"}\hlstd{,} \hlstr{"red"}\hlstd{),} \hlkwc{pch}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{19}\hlstd{,} \hlnum{2}\hlstd{),} \hlkwc{cex}\hlstd{=}\hlnum{.8}\hlstd{,} \hlkwc{bty}\hlstd{=}\hlstr{'n'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-16-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-21-1} 
 
 \end{knitrout}
 \end{figure*}
+
+
+\section{Confidence Intervals}
+
+\subsection{Steps to Create Confidence Intervals}
+This example assumes that the samples are drawn from a Normal distribution. The basic procedure for calculating a confidence interval for a population mean is as follows:
+\begin{enumerate}
+  \item Identify the sample mean, $\bar{x}$.
+  
+  \item Identify whether the population standard deviation is known, $\sigma$, or is unknown and is estimated by the sample standard deviation $s$.
+  
+  \begin{itemize}
+    \item If the population standard deviation is known then $z^{*}=\Phi ^{-1}\left(1-{\frac {\alpha }{2}}\right)=-\Phi ^{-1}\left({\frac {\alpha }{2}}\right)$, where $C=100(1-\alpha)$ is the confidence level and $\Phi$  is the CDF of the standard normal distribution, used as the critical value. This value is only dependent on the confidence level for the test. Typical two sided confidence levels are:
+    
+\begin{table}
+\begin{tabular}{ll}
+C	    & z* \\ \hline
+99\%	  & 2.576 \\
+98\%	  & 2.326 \\
+95\%	  & 1.96 \\
+90\%	  & 1.645 \\
+\end{tabular}
+\end{table}
+
+\item If the population standard deviation is unknown then the Student's t distribution is used as the critical value. This value is dependent on the confidence level ($C$) for the test and degrees of freedom. The degrees of freedom are found by subtracting one from the number of observations, $n − 1$. The critical value is found from the t-distribution table. In this table the critical value is written as $t^{*}=t_{\alpha }(r)$, where $r$ is the degrees of freedom and $\alpha ={1-C \over 2}$.
+
+  \end{itemize}
+
+\item Plug the found values into the appropriate equations:
+
+\begin{itemize}
+  \item For a known standard deviation: $\left({\bar {x}}-z^{*}{\sigma \over {\sqrt {n}}},{\bar {x}}+z^{*}{\sigma \over {\sqrt {n}}}\right)$
+
+  \item For an unknown standard deviation: $\displaystyle \left({\bar {x}}-t^{*}{s \over {\sqrt {n}}},{\bar {x}}+t^{*}{s \over {\sqrt {n}}}\right)$
+\end{itemize}
+
+\end{enumerate}
+
+
+\subsection{Normal versus the t-Distribution}
+
+For demonstration purposes, we should compare the standard normal distribution to the t-distribuition so we understand what the implications of ditribution might mean in hypothesis testing!
+
+\begin{figure}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{xrange} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlopt{-}\hlnum{4}\hlstd{,} \hlnum{4}\hlstd{,} \hlkwc{by}\hlstd{=}\hlnum{.02}\hlstd{)}
+\hlkwd{plot}\hlstd{(xrange,} \hlkwd{dnorm}\hlstd{(xrange,} \hlnum{0}\hlstd{,} \hlkwc{sd}\hlstd{=}\hlnum{1}\hlstd{),} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{,} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{.4}\hlstd{),} \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{4}\hlstd{,}\hlnum{4}\hlstd{))}
+
+\hlkwd{lines}\hlstd{(xrange,} \hlkwd{dt}\hlstd{(xrange,} \hlkwc{df}\hlstd{=}\hlnum{1}\hlstd{),} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)}
+\hlkwd{lines}\hlstd{(xrange,} \hlkwd{dt}\hlstd{(xrange,} \hlkwc{df}\hlstd{=}\hlnum{3}\hlstd{),} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'orange'}\hlstd{)}
+\hlkwd{lines}\hlstd{(xrange,} \hlkwd{dt}\hlstd{(xrange,} \hlkwc{df}\hlstd{=}\hlnum{10}\hlstd{),} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'blue'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-22-1} 
+
+\end{knitrout}
+\end{figure}
+
+Notice that the t-distribution is squatter in the middle and fatter at the edges. This means there is more probability ``area'' at the ends. But as you approach the n=20, the curves are increasingly overlapping.
+
+\subsection{Calculating Confidence Intervals with known $\sigma^2$.}
+
+Because we have the values for the entire population, we can estimate confidence intervals using the normal distribution (z* scores) using the formula above. 
+
+We'll create confidence intervals using our $n$=100 sample. 
+
+The $\bar{x}$ = 10.11 and $\sigma$ = 0.993148. First, we'll create a function to calculate our confidence intervals that has the following inputs: sample vector, level of confidence ($\alpha$), and $\mu$.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{cl}\hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{sample}\hlstd{,} \hlkwc{alpha}\hlstd{,} \hlkwc{sigma}\hlstd{)\{}
+  \hlstd{sem} \hlkwb{<-} \hlstd{sigma}\hlopt{/}\hlkwd{sqrt}\hlstd{(}\hlkwd{length}\hlstd{(sample))}
+  \hlstd{ucl} \hlkwb{<-} \hlkwd{mean}\hlstd{(sample)} \hlopt{+} \hlkwd{qnorm}\hlstd{(}\hlnum{1}\hlopt{-}\hlstd{alpha}\hlopt{/}\hlnum{2}\hlstd{)}\hlopt{*}\hlstd{sem}
+  \hlstd{lcl} \hlkwb{<-} \hlkwd{mean}\hlstd{(sample)} \hlopt{-} \hlkwd{qnorm}\hlstd{(}\hlnum{1}\hlopt{-}\hlstd{alpha}\hlopt{/}\hlnum{2}\hlstd{)}\hlopt{*}\hlstd{sem}
+  \hlstd{ci} \hlkwb{<-} \hlkwd{c}\hlstd{(lcl, ucl)}
+  \hlkwd{return}\hlstd{(ci)}
+\hlstd{\}}
+
+\hlstd{(cl95.n100} \hlkwb{<-} \hlkwd{cl}\hlstd{(n100,} \hlnum{0.05}\hlstd{,} \hlkwd{sd}\hlstd{(N1000)))}
+\end{alltt}
+\begin{verbatim}
+## [1]  9.911347 10.300653
+\end{verbatim}
+\begin{alltt}
+\hlstd{xvalues} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlnum{6}\hlstd{,}\hlnum{14}\hlstd{,}\hlnum{.1}\hlstd{)}
+\hlkwd{plot}\hlstd{(xvalues,} \hlkwd{dnorm}\hlstd{(xvalues,} \hlkwd{mean}\hlstd{(n100),} \hlkwd{sd}\hlstd{(n100)),} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=}\hlkwd{mean}\hlstd{(n100))}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=cl95.n100[}\hlnum{1}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{'grey'}\hlstd{)}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=cl95.n100[}\hlnum{2}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{'grey'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-23-1} 
+
+\end{knitrout}
+
+\section{How does n influence confidence intervals?}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{(cl95.n20} \hlkwb{<-} \hlkwd{cl}\hlstd{(n20,} \hlnum{0.05}\hlstd{,} \hlkwd{sd}\hlstd{(N1000)))}
+\end{alltt}
+\begin{verbatim}
+## [1]  9.764742 10.635258
+\end{verbatim}
+\begin{alltt}
+\hlstd{(cl95.n20} \hlkwb{<-} \hlkwd{cl}\hlstd{(n20,} \hlnum{0.05}\hlstd{,} \hlkwd{sd}\hlstd{(N1000)))}
+\end{alltt}
+\begin{verbatim}
+## [1]  9.764742 10.635258
+\end{verbatim}
+\begin{alltt}
+\hlstd{(cl95.n5} \hlkwb{<-} \hlkwd{cl}\hlstd{(n5,} \hlnum{0.05}\hlstd{,} \hlkwd{sd}\hlstd{(N1000)))}
+\end{alltt}
+\begin{verbatim}
+## [1]  8.809483 10.550517
+\end{verbatim}
+\begin{alltt}
+\hlstd{xvalues} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlnum{6}\hlstd{,}\hlnum{14}\hlstd{,}\hlnum{.1}\hlstd{)}
+\hlkwd{plot}\hlstd{(xvalues,} \hlkwd{dnorm}\hlstd{(xvalues,} \hlkwd{mean}\hlstd{(n100),} \hlkwd{sd}\hlstd{(n100)),} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'green'}\hlstd{,} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{0.6}\hlstd{))}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=}\hlkwd{mean}\hlstd{(n100),} \hlkwc{col}\hlstd{=}\hlstr{'green'}\hlstd{)}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=cl95.n100[}\hlnum{1}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{'green'}\hlstd{)}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=cl95.n100[}\hlnum{2}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{'green'}\hlstd{)}
+
+\hlkwd{lines}\hlstd{(xvalues,} \hlkwd{dnorm}\hlstd{(xvalues,} \hlkwd{mean}\hlstd{(n20),} \hlkwd{sd}\hlstd{(n20)),} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'blue'}\hlstd{)}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=cl95.n20[}\hlnum{1}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{'blue'}\hlstd{)}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=cl95.n20[}\hlnum{2}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{'blue'}\hlstd{)}
+
+\hlkwd{lines}\hlstd{(xvalues,} \hlkwd{dnorm}\hlstd{(xvalues,} \hlkwd{mean}\hlstd{(n5),} \hlkwd{sd}\hlstd{(n5)),} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=cl95.n5[}\hlnum{1}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=cl95.n5[}\hlnum{2}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-24-1} 
+
+\end{knitrout}
+
+\subsection{Confidence Intervals with an unknown $\sigma$}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{qt}\hlstd{((}\hlnum{1}\hlopt{-}\hlnum{.95}\hlstd{)}\hlopt{/}\hlnum{2}\hlstd{,} \hlnum{4}\hlstd{)}\hlopt{*}\hlkwd{sd}\hlstd{(n5)}\hlopt{/}\hlkwd{sqrt}\hlstd{(}\hlnum{5}\hlstd{)}\hlopt{+}\hlkwd{mean}\hlstd{(n5)}
+\end{alltt}
+\begin{verbatim}
+## [1] 8.761672
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+@
 
 
 \clearpage
@@ -687,11 +959,11 @@ Let's begin to sampling the copper data. First, we want to sample the data (with
 \hlkwd{sample}\hlstd{(TcCB_ref,} \hlkwd{length}\hlstd{(TcCB_ref),} \hlkwc{replace}\hlstd{=T)}
 \end{alltt}
 \begin{verbatim}
-##  [1] 0.26 0.43 0.54 0.54 0.48 0.69 0.89 0.79 0.27 0.60 0.48
-## [12] 0.42 0.48 0.81 0.39 0.79 1.33 0.82 0.45 0.57 0.29 0.82
-## [23] 0.82 0.38 0.46 0.57 0.54 0.33 1.14 0.89 0.42 0.69 0.42
-## [34] 0.89 0.22 0.42 0.76 0.81 0.39 0.23 0.82 0.46 0.33 0.67
-## [45] 0.22 0.62 1.33
+##  [1] 0.29 0.23 0.76 1.14 0.63 1.11 0.69 0.51 0.39 0.67 0.46
+## [12] 0.57 0.28 1.13 1.11 0.27 1.14 0.56 0.67 0.35 0.74 1.14
+## [23] 0.76 0.38 0.28 1.14 0.39 1.13 1.11 0.82 0.48 0.39 0.48
+## [34] 0.89 0.42 0.67 1.14 0.69 0.42 0.76 0.39 0.27 0.26 0.50
+## [45] 1.20 1.14 1.33
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -723,7 +995,7 @@ where $\mu$ is the population mean, 0.5985106, calculated from the original data
 \hlstd{t} \hlkwb{=} \hlstd{(mean.bs} \hlopt{-} \hlstd{TcCB_ref_mean)}\hlopt{/}\hlstd{(sd.bs}\hlopt{/}\hlkwd{sqrt}\hlstd{(n.bs)); t}
 \end{alltt}
 \begin{verbatim}
-## [1] 0.9274581
+## [1] 0.868128
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
