@@ -651,17 +651,22 @@ Notice that I used \texttt{dnorm()} and \texttt{dt()} functions to create the fi
   \item[\texttt{pnorm()}] generates probabilities based on the quantiles, mean and sd.
 \end{description}
 
-\noindent To test demonstrate these functions, let's try each out. First, I'll create a set of five random numbers (let's use the standard normal, which as a mean of zero and a sd of one) and round them to the nearest 10th. 
+\noindent To test demonstrate these functions, let's try each out. First, I'll create a set of twenty random numbers (let's use the standard normal, which as a mean of zero and a sd of one) and round them to the nearest 100th. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-(randomnumbers = \hlkwd{round}(\hlkwd{rnorm}(5, mean=0, sd=1), 0.1)
+\hlstd{(randomnumbers} \hlkwb{=} \hlkwd{round}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{20}\hlstd{,} \hlkwc{mean}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{sd}\hlstd{=}\hlnum{1}\hlstd{),} \hlnum{2}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+##  [1]  0.16  0.88  0.04 -0.91 -1.65 -1.29 -0.29  0.54  1.81
+## [10] -0.99 -0.52  0.93 -0.25 -1.15  0.54  2.70  2.33 -0.16
+## [19] -0.13 -0.19
+\end{verbatim}
+\begin{alltt}
 \hlcom{#hist(randomnumbers)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: <text>:3:0: unexpected end of input\\\#\# 1: (randomnumbers = round(rnorm(5, mean=0, sd=1), 0.1)\\\#\# 2: \#hist(randomnumbers)\\\#\#\ \  \textasciicircum{}}}\end{kframe}
+\end{kframe}
 \end{knitrout}
 
 Now, let's uses these figure out what the probabilies, using the default for lower tail, i.e. \texttt{lower.tail=T}. In other words, what is the probability that the number will be higher than the lower side of the tail. 
@@ -671,9 +676,11 @@ Now, let's uses these figure out what the probabilies, using the default for low
 \begin{alltt}
 \hlkwd{round}\hlstd{(}\hlkwd{pnorm}\hlstd{(randomnumbers,} \hlkwc{mean}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{sd}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{lower.tail}\hlstd{=T),} \hlnum{2}\hlstd{)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in pnorm(randomnumbers, mean = 0, sd = 1, lower.tail = T): object 'randomnumbers' not found}}\end{kframe}
+\begin{verbatim}
+##  [1] 0.56 0.81 0.52 0.18 0.05 0.10 0.39 0.71 0.96 0.16 0.30
+## [12] 0.82 0.40 0.13 0.71 1.00 0.99 0.44 0.45 0.42
+\end{verbatim}
+\end{kframe}
 \end{knitrout}
 
 finally, let's see what the qauntiles look like based on various probabilities
@@ -706,6 +713,20 @@ If we switch these numbers to the 68-95-99.7 rule probabilies. First, we need to
 \end{kframe}
 \end{knitrout}
 
+Okay, let's plot these functions and see how they work!
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))}
+\hlkwd{plot}\hlstd{(randomnumbers);} \hlkwd{hist}\hlstd{(randomnumbers)}
+\hlkwd{plot}\hlstd{(randomnumbers,} \hlkwd{pnorm}\hlstd{(randomnumbers,} \hlkwc{mean}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{sd}\hlstd{=}\hlnum{1}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"pnorm()"}\hlstd{)}
+\hlkwd{plot}\hlstd{(randomnumbers,} \hlkwd{dnorm}\hlstd{(randomnumbers,} \hlkwc{mean}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{sd}\hlstd{=}\hlnum{1}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"dnorm()"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-27-1} 
+
+\end{knitrout}
 
 \subsection{Calculating Confidence Intervals with known $\sigma^2$.}
 
@@ -739,7 +760,7 @@ The $\bar{x}$ = 10.11 and $\sigma$ = 0.993148. First, we'll create a function to
 \hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=cl95.n100[}\hlnum{2}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{'grey'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-27-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-28-1} 
 
 \end{knitrout}
 
@@ -781,7 +802,7 @@ The $\bar{x}$ = 10.11 and $\sigma$ = 0.993148. First, we'll create a function to
 \hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=cl95.n5[}\hlnum{2}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-28-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-29-1} 
 
 \end{knitrout}
 
@@ -1098,11 +1119,11 @@ Let's begin to sampling the copper data. First, we want to sample the data (with
 \hlkwd{sample}\hlstd{(TcCB_ref,} \hlkwd{length}\hlstd{(TcCB_ref),} \hlkwc{replace}\hlstd{=T)}
 \end{alltt}
 \begin{verbatim}
-##  [1] 0.29 0.23 0.76 1.14 0.63 1.11 0.69 0.51 0.39 0.67 0.46
-## [12] 0.57 0.28 1.13 1.11 0.27 1.14 0.56 0.67 0.35 0.74 1.14
-## [23] 0.76 0.38 0.28 1.14 0.39 1.13 1.11 0.82 0.48 0.39 0.48
-## [34] 0.89 0.42 0.67 1.14 0.69 0.42 0.76 0.39 0.27 0.26 0.50
-## [45] 1.20 1.14 1.33
+##  [1] 0.39 0.27 0.26 0.50 1.20 1.14 1.33 0.60 1.14 1.11 0.50
+## [12] 0.26 0.89 0.43 0.89 1.33 0.69 1.33 0.22 0.26 0.28 0.56
+## [23] 0.82 0.28 0.62 0.76 1.11 1.20 0.60 0.69 0.54 0.84 1.11
+## [34] 0.29 0.57 0.28 1.33 0.67 0.39 0.50 0.46 0.46 0.56 0.29
+## [45] 0.74 0.43 1.13
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1134,7 +1155,7 @@ where $\mu$ is the population mean, 0.5985106, calculated from the original data
 \hlstd{t} \hlkwb{=} \hlstd{(mean.bs} \hlopt{-} \hlstd{TcCB_ref_mean)}\hlopt{/}\hlstd{(sd.bs}\hlopt{/}\hlkwd{sqrt}\hlstd{(n.bs)); t}
 \end{alltt}
 \begin{verbatim}
-## [1] 0.868128
+## [1] -0.3233626
 \end{verbatim}
 \end{kframe}
 \end{knitrout}

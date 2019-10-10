@@ -448,10 +448,10 @@ Notice that I used \texttt{dnorm()} and \texttt{dt()} functions to create the fi
   \item[\texttt{pnorm()}] generates probabilities based on the quantiles, mean and sd.
 \end{description}
 
-\noindent To test demonstrate these functions, let's try each out. First, I'll create a set of five random numbers (let's use the standard normal, which as a mean of zero and a sd of one) and round them to the nearest 10th. 
+\noindent To test demonstrate these functions, let's try each out. First, I'll create a set of twenty random numbers (let's use the standard normal, which as a mean of zero and a sd of one) and round them to the nearest 100th. 
 
 <<r randomnumbers>>= 
-(randomnumbers = round(rnorm(5, mean=0, sd=1), 0.1)
+(randomnumbers = round(rnorm(20, mean=0, sd=1), 2))
 #hist(randomnumbers)
 @
 
@@ -477,6 +477,15 @@ percent.99 <- (1 - 0.997)/2
 round(-qnorm(c(percent.68, percent.95, percent.99), mean=0, sd=1), 2)
 @
 
+Okay, let's plot these functions and see how they work!
+
+<<>>=
+par(mfrow=c(2,2))
+plot(randomnumbers); hist(randomnumbers)
+plot(randomnumbers, pnorm(randomnumbers, mean=0, sd=1), main="pnorm()")
+plot(randomnumbers, dnorm(randomnumbers, mean=0, sd=1), main="dnorm()")
+
+@
 
 \subsection{Calculating Confidence Intervals with known $\sigma^2$.}
 
