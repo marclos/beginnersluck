@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2019.4.23)  9 OCT 2019 11:21
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2019.4.23)  10 OCT 2019 12:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -979,20 +979,40 @@ File: figure/unnamed-chunk-23-1.pdf Graphic file (type pdf)
 <use figure/unnamed-chunk-23-1.pdf>
 Package pdftex.def Info: figure/unnamed-chunk-23-1.pdf used on input line 636.
 (pdftex.def)             Requested size: 312.0pt x 312.00435pt.
- [13] [14 <./figure/unnamed-chunk-23-1.pdf>] <figure/unnamed-chunk-24-1.pdf, id
-=173, 505.89pt x 505.89pt>
-File: figure/unnamed-chunk-24-1.pdf Graphic file (type pdf)
+ [13] [14 <./figure/unnamed-chunk-23-1.pdf>]
+Overfull \hbox (0.13913pt too wide) in paragraph at lines 676--676
+[]\T1/fvm/b/n/10 ## Error in pnorm(randomnumbers, mean = 0, sd = 1, lower.tail 
 
-<use figure/unnamed-chunk-24-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-24-1.pdf used on input line 675.
-(pdftex.def)             Requested size: 312.0pt x 312.00435pt.
-
-Overfull \hbox (12.0pt too wide) in paragraph at lines 675--676
-[][]  
  []
 
 [15]
-Overfull \hbox (138.29907pt too wide) in paragraph at lines 703--703
+Overfull \hbox (0.13913pt too wide) in paragraph at lines 684--684
+[][]\T1/fvm/b/n/10 round[][]\T1/fvm/m/n/10 ([][]\T1/fvm/b/n/10 qnorm[][]\T1/fvm
+/m/n/10 ([][]\T1/fvm/b/n/10 c[][]\T1/fvm/m/n/10 ([][]0.01[][],[] []0.025[][],[]
+ [].05[][],[] [].1[][],[] [].5[][],[] [].9[][],[] [].95[][],[] [].975[][],[] []
+0.99[][]),[][] 
+ []
+
+
+Overfull \hbox (41.07541pt too wide) in paragraph at lines 701--701
+[][]\T1/fvm/b/n/10 round[][]\T1/fvm/m/n/10 ([][]-[][]\T1/fvm/b/n/10 qnorm[][]\T
+1/fvm/m/n/10 ([][]\T1/fvm/b/n/10 c[][]\T1/fvm/m/n/10 (percent.68, percent.95, p
+ercent.99),[] []mean[][]=[][]0[][],[] []sd[][]=[][]1[][]),[] []2[][])[][] 
+ []
+
+<figure/unnamed-chunk-27-1.pdf, id=178, 505.89pt x 505.89pt>
+File: figure/unnamed-chunk-27-1.pdf Graphic file (type pdf)
+
+<use figure/unnamed-chunk-27-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-27-1.pdf used on input line 742.
+(pdftex.def)             Requested size: 312.0pt x 312.00435pt.
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 742--743
+[][]  
+ []
+
+[16]
+Overfull \hbox (138.29907pt too wide) in paragraph at lines 770--770
 [][]\T1/fvm/b/n/10 plot[][]\T1/fvm/m/n/10 (xvalues,[] []\T1/fvm/b/n/10 dnorm[][
 ]\T1/fvm/m/n/10 (xvalues,[] []\T1/fvm/b/n/10 mean[][]\T1/fvm/m/n/10 (n100),[] [
 ]\T1/fvm/b/n/10 sd[][]\T1/fvm/m/n/10 (n100)),[] []ty[][]=[][]\TS1/fvm/m/n/10 '\
@@ -1002,7 +1022,7 @@ T1/fvm/m/n/10 l\TS1/fvm/m/n/10 '[][]\T1/fvm/m/n/10 ,[] []col[][]=[][]\TS1/fvm/m
  []
 
 
-Overfull \hbox (46.19244pt too wide) in paragraph at lines 708--708
+Overfull \hbox (46.19244pt too wide) in paragraph at lines 775--775
 [][]\T1/fvm/b/n/10 lines[][]\T1/fvm/m/n/10 (xvalues,[] []\T1/fvm/b/n/10 dnorm[]
 []\T1/fvm/m/n/10 (xvalues,[] []\T1/fvm/b/n/10 mean[][]\T1/fvm/m/n/10 (n20),[] [
 ]\T1/fvm/b/n/10 sd[][]\T1/fvm/m/n/10 (n20)),[] []ty[][]=[][]\TS1/fvm/m/n/10 '\T
@@ -1011,7 +1031,7 @@ n/10 '\T1/fvm/m/n/10 blue\TS1/fvm/m/n/10 '[][]\T1/fvm/m/n/10 )[][]
  []
 
 
-Overfull \hbox (30.84134pt too wide) in paragraph at lines 712--712
+Overfull \hbox (30.84134pt too wide) in paragraph at lines 779--779
 [][]\T1/fvm/b/n/10 lines[][]\T1/fvm/m/n/10 (xvalues,[] []\T1/fvm/b/n/10 dnorm[]
 []\T1/fvm/m/n/10 (xvalues,[] []\T1/fvm/b/n/10 mean[][]\T1/fvm/m/n/10 (n5),[] []
 \T1/fvm/b/n/10 sd[][]\T1/fvm/m/n/10 (n5)),[] []ty[][]=[][]\TS1/fvm/m/n/10 '\T1/
@@ -1019,76 +1039,76 @@ fvm/m/n/10 l\TS1/fvm/m/n/10 '[][]\T1/fvm/m/n/10 ,[] []col[][]=[][]\TS1/fvm/m/n/
 10 '\T1/fvm/m/n/10 red\TS1/fvm/m/n/10 '[][]\T1/fvm/m/n/10 )[][] 
  []
 
-[16 <./figure/unnamed-chunk-24-1.pdf>]
-<figure/unnamed-chunk-25-1.pdf, id=188, 505.89pt x 505.89pt>
-File: figure/unnamed-chunk-25-1.pdf Graphic file (type pdf)
+[17 <./figure/unnamed-chunk-27-1.pdf>]
+<figure/unnamed-chunk-28-1.pdf, id=193, 505.89pt x 505.89pt>
+File: figure/unnamed-chunk-28-1.pdf Graphic file (type pdf)
 
-<use figure/unnamed-chunk-25-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-25-1.pdf used on input line 717.
+<use figure/unnamed-chunk-28-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-28-1.pdf used on input line 784.
 (pdftex.def)             Requested size: 312.0pt x 312.00435pt.
 
-Overfull \hbox (12.0pt too wide) in paragraph at lines 717--718
+Overfull \hbox (12.0pt too wide) in paragraph at lines 784--785
 [][]  
  []
 
-[17 <./figure/unnamed-chunk-25-1.pdf>] [18] [19]
+[18 <./figure/unnamed-chunk-28-1.pdf>] [19] [20]
 
-LaTeX Warning: Marginpar on page 20 moved.
+LaTeX Warning: Marginpar on page 21 moved.
 
-[20
+[21
 
 ]
 LaTeX Font Info:    Font shape `TS1/fvm/m/it' in size <10> not available
-(Font)              Font shape `TS1/fvm/m/sl' tried instead on input line 861.
+(Font)              Font shape `TS1/fvm/m/sl' tried instead on input line 928.
 LaTeX Font Info:    Font shape `TS1/fvm/m/sl' will be
-(Font)              scaled to size 8.50006pt on input line 861.
+(Font)              scaled to size 8.50006pt on input line 928.
 
-Overfull \hbox (56.42651pt too wide) in paragraph at lines 861--861
+Overfull \hbox (56.42651pt too wide) in paragraph at lines 928--928
 [][]\T1/fvm/m/n/10 Sorted[[][]35[][],][] []\T1/fvm/m/sl/10 # Not sure why this 
 isn\TS1/fvm/m/sl/10 '\T1/fvm/m/sl/10 t #40, still sorting that out... !!![][] 
  []
 
 
-Overfull \hbox (0.13913pt too wide) in paragraph at lines 864--864
+Overfull \hbox (0.13913pt too wide) in paragraph at lines 931--931
 []\T1/fvm/m/n/10 ##    Sample.Date Trash_Recycle Location  Type Mass_Container[
 ] 
  []
 
 
-Overfull \hbox (0.13913pt too wide) in paragraph at lines 865--865
+Overfull \hbox (0.13913pt too wide) in paragraph at lines 932--932
 []\T1/fvm/m/n/10 ## 40   9/23/2019             T Dialynas Trash           43.3[
 ] 
  []
 
 
-Overfull \hbox (41.07541pt too wide) in paragraph at lines 904--904
+Overfull \hbox (41.07541pt too wide) in paragraph at lines 971--971
 []\T1/fvm/m/n/10 ## alternative hypothesis: true difference in means is not equ
 al to 0[] 
  []
 
-[21]
+[22]
 
 Package bibentry Warning: You have used \nobibliography* 
 (bibentry)                without a following \bibliography.
 (bibentry)                You may not be able to run BibTeX.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1273.
-[22]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1273.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1340.
+[23]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1340.
  (./Confidence_Intervals.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1273.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1273.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1340.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1340.
 
 Package rerunfilecheck Info: File `Confidence_Intervals.out' has not changed.
-(rerunfilecheck)             Checksum: 7E8166E81A4BC0F8599B836BA83D0459;1790.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1273.
+(rerunfilecheck)             Checksum: 5855823B6FB1CCD8AD2B1919AFA8C704;1790.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1340.
  ) 
 Here is how much of TeX's memory you used:
- 13271 strings out of 494820
- 186655 string characters out of 3178049
- 287815 words of memory out of 3000000
- 16101 multiletter control sequences out of 15000+200000
- 77351 words of font info for 138 fonts, out of 3000000 for 9000
+ 13274 strings out of 494820
+ 186691 string characters out of 3178049
+ 287819 words of memory out of 3000000
+ 16102 multiletter control sequences out of 15000+200000
+ 78486 words of font info for 139 fonts, out of 3000000 for 9000
  198 hyphenation exceptions out of 8191
  46i,12n,45p,1053b,520s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
@@ -1104,10 +1124,10 @@ exmf-dist/fonts/type1/public/bera/fvmr8a.pfb></usr/share/texlive/texmf-dist/fon
 ts/type1/public/bera/fvmro8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
 /palatino/uplb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/up
 lr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on Confidence_Intervals.pdf (22 pages, 245476 bytes).
+Output written on Confidence_Intervals.pdf (23 pages, 249995 bytes).
 PDF statistics:
- 285 PDF objects out of 1000 (max. 8388607)
- 227 compressed objects within 3 object streams
- 54 named destinations out of 1000 (max. 500000)
+ 291 PDF objects out of 1000 (max. 8388607)
+ 232 compressed objects within 3 object streams
+ 56 named destinations out of 1000 (max. 500000)
  1134 words of extra memory for PDF output out of 10000 (max. 10000000)
 

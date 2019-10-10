@@ -330,7 +330,7 @@ In the next section, we are going to use the t-distribution to estimate our conf
 
 \subsection{Calculating a Parametric Confidence Interval}
 
-To explore our waste audit data, we will determine the 95\% confidence intervals for the mean for each mean. As usual there are dozens of way to accomplish this, but for now, let's start by getting a t-statistic by our is that we use our $\alpha$ value of 0.05. Since we calculate CI for the lower and upper limit, we need to split the probability in half and determine the intervals for 0.025 and 0.975 of the probably distribution.  
+To explore our waste audit data, we will determine the 95\% confidence intervals for the mean for each mean. As usual there are dozens of way to accomplish this, but for now, let's start by getting a t-statistic based on a criteria $\alpha$ value of 0.05. Since we calculate CI for the lower and upper limit, we need to split the probability in half ($\alpha/2$) and determine the intervals for 0.025 and 0.975 of the probably distribution.  
 
 We begin by using the t-Distribution, which is a specialized case of the normal distribution (standard normal distribution that is corrected for sample size with change in the degrees of freedom).\sidenote{A figure here would be useful!}. 
 
@@ -422,7 +422,7 @@ C	    & z* \\ \hline
 
 \subsection{Normal versus the t-Distribution}
 
-For demonstration purposes, we should compare the standard normal distribution to the t-distribuition so we understand what the implications of ditribution might mean in hypothesis testing!
+For demonstration purposes, we should compare the standard normal distribution to the t-distribuition so we understand what the implications of distribution might mean in hypothesis testing!
 
 \begin{figure}
 <<fig=TRUE>>=
@@ -436,6 +436,47 @@ lines(xrange, dt(xrange, df=10), ty='l', col='blue')
 \end{figure}
 
 Notice that the t-distribution is squatter in the middle and fatter at the edges. This means there is more probability ``area'' at the ends. But as you approach the n=20, the curves are increasingly overlapping.
+
+\subsection{How to make these plots}
+
+Notice that I used \texttt{dnorm()} and \texttt{dt()} functions to create the figures. What are these? These functions create probability density curves. It's cool to see that that there are several variants of these functions that are related. 
+
+\begin{description}
+  \item[\texttt{rnorm()}] generates n random numbers from a normal distribution with a defined mean and sd (standard deviation).
+  \item[\texttt{dnorm()}] generates probability densities based on the quantile, mean, and sd. This can be based on an upper or lower side of the distribution. More on this below.
+  \item[\texttt{qnorm()}] generates quantiles based on the probabilities, mean and sd. This can also be based on the upper or lower side of the distribution. 
+  \item[\texttt{pnorm()}] generates probabilities based on the quantiles, mean and sd.
+\end{description}
+
+\noindent To test demonstrate these functions, let's try each out. First, I'll create a set of five random numbers (let's use the standard normal, which as a mean of zero and a sd of one) and round them to the nearest 10th. 
+
+<<r randomnumbers>>= 
+(randomnumbers = round(rnorm(5, mean=0, sd=1), 0.1)
+#hist(randomnumbers)
+@
+
+Now, let's uses these figure out what the probabilies, using the default for lower tail, i.e. \texttt{lower.tail=T}. In other words, what is the probability that the number will be higher than the lower side of the tail. 
+
+<<>>=
+round(pnorm(randomnumbers, mean=0, sd=1, lower.tail=T), 2)
+@
+
+finally, let's see what the qauntiles look like based on various probabilities
+
+<<>>=
+round(qnorm(c(0.01, 0.025, .05, .1, .5, .9, .95, .975, 0.99), 
+            mean=0, sd=1, lower.tail=T), 2)
+@
+
+If we switch these numbers to the 68-95-99.7 rule probabilies. First, we need to divide the tails in 1/2 and then we can put them in the \texttt{qnorm()} function. We can see where the the 1, 2 and 3 standard deviations came from (rounded right?). Pretty Neat!
+
+<<>>=
+percent.68 = (1 - 0.68)/2
+percent.95 <- (1 - 0.95)/2 
+percent.99 <- (1 - 0.997)/2
+round(-qnorm(c(percent.68, percent.95, percent.99), mean=0, sd=1), 2)
+@
+
 
 \subsection{Calculating Confidence Intervals with known $\sigma^2$.}
 

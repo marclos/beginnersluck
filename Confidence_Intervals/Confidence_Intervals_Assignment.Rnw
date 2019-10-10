@@ -57,7 +57,7 @@ rm(list = ls())
 
 To create a guide for your peers about what are confidence intervals and how to create them using a univarite dataset (one set of numbers). 
 
-Using R-studio, write up an short description and demonstration of how to do a confidence interval for the sample mean. 
+Using R-studio, write up an short description and demonstration of how to do a confidence interval for the sample mean with an unknown $\sigma$. 
 
 \subsection{Rationale}
 
@@ -100,6 +100,8 @@ Finally, there are some good (and some terrible -- Read: Wrong) resources on the
 \end{enumerate}
 
 Finally, I will also grade your guide based on the clarity and robustness of your approach (2 pnts). 
+
+NOTE: To export the file from Rstudio, navigate to the lower right window and the `Files' panel. Then find your file and check the little box. Then go to the ``More'' menu item and find export. The file can then be exported to your desktop and loaded onto \texttt{Sakai}. 
 
 \section{Working an Example}
 
