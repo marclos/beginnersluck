@@ -1,0 +1,111 @@
+t.test -- alpha and beta
+========================================================
+author: 
+date: 
+autosize: true
+
+First Slide
+========================================================
+
+For more details on authoring R presentations please visit <https://support.rstudio.com/hc/en-us/articles/200486468>.
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+Slide With Code
+========================================================
+
+```{r}
+TcCB_ref <- c(0.60, 0.50, 0.39, 0.84, 0.46, 0.39, 0.62, 0.67, 
+0.69, 0.81, 0.38, 0.79, 0.43, 0.57, 0.74, 0.27, 0.51, 
+0.35, 0.28, 0.45, 0.42, 1.14, 0.23, 0.72, 0.63, 0.50, 
+0.29, 0.82, 0.54, 1.13, 0.56, 1.33, 0.56, 1.11, 0.57, 
+0.89, 0.28, 1.20, 0.76, 0.26, 0.34, 0.52, 0.42, 0.22, 
+0.33, 1.14, 0.48)
+
+TcCB_cleanup <- c(NA, 0.09, 0.09, 0.12, 0.12, 0.14, 0.16, 
+0.17, 0.17, 0.17, 0.18, 0.19, 0.20, 0.20, 
+0.21, 0.21, 0.22, 0.22, 0.22, 0.23, 0.24, 
+0.25, 0.25, 0.25, 0.25, 0.26, 0.28, 0.28, 
+0.29, 0.31, 0.33, 0.33, 0.33, 0.34, 0.37,
+0.38, 0.39, 0.40, 0.43, 0.43, 0.47, 0.48, 
+0.48, 0.49, 0.51, 0.51, 0.54, 0.50, 0.61,
+0.62, 0.75, 0.82, 0.85, 0.92, 0.94, 1.05,
+1.10, 1.10, 1.19, 1.22, 1.33, 1.39, 1.39,
+1.52, 1.53, 1.73, 2.35, 2.26, 2.59, 2.61,
+3.06, 3.29,5.56, 6.61, 18.40, 51.97, 168.64) 
+
+TcCB_ref_mean=mean(TcCB_ref)
+TcCB_cleanup_mean = mean(TcCB_cleanup, na.rm=T)
+```
+
+Slide With Code2
+========================================================
+
+When we develop a confidence 95\% confidence interval, we expect the \textbf{mean} to fall within the 95\% confidence intervals.  To illustrate, let's look at the copper data from the reference site we have looked at before, where the mean is \Sexpr{round(mean(TcCB_ref), 2)}. Thus, for a 95\% confidence interval, we expect the mean to be within the bounds 19 out of 20 times.
+
+
+The calculation of a confidence interval generally requires assumptions about the nature of the estimation process. Within a parametric method, the confidence intervals depend on an assumption that the distribution of the population from which the sample came is theoretical distribution. If there no assumptions made about the distribution i.e. distribution free, then the confidence intervals are considered robust statistics.
+
+Characteristics of Reliable Confidence Intervals
+===============================================
+
+
+Confidence intervals rely on three properties: validity, optimality, and invariance. When these properties are met, then the assumptions for the methods hold and the confidence intervals are thought to be more reliable. 
+
+\begin{description}
+	\item[Validity] means that the nominal coverage probability (confidence level) of the confidence interval should hold, either exactly or to a good approximation.
+	\item[Optimality] means that the rule for constructing the confidence interval should make as much use of the information in the data-set as possible. For example, one could throw away half of a dataset and still be able to derive a valid confidence interval. One way of assessing optimality is by the length of the interval, so that a rule for constructing a confidence interval is judged better than another if it leads to intervals whose lengths are typically shorter.
+	
+
+\begin{marginfigure}
+	\centering
+		\includegraphics{Shoptalk_comic.jpg}
+	\caption{Censored data make it difficult to ascertain parameter estimates -- so, more data high quality data is best. But if you have knowledge of low quality data, you might be able to justify removing it to create confidence intervals. But be careful!}
+	\label{fig:Shoptalk_comic}
+\end{marginfigure}
+
+	\item[Invariance] In many applications the quantity being estimated might not be tightly defined as such. For example, a survey might result in an estimate of the median income in a population, but it might equally be considered as providing an estimate of the logarithm of the median income, given that this is a common scale for presenting graphical results. It would be desirable that the method used for constructing a confidence interval for the median income would give equivalent results when applied to constructing a confidence interval for the logarithm of the median income: Specifically the values at the ends of the latter interval would be the logarithms of the values at the ends of former interval.
+	
+Calculating a Parametric Confidence Interval
+======================================
+
+
+
+To explore our examples, we determine the 95\% confidence intervals for the mean of the copper data. As usual there are dozens of way to accomplish this, but for now, let's start by getting a t-statistic by our is that we use our $\alpha$ value of 0.05. Since we calculate CI for the lower and upper limit, we need to split the probability in half and determine the intervals for 0.025 and 0.975 of the probably distribution.  
+
+We begin by using the t-Distribution, which is a specialized case of the normal distribution (standard normal distribution that is corrected for sample size with change in the degrees of freedom). 
+
+
+\begin{equation}
+\bar{x} - t_{\alpha/2, n-1}(s/\sqrt{n}) < \mu < \bar{x} + t_{\alpha/2, n-1}(s/\sqrt{n}) 
+\end{equation}
+
+```{r}
+alpha = 0.05
+degfree = length(TcCB_ref) - 1
+qt(alpha/2, degfree)
+
+CI.low  <- TcCB_ref_mean - qt(alpha/2, degfree)*sd(TcCB_ref)/sqrt(length(TcCB_ref)); CI.low
+CI.high <- TcCB_ref_mean - qt(1-alpha/2, degfree)*sd(TcCB_ref)/sqrt(length(TcCB_ref)); CI.high
+```
+
+
+Using the \texttt{qt()} in R function we find that confidence intervals are \Sexpr{round(CI.low, 2)} and \Sexpr{round(CI.high, 2)}. Remember, we have created confidence intervals where we expect the mean to fall 95\% of the time.
+
+```{r}
+x=seq(-.5, 2 , by = .01)
+y=dnorm(x, mean(TcCB_ref), sd(TcCB_ref))
+plot(x,y, type="l", col="black", lwd=2)
+abline(v=CI.low, col="blue", lwd=2)
+abline(v=CI.high, col="red", lwd=2)
+rug(TcCB_ref)
+```
+
+Slide With Plot
+========================================================
+
+```{r, echo=FALSE}
+plot(cars)
+```
