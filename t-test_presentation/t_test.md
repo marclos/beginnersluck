@@ -18,6 +18,21 @@ Goals for Today
 How do we know if a hazardous site has been cleaned up?
 ===================================================
 
+- Sample Soils
+    - Depth
+    - Random sampling, e.g. gridded, random, etc.
+- Link to ecological outcomes
+- Link to fate of pollutants (fate in water/air)
+
+
+- What is clean?
+
+    - Compared to "clean soils" unimpacted, local...
+
+- 95% confidence intervals
+
+- Determine power before analyzing data
+
 
 
 
@@ -67,8 +82,8 @@ Distribution
 ==========================================
 
 ```r
-# fig.height=5, fig.width=15
-par(mfrow=c(2,1))
+# fig.height=3, fig.width=15
+par(mfrow=c(1,2))
 hist(TcCB_ref)
 hist(TcCB_cleanup)
 ```
