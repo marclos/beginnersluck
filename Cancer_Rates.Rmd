@@ -1,0 +1,47 @@
+---
+title: "Test of Association"
+author: "Marc Los Huertos"
+date: "11/4/2019"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Some Considerations
+
+- Relatively weak analysis (little control for confounding variables)
+- Based on count/frequency data (e.g. number of cases)
+- Easy to interpret
+
+## Define Data
+
+```{r cars, echo = TRUE}
+cancer.mat <-
+matrix(c(10, 42, 6, 11),
+       nrow = 2, byrow = T,
+       dimnames = list(Exposure = c("Low", "High"),
+                       Cases = c("Yes", "No")))
+
+cancer.mat
+```
+
+## Slide with Plot
+
+```{r pressure}
+barplot(cancer.mat)
+```
+
+
+## Statistical Test
+```{r}
+fisher.test(cancer.mat)
+```
+
+## Statistical Test -- One Tailed
+```{r}
+fisher.test(cancer.mat, alternative="greater")
+```
+
+

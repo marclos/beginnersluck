@@ -1,7 +1,7 @@
 4 Statistical Frameworks
 ========================================================
 author: Marc Los Huertos
-date: Sept. 17, 2016
+date: Nov. 6, 2019
 autosize: true
 font-family: 'Helvetica'
 Science and Method
