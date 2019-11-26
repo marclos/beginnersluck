@@ -72,6 +72,7 @@ Creating Some Vectors
 
 ```r
 IndependCAT = c(0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0)
+IndependMult = c("A", "B", "C", "A", "B", "C", "A", "B", "C", "A", "B", "A", "C", "B", "A", "B", "C", "A", "B", "A", "B", "C")
 DependCAT =   c(T,  F, T, F, T, F, T,  F,  T,  F,  T,  F,  T,  F, T,  F, F, F, T, F, F, T)
 IndependCON = c(55, 3, 5, 2, 7, 8, 40, 12, 51, 10, 28, 31, 43, 6, 11, 2, 12, 13, 46, 32, 19, 68)
 DependCON = c(2, 4, 2, 5, 6, 14, 23, 21, 42, 12, 45, 35, 77, 4, 5, 6, 3, 6, 9, 11, 22, 32)
@@ -168,9 +169,25 @@ sample estimates:
                10.625                21.500 
 ```
 
+```r
+summary(aov(DependCON ~ IndependMult))
+```
+
+```
+             Df Sum Sq Mean Sq F value Pr(>F)
+IndependMult  2    980   490.2   1.451  0.259
+Residuals    19   6417   337.7               
+```
+
 Predictor = Continuous, Response = Continuous 
 ======================================================
 left: 25%
+
+```r
+plot(DependCON ~ IndependCON, las=1)
+abline(coef(lm(DependCON ~ IndependCON)), col="red", lwd=3)
+```
+
 ![plot of chunk unnamed-chunk-7](4StatisticalMethods-figure/unnamed-chunk-7-1.png)
 ***
 DependCON = f(IndependCON) or 
@@ -187,9 +204,20 @@ where the slope is 0.5 and an intercept of 6.2 with an r^2 of 0.276.
 
 Predictor = Continuous, Response = Categorical 
 ======================================================
+
+```r
+plot(DependCAT ~ IndependCON, xlim=c(-10,80), ylim=c(-1, 2))
+abline(coef(lm(DependCAT ~ IndependCON)), col="orange", lwd=3)
+```
+
 ![plot of chunk unnamed-chunk-9](4StatisticalMethods-figure/unnamed-chunk-9-1.png)
 Predictor = Continuous, Response = Categorical 
 ======================================================
+
+```r
+glm.out <- glm(DependCAT ~ IndependCON, family=binomial(link='logit'))
+summary(glm.out)$coefficients
+```
 
 ```
                Estimate Std. Error   z value   Pr(>|z|)

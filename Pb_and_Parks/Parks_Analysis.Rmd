@@ -1,0 +1,39 @@
+---
+title: "Pb and Park"
+author: "Marc Los Huertos"
+date: "11/25/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Read the Data
+
+
+
+```{r readcsv}
+import <- read.csv("/home/CAMPUS/mwl04747/github/beginnersluck/Pb_and_Parks/EA 30 Data Entry - Sheet1 (3).csv")
+str(import)
+```
+
+## Exploratory Analysis
+
+```{r exploratory}
+hist(import$X208Pb.He.)
+```
+
+## Null Hypothesis Testing
+
+No difference between Pb by parks.
+
+```{r anova}
+
+
+```
+
+
+
+
+

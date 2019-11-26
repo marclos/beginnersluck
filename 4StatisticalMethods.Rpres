@@ -73,6 +73,7 @@ Creating Some Vectors
 
 ```{r}
 IndependCAT = c(0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0)
+IndependMult = c("A", "B", "C", "A", "B", "C", "A", "B", "C", "A", "B", "A", "C", "B", "A", "B", "C", "A", "B", "A", "B", "C")
 DependCAT =   c(T,  F, T, F, T, F, T,  F,  T,  F,  T,  F,  T,  F, T,  F, F, F, T, F, F, T)
 IndependCON = c(55, 3, 5, 2, 7, 8, 40, 12, 51, 10, 28, 31, 43, 6, 11, 2, 12, 13, 46, 32, 19, 68)
 DependCON = c(2, 4, 2, 5, 6, 14, 23, 21, 42, 12, 45, 35, 77, 4, 5, 6, 3, 6, 9, 11, 22, 32)
@@ -117,12 +118,13 @@ boxplot(DependCON ~ IndependCAT2, col=c("red", "blue"))
 ***
 ```{r}
 t.test(DependCON ~ IndependCAT2)
+summary(aov(DependCON ~ IndependMult))
 ```
 
 Predictor = Continuous, Response = Continuous 
 ======================================================
 left: 25%
-```{r, echo=F}
+```{r, echo=T}
 plot(DependCON ~ IndependCON, las=1)
 abline(coef(lm(DependCON ~ IndependCON)), col="red", lwd=3)
 ```
@@ -138,13 +140,13 @@ where the slope is `r round(coef(lm(DependCON ~ IndependCON))[2], 2)` and an int
 
 Predictor = Continuous, Response = Categorical 
 ======================================================
-```{r, echo=F}
+```{r, echo=T}
 plot(DependCAT ~ IndependCON, xlim=c(-10,80), ylim=c(-1, 2))
 abline(coef(lm(DependCAT ~ IndependCON)), col="orange", lwd=3)
 ```
 Predictor = Continuous, Response = Categorical 
 ======================================================
-```{r, echo=F}
+```{r, echo=T}
 glm.out <- glm(DependCAT ~ IndependCON, family=binomial(link='logit'))
 summary(glm.out)$coefficients
 ```
