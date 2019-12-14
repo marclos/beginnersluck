@@ -1,14 +1,17 @@
 \documentclass{article}
+
+\usepackage{concmath}
+\usepackage[T1]{fontenc}
+
 \usepackage[landscape, top=1cm, bottom=1cm, left=1cm, right=1cm]{geometry}
 \usepackage{multicol}
-
 
 \thispagestyle{plain}
 
 \title{EA30 R Reference Card}
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+
 \maketitle
 
 \begin{multicols}{3}
@@ -18,16 +21,16 @@
 
 \begin{description}
   \item[help.start()] Opens an interactive html page with several help resources
-  \item[?'function'] to get help with a specific function, don't include the quotation marks!
+  \item[? `function'] to get help with a specific function, don't include the quotation marks!
   \item[args()] to see the arguments that a function is expecting
 \end{description}
 
 \section*{Creating and Importing Data}
 
 \begin{description}
-\item[c()]
-\item[data.frame()]
-\item[read.csv()]
+\item[c()] combine or concantenate values, separated by commas
+\item[data.frame()] create data frame
+\item[read.csv()] read csv file into a data frame
 \end{description}
 
 \section*{Statistical Analysis}
@@ -35,33 +38,33 @@
 \subsection*{Regression}
 
 \begin{description}
-\item[lm()] 
+\item[lm()] create a linear model (y = f(x) or y $\sim$ x)
 \end{description}
 
 \subsection*{ANOVA, t-test, etc}
 
 \begin{description}
-\item[t.test()]
-\item[aov()]
+\item[t.test()] test two vectors 
+\item[aov()] create an object analysis of variance, where y = f(x) or y $\sim$ x
 \end{description}
 
 \subsection*{Tests for Association}
 
 \begin{description}
-\item[chisq.test()]
+\item[chisq.test()] 
 \item[fisher.test()]
 \end{description}
 
 \subsection*{Logistic Regression}
 
 \begin{description}
-\item[glm(y ~ x, family=binomial(link='logit'))]
+\item[glm(y $\sim$ x, family=binomial(link=`logit'))] 
 \end{description}
 
 \subsection*{Statistical Results}
 \begin{description}
-\item[summary()]
-\item[coef()]
+\item[summary()] coerce object into summary table
+\item[coef()] extract coefficients from a model object (e.g. lm)
 \item[plot()] when you plot a model, you'll get four diagnostic plots that can be used to evaluate the assumptions.
 \item[predict()]
 \end{description}
@@ -69,10 +72,10 @@
 \section*{Visual Display}
 
 \begin{description}
-\item[plot()] arguments can be in x,y or in a y ~ x formula to create scatter plots
+\item[plot()] arguments can be in x,y or in a y $\sim$ x formula to create scatter plots
 \item[boxplot()] boxplots are used for categorical predictors
-\item[abline()]
-\item[]
+\item[abline()] using values to create vertical, horizonal, or diagonal lines
+\item[par()] controls display parameters
 
 \end{description}
 

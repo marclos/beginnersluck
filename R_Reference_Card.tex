@@ -1,15 +1,67 @@
-\documentclass{article}
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+\usepackage{concmath}
+\usepackage[T1]{fontenc}
+
 \usepackage[landscape, top=1cm, bottom=1cm, left=1cm, right=1cm]{geometry}
 \usepackage{multicol}
-
 
 \thispagestyle{plain}
 
 \title{EA30 R Reference Card}
-
-\usepackage{Sweave}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
-\input{R_Reference_Card-concordance}
+
 \maketitle
 
 \begin{multicols}{3}
@@ -19,16 +71,16 @@
 
 \begin{description}
   \item[help.start()] Opens an interactive html page with several help resources
-  \item[?'function'] to get help with a specific function, don't include the quotation marks!
+  \item[? `function'] to get help with a specific function, don't include the quotation marks!
   \item[args()] to see the arguments that a function is expecting
 \end{description}
 
 \section*{Creating and Importing Data}
 
 \begin{description}
-\item[c()]
-\item[data.frame()]
-\item[read.csv()]
+\item[c()] combine or concantenate values, separated by commas
+\item[data.frame()] create data frame
+\item[read.csv()] read csv file into a data frame
 \end{description}
 
 \section*{Statistical Analysis}
@@ -36,33 +88,33 @@
 \subsection*{Regression}
 
 \begin{description}
-\item[lm()] 
+\item[lm()] create a linear model (y = f(x) or y $\sim$ x)
 \end{description}
 
 \subsection*{ANOVA, t-test, etc}
 
 \begin{description}
-\item[t.test()]
-\item[aov()]
+\item[t.test()] test two vectors 
+\item[aov()] create an object analysis of variance, where y = f(x) or y $\sim$ x
 \end{description}
 
 \subsection*{Tests for Association}
 
 \begin{description}
-\item[chisq.test()]
+\item[chisq.test()] 
 \item[fisher.test()]
 \end{description}
 
 \subsection*{Logistic Regression}
 
 \begin{description}
-\item[glm(y ~ x, family=binomial(link='logit'))]
+\item[glm(y $\sim$ x, family=binomial(link=`logit'))] 
 \end{description}
 
 \subsection*{Statistical Results}
 \begin{description}
-\item[summary()]
-\item[coef()]
+\item[summary()] coerce object into summary table
+\item[coef()] extract coefficients from a model object (e.g. lm)
 \item[plot()] when you plot a model, you'll get four diagnostic plots that can be used to evaluate the assumptions.
 \item[predict()]
 \end{description}
@@ -70,10 +122,10 @@
 \section*{Visual Display}
 
 \begin{description}
-\item[plot()] arguments can be in x,y or in a y ~ x formula to create scatter plots
+\item[plot()] arguments can be in x,y or in a y $\sim$ x formula to create scatter plots
 \item[boxplot()] boxplots are used for categorical predictors
-\item[abline()]
-\item[]
+\item[abline()] using values to create vertical, horizonal, or diagonal lines
+\item[par()] controls display parameters
 
 \end{description}
 

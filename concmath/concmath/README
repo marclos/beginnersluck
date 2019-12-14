@@ -1,0 +1,67 @@
+fonts/concmath --- Concrete Math fonts.
+
+Copyright (C) 1995--99 Ulrik Vieth
+
+
+COPYING:
+
+This software is free software; you can redistribute it and/or
+modify it under the terms of the LaTeX Project Public License
+as described in lppl.txt in the base LaTeX distribution; either
+version 1 of the License, or (at your option) any later version.
+
+This software is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+
+DESCRIPTION:
+
+This directory and its subdirectories are part of the `concmath'
+package for LaTeX(2e) that provides access to the Concrete Math
+typefaces, which were derived from the Concrete Roman typefaces
+designed by Donald E. Knuth.
+
+This directory appears on CTAN archives in two different places:
+
+  CTAN:fonts/concmacth
+  CTAN:macros/latex/contrib/supported/concmath/fonts
+
+Whatever it may be, this directory contains two subdirectories
+`mf' and `tfm' that hold the Metafont sources and font metrics
+of the Concrete Math typefaces.
+
+The Concrete Math fonts provide a collection of math italics,
+math symbol, and math extension fonts that complement the
+Concrete Roman fonts, so that the Concrete family of typefaces
+may be used as a complete replacement for Computer Modern.
+(Orginally, Concrete Roman was designed as a text font for use
+with the Euler math font, designed by Hermann Zapf.)
+
+Since Concrete is considerably darker than Computer Modern, this
+variant may be of particular interest for use in low-resolution
+printing or in display-oriented applications such as posters,
+transparencies, or online documents.
+
+To access the Concrete Math fonts in LaTeX(2e), you may wish to
+consult either the `concmath' package or the `ccfonts' package,
+both located in CTAN:macros/latex/contrib/supported.
+
+For further documentation about how the Concrete math fonts were
+derived, please read the documentation of the `concmath' package
+located in CTAN:macros/latex/contrib/supported/concmath.
+
+
+INSTALLATION:
+
+- If you have a TDS-compatible TeX installation, you may try to
+  use the enclosed `Makefile' by calling:
+
+    make install
+
+- For manual installation, copy the contents of the subdirectories
+  `mf' and `tfm' to TEXMF/fonts/{source,tfm}/public/concmath or
+  wherever else your installation keeps .mf sources and .tfm files.
+
+
+Happy TeXing!
