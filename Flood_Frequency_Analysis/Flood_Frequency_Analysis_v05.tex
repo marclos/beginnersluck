@@ -91,18 +91,28 @@
 
 \section{Selecting and Obtaining Gaging Station Data}
 
-Merced River
+\subsection{Finding the Station ID}
+
+Using the USGS site, find the station ID and enter below:
+
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{### STEP 3}
 \hlcom{### Get the Peak Annual Discharge}
-\hlstd{mysite}\hlkwb{<-}\hlstr{'11266500'}
+\hlstd{mysite}\hlkwb{<-}\hlstr{'11266500'} \hlcom{# You want to change this code to match your USGS site code. }
+
 \hlstd{annualpeak}\hlkwb{<-}\hlkwd{readNWISpeak}\hlstd{(mysite)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
+
+\subsection{Testing if the data are consistent over time}
+
+Look at the data and evaluate how to split the data in half -- then we can see if the estimate for flood frequency has changed. 
+
+Remember, in California, the water year actually starts on the 1st of October each year. In the example, I have below, I have define the dates, name of the station and dates for the graphic labels in this section too. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -114,24 +124,35 @@ Merced River
 \hlstd{period1}\hlkwb{<-}\hlkwd{subset}\hlstd{(annualpeak,}
                \hlstd{peak_dt}\hlopt{>=}\hlstr{"1980-10-01"}
                \hlopt{&}\hlstd{peak_dt}\hlopt{<=}\hlstr{"1999-09-30"}\hlstd{)}
+\hlstd{period1_title} \hlkwb{=} \hlstr{"Merced River at XXX, (1980-1999)"}
 \hlstd{period2}\hlkwb{<-}\hlkwd{subset}\hlstd{(annualpeak,}
                 \hlstd{peak_dt}\hlopt{>=}\hlstr{"1999-10-01"}
                 \hlopt{&}\hlstd{peak_dt}\hlopt{<=}\hlstr{"2019-09-30"}\hlstd{)}
+\hlstd{period2_title} \hlkwb{=} \hlstr{"Merced River at XXX, (2000-2019)"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
 \hlcom{### STEP 5}
-\hlcom{### Split the plot window in two columns}
-\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
-
+\section{Flood Frequency Analysis}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
 \hlcom{### STEP 5}
 \hlcom{### Perform Flood Freqency Analysis }
 \hlcom{### Locate the column of your data set that has the peak discharges}
 \hlcom{### Click the 'period1' from your 'Environment' (upper right)}
 \hlcom{### You can see that peak discharges are stored in the 6th column (peak_va)}
 
-
 \hlstd{Q} \hlkwb{<-} \hlstd{period1}\hlopt{$}\hlstd{peak_va}
-\hlstd{graphlab} \hlkwb{=} \hlstr{"1980-1999"}
 
 \hlcom{#Generate plotting positions}
 \hlstd{n} \hlkwb{=} \hlkwd{length}\hlstd{(Q)}
@@ -160,6 +181,9 @@ Merced River
 \hlstd{max} \hlkwb{=} \hlkwd{max}\hlstd{(UB)}
 \hlstd{Qmax} \hlkwb{=} \hlkwd{max}\hlstd{(QTtick)}
 
+\hlcom{### Split the plot window in two columns}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{))}
+
 \hlcom{# Plot peak flow series with Gumbel axis}
 \hlkwd{plot}\hlstd{(y, Q,}
      \hlkwc{ylab} \hlstd{=} \hlkwd{expression}\hlstd{(} \hlstr{"Annual Peak Flow (cfs)"} \hlstd{) ,}
@@ -167,7 +191,7 @@ Merced River
      \hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{, Qmax),}
      \hlkwc{xlim} \hlstd{=} \hlkwd{c}\hlstd{(xmin, xmax),}
      \hlkwc{pch} \hlstd{=} \hlnum{21}\hlstd{,} \hlkwc{bg} \hlstd{=} \hlstr{"red"}\hlstd{,}
-     \hlkwc{main} \hlstd{=} \hlkwd{paste}\hlstd{(} \hlstr{"Merced River,"}\hlstd{,graphlab )}
+     \hlkwc{main} \hlstd{= period1_title}
 \hlstd{)}
 \hlkwd{par}\hlstd{(}\hlkwc{cex} \hlstd{=} \hlnum{0.65}\hlstd{)}
 \hlkwd{axis}\hlstd{(}\hlnum{1}\hlstd{,} \hlkwc{at} \hlstd{= ytick,} \hlkwc{labels} \hlstd{=} \hlkwd{as.character}\hlstd{(xtlab))}
@@ -183,11 +207,9 @@ Merced River
 \hlkwd{par}\hlstd{(}\hlkwc{cex} \hlstd{=} \hlnum{1}\hlstd{)}
 
 
-\hlcom{### STEP 7}
-\hlcom{### Similarly, perform Flood Freqency Analysis for the second time period}
+\hlcom{### Perform Flood Freqency Analysis for the second time period}
 
 \hlstd{Q} \hlkwb{=} \hlstd{period2}\hlopt{$}\hlstd{peak_va}
-\hlstd{graphlab} \hlkwb{=} \hlstr{"1999-2019"}
 
 \hlcom{#Generate plotting positions}
 \hlstd{n} \hlkwb{=} \hlkwd{length}\hlstd{(Q)}
@@ -195,8 +217,8 @@ Merced River
 \hlstd{T} \hlkwb{=} \hlstd{(n} \hlopt{+} \hlnum{1}\hlstd{)}\hlopt{/}\hlstd{r}
 
 \hlcom{# Set up x axis tick positions and labels}
-\hlstd{Ttick} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{1.001}\hlstd{,}\hlnum{1.01}\hlstd{,}\hlnum{1.1}\hlstd{,}\hlnum{1.5}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{5}\hlstd{,}\hlnum{6}\hlstd{,}\hlnum{7}\hlstd{,}\hlnum{8}\hlstd{,}\hlnum{9}\hlstd{,}\hlnum{10}\hlstd{,}\hlnum{11}\hlstd{,}\hlnum{12}\hlstd{,}\hlnum{13}\hlstd{,}\hlnum{14}\hlstd{,}\hlnum{15}\hlstd{,}\hlnum{16}\hlstd{,}\hlnum{17}\hlstd{,}\hlnum{18}\hlstd{,}\hlnum{19}\hlstd{,}\hlnum{20}\hlstd{,}\hlnum{25}\hlstd{,}\hlnum{30}\hlstd{,}\hlnum{35}\hlstd{,}\hlnum{40}\hlstd{,}\hlnum{45}\hlstd{,}\hlnum{50}\hlstd{,}\hlnum{60}\hlstd{,}\hlnum{70}\hlstd{,}\hlnum{80}\hlstd{,}\hlnum{90}\hlstd{,}\hlnum{100}\hlstd{)}
-\hlstd{xtlab} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{1.001}\hlstd{,}\hlnum{1.01}\hlstd{,}\hlnum{1.1}\hlstd{,}\hlnum{1.5}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{5}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{10}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{15}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{20}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{30}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{50}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{NA}\hlstd{,}\hlnum{100}\hlstd{)}
+\hlcom{#Ttick = c(1.001,1.01,1.1,1.5,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,60,70,80,90,100)}
+\hlcom{#xtlab = c(1.001,1.01,1.1,1.5,2,NA,NA,5,NA,NA,NA,NA,10,NA,NA,NA,NA,15,NA,NA,NA,NA,20,NA,30,NA,NA,NA,50,NA,NA,NA,NA,100)}
 \hlstd{y} \hlkwb{=} \hlopt{-}\hlkwd{log}\hlstd{(}\hlopt{-}\hlkwd{log}\hlstd{(}\hlnum{1} \hlopt{-} \hlnum{1}\hlopt{/}\hlstd{T))}
 \hlstd{ytick} \hlkwb{=} \hlopt{-}\hlkwd{log}\hlstd{(}\hlopt{-}\hlkwd{log}\hlstd{(}\hlnum{1} \hlopt{-} \hlnum{1}\hlopt{/}\hlstd{Ttick))}
 \hlstd{xmin} \hlkwb{=} \hlkwd{min}\hlstd{(}\hlkwd{min}\hlstd{(y),}\hlkwd{min}\hlstd{(ytick))}
@@ -219,7 +241,7 @@ Merced River
      \hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{, Qmax),}
      \hlkwc{xlim} \hlstd{=} \hlkwd{c}\hlstd{(xmin, xmax),}
      \hlkwc{pch} \hlstd{=} \hlnum{21}\hlstd{,} \hlkwc{bg} \hlstd{=} \hlstr{"red"}\hlstd{,}
-     \hlkwc{main} \hlstd{=} \hlkwd{paste}\hlstd{(} \hlstr{"XXXX,"}\hlstd{,graphlab )}
+     \hlkwc{main} \hlstd{= period2_title}
 \hlstd{)}
 \hlkwd{par}\hlstd{(}\hlkwc{cex} \hlstd{=} \hlnum{0.65}\hlstd{)}
 \hlkwd{axis}\hlstd{(}\hlnum{1}\hlstd{,} \hlkwc{at} \hlstd{= ytick,} \hlkwc{labels} \hlstd{=} \hlkwd{as.character}\hlstd{(xtlab))}
@@ -234,11 +256,18 @@ Merced River
 \hlkwd{abline}\hlstd{(}\hlkwc{h} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlnum{500}\hlstd{,} \hlkwd{floor}\hlstd{(Qmax),} \hlnum{500}\hlstd{),} \hlkwc{lty} \hlstd{=} \hlnum{3}\hlstd{,}\hlkwc{col}\hlstd{=}\hlstr{"light gray"}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
 \begin{kframe}\begin{alltt}
 \hlkwd{par}\hlstd{(}\hlkwc{cex} \hlstd{=} \hlnum{1}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
+
+\subsection{Next Steps}
+
+make scales on y-axis the same!
+
+\section{Creating a function}
+
 
 \end{document}

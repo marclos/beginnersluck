@@ -3,7 +3,6 @@
 \begin{document}
 
 <<>>=
-
 ### STEP 1
 ### Removing previously used scripts from RWater
 ### Removing all previously generated datasets and plots 
@@ -23,15 +22,25 @@ library(xts)
 
 \section{Selecting and Obtaining Gaging Station Data}
 
-Merced River
+\subsection{Finding the Station ID}
+
+Using the USGS site, find the station ID and enter below:
+
 
 <<>>=
 ### STEP 3
 ### Get the Peak Annual Discharge
-mysite<-'11266500'
+mysite<-'11266500' # You want to change this code to match your USGS site code. 
+
 annualpeak<-readNWISpeak(mysite)
 
 @
+
+\subsection{Testing if the data are consistent over time}
+
+Look at the data and evaluate how to split the data in half -- then we can see if the estimate for flood frequency has changed. 
+
+Remember, in California, the water year actually starts on the 1st of October each year. In the example, I have below, I have define the dates, name of the station and dates for the graphic labels in this section too. 
 
 <<>>=
 ### STEP 4
@@ -41,24 +50,29 @@ annualpeak<-readNWISpeak(mysite)
 period1<-subset(annualpeak,
                peak_dt>="1980-10-01"
                &peak_dt<="1999-09-30")
+period1_title = "Merced River at XXX, (1980-1999)"
 period2<-subset(annualpeak,
                 peak_dt>="1999-10-01"
                 &peak_dt<="2019-09-30")
+period2_title = "Merced River at XXX, (2000-2019)"
+@
 
+
+<<>>=
 ### STEP 5
-### Split the plot window in two columns
-par(mfrow=c(1,2))
 
 
+@
+
+\section{Flood Frequency Analysis}
+<<>>=
 ### STEP 5
 ### Perform Flood Freqency Analysis 
 ### Locate the column of your data set that has the peak discharges
 ### Click the 'period1' from your 'Environment' (upper right)
 ### You can see that peak discharges are stored in the 6th column (peak_va)
 
-
 Q <- period1$peak_va   
-graphlab = "1980-1999"
 
 #Generate plotting positions
 n = length(Q)
@@ -87,6 +101,9 @@ UB = QTtick + qt(0.975, nQ - 1)*se
 max = max(UB)
 Qmax = max(QTtick)
 
+### Split the plot window in two columns
+par(mfrow=c(1,2))
+
 # Plot peak flow series with Gumbel axis
 plot(y, Q,
      ylab = expression( "Annual Peak Flow (cfs)" ) ,
@@ -94,7 +111,7 @@ plot(y, Q,
      ylim = c(0, Qmax),
      xlim = c(xmin, xmax),
      pch = 21, bg = "red",
-     main = paste( "Merced River,",graphlab )
+     main = period1_title
 )  
 par(cex = 0.65)
 axis(1, at = ytick, labels = as.character(xtlab))
@@ -110,11 +127,9 @@ abline(h = seq(500, floor(Qmax), 500), lty = 3,col="light gray")
 par(cex = 1)
 
 
-### STEP 7
-### Similarly, perform Flood Freqency Analysis for the second time period
+### Perform Flood Freqency Analysis for the second time period
 
 Q = period2$peak_va  
-graphlab = "1999-2019"
 
 #Generate plotting positions
 n = length(Q)
@@ -122,8 +137,8 @@ r = n + 1 - rank(Q)  # highest Q has rank r = 1
 T = (n + 1)/r
 
 # Set up x axis tick positions and labels
-Ttick = c(1.001,1.01,1.1,1.5,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,60,70,80,90,100)
-xtlab = c(1.001,1.01,1.1,1.5,2,NA,NA,5,NA,NA,NA,NA,10,NA,NA,NA,NA,15,NA,NA,NA,NA,20,NA,30,NA,NA,NA,50,NA,NA,NA,NA,100)
+#Ttick = c(1.001,1.01,1.1,1.5,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,60,70,80,90,100)
+#xtlab = c(1.001,1.01,1.1,1.5,2,NA,NA,5,NA,NA,NA,NA,10,NA,NA,NA,NA,15,NA,NA,NA,NA,20,NA,30,NA,NA,NA,50,NA,NA,NA,NA,100)
 y = -log(-log(1 - 1/T))
 ytick = -log(-log(1 - 1/Ttick))
 xmin = min(min(y),min(ytick))
@@ -146,7 +161,7 @@ plot(y, Q,
      ylim = c(0, Qmax),
      xlim = c(xmin, xmax),
      pch = 21, bg = "red",
-     main = paste( "XXXX,",graphlab )
+     main = period2_title
 )  
 par(cex = 0.65)
 axis(1, at = ytick, labels = as.character(xtlab))
@@ -161,5 +176,12 @@ abline(v = ytick, lty = 3, col="light gray")
 abline(h = seq(500, floor(Qmax), 500), lty = 3,col="light gray") 
 par(cex = 1)
 @
+
+\subsection{Next Steps}
+
+make scales on y-axis the same!
+
+\section{Creating a function}
+
 
 \end{document}
