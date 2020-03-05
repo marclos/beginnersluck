@@ -1,7 +1,21 @@
 \documentclass{article}
 
-\begin{document}
+\title{Flood Frequency Analysis Guide}
+\author{Marc Los Huertos}
 
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+\subsection{What is a Flood Frequency Analysis?}
+
+\subsection{Using R to Analyze Flood Frequencies}
+
+
+\subsubsection{Using Packages to Import Data}
+
+We will use two packages (libraries), `dataRetrieval' and `xts'. To do this, navigage to the Packages tab in the lower right window of Rstudio and click on Install. Type in the names of packages to download.  
 <<>>=
 ### STEP 1
 ### Removing previously used scripts from RWater
@@ -14,7 +28,7 @@ dev.off()
 <<>>=
 
 ### STEP 2
-### Loading two specific packages into RWater
+### Loading two specific packages into RWater  -- not sure what Rwater is...
 library(dataRetrieval) 
 library(xts)
 @
@@ -24,8 +38,9 @@ library(xts)
 
 \subsection{Finding the Station ID}
 
-Using the USGS site, find the station ID and enter below:
+I recommend finding a station that has a long record, certianly more than 40 years if you can. 
 
+Using the USGS site, find the station ID and enter below as mysite. The package 
 
 <<>>=
 ### STEP 3
@@ -33,8 +48,71 @@ Using the USGS site, find the station ID and enter below:
 mysite<-'11266500' # You want to change this code to match your USGS site code. 
 
 annualpeak<-readNWISpeak(mysite)
+annualpeak_title <- "Merced River at XXX"
 
 @
+\section{Flood Frequency Analysis}
+
+\subsection{Flood Frequency for Entire Record}
+
+First, we'll analyze the data for the entire record -- but you should make sure to do the second part below, where we split the data in half to see if the flood frequencies are consistent. 
+<<>>=
+### Locate the column of your data set that has the peak discharges
+### Click the 'annualpeak' from your 'Environment' (upper right)
+### You can see that peak discharges are stored in the 6th column (peak_va)
+
+Q <- annualpeak$peak_va   
+
+# Generate plotting positions
+n = length(Q)
+r = n + 1 - rank(Q)  # highest Q has rank r = 1
+T = (n + 1)/r
+
+# Set up x axis tick positions and labels
+Ttick = c(1.001,1.01,1.1,1.5,2,3,4,5,6,7,8,9,10,11,12,
+    13,14,15,16,17,18,19,20,25,30,35,40,45,50,60,70,
+    80,90,100)
+xtlab = c(1.001,1.01,1.1,1.5,2,NA,NA,5,NA,NA,NA,NA,10,
+    NA,NA,NA,NA,15,NA,NA,NA,NA,20,NA,30,NA,NA,NA,50,NA,NA,
+    NA,NA,100)
+y = -log(-log(1 - 1/T))
+ytick = -log(-log(1 - 1/Ttick))
+xmin = min(min(y),min(ytick))
+xmax = max(ytick)
+
+# Fit a line by method of moments, along with 95% confidence intervals
+KTtick = -(sqrt(6)/pi)*(0.5772 + log(log(Ttick/(Ttick-1))))
+QTtick = mean(Q) + KTtick*sd(Q) 
+nQ = length(Q)
+se = (sd(Q)*sqrt((1+1.14*KTtick + 1.1*KTtick^2)))/sqrt(nQ) 
+LB = QTtick - qt(0.975, nQ - 1)*se
+UB = QTtick + qt(0.975, nQ - 1)*se
+max = max(UB)
+Qmax = max(QTtick)
+
+# Plot peak flow series with Gumbel axis
+plot(y, Q,
+     ylab = expression( "Annual Peak Flow (cfs)" ) ,
+     xaxt = "n", xlab = "Return Period, T (year)",
+     ylim = c(0, Qmax),
+     xlim = c(xmin, xmax),
+     pch = 21, bg = "red",
+     main = annualpeak_title
+)  
+par(cex = 0.65)
+axis(1, at = ytick, labels = as.character(xtlab))
+
+# Add fitted line and confidence limits
+lines(ytick, QTtick, col = "black", lty=1, lwd=2)  
+lines(ytick, LB, col = "blue", lty = 1, lwd=1.5)
+lines(ytick, UB, col = "red", lty = 1, lwd=1.5)  
+# Draw grid lines
+abline(v = ytick, lty = 3, col="light gray")             
+abline(h = seq(500, floor(Qmax), 500), lty = 3,col="light gray") 
+par(cex = 1)
+@
+
+\section{Are Flood Frequencies Stationary?}
 
 \subsection{Testing if the data are consistent over time}
 
@@ -55,6 +133,7 @@ period2<-subset(annualpeak,
                 peak_dt>="1999-10-01"
                 &peak_dt<="2019-09-30")
 period2_title = "Merced River at XXX, (2000-2019)"
+ymax = round(max(annualpeak$peak_va, na.rm=T)*1.1, -3)
 @
 
 
@@ -64,7 +143,7 @@ period2_title = "Merced River at XXX, (2000-2019)"
 
 @
 
-\section{Flood Frequency Analysis}
+\section{Flood Frequency Analysis for Two Periods}
 <<>>=
 ### STEP 5
 ### Perform Flood Freqency Analysis 
@@ -108,7 +187,7 @@ par(mfrow=c(1,2))
 plot(y, Q,
      ylab = expression( "Annual Peak Flow (cfs)" ) ,
      xaxt = "n", xlab = "Return Period, T (year)",
-     ylim = c(0, Qmax),
+     ylim = c(0, ymax),
      xlim = c(xmin, xmax),
      pch = 21, bg = "red",
      main = period1_title
@@ -158,7 +237,7 @@ Qmax = max(QTtick)
 plot(y, Q,
      ylab = expression( "Annual Peak Flow (cfs)" ) ,
      xaxt = "n", xlab = "Return Period, T (year)",
-     ylim = c(0, Qmax),
+     ylim = c(0, ymax),
      xlim = c(xmin, xmax),
      pch = 21, bg = "red",
      main = period2_title
