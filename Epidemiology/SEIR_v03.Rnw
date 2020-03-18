@@ -1,8 +1,13 @@
 \documentclass{article}
 
+\title{Epidemiology -- Human and Water Borne Illnesses}
+\author{Marc Los Huertos}
+
 \begin{document}
 
-COVID-19 has been spreading rapidly around the world. Italy has now gone into lock down, California has declared a state of emergency, schools and universities around the globe have canceled in person classes and events, and businesses have reduced travel and pushed work from home policies. All of this is designed to slow the spread of the disease. These efforts are broadly referred to as social distancing.
+\maketitle
+
+COVID-19 began spreading rapidly around the world in late 2019. And by the spring, Italy went into lock down, California declared a state of emergency, schools and universities around the globe suspended in person classes and events, and businesses have reduced travel and pushed tele-work policies. All of this is designed to slow the spread of the disease. These efforts are broadly referred to as social distancing.
 
 The idea is to reduce person-to-person contact in order to make spreading the disease less likely. The effects of this are often illustrated in images such as those in the chart below, where the red plot is flattened to spread out the disease as much as possible. This helps to ensure that there are sufficient resources available for a sick population, which will help improve survival rates.
 
@@ -40,7 +45,10 @@ Unfortunately, I have defined the array to track subject, thus, have to do some 
 coord_range = c(0, 960, 0, 540)
 N = 100
 tstep = 2000
-location = 5 
+location = 5 # number of parameters to track
+stationary = .4 # as a percent of N
+speed = rep(5,N); speed[sample(N, round(N*stationary, 0))]=0; speed
+Infect_distance = 4
 (data_arr = array(dim=c(tstep,location, N)))
 dimnames(data_arr)[[2]] <- c("x", "y", "theta", "speed", "status")
 
@@ -48,7 +56,7 @@ dimnames(data_arr)[[2]] <- c("x", "y", "theta", "speed", "status")
 subj_x = runif(N, coord_range[1],  coord_range[2]); subj_x
 subj_y = runif(N, coord_range[3],  coord_range[4]); subj_y
 theta = round(runif(N, 0, 360),0); theta
-speed = rep(10,N)
+
 SERI = rep(1, N); SERI[sample(N, 2)] = 3; SERI
 
 data_arr[1,,1]
@@ -118,7 +126,7 @@ for(k in 1:N){
 euclid[i,1,j,k]=i; euclid[i,2,j,k]=j; euclid[i, 3, j,k]=k
 euclid[i,4,j,k] = sqrt((data_arr[i,1,j]-data_arr[i, 1, k])^2+(data_arr[i,2,j]-data_arr[i, 2,k])^2) 
 # Test Distance
-if(euclid[i,4,j,k] < 3){ 
+if(euclid[i,4,j,k] < Infect_distance){ 
   if(data_arr[i,5,j] == 3) data_arr[i:tstep,5,k]=3
   }
 }}}
@@ -150,20 +158,25 @@ points(data_arr[j,1,i], data_arr[j,2,i], pch=19, col=SEIRcol[data_arr[j,5,i]])
 
 <<echo=FALSE, results='hide'>>=
 
-png(filename = "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/png/model2%04d.png", width = 960, height = 540)
+png(filename = "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/png/model2/model2%04d.png", width = 960, height = 540)
 
 # remove any margin
 par(mar = c(0, 0, 0, 0))
-
+plot(c(0, 0), type = "n", col = "white", xlim = c(-1, 960), 
+    ylim = c(-5, 540), yaxt = "n", ann = FALSE, xaxt = "n", bty = "n")
+text(400, 500, labels = paste("Model 2, N =",N,", Time Steps =", tstep))
+text(350, 450, labels = paste("Proximity to infect =", 2, "units"))
 for(j in 1:tstep){
 # create blank canvas
 plot(c(0, 0), type = "n", col = "white", xlim = c(-1, 960), 
     ylim = c(-5, 540), yaxt = "n", ann = FALSE, xaxt = "n", bty = "n")
 points(data_arr[j,1,], data_arr[j,2,], pch=19, col=SEIRcol[data_arr[j,5,]])
+infected = data_arr[j,5,]/3/N
+text(0,10, labels=paste("Time =",j, "Infected=", infected))
 }
 dev.off()
 
-
+zip("/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/Model2.zip", "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/png/model2/")  
 
 @
 
