@@ -162,8 +162,8 @@ png(filename = "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/png/mode
 
 # remove any margin
 par(mar = c(0, 0, 0, 0))
-plot(c(0, 0), type = "n", col = "white", xlim = c(-1, 960), 
-    ylim = c(-5, 540), yaxt = "n", ann = FALSE, xaxt = "n", bty = "n")
+plot(c(0, 0), type = "n", col = "white", xlim = c(0, 960), 
+    ylim = c(0, 540), yaxt = "n", ann = FALSE, xaxt = "n", bty = "n")
 text(400, 500, labels = paste("Model 2, N =",N,", Time Steps =", tstep))
 text(350, 450, labels = paste("Proximity to infect =", 2, "units"))
 for(j in 1:tstep){
@@ -171,8 +171,8 @@ for(j in 1:tstep){
 plot(c(0, 0), type = "n", col = "white", xlim = c(-1, 960), 
     ylim = c(-5, 540), yaxt = "n", ann = FALSE, xaxt = "n", bty = "n")
 points(data_arr[j,1,], data_arr[j,2,], pch=19, col=SEIRcol[data_arr[j,5,]])
-infected = data_arr[j,5,]/3/N
-text(0,10, labels=paste("Time =",j, "Infected=", infected))
+infected = sum(data_arr[j,5,])/3/N*100
+text(250,50, labels=paste("Time Step =",j, "Infected=", infected,"%"))
 }
 dev.off()
 
