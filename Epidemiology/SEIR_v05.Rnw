@@ -1,0 +1,317 @@
+\documentclass{article}
+%\usepackage{media9}
+
+<<setup, echo=FALSE>>=
+library(xtable)
+@
+
+\title{Epidemiology -- Human and Water Borne Illnesses}
+\author{Marc Los Huertos}
+
+\begin{document}
+
+\maketitle
+
+COVID-19 began rapidly spreading around the world in late 2019. And by the spring, Italy went into lock down, California declared a state of emergency, schools and universities around the globe suspended in person classes and events, and businesses reduced travel and pushed tele-work policies. All of this was designed to slow the spread of the disease. These efforts are broadly referred to as social distancing.
+
+\subsection{Value of Social Distancing}
+The idea is to reduce person-to-person contact to make spreading the disease less likely. The effects of this are often illustrated in images such as those in the chart below, where the red plot is flattened to spread out the disease as much as possible. This helps to ensure that there are sufficient resources available for a sick population, which will help improve survival rates.
+
+Flattening the curve to keep infection manageable (Source: Fast.ai).
+How do we determine the value of such distancing strategies and model this spread?
+
+\subsection{Modeling Disease -- SEIR}
+
+We walk through a SEIR epidemiological model and simulate it with R. The first model is the basic SEIR without social distancing, then we add social distancing to show how the potential effectiveness of these strategies.
+
+The SEIR model is a compartmental model for modeling how a disease spreads through a population. It's an acronym for Susceptible, Exposed, Infected, Recovered. When a disease is introduced to a population, the people move from one of these classes (or compartments) to the next. When they reach the R state, they're no longer able to be infected, depending on your interpretation, they either survived the disease and are now immune or succumbed to the illness and are out of the population.
+
+This is an extension of the classic SIR model and simply adds one more equation to show those who are exposed. The full model is given below:
+
+We have four ODE's in the time domain, with three parameters: $\alpha$, $\beta$, $\gamma$.
+
+\begin{itemize}
+
+\item $\alpha$ is the inverse of the incubation period ($1/t_{incubation}$)
+\item $\beta$ is the average contact rate in the population
+\item $\gamma$ is the inverse of the mean infectious period ($1/t_{infectious}$)
+
+\end{itemize}
+
+
+Equation (1) is the change in people susceptible to the disease and is moderated by the number of infected people and their contact with the infected. Equation (2) gives the people who have been exposed to the disease. It grows based on the contact rate and decreases based on the incubation period whereby people then become infected.
+
+
+\section{Models with Susceptibility and Infection}
+
+\subsection{Model Structure}
+
+The model relies on spatially explicit movements of 'subjects' that basically bounce around in a box, i.e. petri dish. Each subject is assigned a random location and trajectory (angle) of movement and velocity of movement vector. I based the model on an Washington Times article by XXXX (published). Although his model, written in Java, is probably much cleaner, I wanted to create something that students could use to adjust parameters and evaluate different policy strategies, using XX's visualization as a foundation. 
+
+To track subject movements, contact with others, etc I have defined an array to track subject, thus, have to do some backflips to track overlap at each time step to see if people are sharing space and pathogens. 
+
+I'm not a programmer, so this is going to need some TLC as it's pretty ineffecient. 
+
+\subsection{Model Parameterization}
+
+<<defineparameters, echo=TRUE, results='hide'>>=
+coord_range = c(0, 960, 0, 540)
+model = c("Model0", "Model1_40", "Model2_40")
+N = 100; tstep = 4380; #Six months, hourly steps.
+stationary = c(0, 0, .4) # as a percent of N
+infect_dist = 5
+asymptomatic = 24 # period of time of being exposed
+symptomatic = 96 # time after exposure
+recovery = 720 # 30 days to become uninfectious
+init_infect = 2
+
+params = data.frame(Model = model, N = N, Stationary=stationary, Inf_Dist = infect_dist, init_infact = init_infect, asymp = asymptomatic, 
+symp = symptomatic, rec = recovery); params
+
+rm(model, N, stationary, asymptomatic,symptomatic, recovery, init_infect)
+@
+
+I have define the following parameters for the model, which will be further described in each section below.
+
+<<>>=
+xtable(params)
+@
+
+But for now, I'd like to see how these align with the equations described above.
+
+\subsection{Model Functions}
+
+First, functions are useful when you have repetitive actions to make -- in this case, I have defined functions to move sujects based on their speed and direction of travel. 
+
+Since these functions rely on the data array within another function (thus, not globally available, until it it `returned` at the end fo the function), I had to include a refernece to the data in the function so that the functions could find the array.
+
+<<Modelfunctions>>=
+
+#create function to move the subject
+move_x = function(data_array, s, t){
+data_array[s, 4, t] * cos(data_array[s,3, t]*pi/180)}
+move_y = function(data_array, s, t){ 
+data_array[s, 4, t] * sin(data_array[s,3, t]*pi/180)}
+
+# check function 
+# move_y(data_arr, 1, 1); move_x(data_arr, 1,1)
+
+# move function
+move = function(data_array, s, t){
+  c(data_array[s, 1, t-1]+ move_x(data_array, s, t-1), 
+    data_array[s, 2, t-1]+ move_y(data_array, s, t-1),
+    data_array[s, 3, t-1], 
+    data_array[s, 4, t-1],
+    data_array[s, 5, t-1],
+    data_array[s, 6, t-1])
+}
+
+# Test functions
+data_arr[1,,1]
+move(data_arr, 1, 2)
+Model1; i = 2
+@ 
+
+<<infectionfunction>>=
+# Contact Infection Function
+contact = function(data_array, t, Infect_dist){
+
+# testfunction
+  #data_array=Model1; t=88; infect_dist = 5
+  pairs = cbind(as.vector(data_array[,"x",t]), 
+          as.vector(data_array[,"y",t])); pairs
+  tmp = as.matrix(dist(pairs, method = "euclidean" )); tmp
+  tmp[upper.tri(tmp, diag = TRUE)] <- NA; tmp
+  pairs <- which(tmp < Infect_dist ,arr.ind = TRUE);pairs
+  tmp2 = cbind(as.numeric(rownames(tmp)[pairs[, 1]]), 
+               as.numeric(colnames(tmp)[pairs[, 2]])); tmp2
+  contacts = dim(tmp2)[1]; contacts
+  if(contacts>0){
+    for(i in 1:contacts){
+      # If one is exposed, susceptable is exposed
+      if(data_array[tmp2[i,1],5,t]==2 & data_array[tmp2[i,2],5,t]==1){
+      data_array[tmp2[i,2],5,t] = 2
+      }
+      # If one is exposed, susceptable is exposed
+      if(data_array[tmp2[i,2],5,t]==2 & data_array[tmp2[i,1],5,t]==1){
+      data_array[tmp2[i,1],5,t] = 2
+      }
+      # If one is symptomatic, the susceptable is exposed
+      if(data_array[tmp2[i,1],5,t]==3 & data_array[tmp2[i,2],5,t]==1){
+      data_array[tmp2[i,2], 5, t] = 2
+      }
+      # If one is symptomatic, the susceptable is exposed
+      if(data_array[tmp2[i,1],5,t]==1 & data_array[tmp2[i,2],5,t]==3){
+      data_array[tmp2[i,1], 5, t] = 2
+      }  
+    } 
+    
+  }
+   # data_array[,,t]
+return(data_array)
+# print(data_array[,5,t])
+} # close function
+
+contact(Model1, 87, 5)
+@
+
+Next, I'm going to figure out how to create a function to text for euclidian distances to spread disease, but this will take some more effort \ldots
+
+\subsection{Model 1: Modeling Susceptability and Infections  with No Behavior Changes and Recovery}
+
+For this model, people get instantenously sick and start spreading it around -- not very realistic because when people get sick they are usually quarantined and stop bouncing around the environment. Nevertheless this sets up a good base line, where the poputation gets ill pretty quickly. 
+<<>>=
+MoveSubjects = function(N=3, tstep=4, Speed=5, Init_infect=1, Infect_dist = 5, Stationary = 0){
+# Test Defaults
+#N=3; tstep =4; speed=5; init_infect=1; stationary=0
+# Define Data Array
+location = 6 # number of parameters to track
+data_arr = array(dim=c(N, location, tstep))
+dimnames(data_arr)[[2]] <- c("x", "y", "theta", "speed", "status", "count")
+data_arr[,,1]
+# Initialize Start Locations
+set.seed(2763)
+subj_x = runif(N, coord_range[1],  coord_range[2]); subj_x
+subj_y = runif(N, coord_range[3],  coord_range[4]); subj_y
+
+# Set Up Population Characteristics and Behaviors
+speed = rep(Speed,N); 
+speed[sample(N, round(N*Stationary, 0))]=0; speed
+theta = round(runif(N, 0, 360),0); theta
+SEIR = rep(1, N); SEIR[sample(N, Init_infect)] = 3; SEIR
+count = rep(0, N)
+
+# Initial Locations
+data_arr[,,1] = c(subj_x, subj_y, theta, speed, SEIR, count)
+data_arr[,,1]
+t = 2; s=1
+for(t in 2:tstep){
+  for(s in 1:N){
+    # move subjects based on theta and speed
+    data_arr[s,,t] = move(data_arr, s, t)
+    # coarse corrections when hitting a boundary
+    # Min x-boundary
+    if(data_arr[s,1,t] < coord_range[1]){
+      data_arr[s,3,t-1]=180-data_arr[s,3,t-1]
+      data_arr[s,,t] = move(data_arr, s, t)
+    }
+    #Max x-boundary
+    if(data_arr[s,1,t] > coord_range[2]){
+      data_arr[s,3,t-1]=180-data_arr[s,3,t-1]
+      data_arr[s,,t] = move(data_arr, s, t)
+    } 
+    #Min y-boundary
+    if(data_arr[s,2,t] < coord_range[3]){
+      data_arr[s,3,t-1]=360-data_arr[s,3,t-1]
+      data_arr[s,,t] = move(data_arr, s, t) 
+    }
+    #Max y-boundary
+    if(data_arr[s,2,t] > coord_range[4]){
+      data_arr[s,3,t-1]=360-data_arr[s,3,t-1]
+      data_arr[s,,t] = move(data_arr, s, t)
+    }
+    # Change Status based on Time Steps
+    data_arr[s,6,t] = data_arr[s,6,t] + 1
+    if(data_arr[s,5,t]==1) data_arr[s,6,t]=0 # Reset Susceptables  
+   # Exposed becomes symptomatic
+  if(data_arr[s,5,t]==2 & data_arr[s,6,t] > params[1,6]){
+    data_arr[s,5,t]=3}
+    # Symptomatics move very little
+  if(data_arr[s,5,t]==3 & data_arr[s,6,t] > params[1,7]){
+    data_arr[s,4,t] = 1}
+  # Time to Recovery
+  if(data_arr[s,5,t]==3 & data_arr[s,6,t] > params[1,8]){
+    data_arr[s,5,t] = 4
+    data_arr[s,4,t] = 5
+    } 
+  } # End of Subj Moving
+  
+  # Time Step Proceesing
+  # Test for Euclidean Distances Here!
+
+data_arr <- contact(data_arr, t, Infect_dist)
+ 
+} # End of Time Step
+return(data_arr)
+}
+@
+
+<<>>=
+
+#N=3, tstep=4, speed=5, init_infect=1, stationary = 0)
+params
+Model1 <- MoveSubjects(N = params[1,2], tstep = tstep, Speed = 5, Init_infect=1, Infect_dist=params[1,4], Stationary = params[1,3])
+
+# Model Run = 
+@
+
+\subsection{Tracking the Disease Transfer}
+
+<<>>=
+results = data.frame(S=NA, E=NA, I=NA, R=NA)
+for(t in 1:tstep){
+s = sum(as.vector(Model1[,5,t])==1)
+e = sum(as.vector(Model1[,5,t])==2)
+i = sum(as.vector(Model1[,5,t])==3)
+r = sum(as.vector(Model1[,5,t])==4)
+results[t,] <- data.frame(S=s, E=e, I=i, R=r)
+}
+head(results)
+par(mfrow=c(1,1), mar=c(4, 5, 3, 2)+.1)
+plot(results$S, ty='l', col=SEIRcol[1], ylab="", ylim=c(0,params[1,2]))
+lines(results$E, col=SEIRcol[2])
+lines(results$I, col=SEIRcol[3])
+lines(results$R, col=SEIRcol[4])
+@
+
+\section{Plot Results}
+
+\subsection{Static plot}
+
+Because we are looking at a dynamic system, I don't find the static plot all that useful.
+
+\begin{figure}
+<<echo=FALSE>>=
+# Susceptable 1, Exposed-Asymptomatic 2, Symptomatic 3, Recovered 4
+SEIRcol = c("steelblue", "orange","red", "green") 
+
+steps = c(1, round(1/50*tstep, 0), round(1/40*tstep,0), max(tstep)); steps
+steps = c(95, 96, 97, 98)
+par(mar=c(1,1,1,1), mfrow=c(2,2))
+for(t in steps){
+plot(x=coord_range[1:2], y=coord_range[3:4], type='n', xlab='', ylab='', xaxt='n', yaxt='n')
+points(Model1[,1,t], Model1[,2,t], pch=19, col=SEIRcol[Model1[,5,t]])
+}
+
+@
+\end{figure}
+\subsection{Animating the Results}
+
+<<echo=FALSE, results='hide', eval=FALSE>>=
+
+png(filename = "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/png/model2/model2%04d.png", width = 960, height = 540)
+
+# remove any margin
+par(mar = c(0, 0, 0, 0))
+plot(c(0, 0), type = "n", col = "white", xlim = c(0, 960), 
+    ylim = c(0, 540), yaxt = "n", ann = FALSE, xaxt = "n", bty = "n")
+text(400, 500, labels = paste("Model 2, N =",N,", Time Steps =", tstep))
+text(380, 450, labels = paste("Proximity to infect =", Infect_distance, "units, Percent Stationary =", stationary*100, "%"))
+for(j in 1:tstep){
+# create blank canvas
+plot(c(0, 0), type = "n", col = "white", xlim = c(-1, 960), 
+    ylim = c(-5, 540), yaxt = "n", ann = FALSE, xaxt = "n", bty = "n")
+points(data_arr[s,1,t], data_arr[s,2,t], pch=19, col=SEIRcol[data_arr[s,5,t]])
+# TEST
+# points(data_arr[1,1,], data_arr[1,2,], pch=19, col=SEIRcol[data_arr[1,5,]])
+points(data_arr[20,1,], data_arr[20,2,], pch=19, col=SEIRcol[data_arr[20,5,]])
+infected = round(sum(data_arr[j,5,]==3)/N*100,0)
+text(150,0, labels=paste("Time Step =",j, "Infected=", infected,"%"))
+}
+dev.off()
+
+zip("/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/Model2.zip", "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/png/model2/")  
+
+@
+
+\end{document}

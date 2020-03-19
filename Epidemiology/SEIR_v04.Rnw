@@ -1,4 +1,5 @@
 \documentclass{article}
+%\usepackage{media9}
 
 \title{Epidemiology -- Human and Water Borne Illnesses}
 \author{Marc Los Huertos}
@@ -48,7 +49,7 @@ tstep = 2000
 location = 5 # number of parameters to track
 stationary = .4 # as a percent of N
 speed = rep(5,N); speed[sample(N, round(N*stationary, 0))]=0; speed
-Infect_distance = 4
+Infect_distance = 5
 (data_arr = array(dim=c(tstep,location, N)))
 dimnames(data_arr)[[2]] <- c("x", "y", "theta", "speed", "status")
 
@@ -116,7 +117,8 @@ for(i in 1:N){
 @
 \subsection{Tracking the Disease Transfer}
 
-Test for proximity at each time step
+Test for proximity at each time step. I have developed an increbily ineffient way of doing this -- I will have to some work for find a better method -- here's where coding experience is useful!
+
 <<echo=TRUE, results='hide'>>=
 # data_arr
 euclid = array(data=NA, dim=c(tstep, 4, N, N))
@@ -125,13 +127,18 @@ for(j in 1:N){
 for(k in 1:N){
 euclid[i,1,j,k]=i; euclid[i,2,j,k]=j; euclid[i, 3, j,k]=k
 euclid[i,4,j,k] = sqrt((data_arr[i,1,j]-data_arr[i, 1, k])^2+(data_arr[i,2,j]-data_arr[i, 2,k])^2) 
-# Test Distance
+# Test Distance -- May not work as expected -- infections with stationary subjects can still occur.
 if(euclid[i,4,j,k] < Infect_distance){ 
   if(data_arr[i,4,j] != 0){
-    if(data_arr[i,5,j] == 3) data_arr[i:tstep,5,k]=3
+    if(data_arr[i,5,k] == 3) data_arr[i:tstep,5,j]=3
+    print(data_arr[i,,k])
   }
 }
+
 }}}
+
+# I had to hard code in stationary - non-infections -- totally lame
+#if(data_arr[,4,] == 0) data_arr[20,5,] <-1
 
 # head(euclid)
 
@@ -167,14 +174,17 @@ par(mar = c(0, 0, 0, 0))
 plot(c(0, 0), type = "n", col = "white", xlim = c(0, 960), 
     ylim = c(0, 540), yaxt = "n", ann = FALSE, xaxt = "n", bty = "n")
 text(400, 500, labels = paste("Model 2, N =",N,", Time Steps =", tstep))
-text(350, 450, labels = paste("Proximity to infect =", 2, "units"))
+text(380, 450, labels = paste("Proximity to infect =", Infect_distance, "units, Percent Stationary =", stationary*100, "%"))
 for(j in 1:tstep){
 # create blank canvas
 plot(c(0, 0), type = "n", col = "white", xlim = c(-1, 960), 
     ylim = c(-5, 540), yaxt = "n", ann = FALSE, xaxt = "n", bty = "n")
 points(data_arr[j,1,], data_arr[j,2,], pch=19, col=SEIRcol[data_arr[j,5,]])
-infected = sum(data_arr[j,5,])/3/N*100
-text(250,50, labels=paste("Time Step =",j, "Infected=", infected,"%"))
+# TEST
+# points(data_arr[1,1,], data_arr[1,2,], pch=19, col=SEIRcol[data_arr[1,5,]])
+points(data_arr[20,1,], data_arr[20,2,], pch=19, col=SEIRcol[data_arr[20,5,]])
+infected = round(sum(data_arr[j,5,]==3)/N*100,0)
+text(150,0, labels=paste("Time Step =",j, "Infected=", infected,"%"))
 }
 dev.off()
 
