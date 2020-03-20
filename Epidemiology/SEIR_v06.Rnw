@@ -33,27 +33,28 @@ The Kermack-McKendrick model is an SIR model for the number of people infected w
 
 The model consists of a system of three coupled nonlinear ordinary differential equations,
 
+
 \begin{equation}
-(dS)/(dt)	=	-betaSI	
+(dS)/(dt)	=	-\beta SI	
 \end{equation}
 
 \begin{equation}
-(dI)/(dt)	=	betaSI-gammaI	
+(dI)/(dt)	=	\beta SI- \gamma I
 \end{equation}
 
 \begin{equation}
-(dR)/(dt)	=	gammaI,	
-\end(equation}
+(dR)/(dt)	=	\gamma I,
+\end{equation}
 
 where t is time, S(t) is the number of susceptible people, I(t) is the number of people infected, R(t) is the number of people who have recovered and developed immunity to the infection, beta is the infection rate, and gamma is the recovery rate.
 
 The key value governing the time evolution of these equations is the so-called epidemiological threshold,
 
 \begin{equation}
- R_0=(betaS)/gamma
+ R_0=(\beta S)/ \gamma
 \end{equation}
  
-Note that the choice of the notation R_0 is a bit unfortunate, since it has nothing to do with R. R_0 is defined as the number of secondary infections caused by a single primary infection; in other words, it determines the number of people infected by contact with a single infected person before his death or recovery.The full model is given below:
+Note that the choice of the notation R\_0 is a bit unfortunate, since it has nothing to do with R. R\_0 is defined as the number of secondary infections caused by a single primary infection; in other words, it determines the number of people infected by contact with a single infected person before his death or recovery.The full model is given below:
 
 We have four ODE's in the time domain, with three parameters: $\alpha$, $\beta$, $\gamma$.
 
@@ -81,20 +82,21 @@ I'm not a programmer, so this is going to need some TLC as it's pretty ineffecie
 
 \subsection{Model Parameterization}
 
-<<defineparameters, echo=TRUE, results='hide'>>=
+<<defineparameters, echo=FALSE, results='hide'>>=
 coord_range = c(0, 960, 0, 540)
-model = c("Model0_50", "Model0_100", "Model2_40", "Model3_40")
+model = c("Model1", "Model2", "Model3", "Model4")
 N = c(50, 100, 100, 100); 
-Tstep = c(3000, 2000, 3000, 3000)
+Tstep = c(2000, 2000, 3000, 3000)
+velocity = c(5, 5, 5, 5)
 #Tstep = c(50, 50, 50, 50) #4380; #Six months, hourly steps.
 stationary = c(0, 0, .4, .4) # as a percent of N
-infect_dist = c(10, 10, 10, 10)
-asymptomatic = c(24, 24, 24, 48) # period of time of being exposed
-symptomatic = c(96, 96, 96, 72) # time after exposure
+infect_dist = c(20, 20, 20, 20)
+asymptomatic = c(24, 24, 24, 60) # period of time of being exposed
+symptomatic = c(96, 96, 96, 60) # time after exposure
 recovery = 720 # 30 days to become uninfectious
-init_infect = c(1, 1, 1, 1) # Initial number of infections
+init_infect = c(2, 2, 2, 2) # Initial number of infections
 
-params = data.frame(Model = model, N = N, tstep=Tstep, Stationary=stationary, Inf_Dist = infect_dist, init_infact = init_infect, asymp = asymptomatic, 
+params = data.frame(Model = model, N = N, Velocity = velocity, tstep=Tstep, Stationary=stationary, Inf_Dist = infect_dist, init_infact = init_infect, asymp = asymptomatic, 
 symp = symptomatic, rec = recovery); params
 
 rm(model, N, Tstep, stationary, asymptomatic,symptomatic, recovery, init_infect, infect_dist)
@@ -102,7 +104,7 @@ rm(model, N, Tstep, stationary, asymptomatic,symptomatic, recovery, init_infect,
 
 I have define the following parameters for the model, which will be further described in each section below.
 
-<<>>=
+<<echo=FALSE, results='asis'>>=
 xtable(params)
 @
 
@@ -136,9 +138,9 @@ move = function(data_array, s, t){
 }
 
 # Test functions
-data_arr[1,,1]
-move(data_arr, 1, 2)
-Model1; i = 2
+# data_arr[1,,1]
+# move(data_arr, 1, 2)
+# Model1; i = 2
 @ 
 
 <<infectionfunction>>=
@@ -190,13 +192,13 @@ Next, I'm going to figure out how to create a function to text for euclidian dis
 
 For this model, people get instantenously sick and start spreading it around -- not very realistic because when people get sick they are usually quarantined and stop bouncing around the environment. Nevertheless this sets up a good base line, where the poputation gets ill pretty quickly. 
 <<>>=
-MoveSubjects = function(N=3, tstep=4, Stationary = 0, Infect_dist = 5, Init_infect=1, Speed=5){
+MoveSubjects = function(N=3, tstep=4, Velocity = 5, Stationary = 0, Infect_dist = 5, Init_infect=1, Speed=5){
 # Test Defaults
 #N=3; tstep =4; Speed=5; Init_infect=1; stationary=.5
 # Define Data Array
 location = 6 # number of parameters to track
 data_arr = array(dim=c(N, location, tstep))
-dimnames(data_arr)[[2]] <- c("x", "y", "theta", "speed", "status", "count")
+dimnames(data_arr)[[2]] <- c("x", "y", "theta", "velocity", "status", "count")
 data_arr[,,1]
 # Initialize Start Locations
 set.seed(2763)
@@ -205,14 +207,14 @@ subj_y = runif(N, coord_range[3],  coord_range[4]); subj_y
 
 # Set Up Population Characteristics and Behaviors
 sheltered = sample(N*Stationary); sheltered
-speed = rep(Speed,N); speed[sheltered]=0; speed
+velocity = rep(Velocity,N); velocity[sheltered]=0; velocity
 theta = round(runif(N, 0, 360),0); theta
 SEIR = rep(1, N); SEIR[sheltered] = 0  
 SEIR[sample(N, Init_infect)] = 3; SEIR
 count = rep(0, N)
 
 # Initial Locations
-data_arr[,,1] = c(subj_x, subj_y, theta, speed, SEIR, count)
+data_arr[,,1] = c(subj_x, subj_y, theta, velocity, SEIR, count)
 data_arr[,,1]
 # t = 2; s=1
 for(t in 2:tstep){
@@ -276,29 +278,38 @@ library(tictoc)
 params
 
 m=1
-tic("Model1_50")
-Model1_50<- MoveSubjects(N = params[m,2], tstep = params[m,3], Stationary = params[m,4], Infect_dist=params[m, 5], Init_infect=params[m, 6], Speed = 5)
+tic("Model1")
+Model1<- MoveSubjects(N = params[m,2], Velocity = params[m, 3], 
+    tstep = params[m,4], Stationary = params[m,5], 
+    Infect_dist=params[m, 6], Init_infect=params[m, 7])
 toc() # 900s
 
 m=2
-tic("Model2_100")
-Model2_100<- MoveSubjects(N = params[m,2], tstep = params[m,3], Stationary = params[m,4], Infect_dist=params[m, 5], Init_infect=params[m, 6], Speed = 5)
+tic("Model2")
+Model2<- MoveSubjects(N = params[m,2], Velocity = params[m, 3], 
+    tstep = params[m,4], Stationary = params[m,5], 
+    Infect_dist=params[m, 6], Init_infect=params[m, 7])
 toc() #1800s
 
 m=3
-tic("Model3_100_40")
-Model3_100_40 <- MoveSubjects(N = params[m,2], tstep = params[m,3], Stationary = params[m,4], Infect_dist=params[m, 5], Init_infect=params[m, 6], Speed = 5)
+tic("Model3")
+Model3 <- MoveSubjects(N = params[m,2], Velocity = params[m, 3], 
+    tstep = params[m,4], Stationary = params[m,5], 
+    Infect_dist=params[m, 6], Init_infect=params[m, 7])
 toc() #3308
 
 m=4
-tic("Model4_100_40")
-Model4_100_40 <- MoveSubjects(N = params[m,2], tstep = params[m,3], Stationary = params[m,4], Infect_dist=params[m, 5], Init_infect=params[m, 6], Speed = 5)
+tic("Model4")
+Model4 <- MoveSubjects(N = params[m,2], Velocity = params[m, 3], 
+    tstep = params[m,4], Stationary = params[m,5], 
+    Infect_dist=params[m, 6], Init_infect=params[m, 7])
 toc() #3308
 @
 
 \subsection{Tracking the Disease Transfer}
 
-<<>>=
+<<echo=T, eval=FALSE>>=
+#load("/home/CAMPUS/mwl04747/github/beginnersluck.RData")
 # Susceptable 1, Exposed-Asymptomatic 2, Symptomatic 3, Recovered 4
 SEIRcol = c("steelblue", "orange","red", "green") 
 
@@ -321,11 +332,39 @@ lines(I~Days, data=results, col=SEIRcol[3], lwd=2)
 lines(R~Days, data=results, col=SEIRcol[4], lwd=2)
 }
 
-m = 1; trackresults(Model1_50, m, params[m,3])
-m = 2; trackresults(Model2_100, m, params[m,3])
-m = 3; trackresults(Model3_100_40, m, params[m,3])
-m = 4; trackresults(Model4_100_40, m, params[m,3])
+png(filename = 
+  "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/Model1.png"); 
+  m = 1; trackresults(Model1, m, params[m,3]); dev.off()
+png(filename = 
+  "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/Model2.png"); 
+  m = 2; trackresults(Model2, m, params[m,3]); dev.off()
+png(filename = 
+  "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/Model3.png"); 
+  m = 3; trackresults(Model3, m, params[m,3]); dev.off()
+png(filename = 
+  "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/Model4.png"); 
+  m = 4; trackresults(Model4, m, params[m,3]); dev.off
 @
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{Model1.png}
+\caption{N = 50}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{Model2.png}
+\caption{N=100}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{Model3.png}
+\caption{40\% shelter in place}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{Model4.png}
+\caption{40\% shelter in place, exposed without symptoms.}
+\end{figure}
 
 \section{Plot Results}
 
@@ -333,8 +372,7 @@ m = 4; trackresults(Model4_100_40, m, params[m,3])
 
 Because we are looking at a dynamic system, I don't find the static plot all that useful.
 
-\begin{figure}
-<<echo=FALSE>>=
+<<echo=FALSE, eval = FALSE>>=
 snapshots = function(model, tstep){
 steps = c(1, round(1/3*tstep, 0), round(2/3*tstep,0), max(tstep)); steps
 par(mar=c(1,1,1,1), mfrow=c(2,2))
@@ -344,12 +382,39 @@ points(model[,1,t], model[,2,t], pch=19, col=SEIRcol[model[,5,t]])
 }
 }
 
-m = 1; snapshots(Model1_50, params[m,3])
-m = 2; snapshots(Model2_100, params[m,3])
-m = 3; snapshots(Model3_100_40, params[m,3])
-m = 4; snapshots(Model4_100_40, params[m,3])
+png(filename = 
+  "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/SSModel1.png");
+  m = 1; snapshots(Model1, params[m,3]); dev.off()
+png(filename = 
+  "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/SSModel2.png");
+  m = 2; snapshots(Model2, params[m,3]); dev.off()
+png(filename = 
+  "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/SSModel3.png");
+  m = 3; snapshots(Model3, params[m,3]); dev.off()
+png(filename = 
+  "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/SSModel4.png");
+  m = 4; snapshots(Model4, params[m,3]); dev.off()
 
 @
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{SSModel1.png}
+\caption{N = 50}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{SSModel2.png}
+\caption{N=100}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{SSModel3.png}
+\caption{40\% shelter in place}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{SSModel4.png}
+\caption{40\% shelter in place, exposed without symptoms.}
 \end{figure}
 \subsection{Animating the Results}
 
