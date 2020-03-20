@@ -1,0 +1,124 @@
+\documentclass{article}
+
+\begin{document}
+
+COVID-19 has been spreading rapidly around the world. Italy has now gone into lock down, California has declared a state of emergency, schools and universities around the globe have canceled in person classes and events, and businesses have reduced travel and pushed work from home policies. All of this is designed to slow the spread of the disease. These efforts are broadly referred to as social distancing.
+
+The idea is to reduce person-to-person contact in order to make spreading the disease less likely. The effects of this are often illustrated in images such as those in the chart below, where the red plot is flattened to spread out the disease as much as possible. This helps to ensure that there are sufficient resources available for a sick population, which will help improve survival rates.
+
+Flattening the curve to keep infection manageable (Source: Fast.ai).
+How do we determine the value of such distancing strategies and model this spread?
+
+
+We walk through a SEIR epidemiological model and simulate it with R. The first model is the basic SEIR without social distancing, then we add social distancing to show how the potential effectiveness of these strategies.
+
+The SEIR model is a compartmental model for modeling how a disease spreads through a population. It's an acronym for Susceptible, Exposed, Infected, Recovered. When a disease is introduced to a population, the people move from one of these classes (or compartments) to the next. When they reach the R state, they’re no longer able to be infected, depending on your interpretation, they either survived the disease and are now immune or succumbed to the illness and are out of the population.
+
+This is an extension of the classic SIR model and simply adds one more equation to show those who are exposed. The full model is given below:
+
+We have four ODE's in the time domain, with three parameters: $\alpha$, $\beta$, $\gamma$.
+
+\begin{itemize}
+
+\item $\alpha$ is the inverse of the incubation period ($1/t_{incubation}$)
+\item $\beta$ is the average contact rate in the population
+\item $\gamma$ is the inverse of the mean infectious period ($1/t_{infectious}$)
+
+\end{itemize}
+
+
+Equation (1) is the change in people susceptible to the disease and is moderated by the number of infected people and their contact with the infected. Equation (2) gives the people who have been exposed to the disease. It grows based on the contact rate and decreases based on the incubation period whereby people then become infected.
+
+
+\section{Models with Susceptibility and Infection}
+
+\subsection{Modeling S and I with No Behavior Changes}
+<<>>=
+coord_range = c(0, 1000, 0, 800)
+N = 6
+tstep = 20
+location = 5 
+(data_arr = array(dim=c(N,location, tstep)))
+dimnames(data_arr)[[2]] <- c("x", "y", "theta", "speed", "status")
+
+# Initialize Start Locations and Characteristics
+subj_x = runif(N, coord_range[1],  coord_range[2]); subj_x
+subj_y = runif(N, coord_range[3],  coord_range[4]); subj_y
+theta = round(runif(N, 0, 360),0); theta
+speed = rep(10,N)
+SERI = rep(1, N); SERI[sample(N, 1)] = 3; SERI
+
+#create function to move the subject
+move_x = function(subj, tstep){
+data_arr[subj, 4, tstep] * cos(data_arr[subj,3, tstep]*pi/180)}
+move_y = function(tstep, subj){ 
+data_arr[subj, 4, tstep] * sin(data_arr[subj,3, tstep]*pi/180)}
+
+# move function
+move = function(j, i){
+  c(data_arr[j-1, 1, i] + move_x(j-1,i), 
+    data_arr[j-1, 2, i] + move_y(j-1,i),
+    data_arr[j-1, 3, i], 
+    data_arr[j-1, 4, i],
+    data_arr[j-1, 5, i])
+}
+# check addressing
+# data_arr[1,, 2]
+
+# Initial Locations and Characteristics
+data_arr[,,1] = c(subj_x, subj_y, theta, speed, SERI)
+
+data_arr
+for(i in 1:tstep){ # i for tstep
+  for(j in 2:N){ # j for individual
+    # move subjects based on theta and speed
+    data_arr[j,,i] = move(j, i)
+    # coarse corrections when hitting a boundary
+  }}
+data_arr
+
+    # Min x-boundary
+    if(data_arr[j,1,i] < coord_range[1]){
+      data_arr[j-1,3,i]=180-data_arr[j-1,3,i]
+      data_arr[j,,i] = move(j,i)
+    }
+    #Max x-boundary
+    if(data_arr[j,1,i] > coord_range[2]){
+      data_arr[j-1,3,i]=180-data_arr[j-1,3,i]
+      data_arr[j,,i] = move(j,i) 
+    } 
+    #Min y-boundary
+    if(data_arr[j,2,i] < coord_range[3]){
+      data_arr[j-1,3,i]=360-data_arr[j-1,3,i]
+      data_arr[j,,i] = move(j,i) 
+    }
+    #Max y-boundary
+    if(data_arr[j,2,i] > coord_range[4]){
+      data_arr[j-1,3,i]=360-data_arr[j-1,3,i]
+      data_arr[j,,i] = move(j,i)
+    }
+   # print(data_arr)
+  }
+  #print(data_arr)
+}
+    
+@
+
+
+\section{Plot Results}
+
+<<echo=FALSE>>=
+data_arr
+# plot results
+par(mar=c(1,1,1,1))
+SEIRcol = c("steelblue", "orange","red", "green") 
+plot(x=coord_range[1:2], y=coord_range[3:4], type='n', xlab='', ylab='', xaxt='n', yaxt='n')
+
+for(i in 1:N){
+  for(j in 1:tstep){
+points(data_arr[j,1,i], data_arr[j,2,i], pch=19, col=SEIRcol[data_arr[j,5,i]])
+  }
+}
+@
+
+\end{document}
