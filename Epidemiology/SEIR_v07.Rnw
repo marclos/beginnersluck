@@ -90,7 +90,7 @@ Tstep = c(2000, 2000, 3000, 3000, NA, 20)
 velocity = c(5, 5, 5, 5, NA, 5)
 #Tstep = c(50, 50, 50, 50) #4380; #Six months, hourly steps.
 stationary = c(0, 0, .4, .4, NA, 0) # as a percent of N
-infect_dist = c(25, 25, 25, 25, NA, 500)
+infect_dist = c(10, 10, 10, 10, NA, 400)
 asymptomatic = c(24, 24, 24, 60, NA, 24) # period of time of being exposed
 symptomatic = c(96, 96, 96, 60, NA, 96) # time after exposure
 recovery = 720 # 30 days to become uninfectious
@@ -281,7 +281,7 @@ return(data_arr)
 
 For after running the models, I visually evaluated the models to make sure there weren't unintended consequences, i.e. usually from coding errors. Below are the models that I ran and the estimated run times. 
 
-<<ModelRuns, eval=FALSE>>=
+<<ModelRuns, eval=TRUE>>=
 library(tictoc)
 #N=3, tstep=4, speed=5, init_infect=1, stationary = 0)
 params
@@ -309,7 +309,7 @@ toc() #3308s; 2332s; 2616s
 
 \subsection{Tracking the Disease Transfer}
 
-<<echo=T, eval=FALSE>>=
+<<echo=T, eval=TRUE, results='hide'>>=
 #load("/home/CAMPUS/mwl04747/github/beginnersluck.RData")
 # Susceptable 1, Exposed-Asymptomatic 2, Symptomatic 3, Recovered 4
 SEIRcol = c("steelblue", "orange","red", "green") 
@@ -333,7 +333,7 @@ lines(I~Days, data=results, col=SEIRcol[3], lwd=2)
 lines(R~Days, data=results, col=SEIRcol[4], lwd=2)
 }
 
-m = 0; trackresults(Test, m, params[m,4])
+m = 6; trackresults(Test, m, params[m,4])
 
 png(filename = 
   "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/Model1.png"); 
@@ -375,7 +375,7 @@ png(filename =
 
 Because we are looking at a dynamic system, I don't find the static plot all that useful.
 
-<<echo=FALSE, eval = FALSE>>=
+<<echo=FALSE, eval = TRUE>>=
 snapshots = function(model, tstep){
 steps = c(1, round(1/3*tstep, 0), round(2/3*tstep,0), max(tstep)); steps
 par(mar=c(1,1,1,1), mfrow=c(2,2))
