@@ -84,17 +84,17 @@ I'm not a programmer, so this is going to need some TLC as it's pretty ineffecie
 
 <<defineparameters, echo=FALSE, results='hide'>>=
 coord_range = c(0, 960, 0, 540)
-model = c("Model1", "Model2", "Model3", "Model4")
-N = c(50, 100, 100, 100); 
-Tstep = c(2000, 2000, 3000, 3000)
-velocity = c(5, 5, 5, 5)
+model = c("Model1", "Model2", "Model3", "Model4", "TBD", "Test")
+N = c(50, 100, 100, 100, NA, 5); 
+Tstep = c(2000, 2000, 3000, 3000, NA, 20)
+velocity = c(5, 5, 5, 5, NA, 5)
 #Tstep = c(50, 50, 50, 50) #4380; #Six months, hourly steps.
-stationary = c(0, 0, .4, .4) # as a percent of N
-infect_dist = c(25, 25, 25, 25)
-asymptomatic = c(24, 24, 24, 60) # period of time of being exposed
-symptomatic = c(96, 96, 96, 60) # time after exposure
+stationary = c(0, 0, .4, .4, NA, 0) # as a percent of N
+infect_dist = c(25, 25, 25, 25, NA, 500)
+asymptomatic = c(24, 24, 24, 60, NA, 24) # period of time of being exposed
+symptomatic = c(96, 96, 96, 60, NA, 96) # time after exposure
 recovery = 720 # 30 days to become uninfectious
-init_infect = c(2, 2, 2, 2) # Initial number of infections
+init_infect = c(2, 2, 2, 2, NA, 1) # Initial number of infections
 
 params = data.frame(Model = model, N = N, Velocity = velocity, tstep=Tstep, Stationary=stationary, Inf_Dist = infect_dist, init_infact = init_infect, asymp = asymptomatic, 
 symp = symptomatic, rec = recovery); params
@@ -192,9 +192,18 @@ Next, I'm going to figure out how to create a function to text for euclidian dis
 
 For this model, people get instantenously sick and start spreading it around -- not very realistic because when people get sick they are usually quarantined and stop bouncing around the environment. Nevertheless this sets up a good base line, where the poputation gets ill pretty quickly. 
 <<>>=
-MoveSubjects = function(N=3, tstep=4, Velocity = 5, Stationary = 0, Infect_dist = 5, Init_infect=1, Speed=5){
-# Test Defaults
-#N=3; tstep =4; Speed=5; Init_infect=1; stationary=.5
+MoveSubjects = function(m=0){
+# m = 0
+N = params[m, 2]
+Velocity = params[m, 3]
+tstep = params[m, 4]
+Stationary = params[m,5]; 
+Infect_dist=params[m, 6]; 
+Init_infect=params[m, 7]
+asymp = params[m,8]
+symp = params[m,9]
+rec = params[m,10]
+
 # Define Data Array
 location = 6 # number of parameters to track
 data_arr = array(dim=c(N, location, tstep))
@@ -246,15 +255,15 @@ for(t in 2:tstep){
     data_arr[s,6,t] = data_arr[s,6,t] + 1
     if(data_arr[s,5,t]==1 | data_arr[s,5,t]==0) data_arr[s,6,t]=0 # Reset Susceptables  
    # Exposed becomes symptomatic
-  if(data_arr[s,5,t]==2 & data_arr[s,6,t] > params[1,6]){
+  if(data_arr[s,5,t]==2 & data_arr[s,6,t] > asymp){
     data_arr[s,5,t]=3}
     # Symptomatics move very little
-  if(data_arr[s,5,t]==3 & data_arr[s,6,t] > params[1,7]){
-    data_arr[s,4,t] = 1}
+  if(data_arr[s,5,t]==3 & data_arr[s,6,t] > symp){
+    data_arr[s,4,t] = Velocity/2}
   # Time to Recovery
-  if(data_arr[s,5,t]==3 & data_arr[s,6,t] > params[1,8]){
+  if(data_arr[s,5,t]==3 & data_arr[s,6,t] > rec){
     data_arr[s,5,t] = 4
-    data_arr[s,4,t] = 5
+    data_arr[s,4,t] = Velocity
     } 
   } # End of Subj Moving
   
@@ -277,33 +286,25 @@ library(tictoc)
 #N=3, tstep=4, speed=5, init_infect=1, stationary = 0)
 params
 
-m=1
+tic("Model0")
+Test<- MoveSubjects(m=6)
+toc() # .02s
+
 tic("Model1")
-Model1<- MoveSubjects(N = params[m,2], Velocity = params[m, 3], 
-    tstep = params[m,4], Stationary = params[m,5], 
-    Infect_dist=params[m, 6], Init_infect=params[m, 7])
+Model1<- MoveSubjects(m=1)
 toc() # 900s; 314s
 
-m=2
 tic("Model2")
-Model2<- MoveSubjects(N = params[m,2], Velocity = params[m, 3], 
-    tstep = params[m,4], Stationary = params[m,5], 
-    Infect_dist=params[m, 6], Init_infect=params[m, 7])
-toc() #1800s; 1158s
+Model2<- MoveSubjects(m=2)
+toc() #1800s; 1158s; 1313s
 
-m=3
 tic("Model3")
-Model3 <- MoveSubjects(N = params[m,2], Velocity = params[m, 3], 
-    tstep = params[m,4], Stationary = params[m,5], 
-    Infect_dist=params[m, 6], Init_infect=params[m, 7])
-toc() #3308; 2437s
+Model3 <- MoveSubjects(m=3)
+toc() #3308; 2437s; 2599s
 
-m=4
 tic("Model4")
-Model4 <- MoveSubjects(N = params[m,2], Velocity = params[m, 3], 
-    tstep = params[m,4], Stationary = params[m,5], 
-    Infect_dist=params[m, 6], Init_infect=params[m, 7])
-toc() #3308
+Model4 <- MoveSubjects(m=4)
+toc() #3308s; 2332s; 2616s
 @
 
 \subsection{Tracking the Disease Transfer}
@@ -326,24 +327,26 @@ results[t,] <- data.frame(Days = days, Sh = sh, S=s, E=e, I=i, R=r)
 }
 head(results)
 par(mfrow=c(1,1), mar=c(4, 5, 3, 2)+.1, las=1)
-plot(S~Days, data=results, ty='l', col=SEIRcol[1], ylab="", ylim=c(0,params[m,2]), xlab="Days", xlim=c(0,tstep/24), lwd=2, main = paste(params[m, 1], ", Stationary =", params[m,4]*100, "%"))
+plot(S~Days, data=results, ty='l', col=SEIRcol[1], ylab="", ylim=c(0,params[m,2]), xlab="Days", xlim=c(0,tstep/24), lwd=2, main = paste(params[m, 1], ", Stationary =", params[m,5]*100, "%"))
 lines(E~Days, data=results, col=SEIRcol[2], lwd=2)
 lines(I~Days, data=results, col=SEIRcol[3], lwd=2)
 lines(R~Days, data=results, col=SEIRcol[4], lwd=2)
 }
 
+m = 0; trackresults(Test, m, params[m,4])
+
 png(filename = 
   "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/Model1.png"); 
-  m = 1; trackresults(Model1, m, params[m,3]); dev.off()
+  m = 1; trackresults(Model1, m, 1440); dev.off()
 png(filename = 
   "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/Model2.png"); 
-  m = 2; trackresults(Model2, m, params[m,3]); dev.off()
+  m = 2; trackresults(Model2, m, 1440); dev.off()
 png(filename = 
   "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/Model3.png"); 
-  m = 3; trackresults(Model3, m, params[m,3]); dev.off()
+  m = 3; trackresults(Model3, m, 1440); dev.off()
 png(filename = 
   "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/Model4.png"); 
-  m = 4; trackresults(Model4, m, params[m,3]); dev.off
+  m = 4; trackresults(Model4, m, 1440); dev.off()
 @
 
 \begin{figure}
@@ -384,16 +387,16 @@ points(model[,1,t], model[,2,t], pch=19, col=SEIRcol[model[,5,t]])
 
 png(filename = 
   "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/SSModel1.png");
-  m = 1; snapshots(Model1, params[m,3]); dev.off()
+  m = 1; snapshots(Model1, 1440); dev.off()
 png(filename = 
   "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/SSModel2.png");
-  m = 2; snapshots(Model2, params[m,3]); dev.off()
+  m = 2; snapshots(Model2, 1440); dev.off()
 png(filename = 
   "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/SSModel3.png");
-  m = 3; snapshots(Model3, params[m,3]); dev.off()
+  m = 3; snapshots(Model3, 1440); dev.off()
 png(filename = 
   "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/SSModel4.png");
-  m = 4; snapshots(Model4, params[m,3]); dev.off()
+  m = 4; snapshots(Model4, 1440); dev.off()
 
 @
 
