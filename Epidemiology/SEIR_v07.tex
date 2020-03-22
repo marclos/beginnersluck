@@ -135,19 +135,19 @@ I'm not a programmer, so this is going to need some TLC as it's pretty ineffecie
 I have define the following parameters for the model, which will be further described in each section below.
 
 % latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Fri Mar 20 19:47:53 2020
+% Sat Mar 21 19:21:23 2020
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlrrrrrrrrr}
   \hline
  & Model & N & Velocity & tstep & Stationary & Inf\_Dist & init\_infact & asymp & symp & rec \\ 
   \hline
-1 & Model1 & 50.00 & 5.00 & 2000.00 & 0.00 & 15.00 & 2.00 & 24.00 & 96.00 & 720.00 \\ 
-  2 & Model2 & 100.00 & 5.00 & 2000.00 & 0.00 & 15.00 & 2.00 & 24.00 & 96.00 & 720.00 \\ 
-  3 & Model3 & 100.00 & 5.00 & 3000.00 & 0.40 & 15.00 & 2.00 & 24.00 & 96.00 & 720.00 \\ 
-  4 & Model4 & 100.00 & 5.00 & 3000.00 & 0.40 & 15.00 & 2.00 & 60.00 & 60.00 & 720.00 \\ 
+1 & Model1 & 50.00 & 5.00 & 2000.00 & 0.00 & 5.00 & 2.00 & 24.00 & 96.00 & 720.00 \\ 
+  2 & Model2 & 100.00 & 5.00 & 2000.00 & 0.00 & 5.00 & 2.00 & 24.00 & 96.00 & 720.00 \\ 
+  3 & Model3 & 100.00 & 5.00 & 3000.00 & 0.40 & 5.00 & 2.00 & 24.00 & 96.00 & 720.00 \\ 
+  4 & Model4 & 100.00 & 5.00 & 3000.00 & 0.40 & 5.00 & 2.00 & 60.00 & 60.00 & 720.00 \\ 
   5 & TBD &  &  &  &  &  &  &  &  & 720.00 \\ 
-  6 & Test & 5.00 & 5.00 & 20.00 & 0.00 & 500.00 & 1.00 & 24.00 & 96.00 & 720.00 \\ 
+  6 & Test & 5.00 & 5.00 & 20.00 & 0.00 & 300.00 & 1.00 & 24.00 & 96.00 & 720.00 \\ 
    \hline
 \end{tabular}
 \end{table}
@@ -346,12 +346,12 @@ For after running the models, I visually evaluated the models to make sure there
 \end{alltt}
 \begin{verbatim}
 ##    Model   N Velocity tstep Stationary Inf_Dist init_infact asymp symp rec
-## 1 Model1  50        5  2000        0.0       15           2    24   96 720
-## 2 Model2 100        5  2000        0.0       15           2    24   96 720
-## 3 Model3 100        5  3000        0.4       15           2    24   96 720
-## 4 Model4 100        5  3000        0.4       15           2    60   60 720
+## 1 Model1  50        5  2000        0.0        5           2    24   96 720
+## 2 Model2 100        5  2000        0.0        5           2    24   96 720
+## 3 Model3 100        5  3000        0.4        5           2    24   96 720
+## 4 Model4 100        5  3000        0.4        5           2    60   60 720
 ## 5    TBD  NA       NA    NA         NA       NA          NA    NA   NA 720
-## 6   Test   5        5    20        0.0      500           1    24   96 720
+## 6   Test   5        5    20        0.0      300           1    24   96 720
 \end{verbatim}
 \begin{alltt}
 \hlkwd{tic}\hlstd{(}\hlstr{"Model0"}\hlstd{)}
@@ -359,7 +359,7 @@ For after running the models, I visually evaluated the models to make sure there
 \hlkwd{toc}\hlstd{()} \hlcom{# .02s}
 \end{alltt}
 \begin{verbatim}
-## Model0: 0.192 sec elapsed
+## Model0: 0.191 sec elapsed
 \end{verbatim}
 \begin{alltt}
 \hlkwd{tic}\hlstd{(}\hlstr{"Model1"}\hlstd{)}
@@ -367,7 +367,7 @@ For after running the models, I visually evaluated the models to make sure there
 \hlkwd{toc}\hlstd{()} \hlcom{# 900s; 314s}
 \end{alltt}
 \begin{verbatim}
-## Model1: 381.047 sec elapsed
+## Model1: 362.934 sec elapsed
 \end{verbatim}
 \begin{alltt}
 \hlkwd{tic}\hlstd{(}\hlstr{"Model2"}\hlstd{)}
@@ -375,7 +375,7 @@ For after running the models, I visually evaluated the models to make sure there
 \hlkwd{toc}\hlstd{()} \hlcom{#1800s; 1158s; 1313s}
 \end{alltt}
 \begin{verbatim}
-## Model2: 1248.04 sec elapsed
+## Model2: 1222.643 sec elapsed
 \end{verbatim}
 \begin{alltt}
 \hlkwd{tic}\hlstd{(}\hlstr{"Model3"}\hlstd{)}
@@ -383,7 +383,7 @@ For after running the models, I visually evaluated the models to make sure there
 \hlkwd{toc}\hlstd{()} \hlcom{#3308; 2437s; 2599s}
 \end{alltt}
 \begin{verbatim}
-## Model3: 2369.62 sec elapsed
+## Model3: 2251.241 sec elapsed
 \end{verbatim}
 \begin{alltt}
 \hlkwd{tic}\hlstd{(}\hlstr{"Model4"}\hlstd{)}
@@ -391,10 +391,12 @@ For after running the models, I visually evaluated the models to make sure there
 \hlkwd{toc}\hlstd{()} \hlcom{#3308s; 2332s; 2616s}
 \end{alltt}
 \begin{verbatim}
-## Model4: 2075.712 sec elapsed
+## Model4: 1935.401 sec elapsed
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+
+\section{Visualizations}
 
 \subsection{Tracking the Disease Transfer}
 
@@ -424,46 +426,24 @@ For after running the models, I visually evaluated the models to make sure there
 \hlkwd{lines}\hlstd{(R}\hlopt{~}\hlstd{Days,} \hlkwc{data}\hlstd{=results,} \hlkwc{col}\hlstd{=SEIRcol[}\hlnum{4}\hlstd{],} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{)}
 \hlstd{\}}
 
-\hlstd{m} \hlkwb{=} \hlnum{0}\hlstd{;} \hlkwd{trackresults}\hlstd{(Test, m, params[m,}\hlnum{4}\hlstd{])}
+\hlstd{m} \hlkwb{=} \hlnum{6}\hlstd{;} \hlkwd{trackresults}\hlstd{(Test, m, params[m,}\hlnum{4}\hlstd{])}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in 1:tstep: argument of length 0}}\begin{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
+\begin{kframe}\begin{alltt}
 \hlkwd{png}\hlstd{(}\hlkwc{filename} \hlstd{=}
   \hlstr{"/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/Model1.png"}\hlstd{);}
-  \hlstd{m} \hlkwb{=} \hlnum{1}\hlstd{;} \hlkwd{trackresults}\hlstd{(Model1, m,} \hlnum{1440}\hlstd{);} \hlkwd{dev.off}\hlstd{()}
-\end{alltt}
-\begin{verbatim}
-## pdf 
-##   2
-\end{verbatim}
-\begin{alltt}
+  \hlstd{m} \hlkwb{=} \hlnum{1}\hlstd{;} \hlkwd{trackresults}\hlstd{(Model1, m,} \hlnum{2000}\hlstd{);} \hlkwd{dev.off}\hlstd{()}
 \hlkwd{png}\hlstd{(}\hlkwc{filename} \hlstd{=}
   \hlstr{"/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/Model2.png"}\hlstd{);}
-  \hlstd{m} \hlkwb{=} \hlnum{2}\hlstd{;} \hlkwd{trackresults}\hlstd{(Model2, m,} \hlnum{1440}\hlstd{);} \hlkwd{dev.off}\hlstd{()}
-\end{alltt}
-\begin{verbatim}
-## pdf 
-##   2
-\end{verbatim}
-\begin{alltt}
+  \hlstd{m} \hlkwb{=} \hlnum{2}\hlstd{;} \hlkwd{trackresults}\hlstd{(Model2, m,} \hlnum{2000}\hlstd{);} \hlkwd{dev.off}\hlstd{()}
 \hlkwd{png}\hlstd{(}\hlkwc{filename} \hlstd{=}
   \hlstr{"/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/Model3.png"}\hlstd{);}
-  \hlstd{m} \hlkwb{=} \hlnum{3}\hlstd{;} \hlkwd{trackresults}\hlstd{(Model3, m,} \hlnum{1440}\hlstd{);} \hlkwd{dev.off}\hlstd{()}
-\end{alltt}
-\begin{verbatim}
-## pdf 
-##   2
-\end{verbatim}
-\begin{alltt}
+  \hlstd{m} \hlkwb{=} \hlnum{3}\hlstd{;} \hlkwd{trackresults}\hlstd{(Model3, m,} \hlnum{2000}\hlstd{);} \hlkwd{dev.off}\hlstd{()}
 \hlkwd{png}\hlstd{(}\hlkwc{filename} \hlstd{=}
   \hlstr{"/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/Model4.png"}\hlstd{);}
-  \hlstd{m} \hlkwb{=} \hlnum{4}\hlstd{;} \hlkwd{trackresults}\hlstd{(Model4, m,} \hlnum{1440}\hlstd{);} \hlkwd{dev.off}\hlstd{()}
+  \hlstd{m} \hlkwb{=} \hlnum{4}\hlstd{;} \hlkwd{trackresults}\hlstd{(Model4, m,} \hlnum{2000}\hlstd{);} \hlkwd{dev.off}\hlstd{()}
 \end{alltt}
-\begin{verbatim}
-## pdf 
-##   2
-\end{verbatim}
 \end{kframe}
 \end{knitrout}
 
@@ -487,26 +467,11 @@ For after running the models, I visually evaluated the models to make sure there
 \caption{40\% shelter in place, exposed without symptoms.}
 \end{figure}
 
-\section{Plot Results}
-
-\subsection{Static plot}
+\subsection{Static Spatial Plots}
 
 Because we are looking at a dynamic system, I don't find the static plot all that useful.
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{verbatim}
-## pdf 
-##   2
-## pdf 
-##   2
-## pdf 
-##   2
-## pdf 
-##   2
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
+
 
 \begin{figure}
 \includegraphics[width=1\textwidth]{SSModel1.png}
