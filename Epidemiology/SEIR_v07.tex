@@ -50,6 +50,8 @@
 
 \usepackage{alltt}
 %\usepackage{media9}
+\usepackage{amsmath}
+\usepackage{physics}
 
 
 
@@ -68,33 +70,55 @@ The idea is to reduce person-to-person contact to make spreading the disease les
 Flattening the curve to keep infection manageable (Source: Fast.ai).
 How do we determine the value of such distancing strategies and model this spread?
 
-\subsection{Modeling Disease -- SEIR}
+\subsection{Modeling Disease -- SIR}
 
 We walk through a SEIR epidemiological model and simulate it with R. The first model is the basic SEIR without social distancing, then we add social distancing to show how the potential effectiveness of these strategies.
 
-The SEIR model is a compartmental model for modeling how a disease spreads through a population. It's an acronym for Susceptible, Exposed, Infected, Recovered. When a disease is introduced to a population, the people move from one of these classes (or compartments) to the next. When they reach the R state, they're no longer able to be infected, depending on your interpretation, they either survived the disease and are now immune or succumbed to the illness and are out of the population.
-
-This is an extension of the classic SIR model and simply adds one more equation to show those who are exposed. 
-
+The SIR model is a compartmental model for modeling how a disease spreads through a population. It's an acronym for Susceptible, Infected, Recovered. When a disease is introduced to a population, the people move from one of these classes (or compartments) to the next. When they reach the R state, they're no longer able to be infected, depending on your interpretation, they either survived the disease and are now immune or succumbed to the illness and are out of the population.
 
 The Kermack-McKendrick model is an SIR model for the number of people infected with a contagious illness in a closed population over time. It was proposed to explain the rapid rise and fall in the number of infected patients observed in epidemics such as the plague (London 1665-1666, Bombay 1906) and cholera (London 1865). It assumes that the population size is fixed (i.e., no births, deaths due to disease, or deaths by natural causes), incubation period of the infectious agent is instantaneous, and duration of infectivity is same as length of the disease. It also assumes a completely homogeneous population with no age, spatial, or social structure.
 
 The model consists of a system of three coupled nonlinear ordinary differential equations,
 
-
-\begin{equation}
-(dS)/(dt)	=	-\beta SI	
+\begin{equation}\label{eq:dS}
+\dv{S}{t}	=	-\beta SI	/N
 \end{equation}
 
-\begin{equation}
-(dI)/(dt)	=	\beta SI- \gamma I
+\begin{equation}\label{eq:dI}
+\dv{I}{t}	=	\beta SI/N - \gamma I
 \end{equation}
 
-\begin{equation}
-(dR)/(dt)	=	\gamma I,
+\begin{equation}\label{eq:dR}
+\dv{R}{t}	=	\gamma I,
 \end{equation}
 
-where t is time, S(t) is the number of susceptible people, I(t) is the number of people infected, R(t) is the number of people who have recovered and developed immunity to the infection, beta is the infection rate, and gamma is the recovery rate.
+where t is time, S(t) is the number of susceptible people, I(t) is the number of people infected, R(t) is the number of people who have recovered and developed immunity to the infection.
+
+We have three ordinary differential equations in the time domain with three parameters: $\alpha$, $\beta$, $\gamma$.
+
+\begin{itemize}
+
+\item $\alpha$ is the inverse of the incubation period ($1/t_{incubation}$)
+
+\item $\beta$ is the average contact rate in the population or infection rate.
+
+\item $\gamma$ is the inverse of the mean infectious period ($1/t_{infectious}$) or recovery rate.
+
+\end{itemize}
+
+This system is non-linear, however it is possible to derive its analytic solution in closed-form. Other numerical tools include Monte Carlo methods.
+
+First, note that from:
+
+\begin{equation}
+\dv{S}{t}+{\dv{I}{t}}+{\dv{R}{t}}=0,
+\end{equation}
+
+\noindent it follows that:
+
+\begin{equation}
+S(t)+I(t)+R(t)=\text{constant}=N,
+\end{equation}
 
 The key value governing the time evolution of these equations is the so-called epidemiological threshold,
 
@@ -102,20 +126,23 @@ The key value governing the time evolution of these equations is the so-called e
  R_0=(\beta S)/ \gamma
 \end{equation}
  
-Note that the choice of the notation R\_0 is a bit unfortunate, since it has nothing to do with R. R\_0 is defined as the number of secondary infections caused by a single primary infection; in other words, it determines the number of people infected by contact with a single infected person before his death or recovery.The full model is given below:
+Note that the choice of the notation R$_0$ is a bit unfortunate, since it has nothing to do with R used for recovery. R$_0$ is defined as the number of secondary infections caused by a single primary infection; in other words, it determines the number of people infected by contact with a single infected person before their death or recovery. 
 
-We have four ODE's in the time domain, with three parameters: $\alpha$, $\beta$, $\gamma$.
+\subsection{Modeling Disease -- SEIR}.
 
-\begin{itemize}
+An extension of the classic SIR model and simply adds one more equation to show those who are exposed,  
 
-\item $\alpha$ is the inverse of the incubation period ($1/t_{incubation}$)
-\item $\beta$ is the average contact rate in the population
-\item $\gamma$ is the inverse of the mean infectious period ($1/t_{infectious}$)
+\begin{equation}\label{eq:dE}
+\dv{E}{t}	=	\beta SI/N - \sigma E
+\end{equation}
 
-\end{itemize}
+\begin{equation}\label{eq:dI2}
+\dv{I}{t}	=	\sigma E/N - \gamma I
+\end{equation}
 
 
-Equation (1) is the change in people susceptible to the disease and is moderated by the number of infected people and their contact with the infected. Equation (2) gives the people who have been exposed to the disease. It grows based on the contact rate and decreases based on the incubation period whereby people then become infected.
+Equation \ref{eq:dS} is the change in people susceptible to the disease and is moderated by the number of infected people and their contact with the infected. Equation \ref{eq:dE} gives the people who have been exposed to the disease. It grows based on the contact rate and decreases based on the incubation period whereby people then become infected.
+
 
 
 \section{Models with Susceptibility and Infection}
@@ -135,7 +162,7 @@ I'm not a programmer, so this is going to need some TLC as it's pretty ineffecie
 I have define the following parameters for the model, which will be further described in each section below.
 
 % latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Sat Mar 21 19:21:23 2020
+% Fri Mar 27 08:21:24 2020
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlrrrrrrrrr}
@@ -343,56 +370,27 @@ For after running the models, I visually evaluated the models to make sure there
 \hlkwd{library}\hlstd{(tictoc)}
 \hlcom{#N=3, tstep=4, speed=5, init_infect=1, stationary = 0)}
 \hlstd{params}
-\end{alltt}
-\begin{verbatim}
-##    Model   N Velocity tstep Stationary Inf_Dist init_infact asymp symp rec
-## 1 Model1  50        5  2000        0.0        5           2    24   96 720
-## 2 Model2 100        5  2000        0.0        5           2    24   96 720
-## 3 Model3 100        5  3000        0.4        5           2    24   96 720
-## 4 Model4 100        5  3000        0.4        5           2    60   60 720
-## 5    TBD  NA       NA    NA         NA       NA          NA    NA   NA 720
-## 6   Test   5        5    20        0.0      300           1    24   96 720
-\end{verbatim}
-\begin{alltt}
+
 \hlkwd{tic}\hlstd{(}\hlstr{"Model0"}\hlstd{)}
 \hlstd{Test}\hlkwb{<-} \hlkwd{MoveSubjects}\hlstd{(}\hlkwc{m}\hlstd{=}\hlnum{6}\hlstd{)}
 \hlkwd{toc}\hlstd{()} \hlcom{# .02s}
-\end{alltt}
-\begin{verbatim}
-## Model0: 0.191 sec elapsed
-\end{verbatim}
-\begin{alltt}
+
 \hlkwd{tic}\hlstd{(}\hlstr{"Model1"}\hlstd{)}
 \hlstd{Model1}\hlkwb{<-} \hlkwd{MoveSubjects}\hlstd{(}\hlkwc{m}\hlstd{=}\hlnum{1}\hlstd{)}
 \hlkwd{toc}\hlstd{()} \hlcom{# 900s; 314s}
-\end{alltt}
-\begin{verbatim}
-## Model1: 362.934 sec elapsed
-\end{verbatim}
-\begin{alltt}
+
 \hlkwd{tic}\hlstd{(}\hlstr{"Model2"}\hlstd{)}
 \hlstd{Model2}\hlkwb{<-} \hlkwd{MoveSubjects}\hlstd{(}\hlkwc{m}\hlstd{=}\hlnum{2}\hlstd{)}
 \hlkwd{toc}\hlstd{()} \hlcom{#1800s; 1158s; 1313s}
-\end{alltt}
-\begin{verbatim}
-## Model2: 1222.643 sec elapsed
-\end{verbatim}
-\begin{alltt}
+
 \hlkwd{tic}\hlstd{(}\hlstr{"Model3"}\hlstd{)}
 \hlstd{Model3} \hlkwb{<-} \hlkwd{MoveSubjects}\hlstd{(}\hlkwc{m}\hlstd{=}\hlnum{3}\hlstd{)}
 \hlkwd{toc}\hlstd{()} \hlcom{#3308; 2437s; 2599s}
-\end{alltt}
-\begin{verbatim}
-## Model3: 2251.241 sec elapsed
-\end{verbatim}
-\begin{alltt}
+
 \hlkwd{tic}\hlstd{(}\hlstr{"Model4"}\hlstd{)}
 \hlstd{Model4} \hlkwb{<-} \hlkwd{MoveSubjects}\hlstd{(}\hlkwc{m}\hlstd{=}\hlnum{4}\hlstd{)}
 \hlkwd{toc}\hlstd{()} \hlcom{#3308s; 2332s; 2616s}
 \end{alltt}
-\begin{verbatim}
-## Model4: 1935.401 sec elapsed
-\end{verbatim}
 \end{kframe}
 \end{knitrout}
 
@@ -427,10 +425,7 @@ For after running the models, I visually evaluated the models to make sure there
 \hlstd{\}}
 
 \hlstd{m} \hlkwb{=} \hlnum{6}\hlstd{;} \hlkwd{trackresults}\hlstd{(Test, m, params[m,}\hlnum{4}\hlstd{])}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
-\begin{kframe}\begin{alltt}
+
 \hlkwd{png}\hlstd{(}\hlkwc{filename} \hlstd{=}
   \hlstr{"/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology/Model1.png"}\hlstd{);}
   \hlstd{m} \hlkwb{=} \hlnum{1}\hlstd{;} \hlkwd{trackresults}\hlstd{(Model1, m,} \hlnum{2000}\hlstd{);} \hlkwd{dev.off}\hlstd{()}
@@ -499,5 +494,34 @@ Still working on this... I have to export the file to my laptop then use photosh
 it would be nice to do this in r and then embedd in a pdf...
 
 
+
+
+\section{SEIRS with vital dynamics}
+
+You can also add vital dynamics to an SEIRS model, where $\mu$ and $\nu$ represent the birth and death rates, respectively. To maintain a constant population, assume that $\mu$ = $\nu$. In steady state $\frac{dI}{dt} = 0$. The ODE then becomes:
+
+\begin{equation}
+\dv{S}{t}  = \mu N - \frac{\beta S I}{N} + \xi R- \nu S
+\end{equation}
+
+\begin{equation}
+\dv{E}{t}  = \frac{\beta S I}{N} - \sigma E - \nu E
+\end{equation}
+
+\begin{equation}
+\dv{I}{t}  = \sigma E - \gamma I - \nu I\\
+\end{equation}
+
+
+\begin{equation}
+\dv{R}{t}  = \gamma I - \xi R - \nu R
+\end{equation}
+
+where N = S + E + I + R is the total population.
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{SEIRS.png}
+\caption{SEIRS}
+\end{figure}
 
 \end{document}
