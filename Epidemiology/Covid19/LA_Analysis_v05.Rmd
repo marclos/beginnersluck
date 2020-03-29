@@ -2,7 +2,8 @@
 title: "Covid-19 Analyses for Los Angles"
 author: "Marc Los Huertos"
 date:  "`r format(Sys.time(), '%d %B, %Y')`"
-output: html_document
+#output: html_document
+output: bookdown::html_document2
 ---
 
 ```{r setup, include=FALSE}
@@ -57,7 +58,7 @@ Daily = dplyr::bind_rows(Daily, tmp2)
 I have only selected for Los Angeles so far, but the data is a mess because Los Angeles disappears for a week, so I had to make a decision about what to do about missing data -- at a key time! For two weeks the values seem to be missing. I will need to work on figuring out why. 
 
 The numbers creep up slowly in February -- as we can see when we limit the y-axis values. 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.cap ="Early Records of Confirmed Cases of Covid-19 in LA County"}
 #str(Daily)
 #subset(Daily, FIPS==c(6037))
 LA = subset(Daily, subset=(Admin2 == "Los Angeles" | Province.State == "Los Angeles, CA"))
@@ -67,7 +68,9 @@ plot(Confirmed~Date, data=LA, las=1, ylim=c(0,18), ty='b')
 ```
 
 And suddenly, we are missing data at the key period of time in the second week of March. I would hesitate to interpolate the missing data because as we'll see in the next section, how the slope is calculated has extreme effects on the double rate. 
-```{r, echo=FALSE}
+
+```{r, echo=FALSE, fig.cap='Confirmed Cases in Los Angeles County (Source JHU-CSSE)'}
+
 plot(Confirmed~Date, data=LA, las=1, pch=20)
 ```
 
@@ -98,7 +101,7 @@ LA = bind_rows(LA, county)
 
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.cap='Confirmed Cases in Los Angeles County (Source JHU-CSSE and LA County Public Health)'}
 plot(Confirmed~Date, data=LA, las=1, pch=20)
 ```
 
@@ -135,7 +138,7 @@ Using the r^2^ to evaluate the models, we find the model that uses all the data 
 
 If we include the entire data set, the doubling rate is `r dr.bad`. Meanwhile, the doubling rate for the data that excludes the early part of the record is `r dr`, which is probably more consistent with the pattern of this epidemic. 
 
-```{r, echo=FALSE, caption='Confirm Cases in Los Angeles County'}
+```{r, echo=FALSE, fig.cap ='Confirm Cases in Los Angeles County and Estimated Doubling Rates'}
 
 plot(lnConfirmed ~ Date, data=LA, las=1, ylab="ln(Confirmed)")
 abline(coef(LA.lm), col='darkred', lwd=1.4)
@@ -150,7 +153,7 @@ text(as.Date("2020-03-08"), 5.1, paste("Doubling Rate =", dr), col='darkred')
 
 Seems to me that we are about two weeks behind in making decisions to protect public health. The Governor's order to stay home was made on the March 19th, thus we should see the same trend in growth until the effects of the order slow the spread of the virus, which should be about the 3rd of April, when we should see a decline of the doubling rate. 
 
-```{r echo=FALSE, results='hide', fig.cap='Predicted Confirmed Cases in Los Angeles', warning=FALSE, message=FALSE}
+```{r echo=FALSE, results='hide', fig.cap='Predicted Number of Covid-19 Cases in Los Angeles', warning=FALSE, message=FALSE}
 
 plot(lnConfirmed ~ Date, data=LA, las=1, xlim=c(as.Date('2020-02-01'), as.Date('2020-04-17')), pch=20,
 ylim=c(0,13), ylab="ln(Confirmed)")
@@ -218,7 +221,7 @@ Based on some WHO estimates, let's assume about 20% of the confirmed cases need 
 
 According to the LA Times, there are roughly 200 ICU beds in the county. I think about 5% of these who get sick need access to ICU. I suspect this is going to be an even more serious issue, but I haven't had time to model this yet. 
 
-```{r bedshortage, echo=FALSE}
+```{r bedshortage, echo=FALSE, cap.fig='Predicted Date the Available Hospital Beds will be Exceeded'}
 # Projected values
 options(scipen=5)
 
@@ -256,7 +259,7 @@ result = cbind(test, logConfirmed = log(test$Confirmed), lwr = tested[,2], upr =
 
 With this simple analysis, I obtained the following results: 
 
-```{r }
+```{r, echo=FALSE}
 print(result)
 ```
 
