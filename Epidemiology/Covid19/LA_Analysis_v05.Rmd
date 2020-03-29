@@ -98,6 +98,7 @@ I found press releases by the County to have some of the missing data:
 county = data.frame(Date = as.Date(c("2020-03-10", "2020-03-11", "2020-03-12", "2020-03-13", "2020-03-14", "2020-03-15", "2020-03-16", "2020-03-17", "2020-03-18", "2020-03-19", "2020-03-20", "2020-03-21")), Confirmed = c( 17, 27, 32, 40, 53, 69, 94, 144, 190, 231, 292, 351))
 
 LA = bind_rows(LA, county)
+LA$Confirmed[LA$Date=="2020-03-28"] = 1818
 
 ```
 
@@ -194,7 +195,7 @@ And here's how these predictions have changed as I have included more data:
  - March 25th 6170
  - March 26th 6620
  - March 27th 6810
- - March 28th 6910*
+ - March 28th 7230*
  
 *Weekend values are not updated on github site for LA County. Thus the estimates are lower on the weekends because values have not been updated.
 
@@ -246,10 +247,10 @@ text(as.Date(Bdate), 1000000, "County Bed Capacity Exceeded", pos=2, col='darkgo
 
 In theory the US travel and shelter-at-home restrictions should reduce the rate so spread. I wonder when we'll start to see that signal?  In other words, we do the values fall outside the expected range?  And when they do, can we model how the rate of transmission is changing?
 
-For example, Los Angeles reported a value of 1804 on the 28th of March. Was this within my confidence intervals?
+For example, Los Angeles reported a value of 1818 on the 28th of March. Was this within my confidence intervals?
 
 ```{r testingnewvalues, echo=FALSE, results='hide'}
-test = data.frame(Date = as.Date("2020-03-28"), Confirmed=1804); test
+test = data.frame(Date = as.Date("2020-03-28"), Confirmed=1818); test
 
 tested <- predict(LA.lm, test, interval="confidence");
 result = cbind(test, logConfirmed = log(test$Confirmed), lwr = tested[,2], upr = tested[,3])
