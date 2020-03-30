@@ -7,14 +7,24 @@
 library(xtable)
 @
 
-\title{Epidemiology -- Human and Water Borne Illnesses}
+\title{Epidemiology -- Human, Disease Vectors, Water Borne Illnesses}
 \author{Marc Los Huertos}
 
 \begin{document}
 
 \maketitle
 
+\section{Introduction}
+
+\subsection{Disease, Pandemics, and Mathematical Epidemiology}
+
 COVID-19 began rapidly spreading around the world in late 2019. And by the spring, Italy went into lock down, California declared a state of emergency, schools and universities around the globe suspended in person classes and events, and businesses reduced travel and pushed tele-work policies. All of this was designed to slow the spread of the disease. These efforts are broadly referred to as social distancing.
+
+\subsection{Disease Spread and Control}
+
+The contagious nature of diseases has been appreciated for hundreds, if not thousands of years. However, until 'germ' theory as articulated by Louis Pastuer, the mechanism that imparted infections was highly speculative. 
+
+
 
 \subsection{Value of Social Distancing}
 The idea is to reduce person-to-person contact to make spreading the disease less likely. The effects of this are often illustrated in images such as those in the chart below, where the red plot is flattened to spread out the disease as much as possible. This helps to ensure that there are sufficient resources available for a sick population, which will help improve survival rates.
@@ -24,9 +34,32 @@ How do we determine the value of such distancing strategies and model this sprea
 
 \subsection{Modeling Disease -- SIR}
 
-We walk through a SEIR epidemiological model and simulate it with R. The first model is the basic SEIR without social distancing, then we add social distancing to show how the potential effectiveness of these strategies.
+
+Mathematical models can simulate the effects of a disease at many levels, ranging from how the disease influences the interactions between cells in a single patient (within-host models) to how it spreads across several geographically separated populations (metapopulation models). 
+
+Models simulating disease spread within and among populations, such as those used to forecast the COVID-19 outbreak, are typically based on the Susceptible - Infectious - Recovered (SIR) framework.
 
 The SIR model is a compartmental model for modeling how a disease spreads through a population. It's an acronym for Susceptible, Infected, Recovered. When a disease is introduced to a population, the people move from one of these classes (or compartments) to the next. When they reach the R state, they're no longer able to be infected, depending on your interpretation, they either survived the disease and are now immune or succumbed to the illness and are out of the population.
+
+
+
+SIR models are compartmental disease models. ``Susceptible'', ``Infectious'', and ''Recovered'' are compartments, and each individual in the population (N) is assigned to one of these compartments. To unpack this a bit further:
+
+\begin{description}
+  \item[Susceptible] individuals have no immunity to the disease (immunity can come from prior exposure, vaccination, or a mutation that confers resistance). Therefore, they can become infected. Susceptible individuals can move into the ``Infectious'' compartment through contact with an infectious person.
+  \item[Infectious] people have the disease and can spread it to others. Infectious individuals can move into the ``Recovered'' compartment by recovering from the illness.
+  \item[Recovered] individuals can no longer become infected, typically because they have immunity from a prior exposure. Many SIR-based models assume that a recovered person remains immune, which is often appropriate if immunity is long-lasting (e.g., chicken pox) or the disease is being modeled over a relatively short time period.
+\end{description}
+
+Because people move between compartments, the number of people in each compartment changes over time. The SIR model captures population changes in each compartment with a system of ordinary differential equations (ODEs) to model the progression of a disease.
+
+The standard SIR model can be schematically represented as: SIR framework.png
+
+\begin{figure}
+\includegraphics[width=1.0\textwidth]{"png/SIR"}
+\end{figure}
+
+
 
 The Kermack-McKendrick model is an SIR model for the number of people infected with a contagious illness in a closed population over time. It was proposed to explain the rapid rise and fall in the number of infected patients observed in epidemics such as the plague (London 1665-1666, Bombay 1906) and cholera (London 1865). It assumes that the population size is fixed (i.e., no births, deaths due to disease, or deaths by natural causes), incubation period of the infectious agent is instantaneous, and duration of infectivity is same as length of the disease. It also assumes a completely homogeneous population with no age, spatial, or social structure.
 
@@ -44,9 +77,19 @@ The model consists of a system of three coupled nonlinear ordinary differential 
 \dv{R}{t}	=	\gamma I,
 \end{equation}
 
-where t is time, S(t) is the number of susceptible people, I(t) is the number of people infected, R(t) is the number of people who have recovered and developed immunity to the infection.
+\noindent where t is time, S(t) is the number of susceptible people, I(t) is the number of people infected, R(t) is the number of people who have recovered and developed immunity to the infection.
+
+\begin{figure}
+\includegraphics[width=1.0\textwidth]{"png/SIR2"}
+\end{figure}
 
 We have three ordinary differential equations in the time domain with three parameters: $\alpha$, $\beta$, $\gamma$.
+
+
+\begin{figure}
+\includegraphics[width=1.0\textwidth]{"png/SIR3"}
+\end{figure}
+
 
 \begin{itemize}
 
@@ -59,6 +102,10 @@ We have three ordinary differential equations in the time domain with three para
 \end{itemize}
 
 This system is non-linear, however it is possible to derive its analytic solution in closed-form. Other numerical tools include Monte Carlo methods.
+
+\begin{figure}
+\includegraphics[width=1.0\textwidth]{"png/SIR4"}
+\end{figure}
 
 First, note that from:
 
@@ -78,9 +125,42 @@ The key value governing the time evolution of these equations is the so-called e
  R_0=(\beta S)/ \gamma
 \end{equation}
  
-Note that the choice of the notation R$_0$ is a bit unfortunate, since it has nothing to do with R used for recovery. R$_0$ is defined as the number of secondary infections caused by a single primary infection; in other words, it determines the number of people infected by contact with a single infected person before their death or recovery. 
+Note that the choice of the notation R$_0$ is a bit unfortunate, since it has nothing to do with R used for recovery. R$_0$ is defined as the number of secondary infections caused by a single primary infection; in other words, it determines the number of people infected by contact with a single infected person before their death or recovery.
 
-\subsection{Modeling Disease -- SEIR}.
+\subsection{Modeling SIR  with R}
+
+We walk through a SIR epidemiological model and simulate it with R.
+
+<<>>=
+
+library(deSolve)
+sir <- function(time, state, parameters) {
+  with(as.list(c(state, parameters)), {
+    dS <- -beta * S * I
+    dI <- beta * S * I - gamma * I
+    dR <- gamma * I
+	
+    return(list(c(dS, dI, dR)))
+  })
+}
+
+init <- c(S = 1-1e-6, I = 1e-6, 0.0)
+parameters <- c(beta = 1.4247, gamma = 0.14286)
+times <- seq(0, 70, by = 1)
+out <- as.data.frame(ode(y = init, times = times, func = sir, parms = parameters))
+out$time <- NULL
+@
+
+
+<<echo=FALSE>>=
+matplot(times, out, type = "l", xlab = "Time", ylab = "Susceptibles and Recovereds", main = "SIR Model", lwd = 2, lty = 1, bty = "l", col = 2:4)
+legend(40, 0.7, c("Susceptibles", "Infecteds", "Recovereds"), pch = 1, col = 2:4)
+@
+
+
+\subsection{Modeling Disease -- SEIR}
+
+The first model is the basic SEIR without social distancing, then we add social distancing to show how the potential effectiveness of these strategies.
 
 An extension of the classic SIR model and simply adds one more equation to show those who are exposed,  
 
@@ -95,13 +175,128 @@ An extension of the classic SIR model and simply adds one more equation to show 
 
 Equation \ref{eq:dS} is the change in people susceptible to the disease and is moderated by the number of infected people and their contact with the infected. Equation \ref{eq:dE} gives the people who have been exposed to the disease. It grows based on the contact rate and decreases based on the incubation period whereby people then become infected.
 
+\subsection{SEIR with R}
+
+<<>>=
+# Function to return derivatives of SEIR model
+seir_ode<-function(t,Y,par){
+  S<-Y[1]
+  E<-Y[2]
+  I<-Y[3]
+  R<-Y[4]
+  
+  beta<-par[1]
+  sigma<-par[2]
+  gamma<-par[3]
+  mu<-par[4]
+  
+  dYdt<-vector(length=3)
+  dYdt[1]=mu-beta*I*S-mu*S
+  dYdt[2]=beta*I*S-(sigma+mu)*E
+  dYdt[3]=sigma*E-(gamma+mu)*I
+  
+  return(list(dYdt))
+}
 
 
-\section{Models with Susceptibility and Infection}
+# Set parameter values
+beta<-520/365;
+sigma<-1/60;
+gamma<-1/30;
+mu<-774835/(65640000*365) # UK birth and population figures 2016
+init<-c(0.8,0.1,0.1)
+t<-seq(0,365)
+par<-c(beta,sigma,gamma,mu)
+# Solve system using lsoda
+sol<-lsoda(init,t,seir_ode,par)
+@
+
+
+<<echo=F>>=
+# Plot solution
+plot(t,sol[,2],type="l",col="blue",ylim=c(0,1),ylab="Proportion")
+lines(t,sol[,3],col="orange")
+lines(t,sol[,4],col="red")  
+lines(t,1-rowSums(sol[,2:4]),col="green")
+legend(300,0.7,legend=c("S","E","I","R"),col=c("blue","orange","red","green"), lty=1, cex=0.8)
+@
+
+
+\subsection{SEIR-SEI and Disease Vectors}
+
+When diseases are spread by vectors with their own dynamics, for example malaria and mosquitos, we should add additional compartments, namely suscecptability, exposure, and infection compartments for the mosquito. Mosquitos are not born with the malaria parasite, but must be infected from a host, so we can now include additional ODEs:
+
+\begin{equation}\label{eq:dS}
+\dv{S_v}{t}	=	-\beta_v S_v I_v	/N
+\end{equation}
+
+\begin{equation}\label{eq:dI}
+\dv{I_v}{t}	=	\beta S_v I_v/N - \gamma I_v
+\end{equation}
+
+\begin{equation}\label{eq:dR}
+\dv{R_v}{t}	=	\gamma I_v,
+\end{equation}
+
+The key value governing the time evolution of these equations is the so-called epidemiological threshold and I think this can be used to link these two models, but I don't know how to yet.
+
+\begin{equation}
+ R_0= ?
+\end{equation}
+
+<<>>=
+<<>>=
+# Function to return derivatives of SEIR model
+seir_ode<-function(t,Y,par){
+# Human Population
+  S<-Y[1]
+  E<-Y[2]
+  I<-Y[3]
+  R<-Y[4]
+  
+  beta<-par[1]
+  sigma<-par[2]
+  gamma<-par[3]
+  mu<-par[4]
+  
+  dYdt<-vector(length=3)
+  dYdt[1]=mu-beta*I*S-mu*S
+  dYdt[2]=beta*I*S-(sigma+mu)*E
+  dYdt[3]=sigma*E-(gamma+mu)*I
+  
+  return(list(dYdt))
+}
+
+
+# Set parameter values
+beta<-520/365;
+sigma<-1/60;
+gamma<-1/30;
+mu<-774835/(65640000*365) # UK birth and population figures 2016
+init<-c(0.8,0.1,0.1)
+t<-seq(0,365)
+par<-c(beta,sigma,gamma,mu)
+# Solve system using lsoda
+sol<-lsoda(init,t,seir_ode,par)
+
+# Plot solution
+plot(t,sol[,2],type="l",col="blue",ylim=c(0,1),ylab="Proportion")
+lines(t,sol[,3],col="orange")
+lines(t,sol[,4],col="red")  
+lines(t,1-rowSums(sol[,2:4]),col="green")
+legend(300,0.7,legend=c("S","E","I","R"),col=c("blue","orange","red","green"), lty=1, cex=0.8)
+
+@
+
+
+\section{Model with Spatial Structure}
 
 \subsection{Model Structure}
 
-The model relies on spatially explicit movements of 'subjects' that basically bounce around in a box, i.e. petri dish. Each subject is assigned a random location and trajectory (angle) of movement and velocity of movement vector. I based the model on an Washington Times article by XXXX (published). Although his model, written in Java, is probably much cleaner, I wanted to create something that students could use to adjust parameters and evaluate different policy strategies, using XX's visualization as a foundation. 
+The model relies on spatially explicit movements of 'subjects' that basically bounce around in a box, i.e. petri dish. Each subject is assigned a random location and trajectory (angle) of movement and velocity of movement vector. I based the model on an Washington Post article by Harry Stevens (March 14, 2020). Although his model, written in Java and is probably much cleaner, I wanted to create something that students could use to adjust parameters and evaluate different policy strategies, using a simple visualization as a foundation. 
+
+
+\subsection{Building a Model}
 
 To track subject movements, contact with others, etc I have defined an array to track subject, thus, have to do some backflips to track overlap at each time step to see if people are sharing space and pathogens. 
 

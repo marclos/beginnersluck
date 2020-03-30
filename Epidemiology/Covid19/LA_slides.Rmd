@@ -289,7 +289,7 @@ text(as.Date(Bdate), 1000000, "County Bed Capacity Exceeded", pos=2, col='darkgo
 - For example, Los Angeles reported a value of 1804 on the 28th of March. Was this within my confidence intervals?
 
 ```{r testingnewvalues, echo=FALSE, results='hide'}
-test = data.frame(Date = as.Date("2020-03-28"), Confirmed=1804); test
+test = data.frame(Date = as.Date("2020-03-30"), Confirmed=1804); test
 
 tested <- predict(LA.lm, test, interval="confidence");
 result = cbind(test, logConfirmed = log(test$Confirmed), lwr = tested[,2], upr = tested[,3])

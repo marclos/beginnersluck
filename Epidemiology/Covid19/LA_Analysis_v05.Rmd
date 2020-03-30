@@ -2,7 +2,8 @@
 title: "Los Angeles County Covid-19 Analysis"
 author: "Marc Los Huertos"
 date:  "`r format(Sys.time(), '%d %B, %Y')`"
-output: bookdown::html_document2
+#output: bookdown::html_document2
+output: github_document
 ---
    
 
@@ -250,7 +251,7 @@ In theory the US travel and shelter-at-home restrictions should reduce the rate 
 For example, Los Angeles reported a value of 1818 on the 28th of March. Was this within my confidence intervals?
 
 ```{r testingnewvalues, echo=FALSE, results='hide'}
-test = data.frame(Date = as.Date("2020-03-28"), Confirmed=1818); test
+test = data.frame(Date = as.Date("2020-03-29"), Confirmed=1829); test
 
 tested <- predict(LA.lm, test, interval="confidence");
 result = cbind(test, logConfirmed = log(test$Confirmed), lwr = tested[,2], upr = tested[,3])
