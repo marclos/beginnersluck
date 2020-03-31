@@ -2,8 +2,8 @@
 title: "Los Angeles County Covid-19 Analysis"
 author: "Marc Los Huertos"
 date:  "`r format(Sys.time(), '%d %B, %Y')`"
-#output: bookdown::html_document2
-output: github_document
+output: bookdown::html_document2
+# output: github_document
 ---
    
 
@@ -113,7 +113,7 @@ LA$Confirmed[LA$Date=="2020-03-29"] = 2136
 plot(Confirmed~Date, data=LA, las=1, pch=20, col="red")
 points(Deaths~Date, data=LA[LA$Deaths>0,], pch=20, col="black")
 points(Recovered~Date, data=LA[LA$Recovered>0,], pch=20, col="green")
-legend(as.Date("2020-02-05"), 1400, legend=c("Confirmed Cases", "Recovered", "Deaths"), pch=20, col=c("red", "green", "black"))
+legend(as.Date("2020-02-05"), 1500, legend=c("Confirmed Cases", "Recovered", "Deaths"), pch=20, col=c("red", "green", "black"))
 ```
 
 # Determine Doubling Rate
