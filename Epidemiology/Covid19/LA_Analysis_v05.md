@@ -1,7 +1,7 @@
 Los Angeles County Covid-19 Analysis
 ================
 Marc Los Huertos
-29 March, 2020
+31 March, 2020
 
 # Introduction
 
@@ -74,8 +74,16 @@ I found press releases by the County to have some of the missing data:
   - 3/22/2020 = 409 cases (corrected as 407 on the 23rd, same as github)
   - 3/23/2020 = 536 cases (90 hospitalized) same as github
 
+Missing or incorrect data on Github site from the weekend of the 28/29
+based on the County Health Department Webpage (noon on each day).
+
+``` r
+LA$Confirmed[LA$Date=="2020-03-28"] = 1829
+LA$Confirmed[LA$Date=="2020-03-29"] = 2136
+```
+
 ![Confirmed Cases in Los Angeles County (Source JHU-CSSE and LA County
-Public Health)](LA_Analysis_v05_files/figure-gfm/unnamed-chunk-4-1.png)
+Public Health)](LA_Analysis_v05_files/figure-gfm/unnamed-chunk-5-1.png)
 
 # Determine Doubling Rate
 
@@ -104,18 +112,18 @@ As it turns out the first 31 days there is only one confirmed infection
 32, there were 7 infections.
 
 Using the r<sup>2</sup> to evaluate the models, we find the model that
-uses all the data has a r<sup>2</sup> of 0.816, while the regression
+uses all the data has a r<sup>2</sup> of 0.825, while the regression
 that excludes the early part of the dataset has an r<sup>2</sup> of
-0.99. The closer to one is the better and these results reinforce my
+0.991. The closer to one is the better and these results reinforce my
 decision to exclude the early part of the dataset.
 
-If we include the entire data set, the doubling rate is 4.9. Meanwhile,
+If we include the entire data set, the doubling rate is 4.8. Meanwhile,
 the doubling rate for the data that excludes the early part of the
 record is 2.9, which is probably more consistent with the pattern of
 this epidemic.
 
 ![Confirm Cases in Los Angeles County and Estimated Doubling
-Rates](LA_Analysis_v05_files/figure-gfm/unnamed-chunk-6-1.png)
+Rates](LA_Analysis_v05_files/figure-gfm/unnamed-chunk-7-1.png)
 
 # Policy Lag Times
 
@@ -126,10 +134,10 @@ effects of the order slow the spread of the virus, which should be about
 the 3rd of April, when we should see a decline of the doubling rate.
 
 ![Predicted Number of Covid-19 Cases in Los
-Angeles](LA_Analysis_v05_files/figure-gfm/unnamed-chunk-7-1.png)
+Angeles](LA_Analysis_v05_files/figure-gfm/unnamed-chunk-8-1.png)
 
 Based on this, I estimate that on the 3rd of April the County will have
-had 6970 confirmed cases.
+had 7040 confirmed cases.
 
 And here’s how these predictions have changed as I have included more
 data:
@@ -137,11 +145,11 @@ data:
   - March 25th 6170
   - March 26th 6620
   - March 27th 6810
-  - March 28th 7230\*
+  - March 28th 7230
+  - March 29th 7190
 
-\*Weekend values are not updated on github site for LA County. Thus the
-estimates are lower on the weekends because values have not been
-updated.
+\*Weekend values are not updated on github site for LA County. Thus, I
+have used LA County health updates to fill in on weekends.
 
 ## Changes in Doubling Rate
 
@@ -191,7 +199,7 @@ Was this within my confidence intervals?
 With this simple analysis, I obtained the following results:
 
     ##         Date Confirmed logConfirmed      lwr      upr
-    ## 1 2020-03-28      1818     7.505492 7.299204 7.575078
+    ## 1 2020-03-29      2136      7.66669 7.548748 7.811661
 
 Based on this, I suspect we are still well within the model expectations
 and there is no hint of flattening.

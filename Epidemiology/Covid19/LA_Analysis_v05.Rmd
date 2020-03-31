@@ -99,12 +99,20 @@ I found press releases by the County to have some of the missing data:
 county = data.frame(Date = as.Date(c("2020-03-10", "2020-03-11", "2020-03-12", "2020-03-13", "2020-03-14", "2020-03-15", "2020-03-16", "2020-03-17", "2020-03-18", "2020-03-19", "2020-03-20", "2020-03-21")), Confirmed = c( 17, 27, 32, 40, 53, 69, 94, 144, 190, 231, 292, 351))
 
 LA = bind_rows(LA, county)
-LA$Confirmed[LA$Date=="2020-03-28"] = 1818
+```
+
+   
+Missing or incorrect data on Github site from the weekend of the 28/29 based on the County Health Department Webpage (noon on each day).
+```{r}
+LA$Confirmed[LA$Date=="2020-03-28"] = 1829
+LA$Confirmed[LA$Date=="2020-03-29"] = 2136
 
 ```
 
 ```{r, echo=FALSE, fig.cap='Confirmed Cases in Los Angeles County (Source JHU-CSSE and LA County Public Health)'}
-plot(Confirmed~Date, data=LA, las=1, pch=20)
+plot(Confirmed~Date, data=LA, las=1, pch=20, col="red")
+points(Deaths~Date, data=LA, pch=20, col="black")
+points(Recovered~Date, data=LA, pch=20, col="green")
 ```
 
 # Determine Doubling Rate
@@ -145,8 +153,8 @@ If we include the entire data set, the doubling rate is `r dr.bad`. Meanwhile, t
 plot(lnConfirmed ~ Date, data=LA, las=1, ylab="ln(Confirmed)")
 abline(coef(LA.lm), col='darkred', lwd=1.4)
 abline(coef(LA.lm.bad), col='purple')
-text(as.Date("2020-02-18"), 1.8,paste("Doubling Rate =", dr.bad), col='purple')
-text(as.Date("2020-03-08"), 5.1, paste("Doubling Rate =", dr), col='darkred')
+text(as.Date("2020-02-16"), 1.8,paste("Doubling Rate =", dr.bad), col='purple')
+text(as.Date("2020-03-05"), 5.1, paste("Doubling Rate =", dr), col='darkred')
 
 
 ```
@@ -196,9 +204,10 @@ And here's how these predictions have changed as I have included more data:
  - March 25th 6170
  - March 26th 6620
  - March 27th 6810
- - March 28th 7230*
+ - March 28th 7230
+ - March 29th 7190
  
-*Weekend values are not updated on github site for LA County. Thus the estimates are lower on the weekends because values have not been updated.
+*Weekend values are not updated on github site for LA County. Thus, I have used LA County health updates to fill in on weekends. 
 
 ## Changes in Doubling Rate
 
@@ -238,8 +247,8 @@ points(prediction$Date, exp(prediction$fit), pch=20, col='red')
 arrows(x0=prediction$Date, y0=exp(prediction$fit), y1=exp(prediction$upr), code=2, col="red", lwd=.5, angle = 90, length=.03)
 arrows(x0=prediction$Date, y0=exp(prediction$fit), y1=exp(prediction$lwr), code=2, col="red", lwd=.5, angle = 90, length=.03)
 
-arrows(x0= as.Date(Bdate), y0 = 1000000, y1= 0, length = 0.15, angle = 20, code = 2, col = 'darkgoldenrod', lwd = 1)
-text(as.Date(Bdate), 1000000, "County Bed Capacity Exceeded", pos=2, col='darkgoldenrod')
+arrows(x0= as.Date(Bdate), y0 = 1000000, y1= BedsByConfirmed, length = 0.15, angle = 20, code = 2, col = 'darkgoldenrod', lwd = 1)
+text(as.Date(Bdate), 1000000, paste("County Bed Capacity Exceeded", Bdate2), pos=2, col='darkgoldenrod')
 
 ```
 
@@ -251,7 +260,7 @@ In theory the US travel and shelter-at-home restrictions should reduce the rate 
 For example, Los Angeles reported a value of 1818 on the 28th of March. Was this within my confidence intervals?
 
 ```{r testingnewvalues, echo=FALSE, results='hide'}
-test = data.frame(Date = as.Date("2020-03-29"), Confirmed=1829); test
+test = data.frame(Date = as.Date("2020-03-29"), Confirmed=2136); test
 
 tested <- predict(LA.lm, test, interval="confidence");
 result = cbind(test, logConfirmed = log(test$Confirmed), lwr = tested[,2], upr = tested[,3])

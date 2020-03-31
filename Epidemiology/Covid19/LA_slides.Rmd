@@ -220,7 +220,8 @@ rect(as.Date('2020-03-19'),5, as.Date('2020-04-03'), prediction[1, 2], border=T)
  - March 25th 6170
  - March 26th 6620
  - March 27th 6810
- - March 28th 6910*
+ - March 28th 7230
+ - March 29th 7190
 
 # Changes in Doubling Rate
 
@@ -228,7 +229,7 @@ rect(as.Date('2020-03-19'),5, as.Date('2020-04-03'), prediction[1, 2], border=T)
 
 - Reducing contact between susceptables in the key for that process. 
 
-- SIR, SEIR, and SEIRS models 
+- SIR, SEIR, and SEIRS models used to explore various hypotheses
 
 ## Hospital and ICU Capacity
 
@@ -289,7 +290,7 @@ text(as.Date(Bdate), 1000000, "County Bed Capacity Exceeded", pos=2, col='darkgo
 - For example, Los Angeles reported a value of 1804 on the 28th of March. Was this within my confidence intervals?
 
 ```{r testingnewvalues, echo=FALSE, results='hide'}
-test = data.frame(Date = as.Date("2020-03-30"), Confirmed=1804); test
+test = data.frame(Date = as.Date("2020-03-30"), Confirmed=2136); test
 
 tested <- predict(LA.lm, test, interval="confidence");
 result = cbind(test, logConfirmed = log(test$Confirmed), lwr = tested[,2], upr = tested[,3])
