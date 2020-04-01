@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2019.11.11)  31 MAR 2020 15:51
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2019.11.11)  31 MAR 2020 16:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**SEIR_v07.tex
-(./SEIR_v07.tex
+**SEIR_v08.tex
+(./SEIR_v08.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, uk
 rainian, russian, bulgarian, loaded.
@@ -1203,8 +1203,8 @@ Package: xparse 2013/03/12 v4467 L3 Experimental document command parser
 ) (/usr/share/texlive/texmf-dist/tex/latex/upquote/upquote.sty
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
 tim
-) (./SEIR_v07.aux)
-\openout1 = `SEIR_v07.aux'.
+) (./SEIR_v08.aux)
+\openout1 = `SEIR_v08.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 61.
 LaTeX Font Info:    ... okay on input line 61.
@@ -1341,36 +1341,33 @@ Overfull \hbox (15.0pt too wide) in paragraph at lines 217--218
  []
 
 [6 <./figure/unnamed-chunk-2-1.pdf>]
-Package color Info: Redefining color shadecolor on input line 257.
 
-Overfull \hbox (3.2331pt too wide) in paragraph at lines 287--287
-[][]\OT1/cmtt/m/it/10 # mu<-774835/(65640000*365) # UK birth and population fig
-ures 2016[][] 
- []
+LaTeX Warning: Reference `eq:dE' on page 7 undefined on input line 241.
 
+Package color Info: Redefining color shadecolor on input line 260.
 [7]
-Package color Info: Redefining color shadecolor on input line 303.
+Package color Info: Redefining color shadecolor on input line 306.
  <figure/unnamed-chunk-4-1.pdf, id=52, 505.89pt x 505.89pt>
 File: figure/unnamed-chunk-4-1.pdf Graphic file (type pdf)
 
 <use figure/unnamed-chunk-4-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-4-1.pdf used on input line 304.
+Package pdftex.def Info: figure/unnamed-chunk-4-1.pdf used on input line 307.
 (pdftex.def)             Requested size: 345.0pt x 345.00414pt.
 
-Overfull \hbox (15.0pt too wide) in paragraph at lines 304--305
+Overfull \hbox (15.0pt too wide) in paragraph at lines 307--308
 [][] 
  []
 
 [8]
-Overfull \hbox (6.38959pt too wide) in paragraph at lines 311--312
+Overfull \hbox (6.38959pt too wide) in paragraph at lines 314--315
 \OT1/cmr/m/n/10 malaria and mosquitos, we should add ad-di-tional com-part-ment
 s, namely suscecpt-
  []
 
 [9 <./figure/unnamed-chunk-4-1.pdf>]
-Package color Info: Redefining color shadecolor on input line 333.
+Package color Info: Redefining color shadecolor on input line 336.
 
-Overfull \hbox (148.4957pt too wide) in paragraph at lines 373--373
+Overfull \hbox (148.4957pt too wide) in paragraph at lines 376--376
 [][]\OT1/cmtt/m/n/10 legend[][]([][]300[][],[][]0.7[][],[][]legend[][]=[][]c[][
 ]([][]"S"[][],[][]"E"[][],[][]"I"[][],[][]"R"[][]),[][]col[][]=[][]c[][]([][]"b
 lue"[][],[][]"orange"[][],[][]"red"[][],[][]"green"[][]),[] []lty[][]=[][]1[][]
@@ -1381,82 +1378,82 @@ lue"[][],[][]"orange"[][],[][]"red"[][],[][]"green"[][]),[] []lty[][]=[][]1[][]
 File: figure/unnamed-chunk-6-1.pdf Graphic file (type pdf)
 
 <use figure/unnamed-chunk-6-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-6-1.pdf used on input line 376.
+Package pdftex.def Info: figure/unnamed-chunk-6-1.pdf used on input line 379.
 (pdftex.def)             Requested size: 345.0pt x 345.00414pt.
 
-Overfull \hbox (15.0pt too wide) in paragraph at lines 376--377
+Overfull \hbox (15.0pt too wide) in paragraph at lines 379--380
 [][] 
  []
 
 [10] [11 <./figure/unnamed-chunk-6-1.pdf>]
-Overfull \hbox (122.3122pt too wide) in paragraph at lines 404--416
+Overfull \hbox (122.3122pt too wide) in paragraph at lines 407--419
  [][] 
  []
 
-Package color Info: Redefining color shadecolor on input line 428.
+Package color Info: Redefining color shadecolor on input line 431.
 [12]
-Package color Info: Redefining color shadecolor on input line 458.
+Package color Info: Redefining color shadecolor on input line 461.
 
-Overfull \hbox (22.24686pt too wide) in paragraph at lines 476--476
+Overfull \hbox (22.24686pt too wide) in paragraph at lines 479--479
 []      []\OT1/cmtt/m/n/10 if[][](data_array[tmp2[i,[][]1[][]],[][]5[][],t][][]
 ==[][]2[] []&[] []data_array[tmp2[i,[][]2[][]],[][]5[][],t][][]==[][]1[][])\OMS
 /cmsy/m/n/10 f[][] 
  []
 
 
-Overfull \hbox (22.24686pt too wide) in paragraph at lines 480--480
+Overfull \hbox (22.24686pt too wide) in paragraph at lines 483--483
 []      []\OT1/cmtt/m/n/10 if[][](data_array[tmp2[i,[][]2[][]],[][]5[][],t][][]
 ==[][]2[] []&[] []data_array[tmp2[i,[][]1[][]],[][]5[][],t][][]==[][]1[][])\OMS
 /cmsy/m/n/10 f[][] 
  []
 
 
-Overfull \hbox (22.24686pt too wide) in paragraph at lines 484--484
+Overfull \hbox (22.24686pt too wide) in paragraph at lines 487--487
 []      []\OT1/cmtt/m/n/10 if[][](data_array[tmp2[i,[][]1[][]],[][]5[][],t][][]
 ==[][]3[] []&[] []data_array[tmp2[i,[][]2[][]],[][]5[][],t][][]==[][]1[][])\OMS
 /cmsy/m/n/10 f[][] 
  []
 
 
-Overfull \hbox (22.24686pt too wide) in paragraph at lines 488--488
+Overfull \hbox (22.24686pt too wide) in paragraph at lines 491--491
 []      []\OT1/cmtt/m/n/10 if[][](data_array[tmp2[i,[][]1[][]],[][]5[][],t][][]
 ==[][]1[] []&[] []data_array[tmp2[i,[][]2[][]],[][]5[][],t][][]==[][]3[][])\OMS
 /cmsy/m/n/10 f[][] 
  []
 
 [13]
-Package color Info: Redefining color shadecolor on input line 510.
+Package color Info: Redefining color shadecolor on input line 513.
 
-Overfull \hbox (64.49643pt too wide) in paragraph at lines 527--527
+Overfull \hbox (64.49643pt too wide) in paragraph at lines 530--530
 [][]\OT1/cmtt/m/n/10 dimnames[][](data_arr)[[[][]2[][]]][] []<-[] []c[][]([][]"
 x"[][],[] []"y"[][],[] []"theta"[][],[] []"velocity"[][],[] []"status"[][],[] [
 ]"count"[][])[][] 
  []
 
 
-Overfull \hbox (116.99597pt too wide) in paragraph at lines 573--573
+Overfull \hbox (116.99597pt too wide) in paragraph at lines 576--576
 []    []\OT1/cmtt/m/n/10 if[][](data_arr[s,[][]5[][],t][][]==[][]1[] []|[] []da
 ta_arr[s,[][]5[][],t][][]==[][]0[][]) data_arr[s,[][]6[][],t][][]=[][]0[] []\OT
 1/cmtt/m/it/10 # Reset Susceptables  [][] 
  []
 
 [14] [15]
-Package color Info: Redefining color shadecolor on input line 604.
-Package color Info: Redefining color shadecolor on input line 638.
+Package color Info: Redefining color shadecolor on input line 607.
+Package color Info: Redefining color shadecolor on input line 641.
  [16]
-Overfull \hbox (8.48305pt too wide) in paragraph at lines 641--641
+Overfull \hbox (8.48305pt too wide) in paragraph at lines 644--644
 [][]\OT1/cmtt/m/it/10 # Susceptable 1, Exposed-Asymptomatic 2, Symptomatic 3, R
 ecovered 4[][] 
  []
 
 
-Overfull \hbox (6.74693pt too wide) in paragraph at lines 653--653
+Overfull \hbox (6.74693pt too wide) in paragraph at lines 656--656
 [][]\OT1/cmtt/m/n/10 results[t,][] []<-[] []data.frame[][]([][]Days[] []= days,
 [] []Sh[] []= sh,[] []S[][]=s,[] []E[][]=e,[] []I[][]=i,[] []R[][]=r)[][] 
  []
 
 
-Overfull \hbox (652.4913pt too wide) in paragraph at lines 657--657
+Overfull \hbox (652.4913pt too wide) in paragraph at lines 660--660
 [][]\OT1/cmtt/m/n/10 plot[][](S[][]~[][]Days,[] []data[][]=results,[] []ty[][]=
 [][]^^Ml^^M[][],[] []col[][]=SEIRcol[[][]1[][]],[] []ylab[][]=[][]""[][],[] []y
 lim[][]=[][]c[][]([][]0[][],params[m,[][]2[][]]),[] []xlab[][]=[][]"Days"[][],[
@@ -1466,25 +1463,25 @@ rams[m,[][]5[][]][][]*[][]100[][],[] []"%"[][]))[][]
  []
 
 
-Overfull \hbox (32.9967pt too wide) in paragraph at lines 666--666
+Overfull \hbox (32.9967pt too wide) in paragraph at lines 669--669
 []  []\OT1/cmtt/m/n/10 "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology
 /Model1.png"[][]);[][] 
  []
 
 
-Overfull \hbox (32.9967pt too wide) in paragraph at lines 669--669
+Overfull \hbox (32.9967pt too wide) in paragraph at lines 672--672
 []  []\OT1/cmtt/m/n/10 "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology
 /Model2.png"[][]);[][] 
  []
 
 
-Overfull \hbox (32.9967pt too wide) in paragraph at lines 672--672
+Overfull \hbox (32.9967pt too wide) in paragraph at lines 675--675
 []  []\OT1/cmtt/m/n/10 "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology
 /Model3.png"[][]);[][] 
  []
 
 
-Overfull \hbox (32.9967pt too wide) in paragraph at lines 675--675
+Overfull \hbox (32.9967pt too wide) in paragraph at lines 678--678
 []  []\OT1/cmtt/m/n/10 "/home/CAMPUS/mwl04747/github/beginnersluck/Epidemiology
 /Model4.png"[][]);[][] 
  []
@@ -1492,49 +1489,49 @@ Overfull \hbox (32.9967pt too wide) in paragraph at lines 675--675
 <Model1.png, id=92, 481.8pt x 481.8pt>
 File: Model1.png Graphic file (type png)
  <use Model1.png>
-Package pdftex.def Info: Model1.png used on input line 682.
+Package pdftex.def Info: Model1.png used on input line 685.
 (pdftex.def)             Requested size: 345.0pt x 345.00635pt.
 
 <Model2.png, id=93, 481.8pt x 481.8pt>
 File: Model2.png Graphic file (type png)
  <use Model2.png>
-Package pdftex.def Info: Model2.png used on input line 687.
+Package pdftex.def Info: Model2.png used on input line 690.
 (pdftex.def)             Requested size: 345.0pt x 345.00635pt.
 
 <Model3.png, id=94, 481.8pt x 481.8pt>
 File: Model3.png Graphic file (type png)
  <use Model3.png>
-Package pdftex.def Info: Model3.png used on input line 692.
+Package pdftex.def Info: Model3.png used on input line 695.
 (pdftex.def)             Requested size: 345.0pt x 345.00635pt.
 
 <Model4.png, id=95, 481.8pt x 481.8pt>
 File: Model4.png Graphic file (type png)
  <use Model4.png>
-Package pdftex.def Info: Model4.png used on input line 697.
+Package pdftex.def Info: Model4.png used on input line 700.
 (pdftex.def)             Requested size: 345.0pt x 345.00635pt.
 
 <SSModel1.png, id=96, 481.8pt x 481.8pt>
 File: SSModel1.png Graphic file (type png)
  <use SSModel1.png>
-Package pdftex.def Info: SSModel1.png used on input line 708.
+Package pdftex.def Info: SSModel1.png used on input line 711.
 (pdftex.def)             Requested size: 345.0pt x 345.00635pt.
 
 <SSModel2.png, id=97, 481.8pt x 481.8pt>
 File: SSModel2.png Graphic file (type png)
  <use SSModel2.png>
-Package pdftex.def Info: SSModel2.png used on input line 713.
+Package pdftex.def Info: SSModel2.png used on input line 716.
 (pdftex.def)             Requested size: 345.0pt x 345.00635pt.
 
 <SSModel3.png, id=98, 481.8pt x 481.8pt>
 File: SSModel3.png Graphic file (type png)
  <use SSModel3.png>
-Package pdftex.def Info: SSModel3.png used on input line 718.
+Package pdftex.def Info: SSModel3.png used on input line 721.
 (pdftex.def)             Requested size: 345.0pt x 345.00635pt.
 
 <SSModel4.png, id=99, 481.8pt x 481.8pt>
 File: SSModel4.png Graphic file (type png)
  <use SSModel4.png>
-Package pdftex.def Info: SSModel4.png used on input line 723.
+Package pdftex.def Info: SSModel4.png used on input line 726.
 (pdftex.def)             Requested size: 345.0pt x 345.00635pt.
  [17] [18 <./Model1.png (PNG copy)>] [19 <./Model2.png (PNG copy)>] [20 <./Mode
 l3.png (PNG copy)>]
@@ -1543,30 +1540,34 @@ l3.png (PNG copy)>]
 y)>] <SEIRS.png, id=129, 828.09375pt x 639.89063pt>
 File: SEIRS.png Graphic file (type png)
  <use SEIRS.png>
-Package pdftex.def Info: SEIRS.png used on input line 759.
+Package pdftex.def Info: SEIRS.png used on input line 762.
 (pdftex.def)             Requested size: 345.0pt x 266.59439pt.
  [26]
-[27 <./SEIRS.png (PNG copy)>] (./SEIR_v07.aux) ) 
+[27 <./SEIRS.png (PNG copy)>] (./SEIR_v08.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 7960 strings out of 494820
- 136094 string characters out of 3178048
- 200751 words of memory out of 3000000
- 11019 multiletter control sequences out of 15000+200000
+ 7962 strings out of 494820
+ 136110 string characters out of 3178048
+ 200796 words of memory out of 3000000
+ 11021 multiletter control sequences out of 15000+200000
  9359 words of font info for 35 fonts, out of 3000000 for 9000
  198 hyphenation exceptions out of 8191
  44i,9n,39p,686b,275s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/share/texlive/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmitt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.
-pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></u
-sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share
-/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texli
-ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on SEIR_v07.pdf (27 pages, 848731 bytes).
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mtt10.pfb>
+Output written on SEIR_v08.pdf (27 pages, 850463 bytes).
 PDF statistics:
  173 PDF objects out of 1000 (max. 8388607)
  108 compressed objects within 2 object streams

@@ -171,10 +171,14 @@ legend(max(times), 0.7, c("Susceptibles", "Infecteds", "Recovereds"), pch = 1, c
 
 The first model is the basic SEIR without social distancing, then we add social distancing to show how the potential effectiveness of these strategies.
 
-An extension of the classic SIR model and simply adds one more equation to show those who are exposed,  
+An extension of the classic SIR model and simply adds one more equation to show those who are exposed,
 
-\begin{equation}\label{eq:dE}
-\dv{E}{t}	=	\beta SI/N - \omega E
+\begin{equation}\label{eq:dS2}
+\dv{S}{t}	=	-\beta
+\end{equation}
+
+\begin{equation}\label{eq:dE2}
+\dv{E}{t}	=	\beta SI - \omega E
 \end{equation}
 
 \begin{equation}\label{eq:dI2}
@@ -185,7 +189,6 @@ An extension of the classic SIR model and simply adds one more equation to show 
 Equation \ref{eq:dS} is the change in people susceptible to the disease and is moderated by the number of infected people and their contact with the infected. Equation \ref{eq:dE} gives the people who have been exposed to the disease. It grows based on the contact rate and decreases based on the incubation period whereby people then become infected.
 
 \subsection{SEIR with R}
-
 
 In the case of $\beta$ is defined as $\beta_0$k, where $\beta_0$ is the probability of infection er expoure and k is the frequency of exposure. $\omega$ is the coeffecient of migration of latency and is estimated as $1/T_e$, where $T_e$ is the average latency. Finally, $\gamma$, which is $1/T_i$ is the recovery rate.
 
@@ -212,29 +215,29 @@ seir_ode<-function(t,Y,par){
   R<-Y[4]
   
   beta<-par[1]
-  sigma<-par[2]
+  omega<-par[2]
   gamma<-par[3]
   mu<-par[4]
   
   dYdt<-vector(length=3)
   dYdt[1]=mu-beta*I*S-mu*S
-  dYdt[2]=beta*I*S-(sigma+mu)*E
-  dYdt[3]=sigma*E-(gamma+mu)*I
+  dYdt[2]=beta*I*S-(omega+mu)*E
+  dYdt[3]=omega*E-(gamma+mu)*I
   
   return(list(dYdt))
 }
   # Set parameter values
 beta = beta0*k 
 #beta<-520/365;
-sigma = 1/Te
+omega = 1/Te
 # sigma<-1/60;
 gamma = 1/Ti
 # gamma<-1/30;
-# mu<-774835/(65640000*365) # UK birth and population figures 2016
-mu=1000000
-init<-c(0.8,0.1,0.1)
+mu<-774835/(65640000*365) # UK birth and population figures 2016
+# mu=1000000
+init<-c(0.99,0.01,0.0)
 t<-seq(0,365)
-par<-c(beta,sigma,gamma,mu)
+par<-c(beta,omega,gamma,mu)
 # Solve system using lsoda
 lsoda(init,t,seir_ode,par)
 }
@@ -245,16 +248,15 @@ Model1 <- SEIR(.1, 10, 7, 10.25)
 
 
 <<echo=F>>=
-SEIRplot = function(sol){
-# Plot solution
-plot(sol[,1],sol[,2],type="l",col="blue",ylim=c(0,1),ylab="Proportion")
+SEIRplot = function(sol, xmax){
+plot(sol[,1],sol[,2],type="l",col="blue",ylim=c(0,1),ylab="Proportion", xlab="Day", xlim=c(0,xmax))
 lines(sol[,1],sol[,3],col="orange")
 lines(sol[,1],sol[,4],col="red")  
 lines(sol[,1],1-rowSums(sol[,2:4]),col="green")
-legend(300,0.7,legend=c("S","E","I","R"),col=c("blue","orange","red","green"), lty=1, cex=0.8, xjust=1)
+legend(xmax,0.7,legend=c("Suscetables","Exposed","Infectids","Recorvered"),col=c("blue","orange","red","green"), lwd=2, lty=1, cex=0.8, xjust=1)
 }
 
-SEIRplot(Model1)
+SEIRplot(Model1, xmax=200)
 @
 
 

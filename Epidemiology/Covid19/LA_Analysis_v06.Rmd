@@ -207,6 +207,8 @@ And here's how these predictions have changed as I have included more data:
  - March 27th 6810
  - March 28th 7230
  - March 29th 7190
+ - March 30th 7040
+ - March 31st 6890
  
 *Weekend values are not updated on github site for LA County. Thus, I have used LA County health updates to fill in on weekends. 
 
@@ -258,10 +260,10 @@ text(as.Date(Bdate), 1000000, paste("County Bed Capacity Exceeded", Bdate2), pos
 
 In theory the US travel and shelter-at-home restrictions should reduce the rate so spread. I wonder when we'll start to see that signal?  In other words, we do the values fall outside the expected range?  And when they do, can we model how the rate of transmission is changing?
 
-For example, Los Angeles reported a value of 1818 on the 28th of March. Was this within my confidence intervals?
+For example, Los Angeles reported a value of 3019 on the 31th of March. Was this within my confidence intervals?
 
 ```{r testingnewvalues, echo=FALSE, results='hide'}
-test = data.frame(Date = as.Date("2020-03-29"), Confirmed=2136); test
+test = data.frame(Date = max(LA$Date), Confirmed=LA$Confirmed[LA$Date==max(LA$Date)]); test
 
 tested <- predict(LA.lm, test, interval="confidence");
 result = cbind(test, logConfirmed = log(test$Confirmed), lwr = tested[,2], upr = tested[,3])
@@ -276,5 +278,7 @@ print(result)
 ```
 
 
-Based on this, I suspect we are still well within the model expectations and there is no hint of flattening. 
+Based on this, I suspect we may be starting to see the curve flattening. A few more days will tell us and then, I'll need to start modeling how the flattening will impact hospital bed capacity. 
+
+
 

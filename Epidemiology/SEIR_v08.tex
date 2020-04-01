@@ -223,10 +223,14 @@ $\beta$ is derived by assuming that the basic reproduction number, $R_0=\frac{\b
 
 The first model is the basic SEIR without social distancing, then we add social distancing to show how the potential effectiveness of these strategies.
 
-An extension of the classic SIR model and simply adds one more equation to show those who are exposed,  
+An extension of the classic SIR model and simply adds one more equation to show those who are exposed,
 
-\begin{equation}\label{eq:dE}
-\dv{E}{t}	=	\beta SI/N - \omega E
+\begin{equation}\label{eq:dS2}
+\dv{S}{t}	=	-\beta
+\end{equation}
+
+\begin{equation}\label{eq:dE2}
+\dv{E}{t}	=	\beta SI - \omega E
 \end{equation}
 
 \begin{equation}\label{eq:dI2}
@@ -237,7 +241,6 @@ An extension of the classic SIR model and simply adds one more equation to show 
 Equation \ref{eq:dS} is the change in people susceptible to the disease and is moderated by the number of infected people and their contact with the infected. Equation \ref{eq:dE} gives the people who have been exposed to the disease. It grows based on the contact rate and decreases based on the incubation period whereby people then become infected.
 
 \subsection{SEIR with R}
-
 
 In the case of $\beta$ is defined as $\beta_0$k, where $\beta_0$ is the probability of infection er expoure and k is the frequency of exposure. $\omega$ is the coeffecient of migration of latency and is estimated as $1/T_e$, where $T_e$ is the average latency. Finally, $\gamma$, which is $1/T_i$ is the recovery rate.
 
@@ -266,29 +269,29 @@ $T_i$         & 10.25 \\
   \hlstd{R}\hlkwb{<-}\hlstd{Y[}\hlnum{4}\hlstd{]}
 
   \hlstd{beta}\hlkwb{<-}\hlstd{par[}\hlnum{1}\hlstd{]}
-  \hlstd{sigma}\hlkwb{<-}\hlstd{par[}\hlnum{2}\hlstd{]}
+  \hlstd{omega}\hlkwb{<-}\hlstd{par[}\hlnum{2}\hlstd{]}
   \hlstd{gamma}\hlkwb{<-}\hlstd{par[}\hlnum{3}\hlstd{]}
   \hlstd{mu}\hlkwb{<-}\hlstd{par[}\hlnum{4}\hlstd{]}
 
   \hlstd{dYdt}\hlkwb{<-}\hlkwd{vector}\hlstd{(}\hlkwc{length}\hlstd{=}\hlnum{3}\hlstd{)}
   \hlstd{dYdt[}\hlnum{1}\hlstd{]}\hlkwb{=}\hlstd{mu}\hlopt{-}\hlstd{beta}\hlopt{*}\hlstd{I}\hlopt{*}\hlstd{S}\hlopt{-}\hlstd{mu}\hlopt{*}\hlstd{S}
-  \hlstd{dYdt[}\hlnum{2}\hlstd{]}\hlkwb{=}\hlstd{beta}\hlopt{*}\hlstd{I}\hlopt{*}\hlstd{S}\hlopt{-}\hlstd{(sigma}\hlopt{+}\hlstd{mu)}\hlopt{*}\hlstd{E}
-  \hlstd{dYdt[}\hlnum{3}\hlstd{]}\hlkwb{=}\hlstd{sigma}\hlopt{*}\hlstd{E}\hlopt{-}\hlstd{(gamma}\hlopt{+}\hlstd{mu)}\hlopt{*}\hlstd{I}
+  \hlstd{dYdt[}\hlnum{2}\hlstd{]}\hlkwb{=}\hlstd{beta}\hlopt{*}\hlstd{I}\hlopt{*}\hlstd{S}\hlopt{-}\hlstd{(omega}\hlopt{+}\hlstd{mu)}\hlopt{*}\hlstd{E}
+  \hlstd{dYdt[}\hlnum{3}\hlstd{]}\hlkwb{=}\hlstd{omega}\hlopt{*}\hlstd{E}\hlopt{-}\hlstd{(gamma}\hlopt{+}\hlstd{mu)}\hlopt{*}\hlstd{I}
 
   \hlkwd{return}\hlstd{(}\hlkwd{list}\hlstd{(dYdt))}
 \hlstd{\}}
   \hlcom{# Set parameter values}
 \hlstd{beta} \hlkwb{=} \hlstd{beta0}\hlopt{*}\hlstd{k}
 \hlcom{#beta<-520/365;}
-\hlstd{sigma} \hlkwb{=} \hlnum{1}\hlopt{/}\hlstd{Te}
+\hlstd{omega} \hlkwb{=} \hlnum{1}\hlopt{/}\hlstd{Te}
 \hlcom{# sigma<-1/60;}
 \hlstd{gamma} \hlkwb{=} \hlnum{1}\hlopt{/}\hlstd{Ti}
 \hlcom{# gamma<-1/30;}
-\hlcom{# mu<-774835/(65640000*365) # UK birth and population figures 2016}
-\hlstd{mu}\hlkwb{=}\hlnum{1000000}
-\hlstd{init}\hlkwb{<-}\hlkwd{c}\hlstd{(}\hlnum{0.8}\hlstd{,}\hlnum{0.1}\hlstd{,}\hlnum{0.1}\hlstd{)}
+\hlstd{mu}\hlkwb{<-}\hlnum{774835}\hlopt{/}\hlstd{(}\hlnum{65640000}\hlopt{*}\hlnum{365}\hlstd{)} \hlcom{# UK birth and population figures 2016}
+\hlcom{# mu=1000000}
+\hlstd{init}\hlkwb{<-}\hlkwd{c}\hlstd{(}\hlnum{0.99}\hlstd{,}\hlnum{0.01}\hlstd{,}\hlnum{0.0}\hlstd{)}
 \hlstd{t}\hlkwb{<-}\hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{365}\hlstd{)}
-\hlstd{par}\hlkwb{<-}\hlkwd{c}\hlstd{(beta,sigma,gamma,mu)}
+\hlstd{par}\hlkwb{<-}\hlkwd{c}\hlstd{(beta,omega,gamma,mu)}
 \hlcom{# Solve system using lsoda}
 \hlkwd{lsoda}\hlstd{(init,t,seir_ode,par)}
 \hlstd{\}}
@@ -398,7 +401,7 @@ I'm not a programmer, so this is going to need some TLC as it's pretty ineffecie
 I have define the following parameters for the model, which will be further described in each section below.
 
 % latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Tue Mar 31 15:51:10 2020
+% Tue Mar 31 16:32:07 2020
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlrrrrrrrrr}
