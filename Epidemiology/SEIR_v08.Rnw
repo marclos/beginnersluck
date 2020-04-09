@@ -5,6 +5,24 @@
 
 <<setup, echo=FALSE>>=
 library(xtable)
+library(deSolve)
+library(tidyverse)
+library(magrittr)
+library(lubridate)
+library(stringr)
+library(tibble)
+library(broom)
+library(ggplot2)
+library(gt)
+library(knitr)
+library(devtools)
+library(DiagrammeR)
+library(parallel)
+library(foreach)
+library(tictoc)
+suppressMessages(library(EpiModel))
+library(incidence)
+library(earlyR)
 @
 
 \title{Epidemiology -- Human, Disease Vectors, Water Borne Illnesses}
@@ -27,10 +45,14 @@ The contagious nature of diseases has been appreciated for hundreds, if not thou
 
 
 \subsection{Value of Social Distancing}
+
+%\url{https://tinu.shinyapps.io/Flatten_the_Curve/}
 The idea is to reduce person-to-person contact to make spreading the disease less likely. The effects of this are often illustrated in images such as those in the chart below, where the red plot is flattened to spread out the disease as much as possible. This helps to ensure that there are sufficient resources available for a sick population, which will help improve survival rates.
 
 Flattening the curve to keep infection manageable (Source: Fast.ai).
 How do we determine the value of such distancing strategies and model this spread?
+
+\url{https://rviews.rstudio.com/2020/03/19/simulating-covid-19-interventions-with-r/}
 
 \subsection{Modeling Disease -- SIR}
 
@@ -142,7 +164,6 @@ $\beta$ is derived by assuming that the basic reproduction number, $R_0=\frac{\b
 
 <<>>=
 
-library(deSolve)
 sir <- function(time, state, parameters) {
   with(as.list(c(state, parameters)), {
     dS <- -beta * S * I
@@ -282,7 +303,6 @@ The key value governing the time evolution of these equations is the so-called e
  R_0= ?
 \end{equation}
 
-<<>>=
 <<>>=
 # Function to return derivatives of SEIR model
 seir_ode<-function(t,Y,par){
@@ -740,5 +760,427 @@ where N = S + E + I + R is the total population.
 \includegraphics[width=1\textwidth]{SEIRS.png}
 \caption{SEIRS}
 \end{figure}
+
+
+\section{Using Package EpiModel}
+
+%from \url{https://timchurches.github.io/blog/posts/2020-03-10-modelling-the-effects-of-public-health-interventions-on-covid-19-transmission-part-1/}
+
+dynamic, continuous-time, compartment models (DCMs), 
+
+stochastic, discrete-time, individual contact models (ICMs)
+
+stochastic, discrete-time, network models
+
+
+
+stochastic, discrete-time, individual contact models (ICMs)
+
+<<>>=
+control <- control.icm(type = "SIR", nsteps = 100, nsims = 10)
+init <- init.icm(s.num = 997, i.num = 3, r.num = 0)
+
+param <- param.icm(inf.prob = 0.05, act.rate = 10, rec.rate = 1/20, 
+    a.rate = (10.5/365)/1000, ds.rate = (7/365)/1000, di.rate = (14/365)/1000, 
+    dr.rate = (7/365)/1000)
+sim <- icm(param, init, control)
+
+sim
+@
+
+
+<<>>=
+plot(sim)
+@
+
+
+<<>>=
+plot(sim, y = "si.flow", mean.col = "red", qnts.col = "red")
+@
+
+<<>>=
+run_sir_sim <- function(inf_prob, act_rate, pop_size = 1000, 
+    i_num = 3, n_steps = 365, n_sims = 10, si_mean = 7.5, si_sd = 3.4) {
+    
+    # set up simulation parameters
+    param <- param.icm(inf.prob = inf_prob, act.rate = act_rate, 
+        rec.rate = 1/20, a.rate = (10.5/365)/1000, ds.rate = (7/365)/1000, 
+        di.rate = (14/365)/1000, dr.rate = (7/365)/1000)
+    init <- init.icm(s.num = pop_size - i_num, i.num = i_num, 
+        r.num = 0)
+    control <- control.icm(type = "SIR", nsteps = n_steps, nsims = n_sims)
+    
+    # run the simulation
+    sim <- icm(param, init, control)
+    
+    # collect the relevant results in a data frame
+    incidence_rates <- as.data.frame(sim, out = "mean") %>% select(time, 
+        si.flow, i.num) %>% mutate(act_rate = act_rate, inf_prob = inf_prob, 
+        total_cases = sum(si.flow), max_prev = max(i.num, na.rm = TRUE))
+    
+    # use the data frame of results to create an incidence()
+    # object
+    local_case_dates <- incidence_rates %>% filter(time <= 300, 
+        act.rate == act_rate, inf.prob == inf_prob) %>% select(time, 
+        si.flow) %>% uncount(si.flow) %>% pull(time)
+    
+    if (length(local_case_dates) > 0) {
+        
+        local_cases <- local_case_dates %>% incidence(.)
+        
+        # find the incidence peak from the incidence object
+        peaky_blinder <- find_peak(local_cases)
+        
+        # recreate the incidence object using data only up to the
+        # peak
+        local_growth_phase_case_dates <- incidence_rates %>% 
+            filter(time <= peaky_blinder) %>% select(time, si.flow) %>% 
+            uncount(si.flow) %>% pull(time)
+        
+        local_growth_phase_cases <- local_growth_phase_case_dates %>% 
+            incidence(., last_date = peaky_blinder)
+        
+        # get a MLE estimate of the basic reproduction number, R0
+        res <- get_R(local_growth_phase_cases, si_mean = si_mean, 
+            si_sd = si_sd)
+        
+        # add that as a column to the data frame of results
+        incidence_rates <- incidence_rates %>% mutate(mle_R0 = res$R_ml)
+    } else {
+        # can't calculate R0 so just set to NA
+        incidence_rates <- incidence_rates %>% mutate(mle_R0 = NA)
+    }
+    # return the data frame (which has just one row)
+    return(incidence_rates)
+}  # end function definition
+@
+
+
+<<>>=
+library(earlyR)
+# set up an empty data frame to which to append results from
+# each simulation
+sims_incidence_rates <- tibble(time = integer(0), si.flow = numeric(0), 
+    i.num = numeric(0), act_rate = numeric(0), inf_prob = numeric(0), 
+    total_cases = numeric(0), max_prev = numeric(0), mle_R0 = numeric(0))
+
+# the parameters to step through
+act.rates <- c(10, 5, 2)
+inf.probs <- c(0.05, 0.025, 0.01)
+
+# loop through the parameter space
+for (act.rate in act.rates) {
+    for (inf.prob in inf.probs) {
+        sims_incidence_rates <- sims_incidence_rates %>% bind_rows(run_sir_sim(inf.prob, 
+            act.rate))
+    }
+}
+@
+
+<<>>=
+# create facet columns as descending ordered factors
+sims_incidence_rates <- sims_incidence_rates %>% mutate(act_rate_facet_label = paste(act_rate, 
+    "exposures per day"), inf_prob_facet_label = paste("Probability of infection\nat each exposure:", 
+    inf_prob)) %>% arrange(desc(act_rate)) %>% mutate_at(vars(act_rate_facet_label), 
+    funs(factor(., levels = unique(.)))) %>% arrange(desc(inf_prob)) %>% 
+    mutate_at(vars(inf_prob_facet_label), funs(factor(., levels = unique(.)))) %>% 
+    arrange(desc(act_rate), desc(inf_prob), time)
+
+# add annotation text for each facet
+sims_incidence_rates_facet_annotations <- sims_incidence_rates %>% 
+    mutate(label = paste("R0 =", format(mle_R0, digits = 3), 
+        "\n", round(100 * total_cases/1000, digits = 0), "% of population infected")) %>% 
+    select(inf_prob_facet_label, act_rate_facet_label, label) %>% 
+    distinct()
+
+sims_incidence_rates %>% filter(time <= 365) %>% ggplot(aes(x = time, 
+    y = si.flow)) + geom_line(colour = "blue", size = 1.5) + 
+    facet_grid(inf_prob_facet_label ~ act_rate_facet_label) + 
+    geom_text(data = sims_incidence_rates_facet_annotations, 
+        mapping = aes(x = 50, y = 0.8 * max(sims_incidence_rates$si.flow, 
+            na.rm = TRUE), label = label), parse = FALSE, hjust = 0, 
+        vjust = 0, size = 3) + labs(x = "Days since start of epidemic", 
+    y = "New cases per day", title = "Modelling of new cases of COVID-19 per day: incidence rate", 
+    subtitle = paste("with varying levels of social mixing (exposures per day)", 
+        "and probabilities of infection at each exposure")) + 
+    theme(legend.position = "top", strip.text = element_text(size = 14))
+@
+
+<<>>=
+library(ggridges)
+
+# create one column for both intervention parameters
+sims_incidence_rates <- sims_incidence_rates %>% mutate(intervention_level_label = paste(act_rate, 
+    "exp/day,", inf_prob * 100, "% inf risk/exp")) %>% arrange(max_prev, 
+    time) %>% mutate_at(vars(intervention_level_label), funs(factor(., 
+    levels = unique(.), ordered = TRUE)))
+
+sims_incidence_rates %>% filter(time <= 365) %>% ggplot(aes(x = time, 
+    y = intervention_level_label, height = i.num, fill = intervention_level_label)) + 
+    geom_density_ridges(stat = "identity", show.legend = FALSE) + 
+    labs(x = "Days since start of epidemic", y = "Prevalent (current number of active) cases", 
+        title = "Modelling of COVID-19 transmission in 1,000 simulated people", 
+        subtitle = paste("with varying levels of social mixing (exposures per day)", 
+            "and risk of infection at each exposure,\n", "ordered by descending maximum number of prevalent cases per day")) + 
+    theme_minimal() + theme(legend.position = "top", strip.text = element_text(size = 12)) + 
+    scale_fill_brewer(type = "seq", palette = "Oranges")
+
+@
+
+\section{SEIQHRF --Wow, now we can model stuff!}
+
+%this is copied from \url{https://timchurches.github.io/blog/posts/2020-03-18-modelling-the-effects-of-public-health-interventions-on-covid-19-transmission-part-2/}
+
+<<>>=
+tic("Time to complete")
+@
+
+<<>>=
+
+source_files <- c("_icm.mod.init.seiqhrf.R", "_icm.mod.status.seiqhrf.R", 
+    "_icm.mod.vital.seiqhrf.R", "_icm.control.seiqhrf.R", "_icm.utils.seiqhrf.R", 
+    "_icm.saveout.seiqhrf.R", "_icm.icm.seiqhrf.R")
+
+src_path <- paste0("./_posts/2020-03-18-modelling-the-effects-of-public-health-", 
+    "interventions-on-covid-19-transmission-part-2/")
+
+gist_url <- "https://gist.github.com/timchurches/92073d0ea75cfbd387f91f7c6e624bd7"
+
+local_source <- FALSE
+
+for (source_file in source_files) {
+    if (local_source) {
+        source(paste(src_path, source_file, sep = ""))
+    } else {
+        source_gist(gist_url, filename = source_file)
+    }
+}
+
+@
+
+
+<<>>=
+# function to set-up and run the baseline simulations
+simulate <- function(# control.icm params
+                     type = "SEIQHRF", 
+                     nsteps = 366, 
+                     nsims = 8,
+                     ncores = 4,
+                     prog.rand = FALSE,
+                     rec.rand = FALSE,
+                     fat.rand = TRUE,
+                     quar.rand = FALSE,
+                     hosp.rand = FALSE,
+                     disch.rand = TRUE,
+                     infection.FUN = infection.seiqhrf.icm,
+                     recovery.FUN = progress.seiqhrf.icm,
+                     departures.FUN = departures.seiqhrf.icm,
+                     arrivals.FUN = arrivals.icm,
+                     get_prev.FUN = get_prev.seiqhrf.icm,
+                     # init.icm params
+                     s.num = 9997,
+                     e.num=0,
+                     i.num = 3,
+                     q.num=0,
+                     h.num=0,
+                     r.num = 0,
+                     f.num = 0,
+                     # param.icm params
+                     inf.prob.e = 0.02, 
+                     act.rate.e = 10,
+                     inf.prob.i = 0.05, 
+                     act.rate.i = 10,
+                     inf.prob.q = 0.02, 
+                     act.rate.q = 2.5,                    
+                     quar.rate = 1/30, 
+                     hosp.rate = 1/100,
+                     disch.rate = 1/15,
+                     prog.rate = 1/10,
+                     prog.dist.scale = 5,
+                     prog.dist.shape = 1.5,
+                     rec.rate = 1/20,
+                     rec.dist.scale = 35,
+                     rec.dist.shape = 1.5,
+                     fat.rate.base = 1/50,
+                     hosp.cap = 40,
+                     fat.rate.overcap = 1/25,
+                     fat.tcoeff = 0.5,
+                     vital = TRUE,
+                     a.rate = (10.5/365)/1000, 
+                     a.prop.e = 0.01,
+                     a.prop.i = 0.001,
+                     a.prop.q = 0.01,
+                     ds.rate = (7/365)/1000, 
+                     de.rate = (7/365)/1000, 
+                     di.rate = (7/365)/1000,
+                     dq.rate = (7/365)/1000,
+                     dh.rate = (20/365)/1000,
+                     dr.rate = (7/365)/1000,
+                     out="mean"
+                    ) {
+
+  control <- control.icm(type = type, 
+                         nsteps = nsteps, 
+                         nsims = nsims,
+                         ncores = ncores,
+                         prog.rand = prog.rand,
+                         rec.rand = rec.rand,
+                         infection.FUN = infection.FUN,
+                         recovery.FUN = recovery.FUN,
+                         arrivals.FUN = arrivals.FUN,
+                         departures.FUN = departures.FUN,
+                         get_prev.FUN = get_prev.FUN)
+
+  init <- init.icm(s.num = s.num,
+                   e.num = e.num,
+                   i.num = i.num,
+                   q.num = q.num,
+                   h.num = h.num,
+                   r.num = r.num,
+                   f.num = f.num)
+
+  param <-  param.icm(inf.prob.e = inf.prob.e, 
+                      act.rate.e = act.rate.e,
+                      inf.prob.i = inf.prob.i, 
+                      act.rate.i = act.rate.i,
+                      inf.prob.q = inf.prob.q, 
+                      act.rate.q = act.rate.q,                    
+                      quar.rate = quar.rate,
+                      hosp.rate = hosp.rate,
+                      disch.rate = disch.rate,
+                      prog.rate = prog.rate,
+                      prog.dist.scale = prog.dist.scale,
+                      prog.dist.shape = prog.dist.shape,
+                      rec.rate = rec.rate,
+                      rec.dist.scale = rec.dist.scale,
+                      rec.dist.shape = rec.dist.shape,
+                      fat.rate.base = fat.rate.base,
+                      hosp.cap = hosp.cap,
+                      fat.rate.overcap = fat.rate.overcap,
+                      fat.tcoeff = fat.tcoeff,
+                      vital = vital,
+                      a.rate = a.rate, 
+                      a.prop.e = a.prop.e,
+                      a.prop.i = a.prop.i,
+                      a.prop.q = a.prop.q,
+                      ds.rate = ds.rate, 
+                      de.rate = de.rate, 
+                      di.rate = di.rate,
+                      dq.rate = dq.rate,
+                      dh.rate = dh.rate,
+                      dr.rate = dr.rate)
+
+  sim <- icm.seiqhrf(param, init, control)
+  sim_df <- as.data.frame(sim, out=out)
+
+  return(list(sim=sim, df=sim_df))
+}
+
+
+@
+
+<<>>=
+baseline_sim <- simulate(ncores = 4)
+@
+
+
+<<>>=
+# define a function to extract timings and assemble a data
+# frame
+get_times <- function(simulate_results) {
+    
+    sim <- simulate_results$sim
+    
+    for (s in 1:sim$control$nsims) {
+        if (s == 1) {
+            times <- sim$times[[paste("sim", s, sep = "")]]
+            times <- times %>% mutate(s = s)
+        } else {
+            times <- times %>% bind_rows(sim$times[[paste("sim", 
+                s, sep = "")]] %>% mutate(s = s))
+        }
+    }
+    
+    times <- times %>% mutate(infTime = ifelse(infTime < 0, -5, 
+        infTime), expTime = ifelse(expTime < 0, -5, expTime)) %>% 
+        mutate(incubation_period = infTime - expTime, illness_duration = recovTime - 
+            expTime, illness_duration_hosp = dischTime - expTime, 
+            hosp_los = dischTime - hospTime, quarantine_delay = quarTime - 
+                infTime, survival_time = fatTime - infTime) %>% 
+        select(s, incubation_period, quarantine_delay, illness_duration, 
+            illness_duration_hosp, hosp_los, survival_time) %>% 
+        pivot_longer(-s, names_to = "period_type", values_to = "duration") %>% 
+        mutate(period_type = factor(period_type, levels = c("incubation_period", 
+            "quarantine_delay", "illness_duration", "illness_duration_hosp", 
+            "hosp_los", "survival_time"), labels = c("Incubation period", 
+            "Delay entering isolation", "Illness duration", "Illness duration (hosp)", 
+            "Hospital care required duration", "Survival time of case fatalities"), 
+            ordered = TRUE))
+    return(times)
+}
+@
+
+<<>>=
+times <- get_times(baseline_sim)
+@
+
+<<>>=
+times %>% filter(duration <= 30) %>% ggplot(aes(x = duration)) + 
+    geom_bar() + facet_grid(period_type ~ ., scales = "free_y") + 
+    labs(title = "Duration frequency distributions", subtitle = "Baseline simulation")
+@
+
+
+<<>>=
+baseline_plot_df <- baseline_sim$df %>% # use only the prevalence columns
+select(time, s.num, e.num, i.num, q.num, h.num, r.num, f.num) %>% 
+    # examine only the first 100 days since it is all over by
+# then using the default parameters
+filter(time <= 100) %>% pivot_longer(-c(time), names_to = "compartment", 
+    values_to = "count")
+
+# define a standard set of colours to represent compartments
+compcols <- c(s.num = "yellow", e.num = "orange", i.num = "red", 
+    q.num = "cyan", h.num = "magenta", r.num = "lightgreen", 
+    f.num = "black")
+complabels <- c(s.num = "Susceptible", e.num = "Infected/asymptomatic", 
+    i.num = "Infected/infectious", q.num = "Self-isolated", h.num = "Requires hospitalisation", 
+    r.num = "Recovered", f.num = "Case fatality")
+
+baseline_plot_df %>% ggplot(aes(x = time, y = count, colour = compartment)) + 
+    geom_line(size = 2, alpha = 0.7) + scale_colour_manual(values = compcols, 
+    labels = complabels) + theme_dark() + labs(title = "Baseline simulation", 
+    x = "Days since beginning of epidemic", y = "Prevalence (persons)")
+
+@
+
+<<>>=
+baseline_plot_df %>% filter(compartment %in% c("e.num", "i.num", 
+    "q.num", "h.num", "f.num")) %>% ggplot(aes(x = time, y = count, 
+    colour = compartment)) + geom_line(size = 2, alpha = 0.7) + 
+    scale_colour_manual(values = compcols, labels = complabels) + 
+    theme_dark() + labs(title = "Baseline simulation", x = "Days since beginning of epidemic", 
+    y = "Prevalence (persons)")
+
+@
+
+<<>>=
+# get the S-> E compartment flow, which is our daily
+# incidence rate
+incidence_counts <- baseline_sim$df %>% select(time, se.flow)
+# uncount them
+incident_case_dates <- incidence_counts %>% uncount(se.flow) %>% 
+    pull(time)
+# convert to an incidence object
+incidence_all <- incident_case_dates %>% incidence(.)
+
+# plot the incidence curve
+plot(incidence_all)
+
+@
+
+<<>>=
+toc()
+@
 
 \end{document}

@@ -53,7 +53,36 @@
 \usepackage{amsmath}
 \usepackage{physics}
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# -- Attaching packages --------------------------------------- tidyverse 1.3.0 --}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# v ggplot2 3.3.0\ \ \ \  v purrr\ \  0.3.3\\\#\# v tibble\ \ 3.0.0\ \ \ \  v dplyr\ \  0.8.5\\\#\# v tidyr\ \  1.0.0\ \ \ \  v stringr 1.4.0\\\#\# v readr\ \  1.3.1\ \ \ \  v forcats 0.4.0}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# -- Conflicts ------------------------------------------ tidyverse\_conflicts() --\\\#\# x dplyr::filter() masks stats::filter()\\\#\# x dplyr::lag()\ \ \ \ masks stats::lag()}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'magrittr'}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following object is masked from 'package:purrr':\\\#\# \\\#\#\ \ \ \  set\_names}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following object is masked from 'package:tidyr':\\\#\# \\\#\#\ \ \ \  extract}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'lubridate'}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following object is masked from 'package:base':\\\#\# \\\#\#\ \ \ \  date}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: usethis}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'foreach'}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following objects are masked from 'package:purrr':\\\#\# \\\#\#\ \ \ \  accumulate, when}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'incidence'}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following object is masked from 'package:broom':\\\#\# \\\#\#\ \ \ \  bootstrap}}\end{kframe}
+\end{knitrout}
 
 \title{Epidemiology -- Human, Disease Vectors, Water Borne Illnesses}
 \author{Marc Los Huertos}
@@ -75,10 +104,14 @@ The contagious nature of diseases has been appreciated for hundreds, if not thou
 
 
 \subsection{Value of Social Distancing}
+
+%\url{https://tinu.shinyapps.io/Flatten_the_Curve/}
 The idea is to reduce person-to-person contact to make spreading the disease less likely. The effects of this are often illustrated in images such as those in the chart below, where the red plot is flattened to spread out the disease as much as possible. This helps to ensure that there are sufficient resources available for a sick population, which will help improve survival rates.
 
 Flattening the curve to keep infection manageable (Source: Fast.ai).
 How do we determine the value of such distancing strategies and model this spread?
+
+\url{https://rviews.rstudio.com/2020/03/19/simulating-covid-19-interventions-with-r/}
 
 \subsection{Modeling Disease -- SIR}
 
@@ -191,7 +224,6 @@ $\beta$ is derived by assuming that the basic reproduction number, $R_0=\frac{\b
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{library}\hlstd{(deSolve)}
 \hlstd{sir} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{time}\hlstd{,} \hlkwc{state}\hlstd{,} \hlkwc{parameters}\hlstd{) \{}
   \hlkwd{with}\hlstd{(}\hlkwd{as.list}\hlstd{(}\hlkwd{c}\hlstd{(state, parameters)), \{}
     \hlstd{dS} \hlkwb{<-} \hlopt{-}\hlstd{beta} \hlopt{*} \hlstd{S} \hlopt{*} \hlstd{I}
@@ -331,7 +363,6 @@ The key value governing the time evolution of these equations is the so-called e
  R_0= ?
 \end{equation}
 
-
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -376,7 +407,7 @@ The key value governing the time evolution of these equations is the so-called e
 \hlkwd{legend}\hlstd{(}\hlnum{300}\hlstd{,}\hlnum{0.7}\hlstd{,}\hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"S"}\hlstd{,}\hlstr{"E"}\hlstd{,}\hlstr{"I"}\hlstd{,}\hlstr{"R"}\hlstd{),}\hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"blue"}\hlstd{,}\hlstr{"orange"}\hlstd{,}\hlstr{"red"}\hlstd{,}\hlstr{"green"}\hlstd{),} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{0.8}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
 
 \end{knitrout}
 
@@ -401,7 +432,7 @@ I'm not a programmer, so this is going to need some TLC as it's pretty ineffecie
 I have define the following parameters for the model, which will be further described in each section below.
 
 % latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Tue Mar 31 16:32:07 2020
+% Thu Apr  2 18:11:02 2020
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlrrrrrrrrr}
@@ -762,5 +793,549 @@ where N = S + E + I + R is the total population.
 \includegraphics[width=1\textwidth]{SEIRS.png}
 \caption{SEIRS}
 \end{figure}
+
+
+\section{Using Package EpiModel}
+
+%from \url{https://timchurches.github.io/blog/posts/2020-03-10-modelling-the-effects-of-public-health-interventions-on-covid-19-transmission-part-1/}
+
+dynamic, continuous-time, compartment models (DCMs), 
+
+stochastic, discrete-time, individual contact models (ICMs)
+
+stochastic, discrete-time, network models
+
+
+
+stochastic, discrete-time, individual contact models (ICMs)
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{control} \hlkwb{<-} \hlkwd{control.icm}\hlstd{(}\hlkwc{type} \hlstd{=} \hlstr{"SIR"}\hlstd{,} \hlkwc{nsteps} \hlstd{=} \hlnum{100}\hlstd{,} \hlkwc{nsims} \hlstd{=} \hlnum{10}\hlstd{)}
+\hlstd{init} \hlkwb{<-} \hlkwd{init.icm}\hlstd{(}\hlkwc{s.num} \hlstd{=} \hlnum{997}\hlstd{,} \hlkwc{i.num} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{r.num} \hlstd{=} \hlnum{0}\hlstd{)}
+
+\hlstd{param} \hlkwb{<-} \hlkwd{param.icm}\hlstd{(}\hlkwc{inf.prob} \hlstd{=} \hlnum{0.05}\hlstd{,} \hlkwc{act.rate} \hlstd{=} \hlnum{10}\hlstd{,} \hlkwc{rec.rate} \hlstd{=} \hlnum{1}\hlopt{/}\hlnum{20}\hlstd{,}
+    \hlkwc{a.rate} \hlstd{= (}\hlnum{10.5}\hlopt{/}\hlnum{365}\hlstd{)}\hlopt{/}\hlnum{1000}\hlstd{,} \hlkwc{ds.rate} \hlstd{= (}\hlnum{7}\hlopt{/}\hlnum{365}\hlstd{)}\hlopt{/}\hlnum{1000}\hlstd{,} \hlkwc{di.rate} \hlstd{= (}\hlnum{14}\hlopt{/}\hlnum{365}\hlstd{)}\hlopt{/}\hlnum{1000}\hlstd{,}
+    \hlkwc{dr.rate} \hlstd{= (}\hlnum{7}\hlopt{/}\hlnum{365}\hlstd{)}\hlopt{/}\hlnum{1000}\hlstd{)}
+\hlstd{sim} \hlkwb{<-} \hlkwd{icm}\hlstd{(param, init, control)}
+
+\hlstd{sim}
+\end{alltt}
+\begin{verbatim}
+## EpiModel Simulation
+## =======================
+## Model class: icm
+## 
+## Simulation Summary
+## -----------------------
+## Model type: SIR
+## No. simulations: 10
+## No. time steps: 100
+## No. groups: 1
+## 
+## Model Parameters
+## -----------------------
+## inf.prob = 0.05
+## act.rate = 10
+## rec.rate = 0.05
+## a.rate = 2.876712e-05
+## ds.rate = 1.917808e-05
+## di.rate = 3.835616e-05
+## dr.rate = 1.917808e-05
+## 
+## Model Output
+## -----------------------
+## Variables: s.num i.num num r.num si.flow ir.flow ds.flow 
+## di.flow dr.flow a.flow
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(sim)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-12-1} 
+
+\end{knitrout}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(sim,} \hlkwc{y} \hlstd{=} \hlstr{"si.flow"}\hlstd{,} \hlkwc{mean.col} \hlstd{=} \hlstr{"red"}\hlstd{,} \hlkwc{qnts.col} \hlstd{=} \hlstr{"red"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-13-1} 
+
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{run_sir_sim} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{inf_prob}\hlstd{,} \hlkwc{act_rate}\hlstd{,} \hlkwc{pop_size} \hlstd{=} \hlnum{1000}\hlstd{,}
+    \hlkwc{i_num} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{n_steps} \hlstd{=} \hlnum{365}\hlstd{,} \hlkwc{n_sims} \hlstd{=} \hlnum{10}\hlstd{,} \hlkwc{si_mean} \hlstd{=} \hlnum{7.5}\hlstd{,} \hlkwc{si_sd} \hlstd{=} \hlnum{3.4}\hlstd{) \{}
+
+    \hlcom{# set up simulation parameters}
+    \hlstd{param} \hlkwb{<-} \hlkwd{param.icm}\hlstd{(}\hlkwc{inf.prob} \hlstd{= inf_prob,} \hlkwc{act.rate} \hlstd{= act_rate,}
+        \hlkwc{rec.rate} \hlstd{=} \hlnum{1}\hlopt{/}\hlnum{20}\hlstd{,} \hlkwc{a.rate} \hlstd{= (}\hlnum{10.5}\hlopt{/}\hlnum{365}\hlstd{)}\hlopt{/}\hlnum{1000}\hlstd{,} \hlkwc{ds.rate} \hlstd{= (}\hlnum{7}\hlopt{/}\hlnum{365}\hlstd{)}\hlopt{/}\hlnum{1000}\hlstd{,}
+        \hlkwc{di.rate} \hlstd{= (}\hlnum{14}\hlopt{/}\hlnum{365}\hlstd{)}\hlopt{/}\hlnum{1000}\hlstd{,} \hlkwc{dr.rate} \hlstd{= (}\hlnum{7}\hlopt{/}\hlnum{365}\hlstd{)}\hlopt{/}\hlnum{1000}\hlstd{)}
+    \hlstd{init} \hlkwb{<-} \hlkwd{init.icm}\hlstd{(}\hlkwc{s.num} \hlstd{= pop_size} \hlopt{-} \hlstd{i_num,} \hlkwc{i.num} \hlstd{= i_num,}
+        \hlkwc{r.num} \hlstd{=} \hlnum{0}\hlstd{)}
+    \hlstd{control} \hlkwb{<-} \hlkwd{control.icm}\hlstd{(}\hlkwc{type} \hlstd{=} \hlstr{"SIR"}\hlstd{,} \hlkwc{nsteps} \hlstd{= n_steps,} \hlkwc{nsims} \hlstd{= n_sims)}
+
+    \hlcom{# run the simulation}
+    \hlstd{sim} \hlkwb{<-} \hlkwd{icm}\hlstd{(param, init, control)}
+
+    \hlcom{# collect the relevant results in a data frame}
+    \hlstd{incidence_rates} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(sim,} \hlkwc{out} \hlstd{=} \hlstr{"mean"}\hlstd{)} \hlopt{%>%} \hlkwd{select}\hlstd{(time,}
+        \hlstd{si.flow, i.num)} \hlopt{%>%} \hlkwd{mutate}\hlstd{(}\hlkwc{act_rate} \hlstd{= act_rate,} \hlkwc{inf_prob} \hlstd{= inf_prob,}
+        \hlkwc{total_cases} \hlstd{=} \hlkwd{sum}\hlstd{(si.flow),} \hlkwc{max_prev} \hlstd{=} \hlkwd{max}\hlstd{(i.num,} \hlkwc{na.rm} \hlstd{=} \hlnum{TRUE}\hlstd{))}
+
+    \hlcom{# use the data frame of results to create an incidence()}
+    \hlcom{# object}
+    \hlstd{local_case_dates} \hlkwb{<-} \hlstd{incidence_rates} \hlopt{%>%} \hlkwd{filter}\hlstd{(time} \hlopt{<=} \hlnum{300}\hlstd{,}
+        \hlstd{act.rate} \hlopt{==} \hlstd{act_rate, inf.prob} \hlopt{==} \hlstd{inf_prob)} \hlopt{%>%} \hlkwd{select}\hlstd{(time,}
+        \hlstd{si.flow)} \hlopt{%>%} \hlkwd{uncount}\hlstd{(si.flow)} \hlopt{%>%} \hlkwd{pull}\hlstd{(time)}
+
+    \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(local_case_dates)} \hlopt{>} \hlnum{0}\hlstd{) \{}
+
+        \hlstd{local_cases} \hlkwb{<-} \hlstd{local_case_dates} \hlopt{%>%} \hlkwd{incidence}\hlstd{(.)}
+
+        \hlcom{# find the incidence peak from the incidence object}
+        \hlstd{peaky_blinder} \hlkwb{<-} \hlkwd{find_peak}\hlstd{(local_cases)}
+
+        \hlcom{# recreate the incidence object using data only up to the}
+        \hlcom{# peak}
+        \hlstd{local_growth_phase_case_dates} \hlkwb{<-} \hlstd{incidence_rates} \hlopt{%>%}
+            \hlkwd{filter}\hlstd{(time} \hlopt{<=} \hlstd{peaky_blinder)} \hlopt{%>%} \hlkwd{select}\hlstd{(time, si.flow)} \hlopt{%>%}
+            \hlkwd{uncount}\hlstd{(si.flow)} \hlopt{%>%} \hlkwd{pull}\hlstd{(time)}
+
+        \hlstd{local_growth_phase_cases} \hlkwb{<-} \hlstd{local_growth_phase_case_dates} \hlopt{%>%}
+            \hlkwd{incidence}\hlstd{(.,} \hlkwc{last_date} \hlstd{= peaky_blinder)}
+
+        \hlcom{# get a MLE estimate of the basic reproduction number, R0}
+        \hlstd{res} \hlkwb{<-} \hlkwd{get_R}\hlstd{(local_growth_phase_cases,} \hlkwc{si_mean} \hlstd{= si_mean,}
+            \hlkwc{si_sd} \hlstd{= si_sd)}
+
+        \hlcom{# add that as a column to the data frame of results}
+        \hlstd{incidence_rates} \hlkwb{<-} \hlstd{incidence_rates} \hlopt{%>%} \hlkwd{mutate}\hlstd{(}\hlkwc{mle_R0} \hlstd{= res}\hlopt{$}\hlstd{R_ml)}
+    \hlstd{\}} \hlkwa{else} \hlstd{\{}
+        \hlcom{# can't calculate R0 so just set to NA}
+        \hlstd{incidence_rates} \hlkwb{<-} \hlstd{incidence_rates} \hlopt{%>%} \hlkwd{mutate}\hlstd{(}\hlkwc{mle_R0} \hlstd{=} \hlnum{NA}\hlstd{)}
+    \hlstd{\}}
+    \hlcom{# return the data frame (which has just one row)}
+    \hlkwd{return}\hlstd{(incidence_rates)}
+\hlstd{\}}  \hlcom{# end function definition}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(earlyR)}
+\hlcom{# set up an empty data frame to which to append results from}
+\hlcom{# each simulation}
+\hlstd{sims_incidence_rates} \hlkwb{<-} \hlkwd{tibble}\hlstd{(}\hlkwc{time} \hlstd{=} \hlkwd{integer}\hlstd{(}\hlnum{0}\hlstd{),} \hlkwc{si.flow} \hlstd{=} \hlkwd{numeric}\hlstd{(}\hlnum{0}\hlstd{),}
+    \hlkwc{i.num} \hlstd{=} \hlkwd{numeric}\hlstd{(}\hlnum{0}\hlstd{),} \hlkwc{act_rate} \hlstd{=} \hlkwd{numeric}\hlstd{(}\hlnum{0}\hlstd{),} \hlkwc{inf_prob} \hlstd{=} \hlkwd{numeric}\hlstd{(}\hlnum{0}\hlstd{),}
+    \hlkwc{total_cases} \hlstd{=} \hlkwd{numeric}\hlstd{(}\hlnum{0}\hlstd{),} \hlkwc{max_prev} \hlstd{=} \hlkwd{numeric}\hlstd{(}\hlnum{0}\hlstd{),} \hlkwc{mle_R0} \hlstd{=} \hlkwd{numeric}\hlstd{(}\hlnum{0}\hlstd{))}
+
+\hlcom{# the parameters to step through}
+\hlstd{act.rates} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{10}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{2}\hlstd{)}
+\hlstd{inf.probs} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{0.05}\hlstd{,} \hlnum{0.025}\hlstd{,} \hlnum{0.01}\hlstd{)}
+
+\hlcom{# loop through the parameter space}
+\hlkwa{for} \hlstd{(act.rate} \hlkwa{in} \hlstd{act.rates) \{}
+    \hlkwa{for} \hlstd{(inf.prob} \hlkwa{in} \hlstd{inf.probs) \{}
+        \hlstd{sims_incidence_rates} \hlkwb{<-} \hlstd{sims_incidence_rates} \hlopt{%>%} \hlkwd{bind_rows}\hlstd{(}\hlkwd{run_sir_sim}\hlstd{(inf.prob,}
+            \hlstd{act.rate))}
+    \hlstd{\}}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# create facet columns as descending ordered factors}
+\hlstd{sims_incidence_rates} \hlkwb{<-} \hlstd{sims_incidence_rates} \hlopt{%>%} \hlkwd{mutate}\hlstd{(}\hlkwc{act_rate_facet_label} \hlstd{=} \hlkwd{paste}\hlstd{(act_rate,}
+    \hlstr{"exposures per day"}\hlstd{),} \hlkwc{inf_prob_facet_label} \hlstd{=} \hlkwd{paste}\hlstd{(}\hlstr{"Probability of infection\textbackslash{}nat each exposure:"}\hlstd{,}
+    \hlstd{inf_prob))} \hlopt{%>%} \hlkwd{arrange}\hlstd{(}\hlkwd{desc}\hlstd{(act_rate))} \hlopt{%>%} \hlkwd{mutate_at}\hlstd{(}\hlkwd{vars}\hlstd{(act_rate_facet_label),}
+    \hlkwd{funs}\hlstd{(}\hlkwd{factor}\hlstd{(.,} \hlkwc{levels} \hlstd{=} \hlkwd{unique}\hlstd{(.))))} \hlopt{%>%} \hlkwd{arrange}\hlstd{(}\hlkwd{desc}\hlstd{(inf_prob))} \hlopt{%>%}
+    \hlkwd{mutate_at}\hlstd{(}\hlkwd{vars}\hlstd{(inf_prob_facet_label),} \hlkwd{funs}\hlstd{(}\hlkwd{factor}\hlstd{(.,} \hlkwc{levels} \hlstd{=} \hlkwd{unique}\hlstd{(.))))} \hlopt{%>%}
+    \hlkwd{arrange}\hlstd{(}\hlkwd{desc}\hlstd{(act_rate),} \hlkwd{desc}\hlstd{(inf_prob), time)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: funs() is soft deprecated as of dplyr 0.8.0\\\#\# Please use a list of either functions or lambdas: \\\#\# \\\#\#\ \  \# Simple named list: \\\#\#\ \  list(mean = mean, median = median)\\\#\# \\\#\#\ \  \# Auto named with `tibble::lst()`: \\\#\#\ \  tibble::lst(mean, median)\\\#\# \\\#\#\ \  \# Using lambdas\\\#\#\ \  list(\textasciitilde{} mean(., trim = .2), \textasciitilde{} median(., na.rm = TRUE))\\\#\# This warning is displayed once per session.}}\begin{alltt}
+\hlcom{# add annotation text for each facet}
+\hlstd{sims_incidence_rates_facet_annotations} \hlkwb{<-} \hlstd{sims_incidence_rates} \hlopt{%>%}
+    \hlkwd{mutate}\hlstd{(}\hlkwc{label} \hlstd{=} \hlkwd{paste}\hlstd{(}\hlstr{"R0 ="}\hlstd{,} \hlkwd{format}\hlstd{(mle_R0,} \hlkwc{digits} \hlstd{=} \hlnum{3}\hlstd{),}
+        \hlstr{"\textbackslash{}n"}\hlstd{,} \hlkwd{round}\hlstd{(}\hlnum{100} \hlopt{*} \hlstd{total_cases}\hlopt{/}\hlnum{1000}\hlstd{,} \hlkwc{digits} \hlstd{=} \hlnum{0}\hlstd{),} \hlstr{"% of population infected"}\hlstd{))} \hlopt{%>%}
+    \hlkwd{select}\hlstd{(inf_prob_facet_label, act_rate_facet_label, label)} \hlopt{%>%}
+    \hlkwd{distinct}\hlstd{()}
+
+\hlstd{sims_incidence_rates} \hlopt{%>%} \hlkwd{filter}\hlstd{(time} \hlopt{<=} \hlnum{365}\hlstd{)} \hlopt{%>%} \hlkwd{ggplot}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= time,}
+    \hlkwc{y} \hlstd{= si.flow))} \hlopt{+} \hlkwd{geom_line}\hlstd{(}\hlkwc{colour} \hlstd{=} \hlstr{"blue"}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{1.5}\hlstd{)} \hlopt{+}
+    \hlkwd{facet_grid}\hlstd{(inf_prob_facet_label} \hlopt{~} \hlstd{act_rate_facet_label)} \hlopt{+}
+    \hlkwd{geom_text}\hlstd{(}\hlkwc{data} \hlstd{= sims_incidence_rates_facet_annotations,}
+        \hlkwc{mapping} \hlstd{=} \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{=} \hlnum{50}\hlstd{,} \hlkwc{y} \hlstd{=} \hlnum{0.8} \hlopt{*} \hlkwd{max}\hlstd{(sims_incidence_rates}\hlopt{$}\hlstd{si.flow,}
+            \hlkwc{na.rm} \hlstd{=} \hlnum{TRUE}\hlstd{),} \hlkwc{label} \hlstd{= label),} \hlkwc{parse} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{hjust} \hlstd{=} \hlnum{0}\hlstd{,}
+        \hlkwc{vjust} \hlstd{=} \hlnum{0}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{3}\hlstd{)} \hlopt{+} \hlkwd{labs}\hlstd{(}\hlkwc{x} \hlstd{=} \hlstr{"Days since start of epidemic"}\hlstd{,}
+    \hlkwc{y} \hlstd{=} \hlstr{"New cases per day"}\hlstd{,} \hlkwc{title} \hlstd{=} \hlstr{"Modelling of new cases of COVID-19 per day: incidence rate"}\hlstd{,}
+    \hlkwc{subtitle} \hlstd{=} \hlkwd{paste}\hlstd{(}\hlstr{"with varying levels of social mixing (exposures per day)"}\hlstd{,}
+        \hlstr{"and probabilities of infection at each exposure"}\hlstd{))} \hlopt{+}
+    \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{strip.text} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size} \hlstd{=} \hlnum{14}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-16-1} 
+
+\end{knitrout}
+
+
+
+\section{SEIQHRF --Wow, now we can model stuff!}
+
+%this is copied from \url{https://timchurches.github.io/blog/posts/2020-03-18-modelling-the-effects-of-public-health-interventions-on-covid-19-transmission-part-2/}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{tic}\hlstd{(}\hlstr{"Time to complete"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{source_files} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"_icm.mod.init.seiqhrf.R"}\hlstd{,} \hlstr{"_icm.mod.status.seiqhrf.R"}\hlstd{,}
+    \hlstr{"_icm.mod.vital.seiqhrf.R"}\hlstd{,} \hlstr{"_icm.control.seiqhrf.R"}\hlstd{,} \hlstr{"_icm.utils.seiqhrf.R"}\hlstd{,}
+    \hlstr{"_icm.saveout.seiqhrf.R"}\hlstd{,} \hlstr{"_icm.icm.seiqhrf.R"}\hlstd{)}
+
+\hlstd{src_path} \hlkwb{<-} \hlkwd{paste0}\hlstd{(}\hlstr{"./_posts/2020-03-18-modelling-the-effects-of-public-health-"}\hlstd{,}
+    \hlstr{"interventions-on-covid-19-transmission-part-2/"}\hlstd{)}
+
+\hlstd{gist_url} \hlkwb{<-} \hlstr{"https://gist.github.com/timchurches/92073d0ea75cfbd387f91f7c6e624bd7"}
+
+\hlstd{local_source} \hlkwb{<-} \hlnum{FALSE}
+
+\hlkwa{for} \hlstd{(source_file} \hlkwa{in} \hlstd{source_files) \{}
+    \hlkwa{if} \hlstd{(local_source) \{}
+        \hlkwd{source}\hlstd{(}\hlkwd{paste}\hlstd{(src_path, source_file,} \hlkwc{sep} \hlstd{=} \hlstr{""}\hlstd{))}
+    \hlstd{\}} \hlkwa{else} \hlstd{\{}
+        \hlkwd{source_gist}\hlstd{(gist_url,} \hlkwc{filename} \hlstd{= source_file)}
+    \hlstd{\}}
+\hlstd{\}}
+\end{alltt}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Sourcing https://gist.githubusercontent.com/timchurches/92073d0ea75cfbd387f91f7c6e624bd7/raw/669fffee6c37fd3345862d56b13b3f30f21e7ea9/\_icm.mod.init.seiqhrf.R}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# SHA-1 hash of file is 323250b6e71cd44c3d201fe2b7c85df896a65368}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Sourcing https://gist.githubusercontent.com/timchurches/92073d0ea75cfbd387f91f7c6e624bd7/raw/8b63fae903bf8f83d4a583344c380ed9fac99b81/\_icm.mod.status.seiqhrf.R}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# SHA-1 hash of file is 63756c53135ded7eb697831f59aa24b84edda344}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Sourcing https://gist.githubusercontent.com/timchurches/92073d0ea75cfbd387f91f7c6e624bd7/raw/d84384f08c7a7dc4f98c5ba20c84a994d0909501/\_icm.mod.vital.seiqhrf.R}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# SHA-1 hash of file is e864b3c4043b8ec22ed65408bfe36d7b75a3afaa}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Sourcing https://gist.githubusercontent.com/timchurches/92073d0ea75cfbd387f91f7c6e624bd7/raw/c3ad4e18811f594f0f373e6d1c45aa3dbbd4cbac/\_icm.control.seiqhrf.R}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# SHA-1 hash of file is 8514ecf3080ca0b96d53d3d81e0019af4cdd1c07}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Sourcing https://gist.githubusercontent.com/timchurches/92073d0ea75cfbd387f91f7c6e624bd7/raw/f87f429340386f92246340aeffa669997b9ac3a1/\_icm.utils.seiqhrf.R}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# SHA-1 hash of file is cfd032f1285332f8c4d2cc1a13c8c92920ae9370}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Sourcing https://gist.githubusercontent.com/timchurches/92073d0ea75cfbd387f91f7c6e624bd7/raw/de23f19a93f82585bceecd31a47b4be9dec802e8/\_icm.saveout.seiqhrf.R}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# SHA-1 hash of file is 14b18703fc9e46d31e279a364df4e89369ddae98}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Sourcing https://gist.githubusercontent.com/timchurches/92073d0ea75cfbd387f91f7c6e624bd7/raw/824302a1c10a353e1dce47e6f53d3a73ebac9849/\_icm.icm.seiqhrf.R}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# SHA-1 hash of file is 182364e711588462e32ff3254947027f78c920ed}}\end{kframe}
+\end{knitrout}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# function to set-up and run the baseline simulations}
+\hlstd{simulate} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlcom{# control.icm params}
+                     \hlkwc{type} \hlstd{=} \hlstr{"SEIQHRF"}\hlstd{,}
+                     \hlkwc{nsteps} \hlstd{=} \hlnum{366}\hlstd{,}
+                     \hlkwc{nsims} \hlstd{=} \hlnum{8}\hlstd{,}
+                     \hlkwc{ncores} \hlstd{=} \hlnum{4}\hlstd{,}
+                     \hlkwc{prog.rand} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+                     \hlkwc{rec.rand} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+                     \hlkwc{fat.rand} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+                     \hlkwc{quar.rand} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+                     \hlkwc{hosp.rand} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+                     \hlkwc{disch.rand} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+                     \hlkwc{infection.FUN} \hlstd{= infection.seiqhrf.icm,}
+                     \hlkwc{recovery.FUN} \hlstd{= progress.seiqhrf.icm,}
+                     \hlkwc{departures.FUN} \hlstd{= departures.seiqhrf.icm,}
+                     \hlkwc{arrivals.FUN} \hlstd{= arrivals.icm,}
+                     \hlkwc{get_prev.FUN} \hlstd{= get_prev.seiqhrf.icm,}
+                     \hlcom{# init.icm params}
+                     \hlkwc{s.num} \hlstd{=} \hlnum{9997}\hlstd{,}
+                     \hlkwc{e.num}\hlstd{=}\hlnum{0}\hlstd{,}
+                     \hlkwc{i.num} \hlstd{=} \hlnum{3}\hlstd{,}
+                     \hlkwc{q.num}\hlstd{=}\hlnum{0}\hlstd{,}
+                     \hlkwc{h.num}\hlstd{=}\hlnum{0}\hlstd{,}
+                     \hlkwc{r.num} \hlstd{=} \hlnum{0}\hlstd{,}
+                     \hlkwc{f.num} \hlstd{=} \hlnum{0}\hlstd{,}
+                     \hlcom{# param.icm params}
+                     \hlkwc{inf.prob.e} \hlstd{=} \hlnum{0.02}\hlstd{,}
+                     \hlkwc{act.rate.e} \hlstd{=} \hlnum{10}\hlstd{,}
+                     \hlkwc{inf.prob.i} \hlstd{=} \hlnum{0.05}\hlstd{,}
+                     \hlkwc{act.rate.i} \hlstd{=} \hlnum{10}\hlstd{,}
+                     \hlkwc{inf.prob.q} \hlstd{=} \hlnum{0.02}\hlstd{,}
+                     \hlkwc{act.rate.q} \hlstd{=} \hlnum{2.5}\hlstd{,}
+                     \hlkwc{quar.rate} \hlstd{=} \hlnum{1}\hlopt{/}\hlnum{30}\hlstd{,}
+                     \hlkwc{hosp.rate} \hlstd{=} \hlnum{1}\hlopt{/}\hlnum{100}\hlstd{,}
+                     \hlkwc{disch.rate} \hlstd{=} \hlnum{1}\hlopt{/}\hlnum{15}\hlstd{,}
+                     \hlkwc{prog.rate} \hlstd{=} \hlnum{1}\hlopt{/}\hlnum{10}\hlstd{,}
+                     \hlkwc{prog.dist.scale} \hlstd{=} \hlnum{5}\hlstd{,}
+                     \hlkwc{prog.dist.shape} \hlstd{=} \hlnum{1.5}\hlstd{,}
+                     \hlkwc{rec.rate} \hlstd{=} \hlnum{1}\hlopt{/}\hlnum{20}\hlstd{,}
+                     \hlkwc{rec.dist.scale} \hlstd{=} \hlnum{35}\hlstd{,}
+                     \hlkwc{rec.dist.shape} \hlstd{=} \hlnum{1.5}\hlstd{,}
+                     \hlkwc{fat.rate.base} \hlstd{=} \hlnum{1}\hlopt{/}\hlnum{50}\hlstd{,}
+                     \hlkwc{hosp.cap} \hlstd{=} \hlnum{40}\hlstd{,}
+                     \hlkwc{fat.rate.overcap} \hlstd{=} \hlnum{1}\hlopt{/}\hlnum{25}\hlstd{,}
+                     \hlkwc{fat.tcoeff} \hlstd{=} \hlnum{0.5}\hlstd{,}
+                     \hlkwc{vital} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+                     \hlkwc{a.rate} \hlstd{= (}\hlnum{10.5}\hlopt{/}\hlnum{365}\hlstd{)}\hlopt{/}\hlnum{1000}\hlstd{,}
+                     \hlkwc{a.prop.e} \hlstd{=} \hlnum{0.01}\hlstd{,}
+                     \hlkwc{a.prop.i} \hlstd{=} \hlnum{0.001}\hlstd{,}
+                     \hlkwc{a.prop.q} \hlstd{=} \hlnum{0.01}\hlstd{,}
+                     \hlkwc{ds.rate} \hlstd{= (}\hlnum{7}\hlopt{/}\hlnum{365}\hlstd{)}\hlopt{/}\hlnum{1000}\hlstd{,}
+                     \hlkwc{de.rate} \hlstd{= (}\hlnum{7}\hlopt{/}\hlnum{365}\hlstd{)}\hlopt{/}\hlnum{1000}\hlstd{,}
+                     \hlkwc{di.rate} \hlstd{= (}\hlnum{7}\hlopt{/}\hlnum{365}\hlstd{)}\hlopt{/}\hlnum{1000}\hlstd{,}
+                     \hlkwc{dq.rate} \hlstd{= (}\hlnum{7}\hlopt{/}\hlnum{365}\hlstd{)}\hlopt{/}\hlnum{1000}\hlstd{,}
+                     \hlkwc{dh.rate} \hlstd{= (}\hlnum{20}\hlopt{/}\hlnum{365}\hlstd{)}\hlopt{/}\hlnum{1000}\hlstd{,}
+                     \hlkwc{dr.rate} \hlstd{= (}\hlnum{7}\hlopt{/}\hlnum{365}\hlstd{)}\hlopt{/}\hlnum{1000}\hlstd{,}
+                     \hlkwc{out}\hlstd{=}\hlstr{"mean"}
+                    \hlstd{) \{}
+
+  \hlstd{control} \hlkwb{<-} \hlkwd{control.icm}\hlstd{(}\hlkwc{type} \hlstd{= type,}
+                         \hlkwc{nsteps} \hlstd{= nsteps,}
+                         \hlkwc{nsims} \hlstd{= nsims,}
+                         \hlkwc{ncores} \hlstd{= ncores,}
+                         \hlkwc{prog.rand} \hlstd{= prog.rand,}
+                         \hlkwc{rec.rand} \hlstd{= rec.rand,}
+                         \hlkwc{infection.FUN} \hlstd{= infection.FUN,}
+                         \hlkwc{recovery.FUN} \hlstd{= recovery.FUN,}
+                         \hlkwc{arrivals.FUN} \hlstd{= arrivals.FUN,}
+                         \hlkwc{departures.FUN} \hlstd{= departures.FUN,}
+                         \hlkwc{get_prev.FUN} \hlstd{= get_prev.FUN)}
+
+  \hlstd{init} \hlkwb{<-} \hlkwd{init.icm}\hlstd{(}\hlkwc{s.num} \hlstd{= s.num,}
+                   \hlkwc{e.num} \hlstd{= e.num,}
+                   \hlkwc{i.num} \hlstd{= i.num,}
+                   \hlkwc{q.num} \hlstd{= q.num,}
+                   \hlkwc{h.num} \hlstd{= h.num,}
+                   \hlkwc{r.num} \hlstd{= r.num,}
+                   \hlkwc{f.num} \hlstd{= f.num)}
+
+  \hlstd{param} \hlkwb{<-}  \hlkwd{param.icm}\hlstd{(}\hlkwc{inf.prob.e} \hlstd{= inf.prob.e,}
+                      \hlkwc{act.rate.e} \hlstd{= act.rate.e,}
+                      \hlkwc{inf.prob.i} \hlstd{= inf.prob.i,}
+                      \hlkwc{act.rate.i} \hlstd{= act.rate.i,}
+                      \hlkwc{inf.prob.q} \hlstd{= inf.prob.q,}
+                      \hlkwc{act.rate.q} \hlstd{= act.rate.q,}
+                      \hlkwc{quar.rate} \hlstd{= quar.rate,}
+                      \hlkwc{hosp.rate} \hlstd{= hosp.rate,}
+                      \hlkwc{disch.rate} \hlstd{= disch.rate,}
+                      \hlkwc{prog.rate} \hlstd{= prog.rate,}
+                      \hlkwc{prog.dist.scale} \hlstd{= prog.dist.scale,}
+                      \hlkwc{prog.dist.shape} \hlstd{= prog.dist.shape,}
+                      \hlkwc{rec.rate} \hlstd{= rec.rate,}
+                      \hlkwc{rec.dist.scale} \hlstd{= rec.dist.scale,}
+                      \hlkwc{rec.dist.shape} \hlstd{= rec.dist.shape,}
+                      \hlkwc{fat.rate.base} \hlstd{= fat.rate.base,}
+                      \hlkwc{hosp.cap} \hlstd{= hosp.cap,}
+                      \hlkwc{fat.rate.overcap} \hlstd{= fat.rate.overcap,}
+                      \hlkwc{fat.tcoeff} \hlstd{= fat.tcoeff,}
+                      \hlkwc{vital} \hlstd{= vital,}
+                      \hlkwc{a.rate} \hlstd{= a.rate,}
+                      \hlkwc{a.prop.e} \hlstd{= a.prop.e,}
+                      \hlkwc{a.prop.i} \hlstd{= a.prop.i,}
+                      \hlkwc{a.prop.q} \hlstd{= a.prop.q,}
+                      \hlkwc{ds.rate} \hlstd{= ds.rate,}
+                      \hlkwc{de.rate} \hlstd{= de.rate,}
+                      \hlkwc{di.rate} \hlstd{= di.rate,}
+                      \hlkwc{dq.rate} \hlstd{= dq.rate,}
+                      \hlkwc{dh.rate} \hlstd{= dh.rate,}
+                      \hlkwc{dr.rate} \hlstd{= dr.rate)}
+
+  \hlstd{sim} \hlkwb{<-} \hlkwd{icm.seiqhrf}\hlstd{(param, init, control)}
+  \hlstd{sim_df} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(sim,} \hlkwc{out}\hlstd{=out)}
+
+  \hlkwd{return}\hlstd{(}\hlkwd{list}\hlstd{(}\hlkwc{sim}\hlstd{=sim,} \hlkwc{df}\hlstd{=sim_df))}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# define a function to extract timings and assemble a data}
+\hlcom{# frame}
+\hlstd{get_times} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{simulate_results}\hlstd{) \{}
+
+    \hlstd{sim} \hlkwb{<-} \hlstd{simulate_results}\hlopt{$}\hlstd{sim}
+
+    \hlkwa{for} \hlstd{(s} \hlkwa{in} \hlnum{1}\hlopt{:}\hlstd{sim}\hlopt{$}\hlstd{control}\hlopt{$}\hlstd{nsims) \{}
+        \hlkwa{if} \hlstd{(s} \hlopt{==} \hlnum{1}\hlstd{) \{}
+            \hlstd{times} \hlkwb{<-} \hlstd{sim}\hlopt{$}\hlstd{times[[}\hlkwd{paste}\hlstd{(}\hlstr{"sim"}\hlstd{, s,} \hlkwc{sep} \hlstd{=} \hlstr{""}\hlstd{)]]}
+            \hlstd{times} \hlkwb{<-} \hlstd{times} \hlopt{%>%} \hlkwd{mutate}\hlstd{(}\hlkwc{s} \hlstd{= s)}
+        \hlstd{\}} \hlkwa{else} \hlstd{\{}
+            \hlstd{times} \hlkwb{<-} \hlstd{times} \hlopt{%>%} \hlkwd{bind_rows}\hlstd{(sim}\hlopt{$}\hlstd{times[[}\hlkwd{paste}\hlstd{(}\hlstr{"sim"}\hlstd{,}
+                \hlstd{s,} \hlkwc{sep} \hlstd{=} \hlstr{""}\hlstd{)]]} \hlopt{%>%} \hlkwd{mutate}\hlstd{(}\hlkwc{s} \hlstd{= s))}
+        \hlstd{\}}
+    \hlstd{\}}
+
+    \hlstd{times} \hlkwb{<-} \hlstd{times} \hlopt{%>%} \hlkwd{mutate}\hlstd{(}\hlkwc{infTime} \hlstd{=} \hlkwd{ifelse}\hlstd{(infTime} \hlopt{<} \hlnum{0}\hlstd{,} \hlopt{-}\hlnum{5}\hlstd{,}
+        \hlstd{infTime),} \hlkwc{expTime} \hlstd{=} \hlkwd{ifelse}\hlstd{(expTime} \hlopt{<} \hlnum{0}\hlstd{,} \hlopt{-}\hlnum{5}\hlstd{, expTime))} \hlopt{%>%}
+        \hlkwd{mutate}\hlstd{(}\hlkwc{incubation_period} \hlstd{= infTime} \hlopt{-} \hlstd{expTime,} \hlkwc{illness_duration} \hlstd{= recovTime} \hlopt{-}
+            \hlstd{expTime,} \hlkwc{illness_duration_hosp} \hlstd{= dischTime} \hlopt{-} \hlstd{expTime,}
+            \hlkwc{hosp_los} \hlstd{= dischTime} \hlopt{-} \hlstd{hospTime,} \hlkwc{quarantine_delay} \hlstd{= quarTime} \hlopt{-}
+                \hlstd{infTime,} \hlkwc{survival_time} \hlstd{= fatTime} \hlopt{-} \hlstd{infTime)} \hlopt{%>%}
+        \hlkwd{select}\hlstd{(s, incubation_period, quarantine_delay, illness_duration,}
+            \hlstd{illness_duration_hosp, hosp_los, survival_time)} \hlopt{%>%}
+        \hlkwd{pivot_longer}\hlstd{(}\hlopt{-}\hlstd{s,} \hlkwc{names_to} \hlstd{=} \hlstr{"period_type"}\hlstd{,} \hlkwc{values_to} \hlstd{=} \hlstr{"duration"}\hlstd{)} \hlopt{%>%}
+        \hlkwd{mutate}\hlstd{(}\hlkwc{period_type} \hlstd{=} \hlkwd{factor}\hlstd{(period_type,} \hlkwc{levels} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"incubation_period"}\hlstd{,}
+            \hlstr{"quarantine_delay"}\hlstd{,} \hlstr{"illness_duration"}\hlstd{,} \hlstr{"illness_duration_hosp"}\hlstd{,}
+            \hlstr{"hosp_los"}\hlstd{,} \hlstr{"survival_time"}\hlstd{),} \hlkwc{labels} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"Incubation period"}\hlstd{,}
+            \hlstr{"Delay entering isolation"}\hlstd{,} \hlstr{"Illness duration"}\hlstd{,} \hlstr{"Illness duration (hosp)"}\hlstd{,}
+            \hlstr{"Hospital care required duration"}\hlstd{,} \hlstr{"Survival time of case fatalities"}\hlstd{),}
+            \hlkwc{ordered} \hlstd{=} \hlnum{TRUE}\hlstd{))}
+    \hlkwd{return}\hlstd{(times)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{times} \hlkwb{<-} \hlkwd{get_times}\hlstd{(baseline_sim)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in get\_times(baseline\_sim): object 'baseline\_sim' not found}}\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{times} \hlopt{%>%} \hlkwd{filter}\hlstd{(duration} \hlopt{<=} \hlnum{30}\hlstd{)} \hlopt{%>%} \hlkwd{ggplot}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= duration))} \hlopt{+}
+    \hlkwd{geom_bar}\hlstd{()} \hlopt{+} \hlkwd{facet_grid}\hlstd{(period_type} \hlopt{~} \hlstd{.,} \hlkwc{scales} \hlstd{=} \hlstr{"free_y"}\hlstd{)} \hlopt{+}
+    \hlkwd{labs}\hlstd{(}\hlkwc{title} \hlstd{=} \hlstr{"Duration frequency distributions"}\hlstd{,} \hlkwc{subtitle} \hlstd{=} \hlstr{"Baseline simulation"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in UseMethod("{}filter\_"{}): no applicable method for 'filter\_' applied to an object of class "{}c('double', 'numeric')"{}}}\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{baseline_sim} \hlkwb{<-} \hlkwd{simulate}\hlstd{(}\hlkwc{ncores} \hlstd{=} \hlnum{4}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{baseline_plot_df} \hlkwb{<-} \hlstd{baseline_sim}\hlopt{$}\hlstd{df} \hlopt{%>%} \hlcom{# use only the prevalence columns}
+\hlkwd{select}\hlstd{(time, s.num, e.num, i.num, q.num, h.num, r.num, f.num)} \hlopt{%>%}
+    \hlcom{# examine only the first 100 days since it is all over by}
+\hlcom{# then using the default parameters}
+\hlkwd{filter}\hlstd{(time} \hlopt{<=} \hlnum{100}\hlstd{)} \hlopt{%>%} \hlkwd{pivot_longer}\hlstd{(}\hlopt{-}\hlkwd{c}\hlstd{(time),} \hlkwc{names_to} \hlstd{=} \hlstr{"compartment"}\hlstd{,}
+    \hlkwc{values_to} \hlstd{=} \hlstr{"count"}\hlstd{)}
+
+\hlcom{# define a standard set of colours to represent compartments}
+\hlstd{compcols} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwc{s.num} \hlstd{=} \hlstr{"yellow"}\hlstd{,} \hlkwc{e.num} \hlstd{=} \hlstr{"orange"}\hlstd{,} \hlkwc{i.num} \hlstd{=} \hlstr{"red"}\hlstd{,}
+    \hlkwc{q.num} \hlstd{=} \hlstr{"cyan"}\hlstd{,} \hlkwc{h.num} \hlstd{=} \hlstr{"magenta"}\hlstd{,} \hlkwc{r.num} \hlstd{=} \hlstr{"lightgreen"}\hlstd{,}
+    \hlkwc{f.num} \hlstd{=} \hlstr{"black"}\hlstd{)}
+\hlstd{complabels} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwc{s.num} \hlstd{=} \hlstr{"Susceptible"}\hlstd{,} \hlkwc{e.num} \hlstd{=} \hlstr{"Infected/asymptomatic"}\hlstd{,}
+    \hlkwc{i.num} \hlstd{=} \hlstr{"Infected/infectious"}\hlstd{,} \hlkwc{q.num} \hlstd{=} \hlstr{"Self-isolated"}\hlstd{,} \hlkwc{h.num} \hlstd{=} \hlstr{"Requires hospitalisation"}\hlstd{,}
+    \hlkwc{r.num} \hlstd{=} \hlstr{"Recovered"}\hlstd{,} \hlkwc{f.num} \hlstd{=} \hlstr{"Case fatality"}\hlstd{)}
+
+\hlstd{baseline_plot_df} \hlopt{%>%} \hlkwd{ggplot}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= time,} \hlkwc{y} \hlstd{= count,} \hlkwc{colour} \hlstd{= compartment))} \hlopt{+}
+    \hlkwd{geom_line}\hlstd{(}\hlkwc{size} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{alpha} \hlstd{=} \hlnum{0.7}\hlstd{)} \hlopt{+} \hlkwd{scale_colour_manual}\hlstd{(}\hlkwc{values} \hlstd{= compcols,}
+    \hlkwc{labels} \hlstd{= complabels)} \hlopt{+} \hlkwd{theme_dark}\hlstd{()} \hlopt{+} \hlkwd{labs}\hlstd{(}\hlkwc{title} \hlstd{=} \hlstr{"Baseline simulation"}\hlstd{,}
+    \hlkwc{x} \hlstd{=} \hlstr{"Days since beginning of epidemic"}\hlstd{,} \hlkwc{y} \hlstd{=} \hlstr{"Prevalence (persons)"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 5 row(s) containing missing values (geom\_path).}}\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-24-1} 
+
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{baseline_plot_df} \hlopt{%>%} \hlkwd{filter}\hlstd{(compartment} \hlopt{%in%} \hlkwd{c}\hlstd{(}\hlstr{"e.num"}\hlstd{,} \hlstr{"i.num"}\hlstd{,}
+    \hlstr{"q.num"}\hlstd{,} \hlstr{"h.num"}\hlstd{,} \hlstr{"f.num"}\hlstd{))} \hlopt{%>%} \hlkwd{ggplot}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= time,} \hlkwc{y} \hlstd{= count,}
+    \hlkwc{colour} \hlstd{= compartment))} \hlopt{+} \hlkwd{geom_line}\hlstd{(}\hlkwc{size} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{alpha} \hlstd{=} \hlnum{0.7}\hlstd{)} \hlopt{+}
+    \hlkwd{scale_colour_manual}\hlstd{(}\hlkwc{values} \hlstd{= compcols,} \hlkwc{labels} \hlstd{= complabels)} \hlopt{+}
+    \hlkwd{theme_dark}\hlstd{()} \hlopt{+} \hlkwd{labs}\hlstd{(}\hlkwc{title} \hlstd{=} \hlstr{"Baseline simulation"}\hlstd{,} \hlkwc{x} \hlstd{=} \hlstr{"Days since beginning of epidemic"}\hlstd{,}
+    \hlkwc{y} \hlstd{=} \hlstr{"Prevalence (persons)"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 4 row(s) containing missing values (geom\_path).}}\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-25-1} 
+
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# get the S-> E compartment flow, which is our daily}
+\hlcom{# incidence rate}
+\hlstd{incidence_counts} \hlkwb{<-} \hlstd{baseline_sim}\hlopt{$}\hlstd{df} \hlopt{%>%} \hlkwd{select}\hlstd{(time, se.flow)}
+\hlcom{# uncount them}
+\hlstd{incident_case_dates} \hlkwb{<-} \hlstd{incidence_counts} \hlopt{%>%} \hlkwd{uncount}\hlstd{(se.flow)} \hlopt{%>%}
+    \hlkwd{pull}\hlstd{(time)}
+\hlcom{# convert to an incidence object}
+\hlstd{incidence_all} \hlkwb{<-} \hlstd{incident_case_dates} \hlopt{%>%} \hlkwd{incidence}\hlstd{(.)}
+
+\hlcom{# plot the incidence curve}
+\hlkwd{plot}\hlstd{(incidence_all)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-26-1} 
+
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{toc}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## Time to complete: 38.996 sec elapsed
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 \end{document}
