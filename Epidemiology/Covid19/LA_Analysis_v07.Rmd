@@ -236,7 +236,7 @@ Now, just two more weeks and the county may be largely free of the disease and a
  
 *Weekend values are not updated on github site for LA County. Thus, I have used LA County health updates to fill in on weekends. 
 
-#d Changes in Doubling Rate
+## Changes in Doubling Rate
 
 How quickly the doubling rate would decrease based on municipal and state recommendations and orders as anyone's guess. And of course, it depends on how 'shelter-in-place' compliance. I suspect it will be uneven. 
 
