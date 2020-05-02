@@ -397,22 +397,23 @@ sirLL <- function(lbeta, lnu, logN, logI0) {
   -sum(dnorm(C, mean=out[,4], sd=SD, log=TRUE))
 }
 
+# Unfortunately, the model is models mortality
 record = length(LA$Confirmed)-0
-C = sort(LA$Confirmed)[32:record]
+C = LA$Confirmed[32:record]
+D = LA$Deaths[51:record]
 t = 1:length(C); days=max(t); days
 
 # minimize negative-log-likelihood
 covid.fit <- mle2(sirLL, 
             start=list(lbeta=qlogis(1e-5), 
                        lnu=qlogis(.2), 
-                       logN=log(1e6), logI0=log(1) ),  
+                       logN=log(1e8), logI0=log(1) ),  
             method="Nelder-Mead",
             control=list(maxit=1E5,trace=0),
             trace=FALSE)
 
 ```
 
-Currently, I have misspecified the confirmed cases with deaths, which is what the model actually measures. It's going to take days to sort out how to get the model to actually use Confirmed cases as I and mortality and recovered as R. Ugh!
 
 ```{r, echo=FALSE, results='hide'}
 tmp=summary(covid.fit);tmp@coef[,2]
@@ -428,7 +429,7 @@ theta.lwr <- as.numeric(c(
 parms <- c(beta=theta[1], nu = theta[2])
 parms.upr <- c(beta=theta.upr[1], nu = theta.upr[2])
 parms.lwr <- c(beta=theta.lwr[1], nu = theta.lwr[2])
-times <- seq(0,300,0.1)
+times <- seq(0,900,0.1)
 
 x0 <- c(theta[3],theta[4],0)
 x0.upr <- c(theta.upr[3],theta.upr[4],0)
@@ -440,10 +441,10 @@ colnames(stateMatrix1) <- c("time","S","I","R")
 colnames(stateMatrix1.upr) <- c("time","S","I","R")
 colnames(stateMatrix1.lwr) <- c("time","S","I","R")
 plot(stateMatrix1[,"time"], stateMatrix1[,"R"], type="l", lwd=2, 
-     xaxs="i", xlab="Days", ylab="Confirmed Cases", las=1, ylim=c(0,x0.upr[1]))
+     xaxs="i", xlab="Days", ylab="Confirmed Cases", las=1)#, ylim=c(0,x0.upr[1]))
 lines(stateMatrix1.upr[,"time"], stateMatrix1.upr[,"R"], col='grey')
 lines(stateMatrix1.lwr[,"time"], stateMatrix1.lwr[,"R"], col='grey')
-points(t, C, pch=16, col="red", cex=.5)
+points(t, D, pch=16, col="red", cex=.5)
 
 covid.fit@vcov
 
@@ -451,7 +452,7 @@ covid.fit@vcov
 #fit2 <- mle2(sirLL, start=as.list(coef(fit)), fixed=list(logN=coef(fit)[3],  logI0=coef(fit)[4]), method="Nelder-Mead",control=list(maxit=1E5,trace=2),trace=TRUE)
 ```
 
-Based on this model, confirmed cases is super sensitive to the number of records:
+Based on this model, confirmed cases (N) is super sensitive to the number of records:
 
 - April 4: 14,400
 - April 5: 17,000
@@ -461,7 +462,7 @@ Based on this model, confirmed cases is super sensitive to the number of records
 - April 9: 88,900
 - April 10: 15,300
 
-Today, the estimated peak for covid-19 in LA will be `r round(x0[1], -2)` as modeled on `r Sys.Date()`. This is a terribly unreliable prediction method!
+Today, the estimated peak for covid-19 in LA will be `r round(x0[1], -2)` as modeled on `r Sys.Date()`. This is a terribly unreliable prediction method! In addition, the N doesn't not always align with "K" and I have no idea way. 
 
 ## When do we make a policy decision?
 

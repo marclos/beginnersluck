@@ -346,6 +346,12 @@ legend(300,0.7,legend=c("S","E","I","R"),col=c("blue","orange","red","green"), l
 
 @
 
+\section{SQ-EIR}
+
+
+
+
+
 
 \section{Model with Spatial Structure}
 
