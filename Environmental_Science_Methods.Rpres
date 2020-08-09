@@ -1,0 +1,274 @@
+Research Methods in Environmental Science
+========================================================
+author: Marc Los Huertos
+date: Sept. 2020
+autosize: true
+
+Tensions within; Science as Pawn; Science with Agency
+===================================================
+
+- Science as a Process, uneven progress
+- The signal in the noise
+- Logic of statistics and conclusions
+- Apartheid Ecology
+- Ecology as a subversive science
+
+
+
+Science as a Process
+=========
+![](Environmental_Science_Method/ScienceProgressDiagram.png)
+
+Signal and Noise
+====================================================
+
+```{r, echo=FALSE}
+trt=4; N=200
+x = seq(0,6,length=N)
+y=df(x, trt-1, N-2)
+par(las=1, cex=2)
+hist(y, xlab="Pollution Levels", main="")
+```
+
+When should we be concerned?
+***
+
+```{r, echo=FALSE}
+par(las=1, cex=2)
+boxplot(y, outline=FALSE)
+points(jitter(rep(1, length(y)), factor=10), y, pch=21, col="gray70", cex.pch=1)
+```
+
+
+How do we represent that data?  Median, mean, range, etc?
+
+Using Statistical Distributions -- Often Represents Natural Variation
+=====================
+```{r, echo=FALSE}
+par(las=1, cex=2)
+plot(x,y,type="l", lwd=2, col="blue", xlab="", ylab="Prob Density")
+#y=pf(x, trt-1, N-2)
+polygon(c(0,x[1:150],x[150]),c(0,y[1:150],0),col="grey80")
+arrows(x[150], .4, x[150], .02)
+```
+
+***
+
+Predetermined (arbitrary?) Thresholds
+p value =  `r 1-pf(x[150], trt-1, N-2)`
+
+The logic for frequentist statistics -- reject the null hypothesis, i.e. no differences from random processes.
+
+
+
+Predictions and Responses: Regression
+==================================================
+
+```{r, echo=FALSE}
+par(las=1, cex=2)
+plot(cars, xlab="Predictor", ylab="Response", pch=20)
+abline(coef(lm(dist~speed, cars)), col="red", lty=2, lwd=2)
+cars.lm = summary(lm(dist~speed, cars)); #str(cars.lm)
+r.squared = c(cars.lm$r.squared)  
+p.value = as.numeric(pf(cars.lm$fstatistic[1], cars.lm$fstatistic[2], cars.lm$fstatistic[3], lower.tail=F))
+#text(5,100, "R squared =")
+```
+***
+
+Lots of correlations in the world -- but are they casaul?  Perhaps...
+
+e.g., number of members in the Church of England and Infant Mortality Rate... 
+Controlled Experiments
+===============================
+```{r, echo=FALSE}
+par(las=1, cex=2)
+boxplot(yield ~ block, npk, xlab="Treatments", ylab="Greenhouse Gases")
+```
+
+***
+
+Controlled Experiments -- "Gold Standard" in natural science...
+```{r}
+summary(aov(yield ~ block, npk))
+
+```
+
+But has the potential to be unrealistic (and meaningful?)
+
+Conclusions in Science
+===============
+
+-- Natural scientists don't really claim "truth", 
+-- Instead we make contextual, conditional statments about belief and confidence. 
+-- Natural scientists are comfortable with uncertainty.
+
+
+
+Forensics as Method, e.g. Geology
+=============
+
+- Uniformitarianism.
+- Original horizontality.
+- Superposition.
+- Cross-cutting relationships.
+
+***
+
+![image](Environmental_Science_Method/Lyell_Principles_frontispiece.jpg)
+
+We can use "rules" or "principles" to interpret the natural or built environment.
+
+NOTE: Where do we learn these rules/principles?
+
+Ecology and Natural Experiments
+=============================
+
+```{r echo=FALSE}
+elevation =seq(1, 5000, by=1)
+sp1mean = 400; sp1x = c(sp1mean-300):c(sp1mean+299)
+sp1 = dnorm(sp1x, sp1mean, 100)*1.6
+
+sp2mean = 700; sp2x = c(sp2mean-250):c(sp2mean+249)
+sp2 = dnorm(sp2x, sp2mean, 90)
+
+sp3mean = 900; sp3x = c(sp3mean-300):c(sp3mean+299)
+sp3 = dnorm(sp3x, sp3mean, 1400)
+
+sp4mean = 1200; sp4x = c(sp4mean-700):c(sp4mean+699)
+sp4 = dnorm(sp4x, sp4mean, 300)*2
+
+sp5mean = 1400; sp5x = c(sp5mean-200):c(sp5mean+199)
+sp5 = dnorm(sp5x, sp5mean, 90)
+
+sp6mean = 1700; sp6x = c(sp6mean-250):c(sp6mean+249)
+sp6 = dnorm(sp6x, sp6mean, 90)
+
+sp7mean = 1900; sp7x = c(sp7mean-1600):c(sp7mean+1599)
+sp7 = dnorm(sp7x, sp7mean, 1000)*4.5
+
+sp8mean = 2200; sp8x = c(sp8mean-700):c(sp8mean+699)
+sp8 = dnorm(sp8x, sp8mean, 300)*3
+
+sp9mean = 2300; sp9x = c(sp9mean-300):c(sp9mean+299)
+sp9 = dnorm(sp9x, sp9mean, 400)
+
+sp14mean = 2600; sp14x = c(sp14mean-700):c(sp14mean+699)
+sp14 = dnorm(sp14x, sp14mean, 300)*2
+
+sp15mean = 2800; sp15x = c(sp15mean-200):c(sp15mean+199)
+sp15 = dnorm(sp15x, sp15mean, 150)
+
+sp16mean = 3200; sp16x = c(sp16mean-250):c(sp16mean+249)
+sp16 = dnorm(sp16x, sp16mean, 150)
+
+sp17mean = 3400; sp17x = c(sp17mean-600):c(sp17mean+599)
+sp17 = dnorm(sp17x, sp17mean, 150)*1.5
+
+sp18mean = 3800; sp18x = c(sp18mean-700):c(sp18mean+699)
+sp18 = dnorm(sp18x, sp18mean, 300)*3
+
+
+
+par(las=1, cex=2)
+plot(elevation, ylim=c(0,.007), ty="n", xlab="Elevation", ylab="")
+lines(sp1x, sp1, col="red", lwd=3)
+lines(sp2x, sp2, col="blue", lwd=3)
+lines(sp3x, sp3, col="green", lwd=3)
+lines(sp4x, sp4, col="black", lwd=3)
+lines(sp5x, sp5, col="violet", lwd=3)
+lines(sp6x, sp6, col="darkred", lwd=3)
+lines(sp7x, sp7, col="darkorange", lwd=3)
+lines(sp8x, sp8, col="darkgreen", lwd=3)
+lines(sp9x, sp9, col="green", lwd=3)
+lines(sp14x, sp14, col="red", lwd=3)
+lines(sp15x, sp15, col="violet", lwd=3)
+lines(sp16x, sp16, col="darkred", lwd=3)
+lines(sp17x, sp17, col="darkorange", lwd=3)
+lines(sp18x, sp18, col="green", lwd=3)
+```
+***
+
+--Environmental Gradients allow ecologists to hold things constant to see how the gradient affects the ecosystem. 
+
+--Environmental gradients can included physical factors (elevation, rainfall, etc) or processes (distrubance, herbivory, etc). 
+
+Thresholds and Environmental Quality
+=====================
+
+- Is the problem real?
+- How can we tell?
+- "Middle Bear Problem"
+
+***
+```{r, echo=FALSE}
+x=seq(0, 10, by=.01)
+y=dnorm(x, 5, 2)
+
+par(las=1, cex=2)
+plot(x,y,type="l", lwd=2, col="blue", ylab="Prob Density", xlab="Concentration")
+
+polygon(c(x=2,x[x>=2 & x<=8],x=8),c(0,y[x>=2 & x<=8],0),col="grey80")
+
+```
+
+Science as Social Method
+===============
+
+- Peer Review 
+- Reproducibility
+- Documentation and Replication
+- "In service of society"
+
+Science and Power
+===============
+
+What does being in service mean?
+
+- In service of war (colonization, imperialism, capital)
+- In service of macro-parasites (senso McNeill)
+- Legitamize (rescue) states in crisis, e.g. green revolution
+- 
+
+***
+
+Trick of Science -- Claims of Objectivity
+
+- In service of capital
+- Post WWII, liberal democracy science
+- 1960s breakdown of science hegemony
+
+Politicized Science
+
+- Soviet Science and Lysenko
+- Cold War environmental outcomes
+
+
+
+======
+Thesis - Antithesis -> Synthesis
+
+
+- Dialectic between liberatory and repressive forces.
+
+-- Ambigous statistical signals and uncertainty 
+
+-- Used for business as usual
+
+- Ecology as a Subversive Science
+
+-- Documents the contradictions of extractive systems
+
+-- Provides paths toward (holistic?) sustainability 
+
+***
+
+![Dialectics](Environmental_Science_Method/dialectics-liberation.jpg)
+
+Environmental Science for 21st Century Politics
+=====
+
+- Acknowledges interlocking systems of oppression
+- Based on intersectionality as a condition
+- Navigates tensions with integrity
+- Negotiates with different ways of knowing/meaning
+
