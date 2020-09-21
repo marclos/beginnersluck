@@ -1,13 +1,15 @@
 #  R - Day #1
 n <- 100
 x <- seq(to= n, from = 1, by= 1)
-set.seed(123)
+set.seed(123) #
 y <- x + rnorm(n= n, mean=0, sd=5)
 y <- x + rlnorm(n, meanlog = 0, sdlog = 2) - rlnorm(n, meanlog = 0, sdlog = 2)
 plot(x, y, pch=20, las=1, 
      main="y is function of x", 
      xlab="x (cm)", ylab="y (kg)")
 
+hist(y); hist(log10(y))
+y = log10(y)
 # y = mx + b + error
 bestfitline.lm = lm(y~x)
 summary(bestfitline.lm)
@@ -37,4 +39,17 @@ Anscombe = as.data.frame(
     nrow=11,  byrow=TRUE))
 
 names(Anscombe) = c("No", "x1", "x2", "x3", "x4", "y1", "y2", "y3", "y4")
+
+plot(y1 ~ x1, Anscombe); A.lm = lm(y1 ~ x1, Anscombe)
+par(mfrow=c(2,2)); plot(A.lm); par(mfrow=c(1,1))
+
+plot(y2 ~ x2, Anscombe); B.lm = lm(y2 ~ x2, Anscombe)
+par(mfrow=c(2,2)); plot(B.lm); par(mfrow=c(1,1))
+
+plot(y3 ~ x3, Anscombe); C.lm = lm(y3 ~ x3, Anscombe)
+par(mfrow=c(2,2)); plot(C.lm); par(mfrow=c(1,1))
+
+plot(y4 ~ x4, Anscombe); D.lm = lm(y4 ~ x4, Anscombe)
+par(mfrow=c(2,2)); plot(D.lm); par(mfrow=c(1,1))
+
 
