@@ -1,0 +1,12 @@
+name: Green_House_Reduction_Tool
+title: Green_House_Reduction_Tool
+username:
+account: marclos
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3252931
+bundleId: 3873290
+url: https://marclos.shinyapps.io/Green_House_Reduction_Tool/
+when: 1605649589.84265
+asMultiple: FALSE
+asStatic: FALSE
