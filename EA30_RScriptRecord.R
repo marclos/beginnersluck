@@ -40,6 +40,8 @@ Anscombe = as.data.frame(
 
 names(Anscombe) = c("No", "x1", "x2", "x3", "x4", "y1", "y2", "y3", "y4")
 
+table(Anscombe)
+
 plot(y1 ~ x1, Anscombe); A.lm = lm(y1 ~ x1, Anscombe)
 par(mfrow=c(2,2)); plot(A.lm); par(mfrow=c(1,1))
 
@@ -51,5 +53,7 @@ par(mfrow=c(2,2)); plot(C.lm); par(mfrow=c(1,1))
 
 plot(y4 ~ x4, Anscombe); D.lm = lm(y4 ~ x4, Anscombe)
 par(mfrow=c(2,2)); plot(D.lm); par(mfrow=c(1,1))
+
+summary(A.lm)
 
 

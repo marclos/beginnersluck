@@ -1,0 +1,54 @@
+---
+title: "Muana Loa CO2 Data"
+author: "Marc Los Huertos"
+date: "2/3/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Importing Data into R
+
+this is text
+```{r}
+maunaloa.csv <- "/home/CAMPUS/mwl04747/github/beginnersluck/maunaloa.csv"
+maunaloa.df <- read.csv(maunaloa.csv)
+```
+
+
+
+```{r, echo=FALSE, eval=FALSE}
+str(maunaloa.df)
+head(maunaloa.df)
+```
+
+
+# Making a Plot
+
+## Histogram...
+
+```{r, echo=F}
+#hist(maunaloa.df$average)
+```
+
+co2 vs. year...
+
+y = mx + b + error
+
+y = f(x)
+
+
+
+```{r, echo=FALSE}
+plot(maunaloa.df$decimal.date, maunaloa.df$average, ty='l', xlab = "Date", ylab = "CO2 Concentration (ppm)", main="Carbon Dioxide Concentration (Mauna Loa, HI)", las=1)
+
+maunaloa.lm <- lm(average ~ decimal.date, data=maunaloa.df)
+# str(maunaloa.lm)
+coef(maunaloa.lm)
+
+abline(coef(maunaloa.lm), col='red')
+```
+
+

@@ -1,0 +1,53 @@
+---
+title: "Mauna Loa CO2"
+author: "Marc Los Huertos"
+date: "2/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Create a Path
+
+Define the path to the mauanloa csv file...
+```{r path}
+maunaloa.csv <- "/home/CAMPUS/mwl04747/github/beginnersluck/deleteme/maunaloa.csv"
+```
+
+## Read CSV into R
+
+```{r, echo=TRUE}
+maunaloa.df <- read.csv(maunaloa.csv)
+```
+
+## Structure of dataframe
+
+```{r}
+str(maunaloa.df)
+head(maunaloa.df)
+names(maunaloa.df)
+```
+
+## Make a Plot
+
+You can also embed plots, for example:
+
+```{r, echo=TRUE}
+plot(average ~ decimal.date, data=maunaloa.df)
+maunalao.lm <- lm(average ~ decimal.date, data=maunaloa.df)
+maunaloa.coef <- coef(maunalao.lm) # creates slope and intercept
+abline(maunaloa.coef, col='red')
+```
+
+## Make a Better Plot
+
+Making a plot with x and y labels and title. Plus rotated y-axis labels and changed graph type to line.
+
+```{r, echo=TRUE}
+plot(average ~ decimal.date, data=maunaloa.df, xlab="Date", ylab="CO2 Concentrations", main="Carbon Dioxide Concentrations at Mauna Loa, HI", las=1, ty='l')
+maunalao.lm <- lm(average ~ decimal.date, data=maunaloa.df)
+maunaloa.coef <- coef(maunalao.lm) # creates slope and intercept
+abline(maunaloa.coef, col='red')
+```
