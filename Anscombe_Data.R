@@ -12,3 +12,7 @@ Anscombe = as.data.frame(
     10, 7, 7, 7, 8, 4.82, 7.26, 6.42, 7.91,
     11, 5, 5, 5, 8, 5.68, 4.74, 5.73, 6.89), 
     nrow=11,  byrow=TRUE))
+
+names(Anscombe) = c("Obs.", "x1", "x2", "x3", "x4", "y1", "y2", "y3", "y4")
+
+Anscombe
