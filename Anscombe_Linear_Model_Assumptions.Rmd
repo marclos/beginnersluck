@@ -1,0 +1,281 @@
+---
+title: "Linear Model Assumptions"
+author: "Marc Los Huertos"
+date: "2/24/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Anscombe Data
+
+The first thing I did is create a dataframe with all the data, where a matrix() is converted to a dataframe. See below.
+
+Note: I removed the label 'cars' because it wasn't useful to keep.
+
+```{r}
+Anscombe = as.data.frame(
+  matrix(c(
+    1, 10, 10, 10, 8, 8.04, 9.14, 7.46, 6.58, 
+    2, 8, 8, 8, 8, 6.95, 8.14, 6.77, 5.76,
+    3, 13, 13, 13, 8, 7.58, 8.74, 12.74, 7.71,
+    4,  9, 9, 9, 8, 8.81, 8.77, 7.11, 8.84,
+    5, 11, 11, 11, 8, 8.33, 9.26, 7.81, 8.47,
+    6, 14, 14, 14, 8, 9.96, 8.10, 8.84, 7.04,
+    7,  6, 6, 6, 8, 7.24, 6.13, 6.08, 5.25,
+    8,  4, 4, 4, 19, 4.26, 3.10, 5.39, 12.50,
+    9, 12, 12, 12, 8, 10.84, 9.13, 8.15, 5.56,
+    10, 7, 7, 7, 8, 4.82, 7.26, 6.42, 7.91,
+    11, 5, 5, 5, 8, 5.68, 4.74, 5.73, 6.89), 
+    nrow=11,  byrow=TRUE))
+```
+
+After creating the data frame, I renamed the variables using names().
+
+```{r}
+names(Anscombe) = c("Obs.", "x1", "x2", "x3", "x4", "y1", "y2", "y3", "y4")
+```
+
+
+Finally, we can print out the dataframe with just the name of the dataframe.
+
+```{r}
+Anscombe
+```
+
+
+## Plot Each Dataset with the Dataframe
+
+Below I plot each dataset into a separate graph.
+
+```{r, echo=TRUE}
+plot(y1 ~ x1, Anscombe, main="Dataset A")
+plot(y2 ~ x2, Anscombe, main="Dataset B")
+plot(y3 ~ x3, Anscombe, main="Dataset C")
+plot(y4 ~ x4, Anscombe, main="Dataset D") 
+```
+
+## Plots with Best Fit Lines in a Panel
+
+So, first I'll add a command to make a panel so we can see all the graphs at once. Pretty conveneient. 
+
+Next, I createa linear model, using lm(), where we want the y is a function of x (y~x). 
+
+Finally, I added a line, abline(), with the coeffients from the linear model, coef().
+
+```{r}
+par(mfrow=c(2,2))
+plot(y1 ~ x1, Anscombe, main="Dataset A")
+  A.lm = lm(y1 ~ x1, Anscombe); abline(coef(A.lm)); 
+
+plot(y2 ~ x2, Anscombe, main="Dataset B")
+  B.lm = lm(y2 ~ x2, Anscombe); abline(coef(B.lm))
+
+plot(y3 ~ x3, Anscombe, main="Dataset C")
+  C.lm = lm(y3 ~ x3, Anscombe); abline(coef(C.lm))
+
+plot(y4 ~ x4, Anscombe, main="Dataset D")
+  D.lm = lm(y4 ~ x4, Anscombe); abline(coef(D.lm))
+```
+
+## Changing the scales so each graph matches
+
+First, I had to determine the minimum and maximum for the Xs and Ys, where plot(y~x, dataframe, xlim=c(min, max). 
+
+We need to get separate min for the Xs and Ys and max for the Xs and Ys. 
+
+It's a bit tricky because I had to select several columns...but not the first!
+
+```{r}
+names(Anscombe)
+```
+
+So, we need columns, 2-5 for the Xs and 6-9 for the Ys. for example, here is the minimum for the Xs. 
+
+```{r}
+min(Anscombe[, 2:5])
+```
+
+So, instead of put this value in each plot command, we can put the to values (min and max) as a vector for each plot function used.
+
+As a trick, it saves sometime, but works when you are a bit further in R, so I'll show you both ways!
+
+
+### Manually defining max X and min X and max Y and min Y.
+
+I define a new vector with the mins and maxs. NOTE: I can put to commands on the same line with a semicolon.
+
+```{r}
+xmin = min(Anscombe[, 2:5]); xmin
+xmax = max(Anscombe[, 2:5]); xmax
+
+ymin = min(Anscombe[, 6:9]); ymin
+ymax = max(Anscombe[, 6:9]); ymax
+```
+
+And now the plots. Notice how each plot has the min and max.
+```{r}
+par(mfrow=c(2,2), las=1)
+plot(y1 ~ x1, Anscombe, main="Dataset A", xlim=c(4,19), ylim=c(3.1,12.74));
+  A.lm = lm(y1 ~ x1, Anscombe); abline(coef(A.lm))
+
+plot(y2 ~ x2, Anscombe, main="Dataset B", xlim=c(4,19), ylim=c(3.1,12.74)) 
+  B.lm = lm(y2 ~ x2, Anscombe); abline(coef(B.lm))
+
+plot(y3 ~ x3, Anscombe, main="Dataset C", xlim=c(4,19), ylim=c(3.1,12.74)) 
+  C.lm = lm(y3 ~ x3, Anscombe); abline(coef(C.lm))
+
+plot(y4 ~ x4, Anscombe, main="Dataset D", xlim=c(4,19), ylim=c(3.1,12.74)) 
+  D.lm = lm(y4 ~ x4, Anscombe); abline(coef(D.lm))
+```
+
+I don't like this method because it relies on me typing the right number -- I'd rather define the numbers and then use a vector that contains both the max and min and defined here:
+
+```{r}
+xminmax = c(xmin, xmax); xminmax
+yminmax = c(ymin, ymax); yminmax
+```
+
+Now let's do the plots, same results!  
+```{r}
+par(mfrow=c(2,2), las=1)
+plot(y1 ~ x1, Anscombe, main="Dataset A", xlim=xminmax, ylim=yminmax);
+  A.lm = lm(y1 ~ x1, Anscombe); abline(coef(A.lm))
+
+plot(y2 ~ x2, Anscombe, main="Dataset B", xlim=xminmax, ylim=yminmax) 
+  B.lm = lm(y2 ~ x2, Anscombe); abline(coef(B.lm))
+
+plot(y3 ~ x3, Anscombe, main="Dataset C", xlim=xminmax, ylim=yminmax) 
+  C.lm = lm(y3 ~ x3, Anscombe); abline(coef(C.lm))
+
+plot(y4 ~ x4, Anscombe, main="Dataset D", xlim=xminmax, ylim=yminmax)
+D.lm = lm(y4 ~ x4, Anscombe); abline(coef(D.lm))
+```
+
+## Adding Text with the coeficients
+
+Finally, we can add text to the plots using text() and paste() text with a R function, e.g. coef(). I also rounded the values to 3 digits and made the best fit line blue.
+
+NOTE: coef() has two values -- slope and intercept!
+
+```{r}
+coef(A.lm)
+```
+
+We can extract them individually using square brackets
+
+```{r}
+coef(A.lm)[1]
+coef(A.lm)[2]
+```
+
+where position 1 is for the intercept and position 2 is the slope.
+
+
+```{r}
+par(mfrow=c(2,2), las=1)
+plot(y1 ~ x1, Anscombe, main="Dataset A", xlim=xminmax, ylim=yminmax); 
+  A.lm = lm(y1 ~ x1, Anscombe); abline(coef(A.lm), col="blue"); 
+  text(14,5, paste("slope =", round(coef(A.lm)[2], 3)));
+  text(14,4, paste("intercept =", round(coef(A.lm)[1], 3)))
+
+plot(y2 ~ x2, Anscombe, main="Dataset B", xlim=xminmax, ylim=yminmax); 
+  B.lm = lm(y2 ~ x2, Anscombe); abline(coef(B.lm), col="blue")
+  text(14,6, paste("slope =", round(coef(B.lm)[2], 3)));
+  text(14,5, paste("intercept =", round(coef(B.lm)[1], 3)))
+
+plot(y3 ~ x3, Anscombe, main="Dataset C", xlim=xminmax, ylim=yminmax); 
+  C.lm = lm(y3 ~ x3, Anscombe); abline(coef(C.lm), col="blue")
+  text(14,6, paste("slope =", round(coef(C.lm)[2], 3)));
+  text(14,5, paste("intercept =", round(coef(C.lm)[1], 3)))
+
+  plot(y4 ~ x4, Anscombe, main="Dataset D", xlim=xminmax, ylim=yminmax); 
+  D.lm = lm(y4 ~ x4, Anscombe); abline(coef(D.lm), col="blue")
+  text(14,6, paste("slope =", round(coef(D.lm)[2], 3)));
+  text(14,5, paste("intercept =", round(coef(D.lm)[1], 3)))
+
+```
+
+Can you think of things to make this a better graph? Slack suggestions and I'll add it!
+
+## Statistics
+
+Are the results signficant?  Good question, we can use summary() to get the results:
+
+```{r}
+summary(A.lm)
+summary(B.lm)
+summary(C.lm)
+summary(D.lm)
+```
+
+From this we can determine if the model is outside the range of random variation. 
+
+I each case the p-values are <0.05, suggesting significant. In addition, we can look at the R2, which is an estimate of how much of the variation of y is explained by x. In nearly every case these value are above .62, which is generally thought of as quite good as a predictor. Not perfect, which would be 1, but not close to zero, where there would be not explanatory value of x. 
+
+## What's going on!
+
+We need to look at the assumptions, which relies on plots() of the linear model -- which generates 4 default plots. 
+
+```{r}
+par(mfrow=c(2,2)); plot(A.lm); par(mfrow=c(1,1))
+```
+
+Let's compare each model with their assumptions. There should be no structure in first diagnostic plot!
+
+There isn't much that stands out for the others.
+
+```{r}
+par(mfrow=c(2,5), las=1)
+plot(y1 ~ x1, Anscombe, main="Dataset A", xlim=xminmax, ylim=yminmax); 
+  A.lm = lm(y1 ~ x1, Anscombe); abline(coef(A.lm), col="blue"); 
+  text(14,5, paste("slope =", round(coef(A.lm)[2], 3)));
+  text(14,4, paste("intercept =", round(coef(A.lm)[1], 3)))
+
+plot(A.lm)
+
+plot(y2 ~ x2, Anscombe, main="Dataset B", xlim=xminmax, ylim=yminmax); 
+  B.lm = lm(y2 ~ x2, Anscombe); abline(coef(B.lm), col="blue")
+  text(14,6, paste("slope =", round(coef(B.lm)[2], 3)));
+  text(14,5, paste("intercept =", round(coef(B.lm)[1], 3)))
+
+plot(B.lm)
+```
+
+```{r}
+par(mfrow=c(2,5), las=1)
+plot(y1 ~ x1, Anscombe, main="Dataset A", xlim=xminmax, ylim=yminmax); 
+  A.lm = lm(y1 ~ x1, Anscombe); abline(coef(A.lm), col="blue"); 
+  text(14,5, paste("slope =", round(coef(A.lm)[2], 3)));
+  text(14,4, paste("intercept =", round(coef(A.lm)[1], 3)))
+
+plot(A.lm)
+
+plot(y3 ~ x3, Anscombe, main="Dataset C", xlim=xminmax, ylim=yminmax); 
+  C.lm = lm(y3 ~ x3, Anscombe); abline(coef(C.lm), col="blue")
+  text(14,6, paste("slope =", round(coef(C.lm)[2], 3)));
+  text(14,5, paste("intercept =", round(coef(C.lm)[1], 3)))
+
+plot(C.lm)
+```
+
+
+```{r}
+par(mfrow=c(2,5), las=1)
+plot(y1 ~ x1, Anscombe, main="Dataset A", xlim=xminmax, ylim=yminmax); 
+  A.lm = lm(y1 ~ x1, Anscombe); abline(coef(A.lm), col="blue"); 
+  text(14,5, paste("slope =", round(coef(A.lm)[2], 3)));
+  text(14,4, paste("intercept =", round(coef(A.lm)[1], 3)))
+
+plot(A.lm)
+
+plot(y4 ~ x4, Anscombe, main="Dataset D", xlim=xminmax, ylim=yminmax); 
+  D.lm = lm(y4 ~ x4, Anscombe); abline(coef(D.lm), col="blue")
+  text(14,6, paste("slope =", round(coef(D.lm)[2], 3)));
+  text(14,5, paste("intercept =", round(coef(D.lm)[1], 3)))
+
+plot(D.lm)
+```
+
