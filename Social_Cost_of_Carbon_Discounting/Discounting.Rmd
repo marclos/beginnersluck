@@ -1,0 +1,64 @@
+---
+title: "Discount Rates"
+author: "Marc Los Huertos"
+date: "4/28/2021"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Long-term and Short-term Trade-offs
+
+Most environmental policies involve a trade-off between short-term costs and longer-term benefits. 
+
+- Investments in cleaner technologies and abatement equipment, for example, require up front expenditures that produce environmental improvements over time. 
+
+For example, if a pollutant decays within a few years, the time horizon for analyzing costs and benefits depends on the lifespan of the investment—perhaps as long as 50 or 100 years. 
+
+In contrast, the benefits of climate change mitigation measures are linked not only to the lifespan of physical capital but also to the lifespan of greenhouse gases (GHGs), which may remain in the atmosphere for centuries. 
+Climate change presents specific challenges for determining the proper balance between future benefits and present-day costs.
+
+## Future Value Calculation
+
+Here's how future values (FV) are calculated based on present value (PV), rate (r), and time (t). 
+
+$FV = PV * (1 + r)^t$
+
+## Example (using R)
+
+```{r cars, echo = TRUE}
+PV = 100
+r = .05
+t = 1:25
+
+plot(t, PV*(1+r)^t, ylab="FV")
+```
+
+## $30 present cost for future dollars?
+
+$PV = FV/(1+r)^t$
+
+```{r futuredamages}
+FV = 100
+
+(PV = FV/(1+.05)^25)
+
+(PV = FV/(1+0.05)^t)
+
+```
+## Present Value 76 Cents of $100 of Future Damage
+
+```{r 76cents}
+FV = 100
+t=1:100
+
+PV = FV/(1+0.05)^t
+
+plot(t, PV, ylab="PV", ty='l')
+lines(t, FV/(1+.01)^t, col='red')
+text(40, 20, "5%")
+text(40, 75, "1%", col="red")
+
+```

@@ -48,24 +48,26 @@ xmax = max(Anscombe[, 2:5]); xmax
 ymin = min(Anscombe[, 6:9]); ymin
 ymax = max(Anscombe[, 6:9]); ymax
 
-par(mfrow=c(2,2))
-plot(y1 ~ x1, Anscombe, main="Dataset A", xlim=c(xmin,xmax), ylim=c(ymin,ymax)); 
-  A.lm = lm(y1 ~ x1, Anscombe); abline(coef(A.lm)); 
+xminmax = c(xmin, xmax); xminmax
+
+par(mfrow=c(2,2), las=1)
+plot(y1 ~ x1, Anscombe, main="Dataset A", xlim=xminmax, ylim=yminmax); 
+  A.lm = lm(y1 ~ x1, Anscombe); abline(coef(A.lm), col="blue"); 
   text(14,5, paste("slope =", round(coef(A.lm)[2], 3)));
   text(14,4, paste("intercept =", round(coef(A.lm)[1], 3)))
 
-plot(y2 ~ x2, Anscombe, main="Dataset B", xlim=c(xmin,xmax), ylim=c(ymin,ymax)); 
-  B.lm = lm(y2 ~ x2, Anscombe); abline(coef(B.lm))
+plot(y2 ~ x2, Anscombe, main="Dataset B", xlim=xminmax, ylim=yminmax); 
+  B.lm = lm(y2 ~ x2, Anscombe); abline(coef(B.lm), col="blue")
   text(14,6, paste("slope =", round(coef(B.lm)[2], 3)));
   text(14,5, paste("intercept =", round(coef(B.lm)[1], 3)))
 
-plot(y3 ~ x3, Anscombe, main="Dataset C", xlim=c(xmin,xmax), ylim=c(ymin,ymax)); 
-  C.lm = lm(y3 ~ x3, Anscombe); abline(coef(C.lm))
+plot(y3 ~ x3, Anscombe, main="Dataset C", xlim=xminmax, ylim=yminmax); 
+  C.lm = lm(y3 ~ x3, Anscombe); abline(coef(C.lm), col="blue")
   text(14,6, paste("slope =", round(coef(C.lm)[2], 3)));
   text(14,5, paste("intercept =", round(coef(C.lm)[1], 3)))
 
-  plot(y4 ~ x4, Anscombe, main="Dataset D", xlim=c(xmin,xmax), ylim=c(ymin,ymax)); 
-  D.lm = lm(y4 ~ x4, Anscombe); abline(coef(D.lm))
+  plot(y4 ~ x4, Anscombe, main="Dataset D", xlim=xminmax, ylim=yminmax); 
+  D.lm = lm(y4 ~ x4, Anscombe); abline(coef(D.lm), col="blue")
   text(14,6, paste("slope =", round(coef(D.lm)[2], 3)));
   text(14,5, paste("intercept =", round(coef(D.lm)[1], 3)))
 
