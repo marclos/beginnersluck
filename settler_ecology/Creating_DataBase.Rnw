@@ -1,0 +1,46 @@
+\documentclass{article}
+
+\begin{document}
+
+<<>>=
+#library(wosr)
+# auth(username=Sys.getenv(NULL), password = Sys.getenv(NULL))
+# data=pull_wos('TS = ("indigenous") and TS = ("ecology")')
+
+# library(jstor) Doesn't work after 2021
+#jst_get_full_text(filename)
+
+library(jsonlite)
+library(tidyverse)
+TorreyBotClub.jsonl = "/home/CAMPUS/mwl04747/github/beginnersluck/settler_ecology/TorreyBotClub.jsonl"
+
+# read_json(path, simplifyVector = FALSE, ...)
+read_json(TorreyBotClub.jsonl)
+#test = jsonlite::stream_in(file(TorreyBotClub.jsonl))
+
+out <- lapply(readLines(TorreyBotClub.jsonl), fromJSON)
+out1 <- stream_in(file(TorreyBotClub.jsonl))
+
+
+@
+
+\section{CSV files}
+
+<<>>=
+torrey.csv = "/home/CAMPUS/mwl04747/github/beginnersluck/settler_ecology/TorreyBotClub.csv"
+torrey = read.csv(torrey.csv)
+names(torrey)
+
+hist(torrey$publicationYear)
+set.seed(133434)
+S = sample(length(torrey$id), 20)
+torrey.S = torrey[S,]
+@
+
+\section{obtain PDFs}
+
+\subsection{firewall issues}
+
+
+
+\end{document}

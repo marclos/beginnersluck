@@ -1,0 +1,180 @@
+---
+title: "Settler-Colonial Analysis"
+author: "Marc Los Huertos"
+date: "4/4/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(jsonlite)
+library(rtweet)
+library(stringr)
+```
+
+## Method Resources
+
+Starting this project required a bit of some stages that I hadn't anticipated...
+
+<https://towardsdatascience.com/a-light-introduction-to-text-analysis-in-r-ea291a9865a8>.
+
+### Read jsonl Data
+
+This is not as easy as one might think. First, there is a difference between json and jsonl, where l (lines) includes a dataset of ``observations'', which are contained in each line. 
+
+I don't really know why, but when getting to be large in size are really not read by R very well. In fact, I have had a process to read a large file using jsonlite::stream_in and it has been running for 1:15:37:00, one day + 15 hours and it might take many more days. I think coverting to a data frame is a disaster and terribly ineffecient. 
+
+```{r definedata}
+## Replace '...' with the directory that has your files
+setwd("/home/CAMPUS/mwl04747/github/beginnersluck/settler_ecology")
+files = dir(pattern = "*.jsonl$")
+
+## As many JSON fields as you want go here, for instance:
+cols = c(
+  "datePublished",
+  "fullText",
+  "id"
+)
+```
+
+## Create CSVs
+
+You can also embed plots, for example:
+
+```{r function, echo=FALSE}
+for (i in 1:length(files)){
+  start = Sys.time()
+  lines = readLines(files[i])
+  temp = do.call(
+    rbind, 
+    lapply(
+      lines, function(x)
+        unlist(jsonlite::fromJSON(x))[cols]
+    )
+  )
+  colnames(temp) = cols
+  y = as.data.frame(temp)
+  save_as_csv(y, sub("jsonl", "csv", files[i]), prepend_ids = T, fileEncoding = "UTF-8")
+  end = Sys.time()
+  message(files[i], ": ", round(difftime(end, start, units = "mins"), 2), 
+          " minutes for ", length(lines), " articles")
+  # file.remove(files[i])
+  ## Uncomment above if you want the jsonl files to be permanently deleted (like if space is an issue)
+}
+
+
+```
+
+
+
+## Analysis
+
+### Import CSV
+```{r}
+BotGaz <- read.csv("4b8a40f2-fa6f-ab9c-7719-d039a3c4cc81-csv.jsonl.csv")
+
+```
+
+### Clean Files
+
+
+```{r}
+#BotGaz$fullText
+BotGaz$fullText = gsub("-\\s*", "", BotGaz$fullText)
+
+
+```
+
+## Are Native People Referenced
+
+### The Problem Associated with 'Indian'
+
+```{r}
+# BotGaz %>% count(fullText, sort = TRUE)
+
+sum(+(grepl("Indian", BotGaz$fullText)))
+
+BotGaz$Indian = +(grepl("Indian\\b", BotGaz$fullText) &
+                  !grepl("India\\b", BotGaz$fullText) &
+                  !grepl("West Indian", BotGaz$fullText) &
+                  !grepl("East Indian", BotGaz$fullText) ); 
+sum(BotGaz$Indian)
+str(BotGaz)
+plot(Indian~datePublished, BotGaz)
+BotGaz.r1 = BotGaz[BotGaz$Indian==1,c(1,2)]
+print(BotGaz.r1$fullText)
+
+```
+
+### Native Peoples vs. Native Species/Vegetation/etc
+
+
+```{r}
+BotGaz$Native = +(grepl("Native", BotGaz$fullText))
+
+print(BotGaz$fullText[BotGaz$Native==1])
+      
+arun <- function(keyword, str) {
+    #keyword <- "Native"
+    lookaround <- 3
+    pattern <- paste0("([[:alpha:]]+ ){0,", lookaround, "}", keyword, 
+                    "( [[:alpha:]]+){0,", lookaround, "}")
+
+regmatches(str, regexpr(pattern, str))
+}
+
+arun("Native", BotGaz$fullText)
+arun("native", BotGaz$fullText)
+arun("tribe", BotGaz$fullText)
+```
+
+### Indigenous Peoples
+
+```{r indigenous}
+arun("indigenous", BotGaz$fullText)
+```
+
+### Tribes and Nations vs. Nationalitity and Tribes
+
+```{r}
+BotGaz$native = +(grepl("native", BotGaz$fullText))
+BotGaz$indigenous = +(grepl("indigenous", ignore.case = TRUE, BotGaz$fullText))
+
+
+sum(BotGaz$indigenous)
+
+BotGaz$dine = +(grepl("Dine", BotGaz$fullText))
+
+sum(BotGaz$dine) #Dineuron
+
+print(BotGaz$fullText[BotGaz$dine==1])
+
+
+arun("Cherokee", BotGaz$fullText)
+arun("Pima", BotGaz$fullText)
+arun("Dine", BotGaz$fullText)
+arun("Apache", BotGaz$fullText)
+arun("Yakama", BotGaz$fullText)
+arun("Paiute", BotGaz$fullText)
+arun("Park", BotGaz$fullText)
+arun("City", BotGaz$fullText)
+arun("unceded", BotGaz$fullText)
+arun("acknowledge", BotGaz$fullText)
+
+
+
+plot(indigenous~datePublished, BotGaz)
+
+
+head(BotGaz[order(BotGaz$Native, decreasing=T),])
+head(BotGaz[order(BotGaz$indigenous, decreasing=T),])
+```
+
+
+## Acknowledgements
+
+### Access to Sites/Resources
+
+### Land Management
+
+```{r}

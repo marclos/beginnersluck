@@ -1,0 +1,502 @@
+---
+title: "Twitter and CD41"
+author: "Marc Los Huertos"
+date: "4/2/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(twitteR)
+library(ROAuth)
+library(hms)
+library(lubridate) 
+library(tidytext)
+library(tm)
+library(wordcloud)
+library(igraph)
+library(glue)
+library(networkD3)
+library(rtweet)
+library(plyr)
+library(stringr)
+library(ggplot2)
+library(ggeasy)
+library(plotly)
+library(dplyr)  
+library(hms)
+library(lubridate) 
+library(magrittr)
+library(tidyverse)
+library(janeaustenr)
+library(widyr)
+library(base64enc)
+library(openssl)
+library(httpuv)
+require(httr)
+require(jsonlite)
+require(dplyr)
+
+```
+
+## Background
+
+### Resources
+
+Getting started requires getting an account and a developer account in Twitter. I have found several resources for this, but unfortunately, the Twitter interface has changed leading to some ambiguities. 
+
+
+### Getting API keys
+
+Here are two sites that have value. 
+
+<https://developer.twitter.com/en/docs/tutorials/getting-started-with-r-and-v2-of-the-twitter-api>
+
+
+<https://cran.r-project.org/web/packages/rtweet/vignettes/auth.html>
+
+### Keeping API Keys secure.
+
+install.packages("dotenv")
+
+.env Setup
+
+Now let's setup our .env file. This file should always live in the project's top level folder, or root directory. Create a new text file in that location, renaming it to .env. Windows will ask you to confirm that you want to change the file type. Click yes.
+
+Next, open the .env file with a text editor. I prefer Atom or Notepad++, but Notepad will work just fine. By convention, environment variables are all uppercase with words separated by underscores. We can name ours GOOGLE_MAPS_API and paste our token in. Save and close the file.
+
+GitHub will save all of the changes to the code, but we need to exclude the .env file as that is what contains our token. To make sure that the .env file is not committed to the repository, open up the .gitignore file in your project folder and add the following line.
+
+```{r}
+
+```
+
+The load_dot_env() function will be used to load the .env file to the environment variables. This function will look for the .env file in the current working directory.
+
+```{r}
+load_dot_env()
+```
+
+
+If you had to name your file something other than .env, the function call should look like below, with cred.env replaced with your filename.
+
+```{r}
+library(dotenv)
+load_dot_env("twitter_API.env")
+```
+
+To use the environment variable in our script, we can use the Sys.getenv() function in our mp_geocode() function (or wherever else you are using your environment variables).
+
+```{r}
+#geo_obs <- mp_geocode(places, key=Sys.getenv("GOOGLE_MAPS_API"))
+```
+
+The last thing to do is delete the line that has the API key in plain text. After that the final script will look like this:
+
+```{r}
+library(mapsapi)
+library(dotenv)
+#load_dot_env()
+#geo_obs <- mp_geocode(places, key=Sys.getenv("GOOGLE_MAPS_API"))
+```
+
+
+## Sentiment Analysis
+
+### What is sentiment analysis
+
+using <https://jtr13.github.io/cc21/twitter-sentiment-analysis-in-r.html>.
+
+API...
+
+
+
+```{r}
+#Note: Replace below with your credentials following above reference
+
+Sys.setenv(BEARER_TOKEN = bearer_token)
+
+
+
+#headers <- c(`Authorization` = sprintf('Bearer %s', bearer_token))
+#headers <- c(`Authorization` = sprintf('Bearer %s', BEARER_TOKEN))
+
+#params <- list(`user.fields` = 'description', `expansion` = 'pinned_tweet_id')
+
+# handle <- readline('KenCalvert')
+
+# url_handle <- sprintf('https://api.twitter.com/2/users/by?usernames=%s', handle)
+
+
+
+
+## authenticate via web browser -- DOESN'T WORK
+# token <- create_token(app = "twitterfun123", consumer_key = api_key, consumer_secret = api_secret)
+
+#Note: This will ask us permission for direct authentication, type '1' for yes:
+
+#setup_twitter_oauth(api_key,api_secret,access_token,access_token_secret)
+setup_twitter_oauth(API_KEY,API_SECRET,
+                    ACCESS_TOKEN,ACCESS_TOKEN_SECRET)
+```
+
+```{r}
+# tweets <- searchTwitter("#globalwarming", n=4000, lang="en")
+tweets <- searchTwitter("#kencalvert", n=4000, lang="en")
+n.tweet <- length(tweets)
+
+# convert tweets to a data frame
+tweets.df <- twListToDF(tweets)
+
+tweets.txt <- sapply(tweets, function(t)t$getText())
+# Ignore graphical Parameters to avoid input errors
+tweets.txt <- str_replace_all(tweets.txt,"[^[:graph:]]", " ")
+
+## pre-processing text:
+clean.text = function(x)
+{
+  # convert to lower case
+  x = tolower(x)
+  # remove rt
+  x = gsub("rt", "", x)
+  # remove at
+  x = gsub("@\\w+", "", x)
+  # remove punctuation
+  x = gsub("[[:punct:]]", "", x)
+  # remove numbers
+  x = gsub("[[:digit:]]", "", x)
+  # remove links http
+  x = gsub("http\\w+", "", x)
+  # remove tabs
+  x = gsub("[ |\t]{2,}", "", x)
+  # remove blank spaces at the beginning
+  x = gsub("^ ", "", x)
+  # remove blank spaces at the end
+  x = gsub(" $", "", x)
+  # some other cleaning text
+  x = gsub('https://','',x)
+  x = gsub('http://','',x)
+  x = gsub('[^[:graph:]]', ' ',x)
+  x = gsub('[[:punct:]]', '', x)
+  x = gsub('[[:cntrl:]]', '', x)
+  x = gsub('\\d+', '', x)
+  x = str_replace_all(x,"[^[:graph:]]", " ")
+  return(x)
+}
+
+cleanText <- clean.text(tweets.txt)
+# remove empty results (if any)
+idx <- which(cleanText == " ")
+cleanText <- cleanText[cleanText != " "]
+```
+
+```{r}
+
+tweets.df %<>% 
+  mutate(
+    created = created %>% 
+      # Remove zeros.
+      str_remove_all(pattern = '\\+0000') %>%
+      # Parse date.
+      parse_date_time(orders = '%y-%m-%d %H%M%S')
+  )
+
+tweets.df %<>% 
+  mutate(Created_At_Round = created%>% round(units = 'hours') %>% as.POSIXct())
+
+tweets.df %>% pull(created) %>% min()
+
+tweets.df %>% pull(created) %>% max()
+
+plt <- tweets.df %>% 
+  dplyr::count(Created_At_Round) %>% 
+  ggplot(mapping = aes(x = Created_At_Round, y = n)) +
+  theme_light() +
+  geom_line() +
+  xlab(label = 'Date') +
+  ylab(label = NULL) +
+  ggtitle(label = 'Number of Tweets per Hour')
+
+plt %>% ggplotly()
+
+```
+```{r}
+
+
+positive = scan('https://ptrckprry.com/course/ssd/data/positive-words.txt', what = 'character', comment.char = ';')
+negative = scan('https://ptrckprry.com/course/ssd/data/negative-words.txt', what = 'character', comment.char = ';')
+# add your list of words below as you wish if missing in above read lists
+pos.words = c(positive,'upgrade','Congrats','prizes','prize','thanks','thnx',
+              'Grt','gr8','plz','trending','recovering','brainstorm','leader')
+neg.words = c(negative,'wtf','wait','waiting','epicfail','Fight','fighting',
+              'arrest','no','not')
+
+score.sentiment = function(sentences, pos.words, neg.words, .progress='none')
+{
+  require(plyr)
+  require(stringr)
+  
+  # we are giving vector of sentences as input. 
+  # plyr will handle a list or a vector as an "l" for us
+  # we want a simple array of scores back, so we use "l" + "a" + "ply" = laply:
+  scores = laply(sentences, function(sentence, pos.words, neg.words) {
+    
+    # clean up sentences with R's regex-driven global substitute, gsub() function:
+    sentence = gsub('https://','',sentence)
+    sentence = gsub('http://','',sentence)
+    sentence = gsub('[^[:graph:]]', ' ',sentence)
+    sentence = gsub('[[:punct:]]', '', sentence)
+    sentence = gsub('[[:cntrl:]]', '', sentence)
+    sentence = gsub('\\d+', '', sentence)
+    sentence = str_replace_all(sentence,"[^[:graph:]]", " ")
+    # and convert to lower case:
+    sentence = tolower(sentence)
+    
+    # split into words. str_split is in the stringr package
+    word.list = str_split(sentence, '\\s+')
+    # sometimes a list() is one level of hierarchy too much
+    words = unlist(word.list)
+    
+    # compare our words to the dictionaries of positive & negative terms
+    pos.matches = match(words, pos.words)
+    neg.matches = match(words, neg.words)
+    
+    # match() returns the position of the matched term or NA
+    # we just want a TRUE/FALSE:
+    pos.matches = !is.na(pos.matches)
+    neg.matches = !is.na(neg.matches)
+    
+    # TRUE/FALSE will be treated as 1/0 by sum():
+    score = sum(pos.matches) - sum(neg.matches)
+    
+    return(score)
+  }, pos.words, neg.words, .progress=.progress )
+  
+  scores.df = data.frame(score=scores, text=sentences)
+  return(scores.df)
+}
+
+analysis <- score.sentiment(cleanText, pos.words, neg.words)
+# sentiment score frequency table
+table(analysis$score)
+
+analysis %>%
+  ggplot(aes(x=score)) + 
+  geom_histogram(binwidth = 1, fill = "lightblue")+ 
+  ylab("Frequency") + 
+  xlab("sentiment score") +
+  ggtitle("Distribution of Sentiment scores of the tweets") +
+  ggeasy::easy_center_title()
+
+```
+
+```{r}
+
+neutral <- length(which(analysis$score == 0))
+positive <- length(which(analysis$score > 0))
+negative <- length(which(analysis$score < 0))
+Sentiment <- c("Positive","Neutral","Negative")
+Count <- c(positive,neutral,negative)
+output <- data.frame(Sentiment,Count)
+output$Sentiment<-factor(output$Sentiment,levels=Sentiment)
+ggplot(output, aes(x=Sentiment,y=Count))+
+  geom_bar(stat = "identity", aes(fill = Sentiment))+
+  ggtitle("Barplot of Sentiment type of 4000 tweets")
+
+
+text_corpus <- Corpus(VectorSource(cleanText))
+text_corpus <- tm_map(text_corpus, content_transformer(tolower))
+text_corpus <- tm_map(text_corpus, function(x)removeWords(x,stopwords("english")))
+text_corpus <- tm_map(text_corpus, removeWords, c("global","globalwarming"))
+tdm <- TermDocumentMatrix(text_corpus)
+tdm <- as.matrix(tdm)
+tdm <- sort(rowSums(tdm), decreasing = TRUE)
+tdm <- data.frame(word = names(tdm), freq = tdm)
+set.seed(123)
+wordcloud(text_corpus, min.freq = 1, max.words = 100, scale = c(2.2,1),
+          colors=brewer.pal(8, "Dark2"), random.color = T, random.order = F)
+
+```
+
+
+```{r}
+ggplot(tdm[1:20,], aes(x=reorder(word, freq), y=freq)) + 
+  geom_bar(stat="identity") +
+  xlab("Terms") + 
+  ylab("Count") + 
+  coord_flip() +
+  theme(axis.text=element_text(size=7)) +
+  ggtitle('Most common word frequency plot') +
+  ggeasy::easy_center_title()
+
+
+#bigram
+bi.gram.words <- tweets.df %>% 
+  unnest_tokens(
+    input = text, 
+    output = bigram, 
+    token = 'ngrams', 
+    n = 2
+  ) %>% 
+  filter(! is.na(bigram))
+
+bi.gram.words %>% 
+  select(bigram) %>% 
+  head(10)
+
+extra.stop.words <- c('https')
+stopwords.df <- tibble(
+  word = c(stopwords(kind = 'es'),
+           stopwords(kind = 'en'),
+           extra.stop.words)
+)
+
+
+bi.gram.words %<>% 
+  separate(col = bigram, into = c('word1', 'word2'), sep = ' ') %>% 
+  filter(! word1 %in% stopwords.df$word) %>% 
+  filter(! word2 %in% stopwords.df$word) %>% 
+  filter(! is.na(word1)) %>% 
+  filter(! is.na(word2)) 
+
+bi.gram.count <- bi.gram.words %>% 
+  dplyr::count(word1, word2, sort = TRUE) %>% 
+  dplyr::rename(weight = n)
+
+bi.gram.count %>% head()
+
+
+bi.gram.count %>% 
+  ggplot(mapping = aes(x = weight)) +
+  theme_light() +
+  geom_histogram() +
+  labs(title = "Bigram Weight Distribution")
+
+bi.gram.count %>% 
+  mutate(weight = log(weight + 1)) %>% 
+  ggplot(mapping = aes(x = weight)) +
+  theme_light() +
+  geom_histogram() +
+  labs(title = "Bigram log-Weight Distribution")
+
+threshold <- 50
+
+# For visualization purposes we scale by a global factor. 
+ScaleWeight <- function(x, lambda) {
+  x / lambda
+}
+
+network <-  bi.gram.count %>%
+  filter(weight > threshold) %>%
+  mutate(weight = ScaleWeight(x = weight, lambda = 2E3)) %>% 
+  graph_from_data_frame(directed = FALSE)
+
+plot(
+  network, 
+  vertex.size = 1,
+  vertex.label.color = 'black', 
+  vertex.label.cex = 0.7, 
+  vertex.label.dist = 1,
+  edge.color = 'gray', 
+  main = 'Bigram Count Network', 
+  sub = glue('Weight Threshold: {threshold}'), 
+  alpha = 50
+)
+
+
+V(network)$degree <- strength(graph = network)
+
+# Compute the weight shares.
+E(network)$width <- E(network)$weight/max(E(network)$weight)
+
+plot(
+  network, 
+  vertex.color = 'lightblue',
+  # Scale node size by degree.
+  vertex.size = 2*V(network)$degree,
+  vertex.label.color = 'black', 
+  vertex.label.cex = 0.6, 
+  vertex.label.dist = 1.6,
+  edge.color = 'gray', 
+  # Set edge width proportional to the weight relative value.
+  edge.width = 3*E(network)$width ,
+  main = 'Bigram Count Network', 
+  sub = glue('Weight Threshold: {threshold}'), 
+  alpha = 50
+)
+
+threshold <- 50
+
+network <-  bi.gram.count %>%
+  filter(weight > threshold) %>%
+  graph_from_data_frame(directed = FALSE)
+
+# Store the degree.
+V(network)$degree <- strength(graph = network)
+# Compute the weight shares.
+E(network)$width <- E(network)$weight/max(E(network)$weight)
+
+# Create networkD3 object.
+network.D3 <- igraph_to_networkD3(g = network)
+# Define node size.
+network.D3$nodes %<>% mutate(Degree = (1E-2)*V(network)$degree)
+# Define color group
+network.D3$nodes %<>% mutate(Group = 1)
+# Define edges width. 
+network.D3$links$Width <- 10*E(network)$width
+
+forceNetwork(
+  Links = network.D3$links, 
+  Nodes = network.D3$nodes, 
+  Source = 'source', 
+  Target = 'target',
+  NodeID = 'name',
+  Group = 'Group', 
+  opacity = 0.9,
+  Value = 'Width',
+  Nodesize = 'Degree', 
+  # We input a JavaScript function.
+  linkWidth = JS("function(d) { return Math.sqrt(d.value); }"), 
+  fontSize = 12,
+  zoom = TRUE, 
+  opacityNoHover = 1
+)
+
+```
+
+
+
+
+
+
+
+https://www.earthdatascience.org/courses/earth-analytics/get-data-using-apis/use-twitter-api-r/
+```{r}
+# whatever name you assigned to your created app
+appname <- "twitterfun123"
+
+## api key (example below is not a real key)
+key <- "mEHp2Zh9bHQ9j06zWI1jD0QrL"
+
+## api secret (example below is not a real key)
+secret <- "U2EmFmkvHscx3OOWWrhushVnUPQgfm4iSbgGfea7ZCd2jySMux"
+
+# create token named "twitter_token"
+twitter_token <- create_token(
+  app = appname,
+  consumer_key = key,
+  consumer_secret = secret,
+  access_token = access_token,
+  access_secret = access_token_secret)
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
