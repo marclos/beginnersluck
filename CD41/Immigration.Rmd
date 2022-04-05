@@ -29,6 +29,37 @@ summary(cars)
 
 ### NGOs and Think Tanks
 
-Migration Policy Institute
+Just as the politics of immigration policy is highly polarized, I suspect the policy think tanks, organizations, and advocacy groups are similarly polarized. Thus, that there might be a unbiased, objective view is probably a fantasy. Nevertheless, let's see what I can learn in an afternoon and then communicated it to the readers. 
+
+1. Migration Policy Institute
+
+Mission: The nonpartisan Migration Policy Institute seeks to improve immigration and integration policies through authoritative research and analysis, opportunities for learning and dialogue, and the development of new ideas to address complex policy questions.
 
 <https://www.migrationpolicy.org/topics/comprehensive-immigration-reform>
+
+2. American Immigration Council
+
+Our Vision : The Council believes that immigrants are part of our national fabric, bringing energy and skills that benefit all Americans. We envision an America that values fairness and justice for immigrants and advances a prosperous future for all. 
+
+<https://www.americanimmigrationcouncil.org/>
+
+
+
+3. Pew Research Center 
+
+Pew Research Center is a nonpartisan fact tank that informs the public about the issues, attitudes and trends shaping the world. We conduct public opinion polling, demographic research, content analysis and other data-driven social science research. We do not take policy positions.
+
+MISSION
+The Center generates a foundation of facts that enriches the public dialogue and supports sound decision-making. Our empirical research on a wide range of topics helps U.S. and international policymakers, civic leaders, educators and the public at large understand and address some of the world’s most challenging problems. Our public opinion surveys allow the voice of the people to be heard, and our demographic, economic and political analyses provide context to understand how the world is changing. We are nonprofit, nonpartisan and nonadvocacy. Our mission is to inform, not to prescribe. We believe that better information can build a better world. “Fact-based information is the fuel democracies run on—the raw material from which societies identify problems and construct solutions.”
+
+<https://www.pewresearch.org/>
+
+4. Council on Foreign Relations
+
+The Council on Foreign Relations (CFR) is an independent, nonpartisan membership organization, think tank, and publisher dedicated to being a resource for its members, government officials, business executives, journalists, educators and students, civic and religious leaders, and other interested citizens in order to help them better understand the world and the foreign policy choices facing the United States and other countries. Founded in 1921, CFR takes no institutional positions on matters of policy. Our goal is to start a conversation in this country about the need for Americans to better understand the world.
+
+
+
+# Citations
+
+Bureau of Labor Statistics, U.S. Department of Labor, The Economics Daily, Foreign-born workers made up 17.4 percent of labor force in 2019 at https://www.bls.gov/opub/ted/2020/foreign-born-workers-made-up-17-point-4-percent-of-labor-force-in-2019.htm (visited April 04, 2022).
