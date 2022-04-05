@@ -1,5 +1,5 @@
 ---
-title: "H. R. 6637"
+title: "Empathy or Something Else: H. R. 6637"
 author: "Marc Los Huertos"
 date: "4/3/2022"
 output: html_document
@@ -9,22 +9,26 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## How do Americans think about immigration?
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Americans are taught to fear immigration. We are told that immigrants compete with our jobs. We are told immigrants take advantage of our public services. We are told that immigrants are a threat to our American way of life (language, religion, and whiteness). 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+The current standard for evaluating policies at the border is not whether the policies are effective or consistent with our values but whether they are “tough.” It is as if we judged college and high school basketball coaches based on who yelled at and berated their players the most.
+
+Ali Noorani points out that a great deal of media reporting, particularly on television, focuses on the border, but that Americans see or read little about what people in Mexico and Central America leave behind. He believes a better understanding of the violence and economic desperation people experience might elicit more sympathy and a greater willingness to craft political compromises on immigration. It’s a sensible conclusion.
+
+## Is immigration scape-goating?
 
 ```{r cars}
 summary(cars)
 ```
 
-## Including Plots
+## What has Ken Calvert said and done?
 
-You can also embed plots, for example:
+## What does Ken think or do about Comprehensive Immigration Reform?
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+### NGOs and Think Tanks
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Migration Policy Institute
+
+<https://www.migrationpolicy.org/topics/comprehensive-immigration-reform>
