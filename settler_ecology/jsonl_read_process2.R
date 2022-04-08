@@ -5,7 +5,7 @@ library(dplyr)
 library(tidytext)
 
 ## gzunip files
-setwd("/home/CAMPUS/mwl04747/github/beginnersluck/settler_ecology/data")
+setwd("/home/CAMPUS/mwl04747/github/beginnersluck/settler_ecology/data/jsonl")
 files = dir(pattern = "*.gz$")
 
 #gunzip("file.gz", remove=FALSE)
@@ -25,7 +25,8 @@ cols = c(
   "isPartOf",
   "abstract",
   "fullText",
-  "id"
+  "id", 
+  "title"
 )
 
 files = dir(pattern = "*.jsonl$")
@@ -44,7 +45,7 @@ for (i in 1:length(files)){
   y = as.data.frame(temp)
   save_as_csv(y, sub("jsonl", "csv", files[i]), prepend_ids = T, fileEncoding = "UTF-8")
   end = Sys.time()
-  message(files[i], ": ", round(difftime(end, start, units = "mins"), 2), 
+  message(files[i], ": ", round(difftime(end, start, units = "mins"), 1), 
           " minutes for ", length(lines), " articles")
   # file.remove(files[i])
   ## Uncomment above if you want the jsonl files to be permanently deleted (like if space is an issue)
@@ -52,6 +53,6 @@ for (i in 1:length(files)){
 
 #BotGaz <- read.csv("4b8a40f2-fa6f-ab9c-7719-d039a3c4cc81-csv.jsonl.csv")
 
-
+dir(pattern = "*.csv$")
 
 

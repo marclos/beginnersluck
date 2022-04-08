@@ -1,0 +1,142 @@
+---
+title: "CO2 Bathtub Model"
+author: "Marc Los Huertos"
+date: "4/5/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Carbon Dioxide Rates
+
+Carbon dioxide in the atmosphere is the result of production and consumption. But since the CO2 concentration is increasing by year, that means that the rate of production exceeds the rate of consumption. 
+
+But as you might guess, the rate of production is not constant. In fact, it has been increasing, like a car accerating or an object falling. In the later case, a falling object is accerating as a result of gravity, which is a constant, 9.8 m/s. However, is the acceleration of CO2 in the atmosphere a constant is is the rate of acceleration also increasing?  We will figure that out in this activity. 
+
+Finally, if we want to reduce CO2 in the atmosphere, then we need to increase the rate of consumption and/or descrease the rate of production. As the main product of our excercise, we'll develop a simple model to estimate the types of changes we need to make to bring CO2 down to concentrations that might be acceptable to society. 
+
+To begin, we need to review some calculus and we'll do this be exploring the bathtub model, often used as an analogy for carbon dioxide in the atmopshere. 
+
+## The Bathtub Model
+
+First, let's model the flow of water into a bathtub and determine the volume at time T, using a constant rate. 
+
+Volume(T) = Rate * Time
+
+For our example, let's say we have an rate of 5L/min (rate = `r (input_rate <-5)`) and a time frame of 5 minutes (time = `r (time <-5)`). Easy, right?
+
+```{r}
+v = input_rate * time
+```
+
+And the result is `r v` L. 
+
+Now, let's say we have a drain, but the drain has a maximum capacity at `r (output_rate <- 2)` L/min. So, after five minutes, we need both input and output included:
+
+```{r}
+v = input_rate * time - output_rate * time 
+```
+
+And the volume is `r v` L. With constant rates, we can easily model this over time and show the results in a plot. 
+
+```{r}
+time=seq(0, 25, by=1)
+bath_fun <- function(time){
+  (input_rate - output_rate) * time
+}
+
+plot(time, bath_fun(time), ty="l")
+```
+
+With constant rates, we have no problem graphing this result, and we can easily predict when the bath will overflow. Let's say the bath's capacity is `r (v_max=125)` L, which is a reasonably sized bathtub. 
+
+```{r}
+time_max <- v_max/(input_rate - output_rate)
+```
+
+After re-arranging our equation, we can estimate the time that we hit the max volume, `r round(time_max, 1)` minutes. So, that's pretty straight forward. But what happens if for some reason our rates are not constant as in an accelerating car or fallling object. 
+
+Let's say the valve controlling the water, slowly losens up each minute to allowing increasing water to enter the tub, perhaps 5% each minute. 
+
+So, we have the following rates:
+
+```{r}
+t=5
+rate= .05
+
+# vectorized approach - very efficient in R
+volume <- input_rate * (1+rate/100)^(0:(t-1))
+int  <- volume * rate/100
+totalInt <- sum(int)
+totalInt
+
+P=1000
+n=60
+rate=1
+totalInt  <- 0
+prin      <- P
+prin <- P * (1+rate/100)^(0:(n-1))
+int  <- prin * rate/100
+totalInt <- sum(int)
+totalInt
+
+```
+
+## Translating this into Calculus
+
+
+
+
+
+## R Markdown
+
+R is not designed to do calculus. Maple and Mathematica are great for that. But I don't want to teach a new computer language to address every question we have in this class. So, we'll stick with R. 
+
+Thankfully, R has a few tricks up its sleeve to solve calculus questions. 
+
+```{r expression, eval=FALSE}
+#Define an "expression" to work with:
+f <- expression(3*x^2+10*x+2)
+# Take derivative
+D(f,'x')
+#Assign derivative to object
+fd <- D(f,'x')
+# Make list of numbers, -10, -9.9, etc.
+x <- seq(-10,10,by=.1)
+# Plot the function
+plot(x,eval(f),type="l")
+#Add a plot of the derivative
+lines(x,eval(fd), col="blue")
+abline(h=0,col="green")
+```
+# Integration works differently. R can't (easily) give you the
+#integrated function, but it can do numerical integration to find areas.
+
+```{r, eval=FALSE}
+f1 <- function(x) 3*x^2+10*x+2
+#Find the area under the parabola between 0 and 5.
+integrate(f1,0,5)
+#visualize the area we just found. It is "approximately"
+#a triangle, but isn't because the parabola curves. 
+#The triangle approximation would be around 
+#.5*5*127=317.5, which is too large.
+x <- seq(0,5,by=.1)
+plot(x,eval(f),type="l")
+abline(v=0)
+abline(v=5)
+y <- eval(f)
+polygon(c(x[x>=0], max(x), 0), c(y[x>=0], 0, 0), col="red")
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r moscaic, echo=TRUE}
+library(mosaicCalc)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

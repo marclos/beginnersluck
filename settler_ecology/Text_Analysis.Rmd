@@ -38,19 +38,28 @@ The
 
 ## Analysis
 
-### Import CSV
+### Read and Clean CSV
 ```{r}
-BotGaz <- read.csv("data/4b8a40f2-fa6f-ab9c-7719-d039a3c4cc81-csv.jsonl.csv")
+setwd("/home/CAMPUS/mwl04747/github/beginnersluck/settler_ecology/data")
 
+files = dir(pattern = "*.csv$")
+all_journals = data.frame(datePublished=NA, isPartOf=NA,      abstract=NA, fullText=NA, id=NA)
+for (i in 1:length(files)){
+  temp = read.csv(files[i])
+  all_journals = rbind(temp, all_journals)
+}
+
+head(all_journals)
 ```
+
 
 ### Clean Files
 
 Removing hyphenated words
 ```{r}
-#BotGaz$fullText
-BotGaz$fullText = gsub("-\\s*", "", BotGaz$fullText)
-
+all_journals$fullText = gsub("-\\s*", "", all_journals$fullText)
+all_journals$abstract = gsub("-\\s*", "", all_journals$abstract)
+all_journals$Date = as.Date(all_journals$datePublished)
 
 ```
 
@@ -65,17 +74,25 @@ Thus, doing a textual analysis is quite problematic.
 ```{r}
 # BotGaz %>% count(fullText, sort = TRUE)
 
-sum(+(grepl("Indian", BotGaz$fullText)))
+sum(+(grepl("American Indian", all_journals$fullText)))
 
-BotGaz$Indian = +(grepl("Indian\\b", BotGaz$fullText) &
-                  !grepl("India\\b", BotGaz$fullText) &
-                  !grepl("West Indian", BotGaz$fullText) &
-                  !grepl("East Indian", BotGaz$fullText) ); 
-sum(BotGaz$Indian)
-str(BotGaz)
-plot(Indian~datePublished, BotGaz)
-BotGaz.r1 = BotGaz[BotGaz$Indian==1,c(1,2)]
-print(BotGaz.r1$fullText)
+all_journals$AmIndian = +(grepl("American Indian", all_journals$fullText) | grepl("American Indian", all_journals$abstract));
+
+sum(all_journals$AmIndian)
+all_journals[all_journals$AmIndian==1, c(3,4)]
+
+
+sum(+(grepl("Indian", all_journals$fullText)))
+
+all_journals$Indian = +(grepl("Indian\\b", all_journals$fullText) &
+                  !grepl("India\\b", all_journals$fullText) &
+                  !grepl("West Indian", all_journals$fullText) &
+                  !grepl("East Indian", all_journals$fullText) ); 
+sum(all_journals$Indian)
+str(all_journals)
+plot(Indian~Date, all_journals)
+#BotGaz.r1 = BotGaz[BotGaz$all_journals==1,c(1,2)]
+#print(BotGaz.r1$fullText)
 
 ```
 
