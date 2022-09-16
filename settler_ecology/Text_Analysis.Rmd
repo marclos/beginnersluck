@@ -10,6 +10,16 @@ knitr::opts_chunk$set(echo = TRUE)
 library(jsonlite)
 library(rtweet)
 library(stringr)
+library(lubridate)
+library(dplyr)
+
+## Functions
+
+per.fun <- function(num, dem, fig=3){
+  paste(round(num/dem*100, fig),"%", sep="")
+}
+
+
 ```
 
 ## Method Resources
@@ -40,48 +50,220 @@ The
 
 ### Read and Clean CSV
 ```{r}
-setwd("/home/CAMPUS/mwl04747/github/beginnersluck/settler_ecology/data")
-
-files = dir(pattern = "*.csv$")
-all_journals = data.frame(datePublished=NA, isPartOf=NA,      abstract=NA, fullText=NA, id=NA)
-for (i in 1:length(files)){
-  temp = read.csv(files[i])
-  all_journals = rbind(temp, all_journals)
+if(!exists("import")){
+  setwd("/home/CAMPUS/mwl04747/github/beginnersluck/settler_ecology/data")
+  files = dir(pattern = "*.csv$")
+  import = do.call(rbind, lapply(files, function(x) read.csv(x, stringsAsFactors = FALSE)))
+  #head(all_journals)
+  nrow(import)
 }
-
-head(all_journals)
+  
 ```
-
 
 ### Clean Files
 
 Removing hyphenated words
 ```{r}
-all_journals$fullText = gsub("-\\s*", "", all_journals$fullText)
-all_journals$abstract = gsub("-\\s*", "", all_journals$abstract)
-all_journals$Date = as.Date(all_journals$datePublished)
-
+if(!exists("clean")){
+  clean <- import
+  clean$fullText = gsub("-\\s*", "", clean$fullText)
+  clean$abstract = gsub("-\\s*", "", clean$abstract)
+  clean$Date = as.Date(clean$datePublished)
+  clean$Title = as.factor(clean$isPartOf)
+}
 ```
 
 ## Are Native People Referenced?
 
-### The Problem Associated with 'Indian'
+### The Problem Associated with 'Indian', 'Native', and 'Indigenous'
 
 Unfortunately, for all the early history in the sciences, few ecologists bothered to think critically about the terminology used in ecology with respect to the ``American Indian'', native peoples or nations of the USA, or even the terminology that they might want to be referred. 
 
-Thus, doing a textual analysis is quite problematic. 
+Thus, doing a textual analysis is quite problematic. Let's start with the awkward amalgam -- "American Indian" and "Native American" and "Indigenous People".
 
 ```{r}
+if(!exists("all_journals")){
+all_journals <- clean
 # BotGaz %>% count(fullText, sort = TRUE)
-
-sum(+(grepl("American Indian", all_journals$fullText)))
+#sum(+(grepl("American Indian", all_journals$fullText)))
 
 all_journals$AmIndian = +(grepl("American Indian", all_journals$fullText) | grepl("American Indian", all_journals$abstract));
 
+all_journals$NativeAm = +(grepl("Native American", all_journals$fullText) | grepl("Native American", all_journals$abstract));
+
+all_journals$Indigenous = +(grepl("indigenous people", all_journals$fullText) | grepl("indigenous people", all_journals$abstract));
+}
+sum(all_journals$Indigenous==1)
+
+sum(all_journals$NativeAm==1 & all_journals$AmIndian==1)
+```
+
+## Export Positives
+```{r}
+
+# Export Positives
+export = subset(all_journals, select=c(Date, id, title, Title, AmIndian, NativeAm), subset=c(AmIndian==1 | NativeAm==1 | Indigenous==1))
+
+
+
+# Full Text for Text Analysis
+Positives.df = subset(all_journals, select=c(Date, id, Title, AmIndian, NativeAm, Indigenous, fullText, abstract), subset=c(AmIndian==1 | NativeAm==1| Indigenous==1))
+
+nrow(Positives.df)
+Positives.df <- Positives.df[!(is.na(Positives.df$fullText)), ]
+nrow(Positives.df)
+install.packages("beepr")
+library(beepr)
+beep()
+
+# Avoid Double Counting
+all_journals$AmIndian[all_journals$NativeAm==1 & all_journals$Indigenous==1 & all_journals$AmIndian==1] = 0
+
+# all_journals[all_journals$AmIndian==1, c(3,4)]
 sum(all_journals$AmIndian)
-all_journals[all_journals$AmIndian==1, c(3,4)]
+sum(all_journals$NativeAm)
+```
+
+Using the abstracts and full text, there were `r sum(all_journals$AmIndian)` journals articles that used "American Indian" and `r sum(all_journals$NativeAm)`. However, let's separate ecology from general science journals (SciAm, Science).
+
+```{r}
+nonEcol = subset(all_journals, select=c(Date, Title, AmIndian, NativeAm, Indigenous),
+       subset=(all_journals$Title=="Science" |
+                 all_journals$Title=="Scientific Amercican" |
+                 all_journals$Title=="Proceedings of the National Academy of Sciences of the United States of America"))
+Ecol = subset(all_journals, select=c(Date, Title, AmIndian, NativeAm, Indigenous),
+       subset=(all_journals$Title!="Science" &
+                 all_journals$Title!="Scientific Amercican" &
+                 all_journals$Title!="Proceedings of the National Academy of Sciences of the United States of America")); 
+
+nrow(all_journals); nrow(nonEcol); nrow(Ecol)
+
+levels(nonEcol$Title); 
+
+nonEcol[nonEcol$Title=="Ecology",2]
+
+per.fun(sum(nonEcol$AmIndian), nrow(nonEcol)); per.fun(sum(nonEcol$NativeAm), nrow(nonEcol)); per.fun(sum(nonEcol$Indigenous), nrow(nonEcol))
 
 
+
+per.fun(sum(Ecol$AmIndian), nrow(Ecol)); per.fun(sum(Ecol$NativeAm), nrow(Ecol)); per.fun(sum(Ecol$Indigenous), nrow(Ecol))
+
+per.fun(sum(all_journals$AmIndian), nrow(all_journals)); per.fun(sum(all_journals$NativeAm), nrow(all_journals)); per.fun(sum(all_journals$Indigenous), nrow(all_journals))
+
+
+```
+
+## Anthropology Controls?
+
+So, let's use the non-science as a type of "Science Control" -- where given the number of articles in sciece, which 
+
+
+## Changes over time
+```{r}
+
+AmIndian.count <- all_journals %>% 
+    group_by(MonYR = lubridate::floor_date(Date, "month")) %>%
+    summarize(AmIndian = sum(AmIndian))
+
+AmIndian.len <- all_journals %>% 
+    group_by(MonYR = lubridate::floor_date(Date, "month")) %>%
+    summarize(Articles = length(AmIndian))
+AmIndian = merge(AmIndian.count, AmIndian.len); head(AmIndian)
+AmIndian$Percent <- with(AmIndian, AmIndian/Articles)*100
+
+NativeAm <- all_journals %>% 
+    group_by(MonYR = lubridate::floor_date(Date, "month")) %>%
+    summarize(NativeAm = sum(NativeAm))
+
+timeseries.fun <- function(dataframe, keyword, period){
+ dataframe$Period = lubridate::floor_date(dataframe$Date, period) 
+}
+
+
+# test = timeseries.fun(all_journals, AmIndian, year)
+```
+### All journals and ecology Over time
+
+```{r timeseriesyear}
+## by YEAR
+AmIndian.count <- Ecol %>% 
+    group_by(Date = lubridate::floor_date(Date, "year")) %>%
+    summarize(Count = sum(AmIndian)) 
+
+AmIndian.len <- Ecol %>% 
+    group_by(Date = lubridate::floor_date(Date, "year")) %>%
+    summarize(Articles = length(AmIndian))
+
+AmIndian.Ecol = merge(AmIndian.count, AmIndian.len); head(AmIndian)
+AmIndian.Ecol$Percent <- AmIndian.Ecol$Count/AmIndian.Ecol$Articles*100
+
+NativeAm.count <- Ecol %>% 
+    group_by(Date = lubridate::floor_date(Date, "year")) %>%
+    summarize(Count = sum(NativeAm))
+NativeAm.len <- all_journals %>% 
+    group_by(Date = lubridate::floor_date(Date, "year")) %>%
+    summarize(Articles = length(NativeAm))
+
+NativeAm = merge(NativeAm.count, NativeAm.len); head(NativeAm)
+
+NativeAm$Percent <- with(NativeAm, Count/Articles)*100
+
+AmIndian.count <- all_journals %>% 
+    group_by(Date = lubridate::floor_date(Date, "year")) %>%
+    summarize(Count = sum(AmIndian)) 
+
+AmIndian.len <- all_journals %>% 
+    group_by(Date = lubridate::floor_date(Date, "year")) %>%
+    summarize(Articles = length(AmIndian))
+
+AmIndian = merge(AmIndian.count, AmIndian.len); head(AmIndian)
+AmIndian$Percent <- AmIndian$Count/AmIndian$Articles*100
+
+NativeAm.count <- Ecol %>% 
+    group_by(Date = lubridate::floor_date(Date, "year")) %>%
+    summarize(Count = sum(NativeAm))
+NativeAm.len <- Ecol %>% 
+    group_by(Date = lubridate::floor_date(Date, "year")) %>%
+    summarize(Articles = length(NativeAm))
+
+NativeAm.Ecol = merge(NativeAm.count, NativeAm.len); head(NativeAm)
+
+NativeAm.Ecol$Percent <- with(NativeAm.Ecol, Count/Articles)*100
+
+Indigenous.count <- Ecol %>% 
+    group_by(Date = lubridate::floor_date(Date, "year")) %>%
+    summarize(Count = sum(Indigenous))
+Indigenous.len <- Ecol %>% 
+    group_by(Date = lubridate::floor_date(Date, "year")) %>%
+    summarize(Articles = length(Indigenous))
+
+Indigenous.Ecol = merge(Indigenous.count, Indigenous.len); head(Indigenous)
+
+Indigenous.Ecol$Percent <- with(Indigenous.Ecol, Count/Articles)*100
+
+ymax.new = max(AmIndian$Percent, NativeAm$Percent)
+plot(Percent ~ Date, data=AmIndian, ty='l', ylim=c(0, ymax.new))
+lines(Percent ~ Date, data=NativeAm, col="blue")
+lines(Percent ~ Date, data=NativeAm.Ecol, col="red")
+lines(Percent ~ Date, data=AmIndian.Ecol, col="purple")
+```
+
+## Download PDFs
+
+```{r}
+exported220422 <- export
+
+#download record
+
+noquote(exported220422[1:10,2])
+noquote(exported220422[11:30,2])
+
+
+```
+
+### Evaluating Indian and West and East Indies
+
+```{r eval=FALSE}
 sum(+(grepl("Indian", all_journals$fullText)))
 
 all_journals$Indian = +(grepl("Indian\\b", all_journals$fullText) &
@@ -103,32 +285,93 @@ References to the ``American Indian'' is virtually absent.
 ### Native Peoples vs. Native Species/Vegetation/etc
 
 
-```{r}
+```{r  eval=FALSE}
 BotGaz$Native = +(grepl("Native", BotGaz$fullText))
 
 print(BotGaz$fullText[BotGaz$Native==1])
       
 ```
 
+## Word Pattern Search
 
-```{r}
+https://towardsdatascience.com/easy-text-analysis-on-abc-news-headlines-b434e6e3b5b8
+
+For example, need to exclude references native american plants or animals. for example in the Am Mid natural #1, we have mice...
+
+```{r, eval=FALSE}
+
 arun <- function(keyword, str) {
-    #keyword <- "Native"
+    #keyword <- "Native American"
     lookaround <- 3
-    pattern <- paste0("([[:alpha:]]+ ){0,", lookaround, "}", keyword, 
-                    "( [[:alpha:]]+){0,", lookaround, "}")
+    pattern <- paste0("([[:alpha:]]+ ){0,", 
+                lookaround, "}", keyword, 
+              "( [[:alpha:]]+){0,", lookaround, "}")
 
 regmatches(str, regexpr(pattern, str))
 }
 
-arun("Native", BotGaz$fullText)
-arun("native", BotGaz$fullText)
+arun("Native American", Positives.df$fullText[1])
+arun("Native American", Positives.df$fullText[2])
+arun("American Indian", Positives.df$fullText[3])
+
+names(Positives.df)
+Positives.df$AmIndianText = NA
+Positives.df$NativeAmText = NA
+max = nrow(Positives.df)
+# max= 2
+
+for(i in 1:max){
+  if(Positives.df$AmIndian[i] == 1){
+    Positives.df$AmIndianText[i] = arun("American Indian", Positives.df$fullText[i])
+  }
+  if(Positives.df$NativeAm[i] == 1){
+  Positives.df$NativeAmText[i] = arun("Native American", Positives.df$fullText[i])
+  }
+}
+
+names(Positives.df)
+Positives.df[c(1:4), c(1:5, 6, 8:9)]
+Positives.df[,8:9]
+
+```
+
+
+
+```{r}
+NativeAm.fText <- arun("Native", all_journals$fullText[all_journals$NativeAm==1][2])
+#arun("native", BotGaz$fullText)
+head(NativeAm.fText)
+
+library("stringr") 
+data1 <- iris[str_detect(iris$Species, "virg"), ]  # Extract matching rows with str_detect
+head(data1)
+
+library(dplyr)
+library(tidyr)
+
+keywords <- c("water quality", "health")
+pat <- paste0(keywords, collapse = '|')
+pat
+#[1] "water quality|health"
+
+tibble(all_journals$fullText[all_journals$NativeAm==1]) %>%
+  slice({
+    tmp <- grep(pat, all_journals$fullText[all_journals$NativeAm==1], ignore.case = TRUE)
+    sort(unique(c(tmp-1, tmp, tmp + 1)))
+  })
+
+tibble(all_journals$fullText[all_journals$NativeAm==1]) %>%
+ separate_rows(all_journals$fullText[all_journals$NativeAm==1], sep = '\\.\\s*') %>%
+  slice({
+    tmp <- grep(pat, all_journals$fullText[all_journals$NativeAm==1], ignore.case = TRUE)
+    sort(unique(c(tmp-1, tmp, tmp + 1)))
+  })
 
 ```
 
 ### Indigenous Peoples
 
-```{r indigenous}
+```{r indigenous, eval=FALSE}
 arun("indigenous", BotGaz$fullText)
 
 plot(indigenous~datePublished, BotGaz)
@@ -159,7 +402,7 @@ head(BotGaz[order(BotGaz$indigenous, decreasing=T),])
 
 ### Specific Tribe/Nation References
 
-```{r}
+```{r, eval=FALSE}
 BotGaz$dine = +(grepl("Dine", BotGaz$fullText))
 
 sum(BotGaz$dine) #Dineuron
@@ -177,7 +420,7 @@ arun("Paiute", BotGaz$fullText)
 
 
 ### Other References to Land Management Orgs
-```{r}
+```{r, eval=FALSE}
 arun("Park", BotGaz$fullText)
 arun("City", BotGaz$fullText)
 ```
@@ -186,7 +429,7 @@ arun("City", BotGaz$fullText)
 
 ### Access to Sites/Resources
 
-```{r}
+```{r, eval=FALSE}
 arun("acknowledge", BotGaz$fullText)
 ```
 
@@ -195,6 +438,8 @@ arun("acknowledge", BotGaz$fullText)
 Good ecologists should be referencing and framing the management of the landscape by residents current and historical, if it's relevant. Without a doubt, there may times that these are not relevant. 
 
 ## Unceded Lands
-```{r}
+```{r, eval=FALSE}
 arun("unceded", BotGaz$fullText)
 ```
+
+

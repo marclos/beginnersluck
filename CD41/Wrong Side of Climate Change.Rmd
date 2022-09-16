@@ -1,0 +1,36 @@
+---
+title: "Calvert and Climate Science"
+author: "Marc Los Huertos"
+date: "4/7/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Opps, Wrong Side of History
+
+I actually don't like the climate denier or skeptic terminology. It's not that I don't like the derogatory nature or that I don't like doing public policy by framing an issue as a knowledge gap. 
+
+No, instead, I want to focus on the public good. What is best for Americans, and for others around the world?
+
+## A stable climate to thrive
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+calvert.csv <- "/home/CAMPUS/mwl04747/github/beginnersluck/CD41/ken-s. calvert-export (1).csv"
+cc <- read.csv(calvert.csv)
+cc$YN[cc$Vote=="-"]<- 0
+cc$YN[cc$Vote=="?"]<- NA
+cc$YN[cc$Vote=="+"]<- 1
+str(cc)
+```
+
+```{r}
+Total = aggregate(cc$YN, by=list(cc$YN, cc$Year), length)
+calvert = aggregate(cc$YN, by=list(cc$YN, cc$Year), sum)
+Table = data.frame(Year = Total$Group.2, Bills = Total$x,
+                   Yes = calvert$x)
+Table
+```
