@@ -1,0 +1,36 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}                
+\usepackage[utf8]{inputenc}             
+\usepackage[english]{babel}
+\newcommand{\ped}[1]{$_{#1}$}
+\usepackage{tikz}
+  \usetikzlibrary{shapes,arrows,fit,calc,positioning}
+  \tikzset{box/.style={draw, diamond, thick, text centered, minimum height=0.5cm, minimum width=1cm}}
+  \tikzset{line/.style={draw, thick, -latex'}}
+\begin{document}
+    \begin{tikzpicture}[auto]
+        \node [box]                                    (x3)      {New Oppotunity\ped{3}};
+        \node [box, below=0.5cm of x3, xshift=-3cm]    (x1sx)    {x\ped{1}};
+        \node [box, below=0.5cm of x3, xshift=3cm]     (x2dx)    {x\ped{2}};
+        \node [box, below=0.5cm of x1sx, xshift=-1cm]  (x2sx)    {x\ped{2}};
+        \node [box, below=0.5cm of x2sx, xshift=1cm]   (A2sx)    {A\ped{2}};
+        \node [box, below=0.5cm of x2sx, xshift=-1cm]  (A1sx)    {A\ped{1}};
+        \node [box, right=1cm of A2sx]                 (A3sx)    {A\ped{3}};
+        %
+        \node [box, below=0.5cm of x2dx, xshift=1cm]   (x1dx)    {x\ped{1}};
+        \node [box, below=0.5cm of x1dx, xshift=-1cm]  (A2dx)    {A\ped{2}};
+        \node [box, below=0.5cm of x1dx, xshift=1cm]   (A3dx)    {A\ped{3}};
+        \node [box, left=0.5cm of A2dx]                (A1dx)    {A\ped{1}};
+        %
+        \path [line] (x3) -|         (x2dx);
+        \path [line] (x3) -|         (x1sx);
+        \path [line] (x2dx) -|       (x1dx);
+        \path [line] (x2dx) -|       (A1dx);
+        \path [line] (x1dx) -|       (A2dx);
+        \path [line] (x1dx) -|       (A3dx);
+        \path [line] (x1sx) -|       (x2sx);
+        \path [line] (x1sx) -|       (A3sx);
+        \path [line] (x2sx) -|       (A1sx);
+        \path [line] (x2sx) -|       (A2sx);
+    \end{tikzpicture}
+\end{document}

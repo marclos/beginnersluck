@@ -1,0 +1,80 @@
+---
+title: "Saying_No_Decision_Tree"
+output: pdf_document
+date: "2022-10-17"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+# Load the party package. It will automatically load other
+# dependent packages.
+library(party)
+
+# Print some records from data set readingSkills.
+print(head(readingSkills))
+
+test <- data.frame(task = c("Teaching", "Preparing Lecture", "Grading", "Office Hours",
+                    "EnviroLab Asia", "Global Initiative",
+                    "Research Writing", "Research Background", "Research Data Analysis", 
+                    "EA Steering", "Portfolio"),
+           time = c(240, 600, 270, 180, 
+                    60, 60, 
+                    420, 240, 120, 
+                    30, 30),
+           accountability = c("Yes", "Yes", "No", "Yes", 
+                              "Yes", "Yes", 
+                              "No", "No", "No", 
+                              "Yes", "No"),
+           indespensibily = c(1, 1, .4, .7, 
+                              .5, .4, 
+                              .1, .2, .2, 
+                              1, .5),
+           promotion = c(1, 1, 1, .8, 
+                         .3, .3, 
+                         .5, .4, .3, 
+                         .5, 1)
+           )
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+library(party)
+# library(grid, mvtnorm, modeltools, strucchange, zoo)
+
+# Create the input data frame.
+input.dat <- readingSkills[c(1:105),]
+input.dat2 <- test
+
+
+# Give the chart file a name.
+#png(file = "decision_tree.png")
+
+# Create the tree.
+  output.tree <- ctree(
+  nativeSpeaker ~ age + shoeSize + score, 
+  data = input.dat)
+  
+  output.tree2 <- ctree(
+    
+  )
+
+# Plot the tree.
+plot(output.tree)
+
+# Save the file.
+#dev.off()
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

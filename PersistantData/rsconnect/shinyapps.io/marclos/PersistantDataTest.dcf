@@ -1,0 +1,13 @@
+name: PersistantDataTest
+title: PersistantDataTest
+username:
+account: marclos
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 7785441
+bundleId: 6577864
+url: https://marclos.shinyapps.io/PersistantDataTest/
+when: 1669912232.51666
+lastSyncTime: 1669912232.51667
+asMultiple: FALSE
+asStatic: FALSE
