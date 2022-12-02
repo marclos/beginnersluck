@@ -1,4 +1,13 @@
+# Creating a Templates using Shiny R
+# 12/2 Created Shiny App
+# 12/2 Run in Background using callr
+# XX/X Store data in Box using boxr
+
+
+
 library(shiny)
+library(uuid)
+library(boxr)
 
 source("functions.R")
 
