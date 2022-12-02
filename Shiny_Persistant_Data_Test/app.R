@@ -1,5 +1,6 @@
 # Creating a Templates using Shiny R
 # 12/2 Created Shiny App
+# 12/2 Store Local Data
 # 12/2 Run in Background using callr
 # XX/X Store data in Box using boxr
 
@@ -8,6 +9,7 @@
 library(shiny)
 library(uuid)
 library(boxr)
+library(digest)
 
 source("functions.R")
 
@@ -37,6 +39,7 @@ shinyApp(
     # When the Submit button is clicked, save the form data
     observeEvent(input$submit, {
       saveData(formData())
+      save_data_flatfile(formData())
     })
     
     # Show the previous responses
