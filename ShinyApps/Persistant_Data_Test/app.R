@@ -4,8 +4,6 @@
 # 12/2 Run in Background using callr
 # XX/X Store data in Box using boxr
 
-
-
 library(shiny)
 library(uuid)
 library(boxr)

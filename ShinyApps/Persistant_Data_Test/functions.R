@@ -18,7 +18,7 @@ save_data_flatfile <- function(data) {
   data <- t(data)
   file_name <- paste0(paste(get_time_human(), digest(data, 
                                                      algo = "md5"), sep = "_"), ".csv")
-  write.csv(x = data, file = file.path(response_dir, file_name), 
+  write.csv(x = data, file = file.path("response_dir", file_name), 
             row.names = FALSE, quote = TRUE)
 }
 
