@@ -1,5 +1,7 @@
 library(shiny)
 
+source("functions.R")
+
 #https://shiny.rstudio.com/articles/persistent-data-storage.html
 
 # Define the fields we want to save from the form
