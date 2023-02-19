@@ -36,12 +36,41 @@ Weaker records on inputs/outputs
 
 ```{r}
 
-# Volume of Atmosphere 
+# Conversion Functions
 
-v = 4200000000 # km3
+ppmv2atmGtC <- function(ppmv){
+  ppmv * 2.3
+}
+
+atmC <- function(C){
+  C*44/12
+}
+
+L2km3 <- function(L){
+  L / 1e12 # L/km3
+} 
+
+mg2ton <- function(mg){
+  1 / 1e9
+}
+
+ton2Gt <- function(ton){
+  1/ 1e9
+}
+
+ppmv2mgperL = function(ppmv, MW){
+  ppmv * MW / 22.71107
+}
+
+# Volume of Atmosphere 
+v = 4200000000  # km3
 
 # Using Mauna Loa to estimate Total CO2 Stock
-ppmv = 420 # mg/L or place holder until I get ppm_t sorted
+ppmv = 420 # uL/L or place holder until I get ppm_t sorted
+
+v * L2km3(ppmv2mgperL(420, 44)) # mg CO2/L, mg CO2/km3
+
+
 
 GtC = ppmv * 2.3; GtCO2 <- GtC *44/12; GtCO2
 

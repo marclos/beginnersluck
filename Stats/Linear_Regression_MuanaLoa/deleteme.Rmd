@@ -13,15 +13,15 @@ knitr::opts_chunk$set(echo = TRUE)
 
 this is text
 ```{r}
-maunaloa.csv <- "/home/CAMPUS/mwl04747/github/beginnersluck/maunaloa.csv"
+maunaloa.csv <- "maunaloa.csv"
 maunaloa.df <- read.csv(maunaloa.csv)
 ```
 
 
 
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=TRUE, eval=TRUE}
 str(maunaloa.df)
-head(maunaloa.df)
+head(maunaloa.df)[,c(1,2,4)]
 ```
 
 
@@ -29,8 +29,18 @@ head(maunaloa.df)
 
 ## Histogram...
 
-```{r, echo=F}
-#hist(maunaloa.df$average)
+```{r, echo=T}
+hist(maunaloa.df$average)
+mean(maunaloa.df$average)
+
+library(zoo) # moving averages
+par(mfrow=c(2,2))
+plot(rollmean(maunaloa.df$average, 1), ty='l')
+plot(rollmean(maunaloa.df$average, 2), ty='l')
+plot(rollmean(maunaloa.df$average, 4), ty='l')
+plot(rollmean(maunaloa.df$average, 12), ty='l')
+par(mfrow=c(1,1))
+
 ```
 
 co2 vs. year...
@@ -42,6 +52,25 @@ y = f(x)
 
 
 ```{r, echo=FALSE}
+attach(maunaloa.df)
+plot(year, average)
+
+plot(year, average, ty='l')
+
+
+
+
+
+plot(decimal.date, average)
+
+detach(maunaloa.df)
+
+
+
+
+
+
+
 plot(maunaloa.df$decimal.date, maunaloa.df$average, ty='l', xlab = "Date", ylab = "CO2 Concentration (ppm)", main="Carbon Dioxide Concentration (Mauna Loa, HI)", las=1)
 
 maunaloa.lm <- lm(average ~ decimal.date, data=maunaloa.df)
