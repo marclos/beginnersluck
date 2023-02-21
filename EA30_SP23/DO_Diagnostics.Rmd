@@ -1,0 +1,45 @@
+---
+title: "DO and Depth pHake Lake Lab Reports"
+author: "Marc Los Huertos"
+date: "2023-02-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Practicing Import Data
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r import}
+# pasted commands
+filepath.csv = "/home/mwl04747/beginnersluck/EA30_SP23/Field Data Recording (master sheet) - Data.csv"
+
+## read.csv
+
+import = read.csv(filepath.csv)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r DOplot, echo=FALSE}
+plot(HDO..Sat ~ Depth.m, data=import, pch=20, xlab="Depth (m)", ylab="DO (% Sat)", las=1, main="Dissolved Oxygen vs. Depth, pHake Lake Spring 2023")
+#$abline(coef(DO.lm), col="red")
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+DO.lm <- lm(HDO..Sat ~ Depth.m, data=import)
+summary(DO.lm)
+```
+```{r}
+plot(DO.lm)
+```
+
