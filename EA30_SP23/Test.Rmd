@@ -1,0 +1,51 @@
+---
+title: "pHake Lake DO Relations"
+author: "Marc Los Huertos"
+date: "2023-02-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This is a repoort about pHake Lake....
+
+```{r, echo=FALSE}
+sonde.csv = "/home/mwl04747/beginnersluck/EA30_SP23/Field Data Recording (master sheet) - Data.csv"
+sonde = read.csv(sonde.csv)
+
+```
+
+## Plot DO vs. Depth
+
+Dissolve oxygen is an indicator of water quality... 
+
+See Figure X for the results...
+
+```{r, echo=FALSE}
+plot(HDO..Sat ~ Depth.m, data=sonde, xlab="Depth (m)", ylab="DO (% Saturation)", 
+     las=1, main="pHake Lake Dissolved Oxygen vs. Depth", pch=20)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Linear Model
+
+some text here...
+
+```{r, echo=FALSE}
+DO.lm = lm(HDO..Sat ~ Depth.m, data=sonde)
+```
+
+## Evaluating Assumptions
+
+
+```{r, echo=FALSE}
+par(mfrow=c(2,2))
+plot(DO.lm)
+```
+
+
