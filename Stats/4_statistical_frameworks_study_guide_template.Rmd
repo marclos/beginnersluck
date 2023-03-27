@@ -14,12 +14,28 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Generic Template to Create Word Documents
 
+I created this document to give you a "head-start" in creating the study guide with a format that everyone can use. By using Rstudio, you will have the capacity to create an integrated approach that merges R commands and outputs and text. 
+
+I have defined the output as a word document to start with -- but we can create a pdf or html output if we decide that is better. But by putting into Word, we can use Word to spot typos easier!
+
+There are ways to share these documents via github.com -- but frankly, it works great if the class is smaller, e.g. 10-12. So, we'll use an assortment of sakai upload tools -- not ideal, but I'll make it work!
+
 ### Developing Content
+
+Each week, I intend to dedicate 40-60 minutes to develop content. 
+
+We'll start with creating an example. But as we do, we want to be answering these following questions:
+
+- What questions can be answered with the method?
+- Are their limitations to the method?
+- What are the assumptions?
+- How can the assumptions be tested?
+
+The example should include data to be analyzed -- either imported or created in R, then the R codes to analyze the reesults and then a discussion about how to interpret the data.
 
 ### Class Assignments
 
-#### Linear Regression
-
+The study guide development will go for five weeks, so everyone can have a change to look at each of the for frameworks and then one session to integrate everything into one document. See sakai to see your group assignment.
 
 ### R Markdown
 
@@ -40,3 +56,12 @@ plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Linear Regression
+
+
+## Logistic Regression
+
+## ANOVA
+
+## Tests for Association
