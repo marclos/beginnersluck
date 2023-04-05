@@ -45,6 +45,27 @@ NOTE: Spatial Data and Time Series data have special concerns... "auto-correlati
 
 The study guide development will go for five weeks, so everyone can have a change to look at each of the for frameworks and then one session to integrate everything into one document. See sakai to see your group assignment.
 
+# Getting Started with R
+
+## R and Rstudio
+
+Step-by-step Guide
+
+Getting started in R
+
+If you havenâ€™t used R before, start by downloading R and R Studio. 
+
+## Editing the Guide
+
+Once you have both of these programs downloaded, open R Studio and click on File > New File > R Script.
+
+##Now you can copy and paste the code from the rest of this example into your script. To run the code, highlight the lines you want to run and click on the Run button on the top right of the text editor (or press ctrl + enter on the keyboard).
+
+##Install and load the packages#
+##First, install the packages you will need for the analysis (this only needs to be done once):
+##Then load these packages into your R environment (do this every time you restart the R program):
+##Step 1: Load the data into R
+
 ## R Markdown
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
@@ -71,9 +92,13 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 
 ## Linear Regression
 
+### Linnear Regression Examples
+
+Example #1
+
 Example #2
 
-Is water and air temperature corrlated? 
+Is water and air temperature correlated? 
 
 ```{r}
 water = c(50, 52, 65, 67, 68, 78, 54, 63, 57, 58)
@@ -86,17 +111,124 @@ making a graph...
 ```{r}
 
 scatter.smooth(x=air, y=water, main="water ~ air")  # scatterplot
+#linearMod <- lm(water ~ air, data=temperature)  # build linear regression model on full data
+#print(linearMod)
+
+
+```
+
+Example #3: SRP and HABs
+
+Following temperatures and SRP a nd dwith 
+
+Define Data:
+
+```{r}
+SRP <- c(.02, .03, 0.4, 0.04, .05, 0.033, 1.4)
+cyano<- c(22, 34, 23, 22, 23, 2, 122)
+
+```
+
+Create Linear Model using lm() function
+
+The linear model coerces the data into a new object using a least squares method to calculate the slope and intercept (and other statitical date.)
+
+```{r}
+HAB.lm = lm(cyano ~ SRP)
+HAB.lm 
+```
+
+Let's look at the model results with summary()
+
+```{r}
+summary(HAB.lm)
+```
+
+
+```{r}
+plot(cyano ~ SRP)
+abline(HAB.lm)
+```
+
+### Linear Regression 'Assumptions
+
+Let's look at a default plot of model...
+
+```{r}
+par(mfrow=c(2,2))
+plot(HAB.lm)
+```
+
+## Logistic Regression
+
+This data predicts graduate school admission (discreet/binary) based on GRE score (continuous), GPA (continuous), and school prestige (discreet/binary, 1-4). This is a great resource to perform this: https://stats.oarc.ucla.edu/r/dae/logit-regression/
+
+
+```{r}
+#### Name the data
+mydata <- read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")
+
+####   View the first few rows of the data
+head(mydata)
+
+####   Create a 5 number summary
+summary(mydata)
+
+
+```
+
+I have simplified it to one variable... trying to stay focused on simple analyses!
+```{r}
+mydata$rank <- factor(mydata$rank)
+mylogit <- glm(admit ~ gre, data = mydata, family = "binomial")
+```
+
+```{r}
+summary(mylogit)
+```
+```{r}
+#define new data frame that contains predictor variable
+newdata <- data.frame(gre=seq(min(mydata$gre), max(mydata$gre),len=100))
+
+#use fitted model to predict values of vs
+newdata$admit = predict(mylogit, newdata, type="response")
+```
+
+
+```{r}
+
+#plot logistic regression curve
+plot(jitter(admit) ~ gre, data=mydata, col="steelblue")
+lines(admit ~ gre, newdata, lwd=2)
 
 ```
 
 
-## Logistic Regression
 
 ## ANOVA
 
 ### Example \#1
 
 ##Research question: Which fertilizer produces the most crop yield? ##Independent variable/predictor: Fertilizer A, Fertilizer B, Fertilizer C ##Dependent variable/response: amount of crop yield
+##Question: Which fertilizer provides the best crop yield?##
+##LookedatScribbr, inputed data in R according to directions "ANOVA in R | A Complete Step-by-step Guide"##
+##Getting started in R##
+##If you havenâ€™t used R before, start by downloading R and R Studio. Once you have both of these programs downloaded, open R Studio and click on File > New File > R Script.
+
+##Now you can copy and paste the code from the rest of this example into your script. To run the code, highlight the lines you want to run and click on the Run button on the top right of the text editor (or press ctrl + enter on the keyboard).
+
+##Install and load the packages#
+##First, install the packages you will need for the analysis (this only needs to be done once):
+##Then load these packages into your R environment (do this every time you restart the R program):
+##Step 1: Load the data into R
+##Note that this data was generated for this example, itâ€™s not from a real experiment.
+
+##We will use the same dataset for all of our examples in this walkthrough. The only difference between the different analyses is how many independent variables we include and in what combination we include them.
+
+##It is common for factors to be read as quantitative variables when importing a dataset into R. To avoid this, you can use the read.csv() command to read in the data, specifying within the command whether each of the variables should be quantitative (â€œnumericâ€) or categorical (â€œfactorâ€).
+
+##Use the following code, replacing the path/to/your/file text with the actual path to your file:
+
 
 ```{r}
 # install.packages(c(“ggplot2”, “ggpubr”, “tidyverse”, “broom”, “AICcmodavg”)) 
@@ -115,9 +247,63 @@ summary(crop.data.aov)
 ```
 
 
+## Example 2
+
+Five mesocosms have been randomly selected to test the impact of zebra mussels on cyanobacteria concentrations, while five are controls. Water is circulate in each, and the experiment sampled the water column for bacteria counts every day for 10 days.
+
+Here are the (fake) data:
+
+```{r}
+mesocosm = rep(1:10, 10); mesocosm
+treatment = c(rep("Control", 10), rep("Control", 10), rep("Control", 10),
+              rep("Control", 10), rep("Control", 10), rep("Mussel", 10),
+              rep("Mussel", 10), rep("Mussel", 10), rep("Mussel", 10), 
+              rep("Mussel", 10)); treatment
+day = rep(1, times=10 ); day
+results = round(c(rnorm(50, 50, 10), rnorm(50, 54, 10)), 1); results
+Mussel = data.frame(Mesocosm = mesocosm, Treatment = treatment, Day=day, Results=results)
+
+
+Mussel.aov <- aov(results ~ treatment, data=Mussel)
+
+summary(Mussel.aov)
+
+par(mfrow=c(1,2))
+hist(Mussel$Results[Mussel$Treatment=="Control"])
+hist(Mussel$Results[Mussel$Treatment=="Mussel"])
+
+newresults = seq(min(Mussel$Results), max(Mussel$Results), length=500)
+plot(newresults, dnorm(newresults, mean=mean(Mussel$Results[Mussel$Treatment=="Control"])), ty="l", xlim=c(45,60), col="darkgreen", lwd=1.4)
+lines(newresults, dnorm(newresults, mean=mean(Mussel$Results[Mussel$Treatment=="Mussel"])), ty="l", col="darkred", lwd=1.4)
+
+```
 
 
 ## Tests for Association
+
+# Example 2
+
+Hospital asthema cases and HABs in Florida
+
+```{r}
+HAB.tab = c(20, 15, 98, 223)
+sum(HAB.tab)
+dim(HAB.tab) = c(2,2)
+dimnames(HAB.tab) = list(c("Non-HAB", "HAB"), c("No Hospitalizations", "Hospitalizations"))
+
+HAB.tab
+
+#HAB.mat = matrix(HAB.tab, nrow=2)
+```
+
+```{r}
+table(HAB.tab)
+```
+
+```{r}
+
+chisq.test(HAB.tab)
+```
 
 # Other Types the Might be Important (Marc might discuss if we have time...)
 

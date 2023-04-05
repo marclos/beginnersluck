@@ -35,11 +35,11 @@ The example should include data to be analyzed -- either imported or created in 
 
 ### Defining Variable Types
 
-#### Dependent vs. Independent Data
+#### Dependent vs. Independent Data (add text here...)
 
 #### Continuous vs. Count vs. Categorical
 
-
+NOTE: Spatial Data and Time Series data have special concerns... "auto-correlation"
 
 ## Class Assignments
 
