@@ -12,17 +12,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Using R to Create R Study Guide
 
-## Generic Template to Create Word Documents
+## Class Assignment
 
-I created this document to give you a "head-start" in creating the study guide with a format that everyone can use. By using Rstudio, you will have the capacity to create an integrated approach that merges R commands and outputs and text. 
-
-I have defined the output as a word document to start with -- but we can create a pdf or html output if we decide that is better. But by putting into Word, we can use Word to spot typos easier!
-
-There are ways to share these documents via github.com -- but frankly, it works great if the class is smaller, e.g. 10-12. So, we'll use an assortment of sakai upload tools -- not ideal, but I'll make it work!
+The study guide development will go for five weeks, so everyone can have a change to look at each of the for frameworks and then one session to integrate everything into one document. See sakai to see your group assignment.
 
 ## Developing Content
 
-Each week, I intend to dedicate 40-60 minutes to develop content. 
+Each week, I intend to dedicate 30-45 minutes to develop content. 
 
 We'll start with creating an example. But as we do, we want to be answering these following questions:
 
@@ -33,38 +29,22 @@ We'll start with creating an example. But as we do, we want to be answering thes
 
 The example should include data to be analyzed -- either imported or created in R, then the R codes to analyze the results and then a discussion about how to interpret the data.
 
-### Defining Variable Types
+After each week, please upload the version you have editted and I will harmonize the 4 groups work into one document for the following week.
 
-#### Dependent vs. Independent Data (add text here...)
-
-#### Continuous vs. Count vs. Categorical
-
-NOTE: Spatial Data and Time Series data have special concerns... "auto-correlation"
-
-## Class Assignments
-
-The study guide development will go for five weeks, so everyone can have a change to look at each of the for frameworks and then one session to integrate everything into one document. See sakai to see your group assignment.
 
 # Getting Started with R
 
 ## R and Rstudio
 
-Step-by-step Guide
+### What is R?
 
-Getting started in R
+TBD
+
+### Getting started in R
+
+TBD
 
 If you havenâ€™t used R before, start by downloading R and R Studio. 
-
-## Editing the Guide
-
-Once you have both of these programs downloaded, open R Studio and click on File > New File > R Script.
-
-##Now you can copy and paste the code from the rest of this example into your script. To run the code, highlight the lines you want to run and click on the Run button on the top right of the text editor (or press ctrl + enter on the keyboard).
-
-##Install and load the packages#
-##First, install the packages you will need for the analysis (this only needs to be done once):
-##Then load these packages into your R environment (do this every time you restart the R program):
-##Step 1: Load the data into R
 
 ## R Markdown
 
@@ -88,17 +68,61 @@ plot(pressure)
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot. But as a guide, we might want to show the code -- which can be done with `echo = TRUE`, which is the default. 
 
+## Updated Template to Create Word.docx Study Guide
+
+I created this document to give you a "head-start" in creating the study guide with a format that everyone can use. By using Rstudio, you will have the capacity to create an integrated approach that merges R commands and outputs and text. 
+
+I have defined the output as a word document to start with -- but we can create a pdf or html output if we decide that is better. But by putting into Word, we can use Word to spot typos easier!
+
+There are ways to share these documents via github.com -- but frankly, it works great if the class is smaller, e.g. 10-12. So, we'll use an assortment of sakai upload tools -- not ideal, but I'll make it work!
+
+## Editing the Guide
+
+Once you have both of these programs downloaded, open R Studio and click on File > Open File -- and select this file :-).
+
+## Run the Template
+
+Make sure the template you downloaded runs!  Nothing is more frustrating (hyperbole?) than trying to troubleshoot someone else's code!
+
+# Variables and Statistics
+
+## Defining Variable Types
+
+### Dependent vs. Independent Data (add text here...)
+
+In some cases, we can manipulate an environmental setting or characteristic and test the impact on another characteritics. We generally call the one that we can maniupualte as the indpendent variable and the measured response as the dependent varaible. 
+
+Graphically, we often see the independent variable as the x-axis. The independant call might also be referred to as the prector variable. The response as the dependent (or response) variable. 
+
+In our titles, we often refer to the dependent first -- "Response as a Function of X" or "Water Temperature vs. Air Temperature"
+
+### Continuous vs. Count vs. Categorical
+
+MLH: Describe...
+
+NOTE: Spatial Data and Time Series data have special concerns... "auto-correlation", see below...[Autocorrelation Section](#autocorrelation)
+
+
+
 # Four Frameworks
 
 ## Linear Regression
 
-### Linnear Regression Examples
+MLH: What is linear Regression
 
-Example #1
+MLH: What kinds of questions is the linear regression best suited for?
 
-Example #2
+MLH:  What are the "under the hood methods" used to analyze the data? Is this supported by theory? Is there any of the theory that's useful for users?
 
-Is water and air temperature correlated? 
+
+## Linnear Regression Examples
+
+### Example #1
+
+We know surface water temperatures depend on the sunlight. But what about surface air temperature?
+
+
+Is water and air temperature correlated?  (whats the difference between correlation and regression?)
 
 ```{r}
 water = c(50, 52, 65, 67, 68, 78, 54, 63, 57, 58)
@@ -110,18 +134,20 @@ lm(formula = water ~ air)
 making a graph...
 ```{r}
 
-scatter.smooth(x=air, y=water, main="water ~ air")  # scatterplot
+plot(x=air, y=water, main="water ~ air")  # This was a scatterplot, but marc changed it to a "plot" on 4/1 because it wasn't clear what the model was in the curvy scatter plot approach. 
 #linearMod <- lm(water ~ air, data=temperature)  # build linear regression model on full data
 #print(linearMod)
 
 
 ```
 
-Example #3: SRP and HABs
+### Example #2: SRP and HABs
 
-Following temperatures and SRP a nd dwith 
+Following HABs and SRP as a predictor...
 
-Define Data:
+MLH: Describe why these data can be analyzed using regression
+
+##### Define Data:
 
 ```{r}
 SRP <- c(.02, .03, 0.4, 0.04, .05, 0.033, 1.4)
@@ -129,16 +155,19 @@ cyano<- c(22, 34, 23, 22, 23, 2, 122)
 
 ```
 
-Create Linear Model using lm() function
+#### Create Linear Model using lm() function
 
-The linear model coerces the data into a new object using a least squares method to calculate the slope and intercept (and other statitical date.)
+The linear model coerces the data into a new object using a least squares method to calculate the slope and intercept (and other statistical date.)
 
 ```{r}
 HAB.lm = lm(cyano ~ SRP)
 HAB.lm 
 ```
 
+#### Model Summary (Results)
 Let's look at the model results with summary()
+
+MLH: Describe results...
 
 ```{r}
 summary(HAB.lm)
@@ -150,9 +179,14 @@ plot(cyano ~ SRP)
 abline(HAB.lm)
 ```
 
-### Linear Regression 'Assumptions
+#### Model Interpretation (Discussion)
+
+
+##### Linear Regression Assumptions
 
 Let's look at a default plot of model...
+
+MLH: What do these mean?
 
 ```{r}
 par(mfrow=c(2,2))
@@ -160,6 +194,12 @@ plot(HAB.lm)
 ```
 
 ## Logistic Regression
+
+MLH:  What is this used for? 
+
+MLH: What are good questions for this?
+
+### Example \#1 Gradaute School Admissions -- MLH: Too Complicated...
 
 This data predicts graduate school admission (discreet/binary) based on GRE score (continuous), GPA (continuous), and school prestige (discreet/binary, 1-4). This is a great resource to perform this: https://stats.oarc.ucla.edu/r/dae/logit-regression/
 
@@ -177,7 +217,9 @@ summary(mydata)
 
 ```
 
-I have simplified it to one variable... trying to stay focused on simple analyses!
+MLH:  I have simplified it to one variable... trying to stay focused on simple analyses!
+
+MLH:What is the family=binomial for?
 ```{r}
 mydata$rank <- factor(mydata$rank)
 mylogit <- glm(admit ~ gre, data = mydata, family = "binomial")
@@ -198,34 +240,103 @@ newdata$admit = predict(mylogit, newdata, type="response")
 ```{r}
 
 #plot logistic regression curve
-plot(jitter(admit) ~ gre, data=mydata, col="steelblue")
+plot(jitter(admit) ~ gre, data=mydata, col="steelblue", las=1)
 lines(admit ~ gre, newdata, lwd=2)
 
 ```
 
+### Example \#2: Algae Concentration and Toxicity
 
+Toxicity is a measure of toxity based on organism responses, often measured as LD50s, where 50% of the populations dies at a certain concentration. 
+
+Here we use the results of different concentrations of a toxin and the number of surviving Daphnia -- a very common freshwater test organism.
+
+MLH: Describe DATA...
+
+```{r, echo=FALSE}
+Dose = c(0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0)
+Survived = c(18, 19, 12, 5, 6, 2, 1)
+Died = c(7, 6, 13, 20, 19, 23, 24)
+
+Survived.1 = data.frame(Dose = rep(Dose, Survived), Result = 1)
+Died.1 = data.frame(Dose = rep(Dose, Died), Result = 0)
+
+Results.df = rbind(Survived.1, Died.1)
+str(Results.df)
+Results.df <- Results.df[order(Results.df$Dose),]
+
+```
+
+Create a nice table of results... 
+
+MLH: what are ones and zeros?
+```{r}
+
+
+table(Results.df)
+
+```
+
+
+```{r}
+#Results.df$Result <- as.factor(Results.df$Result)
+Results.logit <- glm(Result ~ Dose, data = Results.df, family = "binomial")
+```
+
+### Results
+
+MLH:  What do these results mean?
+
+```{r}
+summary(Results.logit)
+```
+#### Interpretation (Discussion)
+
+```{r}
+#define new data frame that contains predictor variable
+newdata <- data.frame(Dose=seq(min(Results.df$Dose), max(Results.df$Dose),len=100))
+
+#use fitted model to predict values of vs
+newdata$Result = predict(Results.logit, newdata, type="response")
+```
+
+```{r}
+
+#plot logistic regression curve
+plot(Result ~ jitter(Dose), data=Results.df, col="steelblue", las=1)
+lines(Result ~ Dose, newdata, lwd=2)
+
+```
+LD50 = dose at which Pr(dead | dose) = 0.5. 
+
+MLH: found this formula online... don't know if it works... 
+
+$$ ln(\frac{\frac{1}{2}}{1-\frac{1}{2}}) = \beta_1 + \beta_0 (LD_{50}) $$
+
+$$  0 =  \beta_1 + \beta_0 (LD_{50})$$
+$$ \widehat{{LD_{50}} = \frac{- \beta_0}{\beta_1}} $$
+
+Calculating Standard Error... MLH: Haven't tried this yet
+
+
+
+proportion dead 0.6 0.4 0.2 0.0 2 ˆ + SE(ˆ1) ˆ 1 LD50 2 cov(ˆ0, ˆ1) ˆ 0 ˆ1
 
 ## ANOVA
 
-### Example \#1
+What is a one-way ANOVA?
 
-##Research question: Which fertilizer produces the most crop yield? ##Independent variable/predictor: Fertilizer A, Fertilizer B, Fertilizer C ##Dependent variable/response: amount of crop yield
-##Question: Which fertilizer provides the best crop yield?##
-##LookedatScribbr, inputed data in R according to directions "ANOVA in R | A Complete Step-by-step Guide"##
-##Getting started in R##
-##If you havenâ€™t used R before, start by downloading R and R Studio. Once you have both of these programs downloaded, open R Studio and click on File > New File > R Script.
+What is the ANOVA used for?
 
-##Now you can copy and paste the code from the rest of this example into your script. To run the code, highlight the lines you want to run and click on the Run button on the top right of the text editor (or press ctrl + enter on the keyboard).
+### Example \#1 --Fertilizer and Crop Yield MLH: Better for Multiway ANOVA
 
-##Install and load the packages#
-##First, install the packages you will need for the analysis (this only needs to be done once):
-##Then load these packages into your R environment (do this every time you restart the R program):
-##Step 1: Load the data into R
-##Note that this data was generated for this example, itâ€™s not from a real experiment.
+MLH --    The example relies on external data, which adds a step that gets in the way. I suggest we developed example two to keep it simpler...
 
-##We will use the same dataset for all of our examples in this walkthrough. The only difference between the different analyses is how many independent variables we include and in what combination we include them.
+Research question: Which fertilizer produces the most crop yield? ##Independent variable/predictor: Fertilizer A, Fertilizer B, Fertilizer C ##Dependent variable/response: amount of crop yield
 
-##It is common for factors to be read as quantitative variables when importing a dataset into R. To avoid this, you can use the read.csv() command to read in the data, specifying within the command whether each of the variables should be quantitative (â€œnumericâ€) or categorical (â€œfactorâ€).
+Question: Which fertilizer provides the best crop yield?
+
+It is common for factors to be read as quantitative variables when importing a dataset into R. To avoid this, you can use the read.csv() command to read in the data, specifying within the command whether each of the variables should be quantitative (â€œnumericâ€) or categorical (â€œfactorâ€).
 
 ##Use the following code, replacing the path/to/your/file text with the actual path to your file:
 
@@ -247,39 +358,75 @@ summary(crop.data.aov)
 ```
 
 
-## Example 2
+## Example 2: Simulated HAB Data
 
 Five mesocosms have been randomly selected to test the impact of zebra mussels on cyanobacteria concentrations, while five are controls. Water is circulate in each, and the experiment sampled the water column for bacteria counts every day for 10 days.
 
 Here are the (fake) data:
 
-```{r}
-mesocosm = rep(1:10, 10); mesocosm
-treatment = c(rep("Control", 10), rep("Control", 10), rep("Control", 10),
-              rep("Control", 10), rep("Control", 10), rep("Mussel", 10),
-              rep("Mussel", 10), rep("Mussel", 10), rep("Mussel", 10), 
-              rep("Mussel", 10)); treatment
-day = rep(1, times=10 ); day
-results = round(c(rnorm(50, 50, 10), rnorm(50, 54, 10)), 1); results
-Mussel = data.frame(Mesocosm = mesocosm, Treatment = treatment, Day=day, Results=results)
+Controls have a mean of 35 (and Standard Deviation of 8), Low Density treatment has a mean of 33 (SD = 8) and high density mean of 31 (SD=8)
 
+```{r, echo=FALSE}
+# R code not printed with "echo=FALSE"
+mesocosm = rep(1:15, 10); mesocosm
+treatment = c(rep("Control", 50), rep("LD", 50), rep("HD", 50)); treatment
+day = rep(1, times=10 ); day
+results = round(c(rnorm(50, 35, 8), rnorm(50, 33, 8), rnorm(50, 31, 8)), 1); results
+Mussel = data.frame(Mesocosm = mesocosm, Treatment = treatment, Day=day, Results=results)
+```
+
+### First six observations and histograms
+
+```{r}
+head(Mussel)
+```
+
+```{r}
+par(mfrow=c(1,3))
+hist(Mussel$Results[Mussel$Treatment=="Control"])
+hist(Mussel$Results[Mussel$Treatment=="LD"])
+hist(Mussel$Results[Mussel$Treatment=="HD"])
+
+```
+
+### Create AOV Object (Analysis of Variance) Using Least Squares Method
+
+```{r}
 
 Mussel.aov <- aov(results ~ treatment, data=Mussel)
+```
+
+### Results
+
+MLH:Play with means or SD to see how it changes results
+
+```{r}
 
 summary(Mussel.aov)
+```
 
-par(mfrow=c(1,2))
-hist(Mussel$Results[Mussel$Treatment=="Control"])
-hist(Mussel$Results[Mussel$Treatment=="Mussel"])
 
+### Some graphical Displays
+
+Using a normal distribution, what do the data look like?
+
+MLH: What do these mean?
+
+```{r}
 newresults = seq(min(Mussel$Results), max(Mussel$Results), length=500)
-plot(newresults, dnorm(newresults, mean=mean(Mussel$Results[Mussel$Treatment=="Control"])), ty="l", xlim=c(45,60), col="darkgreen", lwd=1.4)
-lines(newresults, dnorm(newresults, mean=mean(Mussel$Results[Mussel$Treatment=="Mussel"])), ty="l", col="darkred", lwd=1.4)
+plot(newresults, dnorm(newresults, mean=mean(Mussel$Results[Mussel$Treatment=="Control"])), ty="l", xlim=c(25,40), col="darkgreen", lwd=1.4)
+lines(newresults, dnorm(newresults, mean=mean(Mussel$Results[Mussel$Treatment=="LD"])), ty="l", col="darkred", lwd=1.4)
+lines(newresults, dnorm(newresults, mean=mean(Mussel$Results[Mussel$Treatment=="HD"])), ty="l", col="purple", lwd=1.4)
 
 ```
 
 
 ## Tests for Association
+
+MLH: What is this test used for?
+
+MLH:  Are their assumption to be concerned about?
+
 
 # Example 2
 
@@ -307,9 +454,15 @@ chisq.test(HAB.tab)
 
 # Other Types the Might be Important (Marc might discuss if we have time...)
 
+## Count Data
+
 ## Multiple Regression
 
-## Time Series Data
+## Two-Way and Mult-Way ANOVAs
+
+## Time Series Data 
+
+### Autocorrelation {#autocorrelation}
 
 ## Count Data
 
