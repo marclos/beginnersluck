@@ -2,7 +2,7 @@
 title: "4 Statistical Frameworks Study Guide (and other notes?)"
 author: "EA30 2023 Students and Marc"
 date: "2023-03-27"
-output: word_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -14,7 +14,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Class Assignment
 
-The study guide development will go for five weeks, so everyone can have a change to look at each of the for frameworks and then one session to integrate everything into one document. See sakai to see your group assignment.
+The study guide development will go for five weeks, so everyone can have a change to look at each of the for frameworks and then one session to integrate everything into one document. See Sakai to see your group assignment.
+
+```{r  out.width = "20%", eval=FALSE}
+knitr::include_graphics("/home/mwl04747/beginnersluck/Stats/EA30_Study_Guide/Calystegic_purpurata.jpg") 
+```
+
+Calystegia purpurata is a species of morning glory known by the common name Pacific false bindweed. It is endemic to California, where it grows in the seaside scrub of the coastline and the chaparral of the coastal and inland valleys.
 
 ## Developing Content
 
@@ -26,11 +32,12 @@ We'll start with creating an example. But as we do, we want to be answering thes
 - Are their limitations to the method?
 - What are the assumptions?
 - How can the assumptions be tested?
+- Put comments after R code to help others understand what's going on
+- Create a "list of R functions"
 
 The example should include data to be analyzed -- either imported or created in R, then the R codes to analyze the results and then a discussion about how to interpret the data.
 
 After each week, please upload the version you have editted and I will harmonize the 4 groups work into one document for the following week.
-
 
 # Getting Started with R
 
@@ -38,7 +45,9 @@ After each week, please upload the version you have editted and I will harmonize
 
 ### What is R?
 
-TBD
+R is a language and environment for statistical computing and graphics. R provides a wide variety of statistical (linear and nonlinear modelling, classical statistical tests, time-series analysis, classification, clustering, etc.) and graphical techniques, and is highly extensible. 
+
+One of R's strengths is the ease with which well-designed publication-quality plots can be produced, including mathematical symbols and formula where needed. 
 
 ### Getting started in R
 
@@ -58,13 +67,7 @@ summary(cars) # extract summary statistics from built-in cars dataset.
 
 I added the comment line to help the reader remember what's happening. These comments are useful to help everyone see the intentions of the author. 
 
-### Including Plots
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot. But as a guide, we might want to show the code -- which can be done with `echo = TRUE`, which is the default. 
 
@@ -78,7 +81,7 @@ There are ways to share these documents via github.com -- but frankly, it works 
 
 ## Editing the Guide
 
-Once you have both of these programs downloaded, open R Studio and click on File > Open File -- and select this file :-).
+After extracting the zip file, you will see several files that make up the study guide. When submitting your edits, please zip the files so all the files you have used will be available to others. 
 
 ## Run the Template
 
@@ -88,19 +91,56 @@ Make sure the template you downloaded runs!  Nothing is more frustrating (hyperb
 
 ## Defining Variable Types
 
+### Continuous vs. Count vs. Categorical
+
+MLH: Describe...these...
+
+We can interrogate the data if we are unsure using the str() function, which coerces the data.frame into a format to evaluate the structure.
+
+```{r}
+str(pressure)
+```
+
+In this case, we find that the object "pressure" is a data.frame that is composed of two variables -- and both seem to be numeric.
+
+## Example of Plastic Data...
+
+```{r}
+
+```
+
+
 ### Dependent vs. Independent Data (add text here...)
 
-In some cases, we can manipulate an environmental setting or characteristic and test the impact on another characteritics. We generally call the one that we can maniupualte as the indpendent variable and the measured response as the dependent varaible. 
+In some cases, we can manipulate an environmental setting or characteristic and test the impact on another characteristics. We generally call the one that we can manipulate as the independent variable and the measured response as the dependent variable. 
 
-Graphically, we often see the independent variable as the x-axis. The independant call might also be referred to as the prector variable. The response as the dependent (or response) variable. 
+Graphically, we often see the independent variable as the x-axis. The independent call might also be referred to as the predictor variable. The response as the dependent (or response) variable. 
 
 In our titles, we often refer to the dependent first -- "Response as a Function of X" or "Water Temperature vs. Air Temperature"
 
-### Continuous vs. Count vs. Categorical
+NOTE: Spatial Data and Time Series data have special concerns. For example, when we take a sample from a creek every day -- the creek water might be different, but the processes that contribute to its characteristics are quite similar, compared to water from another creek. Thus, we might note that the samples taken are autocorrelated. 
 
-MLH: Describe...
+"Auto-correlation"..., see below...[Autocorrelation Section](#autocorrelation)
 
-NOTE: Spatial Data and Time Series data have special concerns... "auto-correlation", see below...[Autocorrelation Section](#autocorrelation)
+#### Graphical Example of Independent and Dependent Variables
+
+Plotting data as a data.frame is pretty straightforward, but there are two main syntax methods. 
+
+1. Define x and y in the plot function: 
+
+```{r}
+plot(x=pressure$temperature, y=pressure$pressure) # Notice the data.frame is explicitly referenced and then the variable of interest after the dollar symbol.
+```
+
+2. Alternatively, you can use the formula syntax:
+
+```{r}
+plot(pressure ~ temperature, data=pressure) # in this case the data.frame is called by the "data=" argument.
+```
+
+
+
+
 
 
 
@@ -110,12 +150,18 @@ NOTE: Spatial Data and Time Series data have special concerns... "auto-correlati
 
 MLH: What is linear Regression
 
-MLH: What kinds of questions is the linear regression best suited for?
+Calytegia: Linear regression is one of the most commonly used predictive analyses. It answers the question:Does a set of predictor variables do a good job in predicting an outcome (dependent) variable? It’s used to predict the value of a variable (the dependent variable) based on an input value (the independent/predictor variable)
 
-MLH:  What are the "under the hood methods" used to analyze the data? Is this supported by theory? Is there any of the theory that's useful for users?
+MLH: What kinds of questions is the linear regression best suited for? 
+
+Calytegia: It’s used to answer questions about the relationship between two variables or the strength of a cause/effect relationship. It also is helpful if you have multiple independent variables because you can find out which variable(s) best predicts the dependent variable.
+
+MLH: What are the “under the hood methods” used to analyze the data? Is this supported by theory? Is there any of the theory that’s useful for users? 
+
+Calytegia: Linear regression is best visualized on a scatterplot. Linear regression will fit a straight line on the plot (a line of best fit) and will measure the distance between the actual values and the predicted values on the line to determine how well the line predicts the values.
 
 
-## Linnear Regression Examples
+## Linear Regression Examples
 
 ### Example #1
 
@@ -123,6 +169,8 @@ We know surface water temperatures depend on the sunlight. But what about surfac
 
 
 Is water and air temperature correlated?  (whats the difference between correlation and regression?)
+
+Calytegia: Correlation doesn’t say anything about cause and effect while regression does. Regression expresses the cause and effect relationship between variables in the form of an equation.
 
 ```{r}
 water = c(50, 52, 65, 67, 68, 78, 54, 63, 57, 58)
@@ -147,7 +195,11 @@ Following HABs and SRP as a predictor...
 
 MLH: Describe why these data can be analyzed using regression
 
+Calystegia: These data can be analyzed using a linear regression (specifically a simple linear regression) because they are both quantitative forms of data and we are trying to determine if they have a cause and effect relationship, between an independent and dependent variable.
+
 ##### Define Data:
+
+MLH: What's the rcode doing here?
 
 ```{r}
 SRP <- c(.02, .03, 0.4, 0.04, .05, 0.033, 1.4)
@@ -159,6 +211,8 @@ cyano<- c(22, 34, 23, 22, 23, 2, 122)
 
 The linear model coerces the data into a new object using a least squares method to calculate the slope and intercept (and other statistical date.)
 
+MLH: What's the rcode doing here?
+
 ```{r}
 HAB.lm = lm(cyano ~ SRP)
 HAB.lm 
@@ -167,16 +221,27 @@ HAB.lm
 #### Model Summary (Results)
 Let's look at the model results with summary()
 
+
+MLH: What's the rcode doing here?
+
 MLH: Describe results...
+
+ Calytegia: The results of this linear regression demonstrate a relationship between SRP and HABs, but it is not a significant one (p-value = 0.06563). There some relationship between the data as demonstrated by the R2 vaue being 0.886, but the p-value demonstrates that it’s not a very significant relationship.
+
+
 
 ```{r}
 summary(HAB.lm)
 ```
 
 
+MLH: What's the rcode doing here?
+
+MLH: maybe make better x and y labels?
+
 ```{r}
-plot(cyano ~ SRP)
-abline(HAB.lm)
+plot(cyano ~ SRP, las=1, main="title", pch=20)
+abline(HAB.lm, col="blue")
 ```
 
 #### Model Interpretation (Discussion)
@@ -322,43 +387,25 @@ Calculating Standard Error... MLH: Haven't tried this yet
 
 proportion dead 0.6 0.4 0.2 0.0 2 ˆ + SE(ˆ1) ˆ 1 LD50 2 cov(ˆ0, ˆ1) ˆ 0 ˆ1
 
+### Example #3
+Will a person win an election?
+
+
+MLH:  What is this used for? 
+Logistic regression is used when the predictor/independent variable is categorical and the  response/dependent variable is continuous. 
+
+MLH: What are good questions for this?
+Possible questions may include - will an indiviudal win the election?  predictor = number of votes; response = win or loss
+
 ## ANOVA
 
 What is a one-way ANOVA?
 
 What is the ANOVA used for?
 
-### Example \#1 --Fertilizer and Crop Yield MLH: Better for Multiway ANOVA
-
-MLH --    The example relies on external data, which adds a step that gets in the way. I suggest we developed example two to keep it simpler...
-
-Research question: Which fertilizer produces the most crop yield? ##Independent variable/predictor: Fertilizer A, Fertilizer B, Fertilizer C ##Dependent variable/response: amount of crop yield
-
-Question: Which fertilizer provides the best crop yield?
-
-It is common for factors to be read as quantitative variables when importing a dataset into R. To avoid this, you can use the read.csv() command to read in the data, specifying within the command whether each of the variables should be quantitative (â€œnumericâ€) or categorical (â€œfactorâ€).
-
-##Use the following code, replacing the path/to/your/file text with the actual path to your file:
 
 
-```{r}
-# install.packages(c(“ggplot2”, “ggpubr”, “tidyverse”, “broom”, “AICcmodavg”)) 
-
-# Read Data
-# crop.data.csv = file.choose()
-
-crop.data.csv  = "/home/mwl04747/beginnersluck/Stats/EA30_Study_Guide/ANOVA_cropdata.csv"
-crop.data <- read.csv(crop.data.csv)
-
-names(crop.data)
-crop.data.aov <- aov(Yield ~ Fertilizer, data=crop.data)
-
-summary(crop.data.aov)
-
-```
-
-
-## Example 2: Simulated HAB Data
+## Example 1: Simulated HAB Data
 
 Five mesocosms have been randomly selected to test the impact of zebra mussels on cyanobacteria concentrations, while five are controls. Water is circulate in each, and the experiment sampled the water column for bacteria counts every day for 10 days.
 
@@ -400,6 +447,8 @@ Mussel.aov <- aov(results ~ treatment, data=Mussel)
 
 MLH:Play with means or SD to see how it changes results
 
+A lower standard deviation meant that the data were more clustered around the mean. 
+
 ```{r}
 
 summary(Mussel.aov)
@@ -409,6 +458,8 @@ summary(Mussel.aov)
 ### Some graphical Displays
 
 Using a normal distribution, what do the data look like?
+
+The data is symmetrically distributed with no skew. 
 
 MLH: What do these mean?
 
@@ -423,12 +474,39 @@ lines(newresults, dnorm(newresults, mean=mean(Mussel$Results[Mussel$Treatment=="
 
 ## Tests for Association
 
+Contributions to date: Eriogonum, Calystegia, Phacelia
+
+Example description (making this concrete at the start is useful): 
+
 MLH: What is this test used for?
+
+This test is used to determine association between two treatments (or differences). An example could be Harmful Algal Blooms (HABs) as a treatment with Hospital Asthma Cases as an output. Could show the relation between HABs and Asthma Cases going to the hospital. Chi-Square tests for independence/association can only be used between categorical variables.
+
+
+MLH: What is this test used for?
+
+Answer: There are several tests for association. One of the more popular is the Chi-squared test ($\Chi^2$ test). 
+
+A Chi-Squared test is used to determine the association between two categorical variables. The null hypothesis is no association between the two independent variables.
+
+
+H+M: Strengths of this test = helps measure how a model compares the actual observed data, tells us if two variables are independent of one another. 
+
+
+MLH:  Are their assumptions to be concerned about?
+
+The chi-squared test assumes that both variables are are categorical and independent. Assumes that the values are mutually exclusive as well. Data must be frequency data and this test is used when there are larger values. It makes no assumption about the distribution of the data.
+
+The data in the cells should be frequencies, or counts of cases rather than percentages or some other transformation of the data. Categories of the variables are mutually exclusive (one cannot recieve the treatment AND not recieve the treatment). All observations must be independent.
+
+
+
+
 
 MLH:  Are their assumption to be concerned about?
 
 
-# Example 2
+### Example 2
 
 Hospital asthema cases and HABs in Florida
 
@@ -459,6 +537,61 @@ chisq.test(HAB.tab)
 ## Multiple Regression
 
 ## Two-Way and Mult-Way ANOVAs
+
+### Example \#1 --Fertilizer and Crop Yield MLH: Better for Multiway ANOVA
+
+##Looked at Scribbr; entered the crop data to R as a csv##
+##Question: How does fertilizer effect crop yield? Testing three different fertilizers##
+##command to read the data##
+crop.data <- read.csv("crop.data.csv", header)
+##command to summarize and make sure everything is working##
+summary(crop.data)
+str(crop.data)
+##use to perform a one.way ANOVA##
+##One way ANOVA has one independent independent variable##
+##This one way ANOVA models crop yield as a function of the type of fertilizer used##
+one.way <- aov(yield~fertilizer,data=crop.data)
+##shows what the data compiles into after a one.way##
+summary(one.way)
+##use to perform a two.way ANOVA##
+##Two way ANOVA utilizes two independent variables##
+##This two way models crop yield as a function of type of fertilizer and planting density##
+##Just have to add a plus icon and the extra independent variable##
+two.way <- aov(yield ~ fertilizer + density, data = crop.data)
+##shows what the data compiles into after a two.way##
+summary(two.way)
+##Interaction between variables##
+##Used to test whether two variables have an interaction effect##
+interaction <- aov(yield ~ fertilizer*density, data = crop.data)
+summary(interaction)
+
+MLH --    The example relies on external data, which adds a step that gets in the way. I suggest we developed example two to keep it simpler...
+
+Research question: Which fertilizer produces the most crop yield? ##Independent variable/predictor: Fertilizer A, Fertilizer B, Fertilizer C ##Dependent variable/response: amount of crop yield
+
+Question: Which fertilizer provides the best crop yield?
+
+It is common for factors to be read as quantitative variables when importing a dataset into R. To avoid this, you can use the read.csv() command to read in the data, specifying within the command whether each of the variables should be quantitative (â€œnumericâ€) or categorical (â€œfactorâ€).
+
+##Use the following code, replacing the path/to/your/file text with the actual path to your file:
+
+
+```{r}
+# install.packages(c(“ggplot2”, “ggpubr”, “tidyverse”, “broom”, “AICcmodavg”)) 
+
+# Read Data
+# crop.data.csv = file.choose()
+
+crop.data.csv  = "/home/mwl04747/beginnersluck/Stats/EA30_Study_Guide/ANOVA_cropdata.csv"
+crop.data <- read.csv(crop.data.csv)
+
+names(crop.data)
+crop.data.aov <- aov(Yield ~ Fertilizer, data=crop.data)
+
+summary(crop.data.aov)
+
+```
+
 
 ## Time Series Data 
 
