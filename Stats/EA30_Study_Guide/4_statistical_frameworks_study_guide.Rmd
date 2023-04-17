@@ -575,7 +575,7 @@ It is common for factors to be read as quantitative variables when importing a d
 ##Use the following code, replacing the path/to/your/file text with the actual path to your file:
 
 
-```{r}
+```{r, eval=FALSE}
 # install.packages(c(“ggplot2”, “ggpubr”, “tidyverse”, “broom”, “AICcmodavg”)) 
 
 # Read Data
