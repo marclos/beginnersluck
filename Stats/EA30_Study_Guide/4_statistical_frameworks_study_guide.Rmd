@@ -16,8 +16,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The study guide development will go for five weeks, so everyone can have a change to look at each of the for frameworks and then one session to integrate everything into one document. See Sakai to see your group assignment.
 
-```{r  out.width = "20%", eval=TRUE, fig.cap="Calystegia purpurata is a species of morning glory known by the common name Pacific false bindweed. It is endemic to California, where it grows in the seaside scrub of the coastline and the chaparral of the coastal and inland valleys."}
-knitr::include_graphics("/home/mwl04747/beginnersluck/Stats/EA30_Study_Guide/Calystegic_purpurata.jpg") 
+```{r  out.width = "40%", eval=TRUE, fig.cap="Calystegia purpurata is a species of morning glory known by the common name Pacific false bindweed. It is endemic to California, where it grows in the seaside scrub of the coastline and the chaparral of the coastal and inland valleys."}
+knitr::include_graphics("https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/Calystegic_purpurata.jpg") 
 ```
 
 
@@ -82,7 +82,7 @@ There are ways to share these documents via github.com -- but frankly, it works 
 
 ## Editing the Guide
 
-<span style="color:blue">After extracting the zip file, you will see several files that make up the study guide. When submitting your edits, please zip the files so all the files you have used will be available to others. 
+<span style="color:blue">Please use Rcode chunks and text as you edit. Be sure to export as a .Rmd file!
 
 ## Run the Template
 
@@ -111,7 +111,7 @@ In this case, we find that the object "pressure" is a data.frame that is compose
 ```
 
 
-### Dependent vs. Independent Data (add text here...)
+### Dependent vs. Independent Data {#dependindepend}
 
 In some cases, we can manipulate an environmental setting or characteristic and test the impact on another characteristics. We generally call the one that we can manipulate as the independent variable and the measured response as the dependent variable. 
 
@@ -122,6 +122,8 @@ In our titles, we often refer to the dependent first -- "Response as a Function 
 NOTE: Spatial Data and Time Series data have special concerns. For example, when we take a sample from a creek every day -- the creek water might be different, but the processes that contribute to its characteristics are quite similar, compared to water from another creek. Thus, we might note that the samples taken are autocorrelated. 
 
 "Auto-correlation"..., see below...[Autocorrelation Section](#autocorrelation)
+
+
 
 #### Graphical Example of Independent and Dependent Variables
 
@@ -140,10 +142,13 @@ plot(pressure ~ temperature, data=pressure) # in this case the data.frame is cal
 ```
 
 
+```{r  out.width = "50%", eval=TRUE, fig.cap="Calochortus plummerae is a perennial herb (bulb) that is native to California, and endemic (limited) to California."}
+knitr::include_graphics("https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/Calochortus_plummerae.jpg") 
+```
 
 
 
-
+https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/Calochortus_plummerae.jpg
 
 # Four Frameworks
 
@@ -151,7 +156,7 @@ plot(pressure ~ temperature, data=pressure) # in this case the data.frame is cal
 
 MLH: What is linear Regression
 
-Calystegia: Linear regression is one of the most commonly used predictive analyses. It answers the question:Does a set of predictor variables do a good job in predicting an outcome (dependent) variable? <span style="color:blue">link to definition</span>. It's used to predict the value of a variable (the dependent variable) based on an input value (the independent/predictor variable)
+Calystegia: Linear regression is one of the most commonly used predictive analyses. It answers the question:Does a set of predictor variables do a good job in predicting an outcome (dependent) variable? <span style="color:blue">link to definition -- see my example in Rmd file</span>. It's used to predict the value of a variable (the dependent variable) based on an input value (the independent/predictor variable), [Variable Types Section](#dependindepend)
 
 MLH: What kinds of questions is the linear regression best suited for? 
 
@@ -159,7 +164,7 @@ Calystegia: It’s used to answer questions about the relationship between two v
 
 MLH: What are the “under the hood methods” used to analyze the data? Is this supported by theory? Is there any of the theory that’s useful for users? 
 
-Calytegia: Linear regression is best visualized on a scatterplot. Linear regression will fit a straight line on the plot (a line of best fit) and will measure the distance between the actual values and the predicted values on the line to determine how well the line predicts the values.
+Calystegia: Linear regression is best visualized on a scatterplot. Linear regression will fit a straight line on the plot (a line of best fit) and will measure the distance between the actual values and the predicted values on the line to determine how well the line predicts the values.
 
 
 ## Linear Regression Examples
@@ -171,8 +176,10 @@ We know surface water temperatures depend on the sunlight. But what about surfac
 
 Is water and air temperature correlated?  (whats the difference between correlation and regression?)
 
-Calytegia: Correlation doesn’t say anything about cause and effect while regression does. Regression expresses the cause and effect relationship between variables in the form of an equation.
+Calystegia: Correlation doesn’t say anything about cause and effect while regression does. Regression expresses the cause and effect relationship between variables in the form of an equation.
 
+
+<span style="color:blue">What's the rcode doing here?
 ```{r}
 water = c(50, 52, 65, 67, 68, 78, 54, 63, 57, 58)
 air = c(60, 75, 85, 86, 73, 76, 78, 92, 59,62)
@@ -181,14 +188,14 @@ lm(formula = water ~ air)
 ```
 
 making a graph...
+
+<span style="color:blue">Add a best fit line, what's going on here?
 ```{r}
-
-plot(x=air, y=water, main="water ~ air")  # This was a scatterplot, but marc changed it to a "plot" on 4/1 because it wasn't clear what the model was in the curvy scatter plot approach. 
-#linearMod <- lm(water ~ air, data=temperature)  # build linear regression model on full data
-#print(linearMod)
-
+plot(x=air, y=water, main="water ~ air")  
 
 ```
+
+<span style="color:blue">Describe the results...
 
 ### Example #2: SRP and HABs
 
@@ -200,7 +207,7 @@ Calystegia: These data can be analyzed using a linear regression (specifically a
 
 ##### Define Data:
 
-MLH: What's the rcode doing here?
+<span style="color:blue">MLH: What's the rcode doing here?
 
 ```{r}
 SRP <- c(.02, .03, 0.4, 0.04, .05, 0.033, 1.4)
@@ -212,7 +219,7 @@ cyano<- c(22, 34, 23, 22, 23, 2, 122)
 
 The linear model coerces the data into a new object using a least squares method to calculate the slope and intercept (and other statistical date.)
 
-MLH: What's the rcode doing here?
+<span style="color:blue">MLH: What's the rcode doing here?
 
 ```{r}
 HAB.lm = lm(cyano ~ SRP)
@@ -223,22 +230,22 @@ HAB.lm
 Let's look at the model results with summary()
 
 
-MLH: What's the rcode doing here?
-
-MLH: Describe results...
-
- Calytegia: The results of this linear regression demonstrate a relationship between SRP and HABs, but it is not a significant one (p-value = 0.06563). There some relationship between the data as demonstrated by the R2 vaue being 0.886, but the p-value demonstrates that it’s not a very significant relationship.
-
-
-
 ```{r}
 summary(HAB.lm)
 ```
 
+<span style="color:blue">MLH: What's the rcode doing here?
 
-MLH: What's the rcode doing here?
+MLH: Describe results...
 
-MLH: maybe make better x and y labels?
+Calystegia: The results of this linear regression demonstrate a relationship between SRP and HABs, but it is not a significant one (p-value = 0.06563). There some relationship between the data as demonstrated by the R2 vaue being 0.886, but the p-value demonstrates that it’s not a very significant relationship.
+
+<span style="color:blue">Is this clear?
+
+
+<span style="color:blue">MLH: What's the rcode doing here?
+
+<span style="color:blue">MLH: maybe make better x and y labels? -- brainstorm with marc to come up with ideas...write out as psudocode...
 
 ```{r}
 plot(cyano ~ SRP, las=1, main="title", pch=20)
@@ -247,71 +254,29 @@ abline(HAB.lm, col="blue")
 
 #### Model Interpretation (Discussion)
 
+<span style="color:blue">please add text here...what is the difference between reporting results and interpresting the results?
 
 ##### Linear Regression Assumptions
 
-Let's look at a default plot of model...
+Let's look at a default plot of model...why plot of model? different than plot of data?
 
-MLH: What do these mean?
+<span style="color:blue">MLH: What do these mean?
 
 ```{r}
 par(mfrow=c(2,2))
 plot(HAB.lm)
 ```
 
+<span style="color:blue">Describe each of the panels...
+
 ## Logistic Regression
 
-MLH:  What is this used for? 
+<span style="color:blue">MLH:  What is this used for? 
 
-MLH: What are good questions for this?
-
-### Example \#1 Gradaute School Admissions -- MLH: Too Complicated...
-
-This data predicts graduate school admission (discreet/binary) based on GRE score (continuous), GPA (continuous), and school prestige (discreet/binary, 1-4). This is a great resource to perform this: https://stats.oarc.ucla.edu/r/dae/logit-regression/
+<span style="color:blue">MLH: What are good questions for this?
 
 
-```{r}
-#### Name the data
-mydata <- read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")
-
-####   View the first few rows of the data
-head(mydata)
-
-####   Create a 5 number summary
-summary(mydata)
-
-
-```
-
-MLH:  I have simplified it to one variable... trying to stay focused on simple analyses!
-
-MLH:What is the family=binomial for?
-```{r}
-mydata$rank <- factor(mydata$rank)
-mylogit <- glm(admit ~ gre, data = mydata, family = "binomial")
-```
-
-```{r}
-summary(mylogit)
-```
-```{r}
-#define new data frame that contains predictor variable
-newdata <- data.frame(gre=seq(min(mydata$gre), max(mydata$gre),len=100))
-
-#use fitted model to predict values of vs
-newdata$admit = predict(mylogit, newdata, type="response")
-```
-
-
-```{r}
-
-#plot logistic regression curve
-plot(jitter(admit) ~ gre, data=mydata, col="steelblue", las=1)
-lines(admit ~ gre, newdata, lwd=2)
-
-```
-
-### Example \#2: Algae Concentration and Toxicity
+### Example \#1: Algae Concentration and Toxicity
 
 Toxicity is a measure of toxity based on organism responses, often measured as LD50s, where 50% of the populations dies at a certain concentration. 
 
@@ -562,10 +527,15 @@ chisq.test(HAB.tab)
 
 ## Multiple Regression
 
-## Two-Way and Mult-Way ANOVAs
+## Two-Way and Mult-Way ANOVAs -- 
+
+<span style="color:blue">we need data that we don't have to read.csv...
+
+<span style="color:blue">What is a two-way anova?
 
 ### Example \#1 --Fertilizer and Crop Yield MLH: Better for Multiway ANOVA
 
+```{r, eval=FALSE}
 ##Looked at Scribbr; entered the crop data to R as a csv##
 ##Question: How does fertilizer effect crop yield? Testing three different fertilizers##
 ##command to read the data##
@@ -590,6 +560,9 @@ summary(two.way)
 ##Used to test whether two variables have an interaction effect##
 interaction <- aov(yield ~ fertilizer*density, data = crop.data)
 summary(interaction)
+```
+
+### Logistic Regression -- Multiple Predictors
 
 MLH --    The example relies on external data, which adds a step that gets in the way. I suggest we developed example two to keep it simpler...
 
@@ -627,13 +600,15 @@ summary(crop.data.aov)
 
 ## Mixed Effects Models
 
-# Appendix 1: Alphabetic List of R code and explanation
+# Appendix 1: Soon to be an Alphabetic List of R code and explanation
+
+<span style="color:blue">Please describe in human terms, what are these?  and us arg() to show some of the syntax (in human language!)
 
 ## Group: Rubus
 
 read.csv()
 
-summary()
+power.anova.test()
 
 ## Group: Eriogonum
 
@@ -643,17 +618,23 @@ plot()
 
 list()
 
+help.start()
+
 ## Group: Calachortus
 
 abline()
 
 str()
 
+help()
+
 ## Group: Adenostoma
 
 aov()
 
-power.anova.test()
+summary()
+
+knitr::include_graphics()
 
 ## Group Clemitis
 
@@ -661,13 +642,58 @@ dim()
 
 table()
 
+chisq.test()
+
 ## Group Phacilia
 
 dimnames()
 
+data.frame()
+
+par()
+
 ## Group Marah
 
+c()
+
+predict()
+
+lines()
+
 ## Group Calystegia
+
+read.csv()
+
+glm()
+
+points()
+
+jitter()
+
+
+# Appendix 2: Questions to Evaluate our Study Guide
+
+## General questions
+
+1. Is all the rcode described and have comments to help the reader?
+2. Is all the data within the documented, no need for external data source links that might break?
+3. Is each example described and compelling?
+4. Are the results described?
+5. Are the models interpreted?
+
+## Quiz Like Questions
+
+<span style="color:blue"> Add questions here from our quiz or something that you learned about your topic that you can put in here...
+
+### Linear Regression
+
+### ANOVA
+
+### Logistic Regression
+
+
+### Tests for Association
+
 
 
 
