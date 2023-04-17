@@ -16,11 +16,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The study guide development will go for five weeks, so everyone can have a change to look at each of the for frameworks and then one session to integrate everything into one document. See Sakai to see your group assignment.
 
-```{r  out.width = "20%", eval=FALSE}
+```{r  out.width = "20%", eval=TRUE, fig.cap="Calystegia purpurata is a species of morning glory known by the common name Pacific false bindweed. It is endemic to California, where it grows in the seaside scrub of the coastline and the chaparral of the coastal and inland valleys."}
 knitr::include_graphics("/home/mwl04747/beginnersluck/Stats/EA30_Study_Guide/Calystegic_purpurata.jpg") 
 ```
 
-Calystegia purpurata is a species of morning glory known by the common name Pacific false bindweed. It is endemic to California, where it grows in the seaside scrub of the coastline and the chaparral of the coastal and inland valleys.
 
 ## Developing Content
 
@@ -32,12 +31,14 @@ We'll start with creating an example. But as we do, we want to be answering thes
 - Are their limitations to the method?
 - What are the assumptions?
 - How can the assumptions be tested?
-- Put comments after R code to help others understand what's going on
-- Create a "list of R functions"
+- Create R code to explore some examples
+- <span style="color:blue">Put comments (using # symbol) after R code to help others understand what's going on.
+- <span style="color:blue">Create a "list of R functions" in Appendix 1
+- <span style="color:blue">Create a study guide "test", evaluation questions, Appendix 2.</span>
 
 The example should include data to be analyzed -- either imported or created in R, then the R codes to analyze the results and then a discussion about how to interpret the data.
 
-After each week, please upload the version you have editted and I will harmonize the 4 groups work into one document for the following week.
+After each week, please upload the version you have edited and I will harmonize the 4 groups work into one document for the following week.
 
 # Getting Started with R
 
@@ -53,7 +54,7 @@ One of R's strengths is the ease with which well-designed publication-quality pl
 
 TBD
 
-If you havenâ€™t used R before, start by downloading R and R Studio. 
+If you havenâ€™t used R before, start by downloading R and R Studio.  <span style="color:blue">.MLH: Not sure what this is here for...</span>
 
 ## R Markdown
 
@@ -71,7 +72,7 @@ I added the comment line to help the reader remember what's happening. These com
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot. But as a guide, we might want to show the code -- which can be done with `echo = TRUE`, which is the default. 
 
-## Updated Template to Create Word.docx Study Guide
+## Updated Template to Create Study Guide
 
 I created this document to give you a "head-start" in creating the study guide with a format that everyone can use. By using Rstudio, you will have the capacity to create an integrated approach that merges R commands and outputs and text. 
 
@@ -81,7 +82,7 @@ There are ways to share these documents via github.com -- but frankly, it works 
 
 ## Editing the Guide
 
-After extracting the zip file, you will see several files that make up the study guide. When submitting your edits, please zip the files so all the files you have used will be available to others. 
+<span style="color:blue">After extracting the zip file, you will see several files that make up the study guide. When submitting your edits, please zip the files so all the files you have used will be available to others. 
 
 ## Run the Template
 
@@ -93,7 +94,7 @@ Make sure the template you downloaded runs!  Nothing is more frustrating (hyperb
 
 ### Continuous vs. Count vs. Categorical
 
-MLH: Describe...these...
+<span style="color:blue">MLH: Describe...these...
 
 We can interrogate the data if we are unsure using the str() function, which coerces the data.frame into a format to evaluate the structure.
 
@@ -150,11 +151,11 @@ plot(pressure ~ temperature, data=pressure) # in this case the data.frame is cal
 
 MLH: What is linear Regression
 
-Calytegia: Linear regression is one of the most commonly used predictive analyses. It answers the question:Does a set of predictor variables do a good job in predicting an outcome (dependent) variable? It’s used to predict the value of a variable (the dependent variable) based on an input value (the independent/predictor variable)
+Calystegia: Linear regression is one of the most commonly used predictive analyses. It answers the question:Does a set of predictor variables do a good job in predicting an outcome (dependent) variable? <span style="color:blue">link to definition</span>. It's used to predict the value of a variable (the dependent variable) based on an input value (the independent/predictor variable)
 
 MLH: What kinds of questions is the linear regression best suited for? 
 
-Calytegia: It’s used to answer questions about the relationship between two variables or the strength of a cause/effect relationship. It also is helpful if you have multiple independent variables because you can find out which variable(s) best predicts the dependent variable.
+Calystegia: It’s used to answer questions about the relationship between two variables or the strength of a cause/effect relationship. It also is helpful if you have multiple independent variables because you can find out which variable(s) best predicts the dependent variable. <span style="color:blue">Let's define the difference between correlation and causation...<\span>
 
 MLH: What are the “under the hood methods” used to analyze the data? Is this supported by theory? Is there any of the theory that’s useful for users? 
 
@@ -438,6 +439,7 @@ hist(Mussel$Results[Mussel$Treatment=="HD"])
 
 ### Create AOV Object (Analysis of Variance) Using Least Squares Method
 
+What are least squares?
 ```{r}
 
 Mussel.aov <- aov(results ~ treatment, data=Mussel)
@@ -445,14 +447,30 @@ Mussel.aov <- aov(results ~ treatment, data=Mussel)
 
 ### Results
 
-MLH:Play with means or SD to see how it changes results
-
-A lower standard deviation meant that the data were more clustered around the mean. 
 
 ```{r}
 
 summary(Mussel.aov)
 ```
+
+### Exploring Chaning Parameters
+
+<span style="color:blue">MLH:Play with means or SD to see how it changes results 
+
+A lower standard deviation meant that the data were more clustered around the mean -- <span style="color:blue">MLH:  this is doesn't not tell the reader much... what about the summary, p value, ect?
+
+#### Change Mean
+
+<span style="color:blue">MLH: add rcode and describe results
+
+#### Change SD
+
+<span style="color:blue">MLH: add rcode and describe results
+
+
+#### Change N
+
+MLH: add rcode and describe results
 
 
 ### Some graphical Displays
@@ -470,6 +488,10 @@ lines(newresults, dnorm(newresults, mean=mean(Mussel$Results[Mussel$Treatment=="
 lines(newresults, dnorm(newresults, mean=mean(Mussel$Results[Mussel$Treatment=="HD"])), ty="l", col="purple", lwd=1.4)
 
 ```
+
+### Power Analaysis -- ANOVA and Sample Size
+
+Use this example: https://stats.oarc.ucla.edu/r/dae/one-way-anova-power-analysis/ and create an "environmental example" and translate the results for class
 
 
 ## Tests for Association
@@ -497,18 +519,18 @@ MLH:  Are their assumptions to be concerned about?
 
 The chi-squared test assumes that both variables are are categorical and independent. Assumes that the values are mutually exclusive as well. Data must be frequency data and this test is used when there are larger values. It makes no assumption about the distribution of the data.
 
-The data in the cells should be frequencies, or counts of cases rather than percentages or some other transformation of the data. Categories of the variables are mutually exclusive (one cannot recieve the treatment AND not recieve the treatment). All observations must be independent.
+The data in the cells should be frequencies, or counts of cases rather than percentages or some other transformation of the data. Categories of the variables are mutually exclusive (one cannot receive the treatment AND not receive the treatment). All observations must be independent. <span style="color:blue">what does independent mean?
 
 
 
+### Example 1
+
+Hospital asthema cases and HABs in Florida <span style="color:blue">MLH: Please flesh out example...
 
 
-MLH:  Are their assumption to be concerned about?
+#### Creating Data (as a table)
 
-
-### Example 2
-
-Hospital asthema cases and HABs in Florida
+<span style="color:blue">MLH: Describe what's happening here...
 
 ```{r}
 HAB.tab = c(20, 15, 98, 223)
@@ -521,9 +543,13 @@ HAB.tab
 #HAB.mat = matrix(HAB.tab, nrow=2)
 ```
 
+
+
 ```{r}
 table(HAB.tab)
 ```
+
+<span style="color:blue">Describe chisq.test
 
 ```{r}
 
@@ -600,6 +626,48 @@ summary(crop.data.aov)
 ## Count Data
 
 ## Mixed Effects Models
+
+# Appendix 1: Alphabetic List of R code and explanation
+
+## Group: Rubus
+
+read.csv()
+
+summary()
+
+## Group: Eriogonum
+
+lm()
+
+plot()
+
+list()
+
+## Group: Calachortus
+
+abline()
+
+str()
+
+## Group: Adenostoma
+
+aov()
+
+power.anova.test()
+
+## Group Clemitis
+
+dim()
+
+table()
+
+## Group Phacilia
+
+dimnames()
+
+## Group Marah
+
+## Group Calystegia
 
 
 
