@@ -56,6 +56,11 @@ TBD
 
 If you havenâ€™t used R before, start by downloading R and R Studio.  <span style="color:blue">.MLH: Not sure what this is here for...</span>
 
+```{r out.width = "40%", eval=TRUE, fig.cap="A deciduous climbing or trailing evergreen shrub.
+Native blackberry is not aggressive like it’s Himalayan cousin. The berries are edible and tasty. Flowers host beneficial insects. Tolerates salt spray in shoreline and bluff plantings"}
+knitr::include_graphics("https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/Rubus_ursinus.jpg") 
+```
+
 ## R Markdown
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
@@ -219,7 +224,10 @@ cyano<- c(22, 34, 23, 22, 23, 2, 122)
 
 The linear model coerces the data into a new object using a least squares method to calculate the slope and intercept (and other statistical date.)
 
-<span style="color:blue">MLH: What's the rcode doing here?
+<span style="color:blue">MLH: What's the rcode doing here
+
+Calochortus: The rcode is using the lm [linear regression model command] to create a line of best fit and illustrate the relationship between between SRP and HABs.
+
 
 ```{r}
 HAB.lm = lm(cyano ~ SRP)
@@ -269,6 +277,33 @@ plot(HAB.lm)
 
 <span style="color:blue">Describe each of the panels...
 
+
+
+```{r}
+Anscombe = as.data.frame(
+  matrix(c(
+    1, 10, 10, 10, 8, 8.04, 9.14, 7.46, 6.58, 
+    2, 8, 8, 8, 8, 6.95, 8.14, 6.77, 5.76,
+    3, 13, 13, 13, 8, 7.58, 8.74, 12.74, 7.71,
+    4,  9, 9, 9, 8, 8.81, 8.77, 7.11, 8.84,
+    5, 11, 11, 11, 8, 8.33, 9.26, 7.81, 8.47,
+    6, 14, 14, 14, 8, 9.96, 8.10, 8.84, 7.04,
+    7,  6, 6, 6, 8, 7.24, 6.13, 6.08, 5.25,
+    8,  4, 4, 4, 19, 4.26, 3.10, 5.39, 12.50,
+    9, 12, 12, 12, 8, 10.84, 9.13, 8.15, 5.56,
+    10, 7, 7, 7, 8, 4.82, 7.26, 6.42, 7.91,
+    11, 5, 5, 5, 8, 5.68, 4.74, 5.73, 6.89), 
+    nrow=11,  byrow=TRUE))
+
+
+names(Anscombe) = c("Obs.", "x1", "x2", "x3", "x4", "y1", "y2", "y3", "y4")
+
+```
+
+
+Anscombe
+
+
 ## Logistic Regression
 
 <span style="color:blue">MLH:  What is this used for? 
@@ -310,7 +345,7 @@ table(Results.df)
 
 
 ```{r}
-#Results.df$Result <- as.factor(Results.df$Result)
+# Results.df$Result <- as.factor(Results.df$Result)
 Results.logit <- glm(Result ~ Dose, data = Results.df, family = "binomial")
 ```
 
@@ -324,16 +359,16 @@ summary(Results.logit)
 #### Interpretation (Discussion)
 
 ```{r}
-#define new data frame that contains predictor variable
+# define new data frame that contains predictor variable
 newdata <- data.frame(Dose=seq(min(Results.df$Dose), max(Results.df$Dose),len=100))
 
-#use fitted model to predict values of vs
+# use fitted model to predict values of vs
 newdata$Result = predict(Results.logit, newdata, type="response")
 ```
 
 ```{r}
 
-#plot logistic regression curve
+# plot logistic regression curve
 plot(Result ~ jitter(Dose), data=Results.df, col="steelblue", las=1)
 lines(Result ~ Dose, newdata, lwd=2)
 
@@ -458,6 +493,61 @@ lines(newresults, dnorm(newresults, mean=mean(Mussel$Results[Mussel$Treatment=="
 
 Use this example: https://stats.oarc.ucla.edu/r/dae/one-way-anova-power-analysis/ and create an "environmental example" and translate the results for class
 
+### Power Analaysis -- ANOVA and Sample Size -- Rubus
+
+A power analysis helps determine an appropriate sample size. To do so, it requires 5 types of data: the number of groups, the between group variance, the within group variance, the alpha level, and the sample size/power.
+
+The number of groups refers to the number of treatments/categories within an analysis of variants. It is often represented as "groups". The between group variance refers to the difference between group, the within group variance refers to the difference within each individual group, the alpha level relates to the probability of rejecting the null hypothesis when it is true, and the power refers to the probability the test will determine a statistically significant when that difference exists.
+
+Next steps after running the initial Power Anova Test include plotting the results and analyzing effect size.
+
+The between group variance references 
+Use this example: https://stats.oarc.ucla.edu/r/dae/one-way-anova-power-analysis/ and create an "environmental example" and translate the results for class
+
+```{r}
+groupmeans <- c(550, 598, 598, 646)
+n <- c(seq(2,10,by=1),seq(12,20,by=2),seq(25,50,by=5))
+groups = 4
+              n = NA
+    between.var = 1536
+     within.var = 6400
+      sig.level = 0.05
+      power = .823
+p <- power.anova.test(groups = length(groupmeans), 
+between.var = var(groupmeans), within.var = 6400, 
+power=0.823,sig.level=0.05,n=NULL)
+p
+```
+
+##### Playing with N to see the impact on power:
+
+```{r  out.width = "50%", eval=TRUE, fig.cap="Calochortus plummerae is a perennial herb (bulb) that is native to California, and endemic (limited) to California."}
+knitr::include_graphics("https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/type-i-ii-error.png") 
+```
+
+Let's continue with 4 treatements -- or groups.
+
+```{r}
+
+groupmeans <- c(550, 598, 598, 646)
+between.var = var(groupmeans)
+within.var = 6400
+sig.level = 0.05
+
+n <- c(seq(2,10,by=1),seq(12,20,by=2),seq(25,50,by=5))
+
+# power = null
+p <- power.anova.test(groups = length(groupmeans), 
+      between.var = var(groupmeans), 
+      within.var = 6400, 
+      n = n, power= NULL,
+      sig.level=0.05)
+p
+
+plot(n, p$power)
+```
+
+
 
 ## Tests for Association
 
@@ -505,7 +595,7 @@ dimnames(HAB.tab) = list(c("Non-HAB", "HAB"), c("No Hospitalizations", "Hospital
 
 HAB.tab
 
-#HAB.mat = matrix(HAB.tab, nrow=2)
+# HAB.mat = matrix(HAB.tab, nrow=2)
 ```
 
 
@@ -536,28 +626,31 @@ chisq.test(HAB.tab)
 ### Example \#1 --Fertilizer and Crop Yield MLH: Better for Multiway ANOVA
 
 ```{r, eval=FALSE}
-##Looked at Scribbr; entered the crop data to R as a csv##
-##Question: How does fertilizer effect crop yield? Testing three different fertilizers##
-##command to read the data##
+## Looked at Scribbr; entered the crop data to R as a csv##
+## Question: How does fertilizer effect crop yield? Testing three different fertilizers##
+## command to read the data##
 crop.data <- read.csv("crop.data.csv", header)
-##command to summarize and make sure everything is working##
+## command to summarize and make sure everything is working##
 summary(crop.data)
 str(crop.data)
-##use to perform a one.way ANOVA##
-##One way ANOVA has one independent independent variable##
-##This one way ANOVA models crop yield as a function of the type of fertilizer used##
+## use to perform a one.way ANOVA##
+## One way ANOVA has one independent independent variable##
+## This one way ANOVA models crop yield as a function of the type of fertilizer used##
 one.way <- aov(yield~fertilizer,data=crop.data)
-##shows what the data compiles into after a one.way##
+## shows what the data compiles into after a one.way##
 summary(one.way)
-##use to perform a two.way ANOVA##
-##Two way ANOVA utilizes two independent variables##
-##This two way models crop yield as a function of type of fertilizer and planting density##
-##Just have to add a plus icon and the extra independent variable##
+```
+
+```{r, eval=FALSE}
+## use to perform a two.way ANOVA##
+## Two way ANOVA utilizes two independent variables##
+## This two way models crop yield as a function of type of fertilizer and planting density##
+## Just have to add a plus icon and the extra independent variable##
 two.way <- aov(yield ~ fertilizer + density, data = crop.data)
-##shows what the data compiles into after a two.way##
+##  shows what the data compiles into after a two.way##
 summary(two.way)
-##Interaction between variables##
-##Used to test whether two variables have an interaction effect##
+## Interaction between variables##
+## Used to test whether two variables have an interaction effect##
 interaction <- aov(yield ~ fertilizer*density, data = crop.data)
 summary(interaction)
 ```
@@ -687,9 +780,69 @@ jitter()
 
 ### Linear Regression
 
+1. What is a Linear regression?
+
+
+2.	What is the black diagonal line in Figure 1 called?
+
+```{r, create_figure}
+(x <- c(1, 2, 3, 4, 5)) # create a vector of x values 
+(y <- c(1, 2, 1.3, 3.75, 2.25)) #2.	create a vector of y-values 
+regression.ex.df = data.frame(X=x, Y=y) #make a data frame… (don’t know the function)
+par(las=1)
+plot(y ~ x, data=regression.ex.df, pch=20)
+regression.ex.lm = lm(y~x, data=regression.ex.df)
+abline(coef(regression.ex.lm))
+regression.ex.df$Residuals = as.vector(resid(regression.ex.lm))
+regression.ex.df$Predicted = as.vector(predict(regression.ex.lm, newdata=data.frame(predicted = x)))
+regression.ex.df$Color = c("red", "blue", "green", "yellow", "pink")
+#lines.mat = mat()
+#(xy.coords.ex = xy.coords(rep(x, times=2), c(regression.ex.df$Predicted, c(regression.ex.df$Predicted + regression.ex.df$Residuals))))
+#xy.coords.ex[order(xy.coords.ex$x)]
+for(i in 1:nrow(regression.ex.df)){
+lines(c(regression.ex.df$X[i], regression.ex.df$X[i]), c(regression.ex.df$Predicted[i], c(regression.ex.df$Predicted[i] + regression.ex.df$Residuals[i])), col=regression.ex.df$Color[i], lwd=2)
+}
+#lines(x[1], regression.ex.df$Predicted[1], x, c(regression.ex.df$Predicted[1] + regression.ex.df$Residuals[1]), color=
+```
+
+3. Outline the pseudo R code that might be used to generate this graph. In other words, use your words to describe the steps you might need to use to create this graphic (think about how the colored lines might be made and the labels. If you have guesses of the R code syntax, put this in parenthetical statements.
+
+For example, 
+1.	create a vector of x values (x <- c(1, 2, 3, 4, 5)
+2.	create a vector of y-values (y <- c(1, 2, 1.3, 1.75, 2.25)
+3.	make a data frame… (don't know the function)… 
+4.	...
+
+4.	The vertical lines on Figure 1 from the points to the regression line represent the errors of prediction. As you can see, the red point is very near the regression line; its error of prediction is small. By contrast, the yellow point is much higher than the regression line and therefore its error of prediction is large. How can the summary() function be used to access the residuals?
+
+
+5.	The summary() function also reports the r2 and p-values for the model. Describe how to interpret these.
+
+
 ### ANOVA
 
+1.	What is the difference between a one-way and two-way ANOVA? 
+
+
+
+2.	Given an experiment with a control and three treatments (Treatment) and some measured response (Response) here’s the R code to create the ANOVA object: 
+
+
+Model1.aov <- aov(Response ~ Treatment)
+
+
+
+3. How would you generate a summary of the results? How would you report this in a paper?
+
+
 ### Logistic Regression
+
+1.	What kind of data is used in a logistic regression?
+
+
+
+2.	What distribution family is used in the glm() function for logistic regression? Why is this distribution used?
+
 
 
 ### Tests for Association
