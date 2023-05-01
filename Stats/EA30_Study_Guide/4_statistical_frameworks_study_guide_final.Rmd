@@ -803,6 +803,11 @@ TBD
 
 - Retrieve or set the dimnames of an object.
 
+## file.choose() {#filechose}
+
+- Choose a file interactively.
+- Syntax: file.choose(new = FALSE)
+
 ## glm() {#glm}
 
 - used used to fit generalized linear models, specified by giving a description of the linear predictor and a description of the error distribution. 
@@ -882,7 +887,9 @@ TBD
 
 - Reads a comma separated file in table format and creates a data frame from it, with cases corresponding to lines and variables to fields in the file. 
 
-- Syntax: data <- read.csv("input.csv")
+- Syntax: dataframe.name <- read.csv("input.csv")
+
+- To use this, we first need to import the csv file into r. Then use file.choose() to figure out the path. Once the path is figured out, you can use the function to bring the data into R and do fun stuff!
 
 ## read() 
 
