@@ -3,8 +3,8 @@ title: "4 Statistical Frameworks Study Guide (and other notes?)"
 author: "EA30 2023 Students and Marc"
 date: "2023-03-27"
 output:
-  html_document: default
   word_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -36,11 +36,8 @@ One of R's strengths is the ease with which well-designed publication-quality pl
 
 We used the college's RStudio Sever to develop the study guide. However, students can download R and Rstudio (which are free) to continue to have access to the program after the semester.
 
-```{r  out.width = "40%", eval=TRUE, fig.cap="Calystegia purpurata is a species of morning glory known by the common name Pacific false bindweed. It is endemic to California, where it grows in the seaside scrub of the coastline and the chaparral of the coastal and inland valleys."}
-knitr::include_graphics("https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/Calystegic_purpurata.jpg") 
-```
 
-```{r, out.width = "40%", eval=TRUE, fig.cap="A deciduous climbing or trailing evergreen shrub. Native blackberry is not aggressive like it's Himalayan cousin. The berries are edible and tasty. Flowers host beneficial insects. Tolerates salt spray in shoreline and bluff plantings."}
+```{r, out.width = "40%", eval=TRUE, echo=FALSE, fig.cap="A deciduous climbing or trailing evergreen shrub. Native blackberry is not aggressive like it's Himalayan cousin. The berries are edible and tasty. Flowers host beneficial insects. Tolerates salt spray in shoreline and bluff plantings."}
 
 knitr::include_graphics("https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/Rubus_ursinus.jpg") 
 ```
@@ -163,6 +160,10 @@ summary(airwater.lm)
 ```
 
 The null hypothesis is "there is no relationship" and we can reject that null hypothesis if the relationship could not random. So, we compare the results (slope) to see if the result could happen that is beyond the random assortment of measurements. There is lots of probability theory to understand this, which is beyond our course, but for now, let's just say that the null hypothesis can be rejected if the probability is less than 0.05. Is this true?  Be sure to look at the coefficient for predictor and it's pvalue to make this decision. 
+
+```{r  out.width = "40%", eval=TRUE, echo=FALSE, fig.cap="Phacelia ramosissima is a perennial herb that is native to California, and also found elsewhere in western North America."}
+knitr::include_graphics("https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/Phacelia_ramosissima.jpg") 
+```
 
 ### Example #2: SRP and HABs
 
@@ -291,6 +292,7 @@ Anscombe = as.data.frame(
 
 
 names(Anscombe) = c("Obs.", "x1", "x2", "x3", "x4", "y1", "y2", "y3", "y4")
+str(Anscombe)
 
 ```
 
@@ -341,10 +343,14 @@ plot(D.lm, which =3)
 
 ```{r}
 par(mfrow=c(2,2))
-plot(A.lm, which =4)  
-plot(B.lm, which =4) 
-plot(C.lm, which =4) 
-plot(D.lm, which =4) 
+plot(A.lm, which =5)  
+plot(B.lm, which =5) 
+plot(C.lm, which =5) 
+plot(D.lm, which =5) 
+```
+
+```{r  out.width = "60%", eval=TRUE, echo=FALSE, fig.cap="Desert Trumpet -- Eriogonum inflatum."}
+knitr::include_graphics("https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/Eriogonum_inflatum.jpeg") 
 ```
 
 
@@ -429,6 +435,11 @@ $$ \widehat{{LD_{50}} = \frac{- \beta_0}{\beta_1}} $$
 
 Calculating Standard Error... MLH: Haven't tried this yet
 
+```{r  out.width = "40%", eval=TRUE, fig.cap="Chaparral Clematis is a creamy-white flowering vine, belonging to the Ranunculaceae family, of the large Clematis genus. It is found on the Pacific coast of North America, from the San Francisco Bay Area southwards into Baja California. It extends as far east as the western foothills of the Sierra Nevada mountains, at elevations below 1,800 meters. It grows on hillsides, in chaparral, and in open woodland. Its leaves are 3-lobed, and generally grow groups of three to five leaflets, the largest leaves on the plant normally being between 3 and 5 centimeter in size. It can be distinguished from the similar (but much more widely ranging) Virgin's Bower (Clematis ligusticifolia) by the fact that lasiantha normally only has one flower on each stalk, and at most three, whereas ligusticifolia has multiple flowers on each stem. Virgin's Bower is more likely to be found along streams or in other wet places, whereas the lasiantha tolerates more open, drier places."}
+knitr::include_graphics("https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/Clematis_lasiantha.jpg") 
+```
+
+
 # ANOVA
 
 The one-way analysis of variance (ANOVA) is used to determine whether there are any statistically significant differences between the means of two or more independent (unrelated) groups (although you tend to only see it used when there are a minimum of three, rather than two groups). For example, you could use a one-way ANOVA to understand whether a restoration success (% native plants) differed based on different methods, dividing methods into three independent groups (e.g., hand weeding, herbicide, no-weeding). 
@@ -441,11 +452,11 @@ Controls have a mean of 34 (and Standard Deviation of 8), Low Density treatment 
 
 ```{r, echo=FALSE}
 # R code not printed with "echo=FALSE"
-mesocosm = rep(1:15, 10); mesocosm
-treatment = c(rep("Control", 50), rep("LD", 50), rep("HD", 50)); treatment
-day = rep(1, times=10 ); day
+mesocosm = rep(1:15, 10)
+treatment = c(rep("Control", 50), rep("LD", 50), rep("HD", 50))
+day = rep(1, times=10 )
 set.seed(334)
-results = round(c(rnorm(50, 34, 8), rnorm(50, 33, 8), rnorm(50, 31, 8)), 1); results
+results = round(c(rnorm(50, 34, 8), rnorm(50, 33, 8), rnorm(50, 31, 8)), 1)
 Mussel = data.frame(Mesocosm = mesocosm, Treatment = treatment, Day=day, Results=results)
 ```
 
@@ -583,6 +594,9 @@ plot(n, p$power)
 ```
 You can see that with more replicates, you are more likely to find a reason to reject the null hypothesis. 
 
+```{r  out.width = "40%", eval=TRUE, echo=FALSE, fig.cap="Marah fabacea is a perennial herb or vine that is native to California, and endemic (limited) to California."}
+knitr::include_graphics("https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/Marah_fabaceus.jpg") 
+```
 
 ## Tests for Association
 
@@ -592,22 +606,21 @@ This test is used to determine association between two treatments (or difference
 
 An example could be Harmful Algal Blooms (HABs) as a treatment with Hospital Asthma Cases as an output. Could show the relation between HABs and Asthma Cases going to the hospital. Chi-Square tests for independence/association can only be used between categorical variables.
 
-There are several tests for association. One of the more popular is the Chi-squared test ($\Chi^2$ test). A Chi-Squared test is used to determine the association between two categorical variables. The null hypothesis is no association between the two independent variables.
+There are several tests for association. One of the more popular is the Chi-squared test ($X^2$ test). A Chi-Squared test is used to determine the association between two categorical variables. The null hypothesis is no association between the two independent variables.
 
 Strengths of this test is how it might measure how a model compares the actual observed data, tells us if two variables are independent of one another. 
 
-The data in the cells should be frequencies, or counts of cases rather than percentages or some other transformation of the data. Categories of the variables are mutually exclusive (one cannot receive the treatment AND not receive the treatment). All observations must be independent. <span style="color:blue">what does independent mean?
+The data in the cells should be frequencies, or counts of cases rather than percentages or some other transformation of the data. Categories of the variables are mutually exclusive (one cannot receive the treatment AND not receive the treatment). All observations must be independent.
 
 
-
-### Example 1
+### Example 1: Asthma and HABs
 
 Hospital asthma cases and HABs in Florida, where respiratory admissions have been recorded for a year and the days associated with coastal harmful algae bloom.
 
 
 #### Creating Data (as a table)
 
-<span style="color:blue">MLH: Describe what's happening here...
+Creating a data frame is not useful in this test, instead, we create a table with dimensions of 2 x 2. 
 
 ```{r}
 HAB.tab = c(20, 15, 98, 223)
@@ -633,6 +646,12 @@ chisq.test(HAB.tab)
 ```
 
 In this case, we can reject the null hypothesis, i.e. there is no association with hospitalizations and HABs.
+
+```{r  out.width = "40%", eval=TRUE, echo=FALSE, fig.cap="Chamise or Greasewood, a member of the Rose family, is a flowering plant native to California and northern Baja California. This shrub is one of the most widespread plants of the chaparral biome, sometimes forming monotypic stands. It is an evergreen shrub growing to four meters tall, with dry-looking stick-like branches. The leaves are small, 4-10 millimeters long and one millimeter broad with a pointed tip, and sprout in clusters from the branches. The leaves are shiny with flammable oils, especially in warmer weather. It is said to be highly flammable but can be kept fire-resistant by occasional watering. The branches terminate in bunches of white tubular flowers five millimeters in diameter, with five petals and long stamens. Chamise is one of the best plant for anchoring a slope and resisting erosion due to its wide spreading and deeply penetrating roots. In maturity it develops a large burl from which it will resprout after fire or severe pruning. In the wild it is the host plant of a common root parasite, Chaparral Broomrape."}
+knitr::include_graphics("https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/Adenostoma_fasciculatum.jpg") 
+```
+
+
 
 # Other Types the Might be Important (Marc might discuss if we have time...)
 
@@ -728,78 +747,72 @@ TBD
 
 # Appendix 1: Alphabetic List of R code and explanation {#appendix1}
 
-abline() -- This function adds one or more straight lines through the current plot.
+- abline() -- This function adds one or more straight lines through the current plot.
 
 
-aov() -- Fit an analysis of variance (ANOVA) model by a call to lm for each stratum.
-c() {#c} Combine Values into a Vector or List.
-chisq.test() -- performs chi-squared contingency table tests and goodness-of-fit tests.
+- aov() -- Fit an analysis of variance (ANOVA) model by a call to lm for each stratum.
 
-data.frame() {#data.frame} -- creates data frames, tightly coupled collections of variables which share many of the properties of matrices and of lists, used as the fundamental data structure by most of R's modeling software.
+- c() {#c} Combine Values into a Vector or List.
+
+- chisq.test() -- performs chi-squared contingency table tests and goodness-of-fit tests.
+
+- data.frame() {#data.frame} -- creates data frames, tightly coupled collections of variables which share many of the properties of matrices and of lists, used as the fundamental data structure by most of R's modeling software.
 
 
+- dim() -- Retrieve or set the dimension of an object.
 
-dim() -- Retrieve or set the dimension of an object.
+- dimnames() {#dimnames} -- Retrieve or set the dimnames of an object.
 
-dimnames() {#dimnames} -- Retrieve or set the dimnames of an object.
+- glm() -- used used to fit generalized linear models, specified by giving a description of the linear predictor and a description of the error distribution. 
 
-glm() -- used used to fit generalized linear models, specified by giving a description of the linear predictor and a description of the error distribution. 
-
-It looks like this: 
+Syntax: 
 glm(formula, family = gaussian, data, weights, subset,
     na.action, start = NULL, etastart, mustart, offset,
     control = list(…), model = TRUE, method = "glm.fit",
     x = FALSE, y = TRUE, singular.ok = TRUE, contrasts = NULL, …)
 
-glm.fit(x, y, weights = rep(1, nobs),
-        start = NULL, etastart = NULL, mustart = NULL,
-        offset = rep(0, nobs), family = gaussian(),
-        control = list(), intercept = TRUE, singular.ok = TRUE)
+- help() -- help is the primary interface to the help systems. Can be abreviated as ? or ?? for packages.
 
-help() -- help is the primary interface to the help systems. Can be abreviated as ? or ?? for packages.
+- help.start() -- Start the hypertext (currently HTML) version of R's online documentation.
 
-help.start() -- Start the hypertext (currently HTML) version of R's online documentation.
-
-jitter() -- adds a small amount of noise to a numerical vector. It can help the data look a bit clearer on the graph. 
+- jitter() -- adds a small amount of noise to a numerical vector. It can help the data look a bit clearer on the graph. 
 
 Syntax: jitter(x, factor = 1, amount = NULL)
 
-knitr::include_graphics() -- When plots are not generated from R code, there is no way for knitr to capture plots automatically. In this case, you may generate the images manually and pass their file paths to this function to include them in the output. The major advantage of using this function is that it is portable in the sense that it works for all document formats that knitr supports, so you do not need to think if you have to use, for example, LaTeX or Markdown syntax, to embed an external image. Chunk options related to graphics output that work for normal R plots also work for these images, such as out.width and out.height. 
+- knitr::include_graphics() -- When plots are not generated from R code, there is no way for knitr to capture plots automatically. In this case, you may generate the images manually and pass their file paths to this function to include them in the output. The major advantage of using this function is that it is portable in the sense that it works for all document formats that knitr supports, so you do not need to think if you have to use, for example, LaTeX or Markdown syntax, to embed an external image. Chunk options related to graphics output that work for normal R plots also work for these images, such as out.width and out.height. 
 
-lm() -- lm is used to fit linear models, including multivariate ones. It can be used to carry out regression, single stratum analysis of variance and analysis of covariance (although aov may provide a more convenient interface for these)
+- list() -- Functions to construct, coerce and check for both kinds of R lists.
 
-points() -- draw points at specific coordinates and to be plotted in a plotting structure, a two-column matrix, or a time series. 
+- lines() {#lines} -- A generic function taking coordinates given in various ways and joining the corresponding points with line segments.
+
+- lm() -- used to fit linear models, including multivariate ones. It can be used to carry out regression, single stratum analysis of variance and analysis of covariance (although aov may provide a more convenient interface for these)
+
+
+- par() {#par} -- used to set or query graphical parameters. Parameters can be set by specifying them as arguments to par in tag = value form, or by passing them as a list of tagged values.
+
+
+- points() -- draw points at specific coordinates and to be plotted in a plotting structure, a two-column matrix, or a time series. 
 
 Syntax: points(x, y = NULL, type = "p", …)
 
-plot() -- Draw a scatter plot with decorations such as axes and titles in the active graphics window.
+- plot() -- Draw a scatter plot with decorations such as axes and titles in the active graphics window.
 
+- power.anova.test() -- Compute power of test or determine parameters to obtain target power.
 
-power.anova.test() -- Compute power of test or determine parameters to obtain target power.
+- predict() {#predict} -- generic function for predictions from the results of various model fitting functions. The function invokes particular methods which depend on the class of the first argument.
 
-list()
-par() {#par} -- used to set or query graphical parameters. Parameters can be set by specifying them as arguments to par in tag = value form, or by passing them as a list of tagged values.
-
-
-
-lines() {#lines} -- A generic function taking coordinates given in various ways and joining the corresponding points with line segments.
-
-predict() {#predict} -- generic function for predictions from the results of various model fitting functions. The function invokes particular methods which depend on the class of the first argument.
-
-
-
-read.csv() -- Reads a comma separated file in table format and creates a data frame from it, with cases corresponding to lines and variables to fields in the file. 
+- read.csv() -- Reads a comma separated file in table format and creates a data frame from it, with cases corresponding to lines and variables to fields in the file. 
 
 Syntax: data <- read.csv("input.csv")
 
-read() -- to see a preview of the dataset
+- read() -- to see a preview of the dataset
 
-str() -- Compactly display the internal structure of an R object
+- str() -- Compactly display the internal structure of an R object
 
-summary() -- a generic function used to produce result summaries of the results of various model fitting functions.
+- summary() -- a generic function used to produce result summaries of the results of various model fitting functions.
 
 
-table() -- uses cross-classifying factors to build a contingency table of the counts at each combination of factor levels.
+- table() -- uses cross-classifying factors to build a contingency table of the counts at each combination of factor levels.
 
 
 # Appendix 2: Questions to Evaluate our Study Guide
