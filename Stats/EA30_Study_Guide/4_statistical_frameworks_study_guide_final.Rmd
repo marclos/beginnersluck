@@ -20,7 +20,7 @@ The study guide development was completed over a six week. While each topic rota
 
 Nevertheless, we have created a very good document as a basic study guide and hope the product is useful. 
 
-```{r  out.width = "40%", eval=TRUE, echo=FALSE, fig.cap="Calystegia purpurata is a species of morning glory known by the common name Pacific false bindweed. It is endemic to California, where it grows in the seaside scrub of the coastline and the chaparral of the coastal and inland valleys."}
+```{r  out.width = "30%", eval=TRUE, echo=FALSE, fig.cap="Calystegia purpurata is a species of morning glory known by the common name Pacific false bindweed. It is endemic to California, where it grows in the seaside scrub of the coastline and the chaparral of the coastal and inland valleys."}
 knitr::include_graphics("https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/Calystegic_purpurata.jpg") 
 ```
 
@@ -300,18 +300,37 @@ str(Anscombe)
 Let's look at the results. NOTE: I added a line, abline(), with the coefficients using coef() from the linear model, .
 
 ```{r}
-par(mfrow=c(2,2))
-plot(y1 ~ x1, Anscombe, main="Dataset A")
+par(mfrow=c(2,2), las=1)
+plot(y1 ~ x1, Anscombe, main="Dataset A", pch=20)
   A.lm = lm(y1 ~ x1, Anscombe); abline(coef(A.lm)); 
-
-plot(y2 ~ x2, Anscombe, main="Dataset B")
+    f <- summary(A.lm)$fstatistic
+    p <- round(pf(f[1],f[2],f[3],lower.tail=F),3)
+  lm.sum = summary(A.lm); str(lm.sum)
+  sum <- paste0("m= ", round(coef(A.lm)[2], 1), "; r2=", round(lm.sum$r.squared, 3), "; p=", p); sum
+  text(4, 9, sum, adj=0)
+plot(y2 ~ x2, Anscombe, main="Dataset B", pch=20)
   B.lm = lm(y2 ~ x2, Anscombe); abline(coef(B.lm))
+      f <- summary(C.lm)$fstatistic
+    p <- round(pf(f[1],f[2],f[3],lower.tail=F),3)
+  lm.sum = summary(C.lm); str(lm.sum)
+  sum <- paste0("m= ", round(coef(B.lm)[2], 1), "; r2=", round(lm.sum$r.squared, 3), "; p=", p); sum
+  text(4, 9, sum, adj=0)
 
-plot(y3 ~ x3, Anscombe, main="Dataset C")
+plot(y3 ~ x3, Anscombe, main="Dataset C", pch=20)
   C.lm = lm(y3 ~ x3, Anscombe); abline(coef(C.lm))
+      f <- summary(C.lm)$fstatistic
+    p <- round(pf(f[1],f[2],f[3],lower.tail=F),3)
+  lm.sum = summary(C.lm); str(lm.sum)
+  sum <- paste0("m= ", round(coef(C.lm)[2], 1), "; r2=", round(lm.sum$r.squared, 3), "; p=", p); sum
+  text(4, 9, sum, adj=0)
 
-plot(y4 ~ x4, Anscombe, main="Dataset D")
+plot(y4 ~ x4, Anscombe, main="Dataset D", pch=20)
   D.lm = lm(y4 ~ x4, Anscombe); abline(coef(D.lm))
+    f <- summary(D.lm)$fstatistic
+    p <- round(pf(f[1],f[2],f[3],lower.tail=F),3)
+  lm.sum = summary(D.lm); str(lm.sum)
+  sum <- paste0("m= ", round(coef(D.lm)[2], 1), "; r2=", round(lm.sum$r.squared, 3), "; p=", p); sum
+  text(8, 9, sum, adj=0)
 ```
 ## Comparing the Diagonstics
 
