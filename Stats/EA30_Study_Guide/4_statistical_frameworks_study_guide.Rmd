@@ -56,8 +56,12 @@ TBD
 
 If you havenâ€™t used R before, start by downloading R and R Studio.  <span style="color:blue">.MLH: Not sure what this is here for...</span>
 
-```{r out.width = "40%", eval=TRUE, fig.cap="A deciduous climbing or trailing evergreen shrub.
-Native blackberry is not aggressive like it’s Himalayan cousin. The berries are edible and tasty. Flowers host beneficial insects. Tolerates salt spray in shoreline and bluff plantings"}
+```{r  out.width = "40%", eval=TRUE, fig.cap="Calystegia purpurata is a species of morning glory known by the common name Pacific false bindweed. It is endemic to California, where it grows in the seaside scrub of the coastline and the chaparral of the coastal and inland valleys."}
+knitr::include_graphics("https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/Calystegic_purpurata.jpg") 
+```
+
+```{r, out.width = "40%", eval=TRUE, fig.cap="A deciduous climbing or trailing evergreen shrub. Native blackberry is not aggressive like it's Himalayan cousin. The berries are edible and tasty. Flowers host beneficial insects. Tolerates salt spray in shoreline and bluff plantings."}
+
 knitr::include_graphics("https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/Rubus_ursinus.jpg") 
 ```
 
@@ -226,7 +230,9 @@ The linear model coerces the data into a new object using a least squares method
 
 <span style="color:blue">MLH: What's the rcode doing here
 
-Calochortus: The rcode is using the lm [linear regression model command] to create a line of best fit and illustrate the relationship between between SRP and HABs.
+Calochortus: The rcode is using the lm [linear regression model function] to create a linear model using a least squares approach. 
+
+Using the model allows us to create a best fit line (with the slope and intercept) and illustrate the relationship between between SRP and HABs.
 
 
 ```{r}
@@ -272,7 +278,12 @@ Let's look at a default plot of model...why plot of model? different than plot o
 
 ```{r}
 par(mfrow=c(2,2))
-plot(HAB.lm)
+plot(HAB.lm)## mfrow allows you to creat a number of plot in one graph, you have to provide a vector of the number of rows and number of columns 
+##the par() function creates multiple plots at one
+##Allows you to plot multiple points, the mfrow function allows you to split the screen into panels (basically split your screen)
+## plot(HAB.lm) is plot diagnostics 
+
+
 ```
 
 <span style="color:blue">Describe each of the panels...
@@ -337,8 +348,6 @@ Create a nice table of results...
 
 MLH: what are ones and zeros?
 ```{r}
-
-
 table(Results.df)
 
 ```
@@ -398,7 +407,7 @@ Logistic regression is used when the predictor/independent variable is categoric
 MLH: What are good questions for this?
 Possible questions may include - will an indiviudal win the election?  predictor = number of votes; response = win or loss
 
-## ANOVA
+# ANOVA
 
 What is a one-way ANOVA?
 
@@ -522,7 +531,7 @@ p
 ##### Playing with N to see the impact on power:
 
 ```{r  out.width = "50%", eval=TRUE, fig.cap="Calochortus plummerae is a perennial herb (bulb) that is native to California, and endemic (limited) to California."}
-knitr::include_graphics("https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/type-i-ii-error.png") 
+knitr::include_graphics("https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/type-i-ii-error.jpg") 
 ```
 
 Let's continue with 4 treatements -- or groups.
@@ -756,12 +765,29 @@ lines()
 ## Group Calystegia
 
 read.csv()
+This command is used to read a .csv file that is already in your directory and give it a name so r can read it. It looks like this:
+data <- read.csv("input.csv")
+Then you can do read(data) to see a preview of the dataset
+
 
 glm()
+This command is used to fit generalized linear models, specified by giving a description of the linear predictor and a description of the error distrbution. It looks like this: 
+glm(formula, family = gaussian, data, weights, subset,
+    na.action, start = NULL, etastart, mustart, offset,
+    control = list(…), model = TRUE, method = "glm.fit",
+    x = FALSE, y = TRUE, singular.ok = TRUE, contrasts = NULL, …)
+glm.fit(x, y, weights = rep(1, nobs),
+        start = NULL, etastart = NULL, mustart = NULL,
+        offset = rep(0, nobs), family = gaussian(),
+        control = list(), intercept = TRUE, singular.ok = TRUE)
 
 points()
+This command is used put points at specific coordinates and to be plotted in a plotting structure, a two-column matrix, or a time series. it looks like this:
+points(x, y = NULL, type = "p", …)
 
 jitter()
+This command is used to add a small amount of noise to a numerical vector. It can help the data look a bit clearer on the graph. It looks like this:
+jitter(x, factor = 1, amount = NULL)
 
 
 # Appendix 2: Questions to Evaluate our Study Guide
