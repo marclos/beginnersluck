@@ -310,9 +310,9 @@ plot(y1 ~ x1, Anscombe, main="Dataset A", pch=20)
   text(4, 9, sum, adj=0)
 plot(y2 ~ x2, Anscombe, main="Dataset B", pch=20)
   B.lm = lm(y2 ~ x2, Anscombe); abline(coef(B.lm))
-      f <- summary(C.lm)$fstatistic
+ f <- summary(B.lm)$fstatistic
     p <- round(pf(f[1],f[2],f[3],lower.tail=F),3)
-  lm.sum = summary(C.lm); str(lm.sum)
+  lm.sum = summary(B.lm); str(lm.sum)
   sum <- paste0("m= ", round(coef(B.lm)[2], 1), "; r2=", round(lm.sum$r.squared, 3), "; p=", p); sum
   text(4, 9, sum, adj=0)
 
