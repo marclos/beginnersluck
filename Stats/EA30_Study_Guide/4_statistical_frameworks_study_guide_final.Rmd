@@ -32,6 +32,8 @@ R is a language and environment for statistical computing and graphics. R provid
 
 One of R's strengths is the ease with which well-designed publication-quality plots can be produced, including mathematical symbols and formula where needed. 
 
+To get help with R, see [help function](#help) or [help.start function](#help.start)
+
 ## Using R Studio Server
 
 We used the college's RStudio Sever to develop the study guide. However, students can download R and Rstudio (which are free) to continue to have access to the program after the semester.
@@ -96,10 +98,6 @@ In this case, the x- and y-labels reflect the varible names without the data.fra
 ```{r  out.width = "50%", eval=TRUE, fig.cap="Calochortus plummerae is a perennial herb (bulb) that is native to California, and endemic (limited) to California."}
 knitr::include_graphics("https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/Calochortus_plummerae.jpg") 
 ```
-
-
-
-https://github.com/marclos/beginnersluck/raw/master/Stats/EA30_Study_Guide/Calochortus_plummerae.jpg
 
 # Four Frameworks
 
@@ -747,72 +745,142 @@ TBD
 
 # Appendix 1: Alphabetic List of R code and explanation {#appendix1}
 
-- abline() -- This function adds one or more straight lines through the current plot.
+## abline() 
+
+- This function adds one or more straight lines through the current plot.
+- Syntax: abline(a = NULL, b = NULL, h = NULL, v = NULL, reg = NULL,
+       coef = NULL, untf = FALSE, ...)
+
+## aov() 
+
+- Fit an analysis of variance (ANOVA) model by a call to lm for each stratum.
+- Syntax: aov(formula, data = NULL)
+
+## c() {#c} 
+
+- Combine Values into a Vector or List.
+
+## coef() 
+
+- generic function which extracts model coefficients from objects returned by modeling functions. coefficients is an alias for it.
+- Syntax: coef(object, ...)
+
+## chisq.test() 
+
+- performs chi-squared contingency table tests and goodness-of-fit tests.
+- Syntax: chisq.test(x, y = NULL) (y is ignored if x is a matrix)
+
+## data.frame() {#data.frame} 
+
+- creates data frames, tightly coupled collections of variables which share many of the properties of matrices and of lists, used as the fundamental data structure by most of R's modeling software.
 
 
-- aov() -- Fit an analysis of variance (ANOVA) model by a call to lm for each stratum.
+## dim() 
 
-- c() {#c} Combine Values into a Vector or List.
+- Retrieve or set the dimension of an object.
+- Syntax: dim(x) <- value
 
-- chisq.test() -- performs chi-squared contingency table tests and goodness-of-fit tests.
+## dimnames() {#dimnames} 
 
-- data.frame() {#data.frame} -- creates data frames, tightly coupled collections of variables which share many of the properties of matrices and of lists, used as the fundamental data structure by most of R's modeling software.
+- Retrieve or set the dimnames of an object.
 
+## glm() {#glm}
 
-- dim() -- Retrieve or set the dimension of an object.
+- used used to fit generalized linear models, specified by giving a description of the linear predictor and a description of the error distribution. 
 
-- dimnames() {#dimnames} -- Retrieve or set the dimnames of an object.
-
-- glm() -- used used to fit generalized linear models, specified by giving a description of the linear predictor and a description of the error distribution. 
-
-Syntax: 
-glm(formula, family = gaussian, data, weights, subset,
+- Syntax: glm(formula, family = gaussian, data, weights, subset,
     na.action, start = NULL, etastart, mustart, offset,
     control = list(…), model = TRUE, method = "glm.fit",
     x = FALSE, y = TRUE, singular.ok = TRUE, contrasts = NULL, …)
 
-- help() -- help is the primary interface to the help systems. Can be abreviated as ? or ?? for packages.
+## help() {#help} 
 
-- help.start() -- Start the hypertext (currently HTML) version of R's online documentation.
+- the primary interface to the help systems. Can be abreviated as ? or ?? for packages.
+- help(topic, package = NULL, lib.loc = NULL,
+     verbose = getOption("verbose"),
+     try.all.packages = getOption("help.try.all.packages"),
+     help_type = getOption("help_type")
 
-- jitter() -- adds a small amount of noise to a numerical vector. It can help the data look a bit clearer on the graph. 
+## help.start() {#help.start}
 
-Syntax: jitter(x, factor = 1, amount = NULL)
+- Start the hypertext (currently HTML) version of R's online documentation.
 
-- knitr::include_graphics() -- When plots are not generated from R code, there is no way for knitr to capture plots automatically. In this case, you may generate the images manually and pass their file paths to this function to include them in the output. The major advantage of using this function is that it is portable in the sense that it works for all document formats that knitr supports, so you do not need to think if you have to use, for example, LaTeX or Markdown syntax, to embed an external image. Chunk options related to graphics output that work for normal R plots also work for these images, such as out.width and out.height. 
+## jitter() 
 
-- list() -- Functions to construct, coerce and check for both kinds of R lists.
+- adds a small amount of noise to a numerical vector. It can help the data look a bit clearer on the graph. 
 
-- lines() {#lines} -- A generic function taking coordinates given in various ways and joining the corresponding points with line segments.
+- Syntax: jitter(x, factor = 1, amount = NULL)
 
-- lm() -- used to fit linear models, including multivariate ones. It can be used to carry out regression, single stratum analysis of variance and analysis of covariance (although aov may provide a more convenient interface for these)
+## knitr::include_graphics()
 
-
-- par() {#par} -- used to set or query graphical parameters. Parameters can be set by specifying them as arguments to par in tag = value form, or by passing them as a list of tagged values.
-
-
-- points() -- draw points at specific coordinates and to be plotted in a plotting structure, a two-column matrix, or a time series. 
-
-Syntax: points(x, y = NULL, type = "p", …)
-
-- plot() -- Draw a scatter plot with decorations such as axes and titles in the active graphics window.
-
-- power.anova.test() -- Compute power of test or determine parameters to obtain target power.
-
-- predict() {#predict} -- generic function for predictions from the results of various model fitting functions. The function invokes particular methods which depend on the class of the first argument.
-
-- read.csv() -- Reads a comma separated file in table format and creates a data frame from it, with cases corresponding to lines and variables to fields in the file. 
-
-Syntax: data <- read.csv("input.csv")
-
-- read() -- to see a preview of the dataset
-
-- str() -- Compactly display the internal structure of an R object
-
-- summary() -- a generic function used to produce result summaries of the results of various model fitting functions.
+-When plots are not generated from R code, there is no way for knitr to capture plots automatically. In this case, you may generate the images manually and pass their file paths to this function to include them in the output. The major advantage of using this function is that it is portable in the sense that it works for all document formats that knitr supports, so you do not need to think if you have to use, for example, LaTeX or Markdown syntax, to embed an external image. Chunk options related to graphics output that work for normal R plots also work for these images, such as out.width and out.height. 
 
 
-- table() -- uses cross-classifying factors to build a contingency table of the counts at each combination of factor levels.
+## list() 
+
+- Functions to construct, coerce and check for both kinds of R lists.
+- Syntax: list(...)
+
+## lines() {#lines} 
+- A generic function taking coordinates given in various ways and joining the corresponding points with line segments.
+- Syntax: lines(x, y = NULL, type = "l", ...)
+
+## - lm() 
+- used to fit linear models, including multivariate ones. It can be used to carry out regression, single stratum analysis of variance and analysis of covariance (although aov may provide a more convenient interface for these)
+-Syntax: lm(formula, data, subset, weights, na.action,
+   method = "qr", model = TRUE, x = FALSE, y = FALSE, qr = TRUE,
+   singular.ok = TRUE, contrasts = NULL, offset, ...)
+   
+## matrix()
+
+- creates a matrix from the given set of values.
+- Syntax: matrix(data = NA, nrow = 1, ncol = 1, byrow = FALSE,
+       dimnames = NULL)
+
+## par() {#par} 
+- used to set or query graphical parameters. Parameters can be set by specifying them as arguments to par in tag = value form, or by passing them as a list of tagged values.
+- Syntax: par(..., no.readonly = FALSE)
+
+## points() 
+
+- draw points at specific coordinates and to be plotted in a plotting structure, a two-column matrix, or a time series. 
+
+- Syntax: points(x, y = NULL, type = "p", …)
+
+## plot() -- Draw a scatter plot with decorations such as axes and titles in the active graphics window.
+
+## power.anova.test() -- Compute power of test or determine parameters to obtain target power.
+
+- Syntax: power.anova.test(groups = NULL, n = NULL,
+                 between.var = NULL, within.var = NULL,
+                 sig.level = 0.05, power = NULL)
+
+## predict() {#predict} 
+
+- generic function for predictions from the results of various model fitting functions. The function invokes particular methods which depend on the class of the first argument.
+
+## read.csv() 
+
+- Reads a comma separated file in table format and creates a data frame from it, with cases corresponding to lines and variables to fields in the file. 
+
+- Syntax: data <- read.csv("input.csv")
+
+## read() 
+
+- to see a preview of the dataset
+
+## str() 
+
+- Compactly display the internal structure of an R object
+
+## summary()
+
+-a generic function used to produce result summaries of the results of various model fitting functions.
+
+
+## table() 
+
+- uses cross-classifying factors to build a contingency table of the counts at each combination of factor levels.
 
 
 # Appendix 2: Questions to Evaluate our Study Guide
