@@ -1,0 +1,50 @@
+\contentsline {section}{Sustainable Built Environment}{1}{section*.2}
+\contentsline {subsection}{Faculty Advsisor(s)}{1}{section*.3}
+\contentsline {subsection}{Affiliated Faculty}{1}{section*.4}
+\contentsline {subsection}{Description}{1}{section*.5}
+\contentsline {subsection}{Course Requirements (12 Courses)}{1}{section*.6}
+\contentsline {section}{Race, Class, and Gender}{2}{section*.7}
+\contentsline {subsection}{Faculty Advsisor(s)}{2}{section*.8}
+\contentsline {subsection}{Affiliated Faculty}{2}{section*.9}
+\contentsline {subsection}{Description}{2}{section*.10}
+\contentsline {subsection}{Course Requirements (12 Courses)}{2}{section*.11}
+\contentsline {section}{Environmental Analysis---Economics}{4}{section*.12}
+\contentsline {subsection}{Faculty Advsisor(s)}{4}{section*.13}
+\contentsline {subsection}{Affiliated Faculty}{4}{section*.14}
+\contentsline {subsection}{Description}{4}{section*.15}
+\contentsline {subsection}{Course Requirements (12 Courses)}{4}{section*.16}
+\contentsline {section}{Environmental Geology}{6}{section*.17}
+\contentsline {subsection}{Faculty Advsisor(s)}{6}{section*.18}
+\contentsline {subsection}{Affiliated Faculty}{6}{section*.19}
+\contentsline {subsection}{Description}{6}{section*.20}
+\contentsline {subsection}{Course Requirements (12 Courses)}{6}{section*.21}
+\contentsline {section}{Environmental Biology}{8}{section*.22}
+\contentsline {subsection}{Faculty Advsisor(s)}{8}{section*.23}
+\contentsline {subsection}{Affiliated Faculty}{8}{section*.24}
+\contentsline {subsection}{Description}{8}{section*.25}
+\contentsline {subsection}{Course Requirements (12 Courses)}{8}{section*.26}
+\contentsline {section}{Environmental Chemistry}{10}{section*.27}
+\contentsline {subsection}{Faculty Advsisor(s)}{10}{section*.28}
+\contentsline {subsection}{Affiliated Faculty}{10}{section*.29}
+\contentsline {subsection}{Description}{10}{section*.30}
+\contentsline {subsection}{Course Requirements (XX Courses)}{10}{section*.31}
+\contentsline {section}{Environmental Physics \& Engineering}{11}{section*.32}
+\contentsline {subsection}{Faculty Advsisor(s)}{11}{section*.33}
+\contentsline {subsection}{Affiliated Faculty}{11}{section*.34}
+\contentsline {subsection}{Description}{11}{section*.35}
+\contentsline {subsection}{Course Requirements (11/12 Courses)}{11}{section*.36}
+\contentsline {section}{Quantitative Skills and Environment}{13}{section*.37}
+\contentsline {subsection}{Faculty Advsisor(s)}{13}{section*.38}
+\contentsline {subsection}{Affiliated Faculty}{13}{section*.39}
+\contentsline {subsection}{Description}{13}{section*.40}
+\contentsline {subsection}{Course Requirements (12 Courses)}{13}{section*.41}
+\contentsline {section}{Environmental History}{14}{section*.42}
+\contentsline {subsection}{Faculty Advsisor(s)}{14}{section*.43}
+\contentsline {subsection}{Affiliated Faculty}{14}{section*.44}
+\contentsline {subsection}{Description}{14}{section*.45}
+\contentsline {subsection}{Course Requirements (12 Courses)}{14}{section*.46}
+\contentsline {section}{Values and the Environment}{15}{section*.47}
+\contentsline {subsection}{Faculty Advsisor(s)}{15}{section*.48}
+\contentsline {subsection}{Affiliated Faculty}{15}{section*.49}
+\contentsline {subsection}{Description}{15}{section*.50}
+\contentsline {subsection}{Course Requirements (12 Courses)}{15}{section*.51}

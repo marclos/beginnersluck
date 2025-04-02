@@ -1,0 +1,85 @@
+---
+title: "Raspberry Pi Analysis"
+author: "Marc Los Huertos"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Read Data (csv, fix dates, and subset to pm25)
+
+Find the path to the data and read the csv
+
+```{r}
+filepath.csv <- "/home/mwl04747/beginnersluck/EA30SP25/RPi_corrected.csv"
+
+rpidata = read.csv(filepath.csv)
+
+str(rpidata)
+head(rpidata)
+
+rpidata$Date <- as.POSIXct(rpidata$Datetime_corrected, format = "%Y-%m-%d %H:%M:%S")
+
+rpidata_pm25 <- subset(rpidata, subset = Param == "pm25:")
+```
+## Plot pm25 data
+
+```{r}
+plot(Value ~ Date, rpidata_pm25, type = "p", col = "blue", lwd = 2, xlab = "Date", ylab = "pm25", main = "pm25 data from RPi", cex=.2, pch=20)
+  
+```
+
+
+# Create a table of location for each pi
+
+```{r}
+IDs = unique(rpidata_pm25$ID)
+
+rpi_mean <- aggregate(Value ~ ID, rpidata_pm25, FUN = mean)
+
+rpi_mean$Location <- NA
+
+rpi_mean$Location[rpi_mean$ID == "PiZ1"] <- "outside"
+rpi_mean$Location[rpi_mean$ID == "PiZ2"] <- "inside"
+rpi_mean$Location[rpi_mean$ID == "PiZ4"] <- "outside"
+rpi_mean$Location[rpi_mean$ID == "PiZ2W2"] <- "inside"
+rpi_mean$Location[rpi_mean$ID == "PiZ2W1"] <- "inside"
+rpi_mean$Location[rpi_mean$ID == "PiZ2W3"] <- "outside"
+rpi_mean$Location[rpi_mean$ID == "PiZ8"] <- "outside"
+rpi_mean$Location[rpi_mean$ID == "PiZ9"] <- "inside"
+rpi_mean$Location[rpi_mean$ID == "PiZ6"] <- "inside"
+rpi_mean$Location[rpi_mean$ID == "PiZ15"] <- "outside"
+rpi_mean$Location[rpi_mean$ID == "PiZ5"] <- NA
+
+
+rpi_mean
+
+
+rpi_aov <- aov(Value ~ Location, data = rpi_mean)
+
+summary(rpi_aov)
+
+
+```
+
+
+
+
+
+
+f1a = data.frame(ID = IDs[1:4], factor1 = "indoor")
+f1a = data.frame(ID = IDs[1:4], factor1 = "indoor")
+
+
+data.frame(Location = Location[ID="PiZ1"] = "outside"
+
+
+IDs[1] == "outside"
+IDs[2] == "inside"
+IDs[3] == "outside"
+IDs[4] == "inside"
+IDs[5] == "outside"
+```

@@ -1,0 +1,962 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage[top=.5in,bottom=.5in,right=1in,left=1in]{geometry}% http://ctan.org/pkg/geometry
+
+\usepackage[colorlinks = true,
+            linkcolor = blue,
+            urlcolor  = blue,
+            citecolor = blue,
+            anchorcolor = blue]{hyperref}
+            
+\setcounter{secnumdepth}{1}
+\setcounter{tocdepth}{1}
+
+\newenvironment{itemize*}%
+  {\begin{itemize}%
+    \setlength{\itemsep}{0pt}%
+    \setlength{\parskip}{0pt}}%
+  {\end{itemize}}
+	
+\newenvironment{enumerate*}%
+  {\begin{enumerate}%
+    \setlength{\itemsep}{0pt}%
+    \setlength{\parskip}{0pt}}%
+  {\end{enumerate}}
+  
+\renewcommand\labelitemi{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\setcounter{secnumdepth}{0}
+
+\title{Environmental Analysis Course Plans}
+\date{\today}
+%\author{}
+
+\begin{document}
+
+\begin{titlepage}
+\thispagestyle{empty}
+
+\begin{figure}%{}{-10cm}
+\includegraphics[width=1.0\textwidth]{"/home/mwl04747/beginnersluck/docs/figures/Exhibition"}
+\caption{From the Anthropocene exhibition at the Art Gallery of Ontario – AGO in Toronto.}
+\end{figure}
+
+
+\maketitle
+\tableofcontents
+
+\end{titlepage}
+
+\newgeometry{top=1in,bottom=1in,right=1.5in,left=1.5in}
+
+<<echo=FALSE>>=
+library(readxl)
+library(xtable)
+xlsxpath = "C:\\Users\\mwl04747\\Box\\3. College Service\\1. EA Program\\0. Coordinator Materials\\Curriculum\\Course Plans\\CoursePlanDatabase.xlsx"
+xlsxpath = "/home/mwl04747/beginnersluck/docs/CoursePlanDatabaseSpring2025.xlsx"
+advisors <- read_xlsx(xlsxpath, sheet = "Advisors")
+courses<- read_xlsx(xlsxpath, sheet = "CoursePlanDatabaseSpring2025")
+
+bullet <- "\U2022"
+courses$Course = paste0(courses$CourseNo, "~--~", courses$Title, "~(", courses$Offered, ")")
+
+core = subset(courses, subset=c(CourseNo=="EA010" | CourseNo=="EA020" | CourseNo=="EA030"), select = c("CourseNo", "Title", "Offered", "Course"))
+
+capstone = subset(courses, subset=c(CourseNo=="EA190 PO" | CourseNo=="EA191 PO"), select = c("CourseNo", "Title", "Offered", "Course"))
+electives = subset(courses, subset=c(CourseNo!="EA010" & CourseNo!="EA020" & CourseNo!="EA030" & CourseNo!="EA190 PO" & CourseNo!="EA191 PO"))
+@
+
+\newpage
+\section{Sustainable Built Environment}
+
+<<echo=FALSE>>=
+advisors.sbe = subset(advisors, subset=CoursePlan=="SBE")
+electives.sbe = subset(electives, subset=!is.na(electives[,4]), select=c("CourseNo", "Title", "Offered", "SBE"))
+@
+
+\subsection{Faculty Advsisor(s)}
+
+\begin{itemize*}
+  \item \Sexpr{advisors.sbe$Advisor}
+\end{itemize*}
+
+\subsection{Affiliated Faculty}
+
+\begin{itemize*}
+  \item \Sexpr{advisors.sbe$Affiliated1}
+  \item \Sexpr{advisors.sbe$Affiliated2}
+  \item \Sexpr{advisors.sbe$Affiliated3}
+%  \item \Sexpr{advisors.sbe$Affiliated4}
+\end{itemize*}
+
+\subsection{Description}
+
+The Sustainability and the Built Environment Concentration (SBE) focuses on urban planning, design and architecture. 
+
+The SBE course plan interrogates the built environment, whether urban, suburban, or rural (and every place in between). It is designed for students seeking a comprehensive curriculum that is focused on how to plan, design, construct and manage communities from a more sustainable perspective. Learn about the latest planning approaches and policy/regulatory requirement; green architecture, sustainable site design and landscapes; renewable energy and energy efficiency; sustainable water resources management; and green infrastructure. Acquire the skills necessary to integrate sustainable design principles into long-range visions and the day-to-day development and management of the built environment.
+
+
+\subsection{Course Requirements (12 Courses)}
+
+\begin{description}
+
+  \item[Core Courses] Complete all three of these following:
+  
+\begin{itemize*}
+  \item \Sexpr{core$Course[1]}
+  \item \Sexpr{core$Course[2]}
+  \item \Sexpr{core$Course[3]}
+\end{itemize*}
+
+  \item[Senior Exercise] Complete one of the following:
+  
+\begin{itemize*}
+  \item \Sexpr{capstone$Course[1]}
+  \item \Sexpr{capstone$Course[2]}
+\end{itemize*}
+
+
+\item[Design and Representation] Complete at least one design and representation course. For example, \Sexpr{electives.sbe$CourseNo[electives.sbe$SBE=="R"]}.
+
+<<echo=FALSE, results='asis', eval=FALSE>>=
+print(xtable(subset(electives.sbe, subset=electives.sbe$SBE=="R", select= -SBE)), include.rownames=FALSE)
+@
+
+\item[Design Studio/Labs] Complete at least one design studio course or lab. Examples might include: \Sexpr{electives.sbe$CourseNo[electives.sbe$SBE=="D"]}.
+
+<<echo=FALSE, results='asis', eval=FALSE>>=
+print(xtable(subset(electives.sbe, subset=electives.sbe$SBE=="D", select= -SBE)), include.rownames=FALSE)
+@
+
+\item[Electives] Elective courses in SBE should be selected in close consultation with the major adviser and coordinator. Select five courses from the following or similar options, generally no more than two from a group:
+\begin{itemize}
+  \item Urban history, geography, theory and ecology
+  \item Design and Planning
+  \item Environmental Justice/Policy/Economics/Sociology
+\end{itemize}
+
+\noindent Electives might include: \Sexpr{electives.sbe$CourseNo[electives.sbe$SBE=="O"]}.
+
+<<echo=FALSE, results='asis', eval=FALSE>>=
+print(xtable(subset(electives.sbe, subset=electives.sbe$SBE=="O", select= -SBE)), include.rownames=FALSE)
+@
+
+\end{description}
+
+
+\newpage %#######################################################################
+\section{Race, Class, and Gender}
+
+<<echo=FALSE>>=
+advisors.rcg = subset(advisors, subset=CoursePlan=="RCG")
+electives.rcg = subset(electives, subset=!is.na(electives[,5]), select=c("CourseNo", "Title", "Offered", "RCG"))
+@
+
+\subsection{Faculty Advsisor(s)}
+
+\begin{itemize*}
+  \item \Sexpr{advisors.rcg$Advisor}
+\end{itemize*}
+
+\subsection{Affiliated Faculty}
+
+\begin{itemize*}
+  \item \Sexpr{advisors.rcg$Affiliated1}
+  \item \Sexpr{advisors.rcg$Affiliated2}
+  \item \Sexpr{advisors.rcg$Affiliated3}
+\end{itemize*}
+
+\subsection{Description}
+
+The Race, Class, and Gender course plan explores the implications of race, class, and gender on environmental problem-solving and decision making. Students apply theory and approaches in analyzing race, class, and gender to clarify and respond to environmental issues. Students will critically evaluate, synthesize, and analyze environmental issues using the scholarly literature on the intersection of race, class and gender constructions and how these define access to resources and exposure to hazards.
+
+\subsection{Course Requirements (12 Courses)}
+
+\begin{description}
+  
+ \item[Core Courses] Complete all three of these following:
+  
+\begin{itemize*}
+  \item \Sexpr{core$Course[1]}
+  \item \Sexpr{core$Course[2]}
+  \item \Sexpr{core$Course[3]}
+\end{itemize*}
+
+  \item[Senior Exercise] Complete one of the following:
+  
+\begin{itemize*}
+  \item \Sexpr{capstone$Course[1]}
+  \item \Sexpr{capstone$Course[2]}
+\end{itemize*}
+
+
+  \item[Environmental Justice] Select one of the following courses:
+  
+<<echo=FALSE, results='asis'>>=
+print(xtable(subset(electives.rcg, subset=RCG=="EJ", select= -RCG)), include.rownames=FALSE)
+
+@
+
+  \item[Area and Ethnic?? Studies] Select three courses from one of the Area Studies or Studies, one of which must be an introductory, and two of which must in be in the same program or department. Two courses can overlap between categories where intersectionality is a central component of the course.
+  
+\begin{itemize*}
+  \item Chincanx-Latinx Studies (\href{https://catalog.pomona.edu/preview_entity.php?catoid=47&ent_oid=2387}{Intercollegiate Course Catalog})
+  \item Asian American Studies (\href{https://catalog.pomona.edu/preview_entity.php?catoid=47&ent_oid=2381}{5C Asian American Course Catalog})
+  \item Asian Studies (\href{https://catalog.pomona.edu/preview_entity.php?catoid=47&ent_oid=2383}{5C Asian Studies Course Catalog})
+  \item Africana Studies (\href{https://colleges.claremont.edu/africana-studies/}{Intercollegiate Department of Africana Studies})
+  \item Russian and Eastern European Studies (\href{https://www.pomona.edu/academics/departments/russian/courses-requirements/rees}{Current Russian and REES Courses})
+  \item Middle Eastern Studies (\href{https://catalog.pomona.edu/preview_entity.php?catoid=47&ent_oid=2383}{5C Middle-East Studies Course Catalog})
+  \item German Studies (\ref{https://www.pomona.edu/academics/majors/german-studies}{German Studies Major})
+  \item Latin American Studies (\ref{https://www.pomona.edu/academics/majors/latin-american-studies}{Latin American Studies Major})
+\end{itemize*}
+
+  
+  \item[Class] Select three courses that focus on class (by agreement with the advisor), e.g. Labor History, Economics of Economics, Globalization, and Colonization. The courses below might be examples: 
+  
+<<echo=FALSE, results='asis'>>=
+print(xtable(subset(electives.rcg, subset=RCG=="C", select= -RCG)), include.rownames=FALSE)
+
+@
+  
+  
+  \item[Gender] Select three courses in Gender Studies:
+  
+<<echo=FALSE, results='asis'>>=
+print(xtable(subset(electives.rcg, subset=RCG=="G", select= -RCG)), include.rownames=FALSE)
+
+@
+
+\end{description}
+
+
+\newpage
+\section{Environmental Analysis---Economics}
+
+<<echo=FALSE>>=
+advisors.econ = subset(advisors, subset=CoursePlan=="EA_Econ")
+econ.basic = subset(courses, subset=EA_Econ==1, select=c("CourseNo", "Title", "Course", "Offered", "EA_Econ"))
+econ.apps = subset(courses, subset=EA_Econ==2, select=c("CourseNo", "Title", "Course", "Offered", "EA_Econ")) 
+econ.methods = subset(courses, subset=EA_Econ==3, select=c("CourseNo", "Title", "Course", "Offered", "EA_Econ")) 
+econ.PPA = subset(electives, subset=EA_Econ=="PPA", select=c("CourseNo", "Title", "Course", "Offered", "EA_Econ"))
+econ.values = subset(electives, subset=EA_Econ=="Values", select=c("CourseNo", "Title", "Course", "Offered", "EA_Econ"))
+econ.anthro = subset(electives, subset=EA_Econ=="Anthro", select=c("CourseNo", "Title", "Course", "Offered", "EA_Econ"))
+econ.NS = subset(electives, subset=EA_Econ=="NS", select=c("CourseNo", "Title", "Course", "Offered", "EA_Econ"))
+@
+
+\subsection{Faculty Advsisor(s)}
+
+\begin{itemize*}
+  \item \Sexpr{advisors.econ$Advisor}
+\end{itemize*}
+
+\subsection{Affiliated Faculty}
+
+\begin{itemize*}
+  \item \Sexpr{advisors.econ$Affiliated1}
+%  \item \Sexpr{advisors.econ$Affiliated2}
+%  \item \Sexpr{advisors.econ$Affiliated3}
+\end{itemize*}
+
+\subsection{Description}
+
+The most important questions concerning the environment often concern the interactions between production, consumption, and the environment.  Economics provides the analytical and computational tools to understand how economic and policy decisions affect the environment and in turn how the environment affects the economy.  Students in EA-Econ often go on to careers in energy, environmental consulting, urban planning, and other careers that require an understanding of the linkages between economics, the environment, and human well-being.
+
+\subsection{Course Requirements (12 Courses)}
+
+\begin{description}
+
+  \item[Core Courses] Complete all three of these following:
+  
+\begin{itemize*}
+  \item \Sexpr{core$Course[1]}
+  \item \Sexpr{core$Course[2]}
+  \item \Sexpr{core$Course[3]}
+\end{itemize*}
+
+  \item[Senior Exercise] Complete one of the following:
+  
+\begin{itemize*}
+  \item \Sexpr{capstone$Course[1]}
+  \item \Sexpr{capstone$Course[2]}
+\end{itemize*}
+
+<<echo=FALSE, results='hide'>>=
+basic.n = nrow(econ.basic)
+@
+
+\item[Foundations of Economics] EA-Econ students will take the following \Sexpr{basic.n} courses to provide a basic background knowledge with the following courses:
+
+
+\begin{itemize*}
+  \item \Sexpr{econ.basic$Course[1]}
+  \item \Sexpr{econ.basic$Course[2]}
+  \item \Sexpr{econ.basic$Course[3]}
+  \item \Sexpr{econ.basic$Course[4]}
+\end{itemize*}
+
+\item[Environmental Applications] to build content specialization, EA-Econ students will take two of the following \Sexpr{nrow(econ.apps)} courses:
+
+\begin{itemize*}
+  \item \Sexpr{econ.apps$Course[1]}
+  \item \Sexpr{econ.apps$Course[2]}
+  \item \Sexpr{econ.apps$Course[3]}
+%  \item \Sexpr{econ.apps$Course[4]}
+\end{itemize*}
+
+\item[Methods] EA-Econ students must take atleast one methods course prior to the senior capstone course:
+
+\begin{itemize*}
+  \item \Sexpr{econ.methods$Course[1]}
+  \item \Sexpr{econ.methods$Course[2]}
+%  \item \Sexpr{econ.methods$Course[3]}
+%  \item \Sexpr{econ.methods$Course[4]}
+\end{itemize*}
+
+\item[Electives] One of the courses or an acceptable substitute from each of the following two categories to provide additional insight into the field:
+
+\noindent \textbf{Public Policy Analysis and Politics} (Potential Available Courses = \Sexpr{nrow(econ.PPA)})
+
+\begin{itemize*}
+  \item \Sexpr{econ.PPA$Course[1]}
+  \item \Sexpr{econ.PPA$Course[2]}
+  \item \Sexpr{econ.PPA$Course[3]}
+  \item \Sexpr{econ.PPA$Course[4]}
+  \item \Sexpr{econ.PPA$Course[5]}
+  \item \Sexpr{econ.PPA$Course[6]}
+  \item \Sexpr{econ.PPA$Course[7]}
+  \item \Sexpr{econ.PPA$Course[8]}
+%  \item \Sexpr{econ.PPA$Course[9]}
+%  \item \Sexpr{econ.PPA$Course[10]}
+\end{itemize*}
+
+%\noindent Anthropology \& History (n = \Sexpr{nrow(econ.anthro)})
+
+%\begin{itemize*}
+%  \item \Sexpr{econ.anthro$Course[1]}
+%  \item \Sexpr{econ.anthro$Course[2]}
+  %\item \Sexpr{econ.anthro$Course[3]}
+%\end{itemize*}
+
+%\noindent Values and Ethics (n = \Sexpr{nrow(econ.values)})
+
+%\begin{itemize*}
+%  \item \Sexpr{econ.values$Course[1]}
+%\end{itemize*}
+  
+\noindent\textbf{ Natural Sciences} (Potential Courses Available = \Sexpr{nrow(econ.NS)})\footnote{higher level environmental related science courses with pre-requisites are likely to be approved; please clear with advisor}
+
+\begin{itemize*}
+  \item \Sexpr{econ.NS$Course[1]}
+  \item \Sexpr{econ.NS$Course[2]}
+  \item \Sexpr{econ.NS$Course[3]}
+  \item \Sexpr{econ.NS$Course[4]}
+  \item \Sexpr{econ.NS$Course[5]}
+%  \item \Sexpr{econ.methods$Course[4]}
+\end{itemize*}
+
+\end{description}
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=0.60\textwidth]{/home/mwl04747/beginnersluck/docs/figures/Diagram_of_natural_resource_flows-en.png}
+\caption{Diagram describing the flow of natural resources through the economy: Valuable resources are procured from nature by the input end of the economy; the resources flow through the economy, being transformed and manufactured into goods along the way; and invaluable waste and pollution eventually accumulate by the output end. Recycling of material resources is possible, but only by using up some energy resources as well as an additional amount of other material resources; and energy resources, in turn, cannot be recycled at all, but are dissipated as waste heat.}
+\end{figure}
+
+
+\newpage %######################################################################################
+\section{Environmental Geology}
+
+<<echo=FALSE>>=
+geo.advisors = subset(advisors, subset=CoursePlan=="EA_Geol")
+geo.intros = subset(electives, subset=EA_Geol=="intro", select=c("CourseNo", "Title", "Course", "Offered", "EA_Geol"))
+geo.foundations = subset(electives, subset=EA_Geol=="foundations", select=c("CourseNo", "Title", "Course", "Offered", "EA_Geol"))
+geo.chem = subset(electives, subset=EA_Geol=="chem", select=c("CourseNo", "Title", "Course", "Offered", "EA_Geol"))
+geo.biol = subset(electives, subset=EA_Geol=="biol", select=c("CourseNo", "Title", "Course", "Offered", "EA_Geol"))
+geo.hist = subset(electives, subset=EA_Geol=="hist", select=c("CourseNo", "Title", "Course", "Offered", "EA_Geol"))
+geo.gis = subset(electives, subset=EA_Geol=="gis", select=c("CourseNo", "Title", "Course", "Offered", "EA_Geol"))
+@
+
+\subsection{Faculty Advsisor(s)}
+
+\begin{itemize*}
+  \item \Sexpr{geo.advisors$Advisor}
+\end{itemize*}
+
+\subsection{Affiliated Faculty}
+
+\begin{itemize*}
+  \item \Sexpr{geo.advisors$Affiliated1}
+  \item \Sexpr{geo.advisors$Affiliated2}
+  \item \Sexpr{geo.advisors$Affiliated3}
+\end{itemize*}
+
+\subsection{Description}
+
+The Geology and the Environment concentration is designed for students interested in the interaction of humans with Earth’s geology and physical systems.
+
+\subsection{Course Requirements (12 Courses)}
+
+\begin{description}
+
+ \item[Core Courses] Complete all three of these following:
+  
+\begin{itemize*}
+  \item \Sexpr{core$Course[1]}
+  \item \Sexpr{core$Course[2]}
+  \item \Sexpr{core$Course[3]}
+\end{itemize*}
+
+  \item[Senior Exercise] Complete one of the following:
+  
+\begin{itemize*}
+  \item \Sexpr{capstone$Course[1]}
+  \item \Sexpr{capstone$Course[2]}
+\end{itemize*}
+
+\item[Geologic Introductions] Take one of the following courses: \Sexpr{geo.intros$CourseNo}. 
+  
+
+\item[Geographic Information Systems] Take one of the following courses:
+
+\begin{itemize*}
+  \item \Sexpr{geo.gis$Course[1]}
+  \item \Sexpr{geo.gis$Course[2]}
+\end{itemize*}
+
+\item[Geologic Foundations] Take four of the foundation courses in Geology from \Sexpr{nrow(geo.foundations$Course)}) potential courses:
+
+\begin{itemize*}
+  \item \Sexpr{geo.foundations$Course[1]}
+  \item \Sexpr{geo.foundations$Course[2]}
+  \item \Sexpr{geo.foundations$Course[3]}
+  \item \Sexpr{geo.foundations$Course[4]}
+  \item \Sexpr{geo.foundations$Course[5]}
+\end{itemize*}
+
+\item[Geological Interfaces] Take two courses from one of the following categories courses:
+
+\textbf{Chemical Interfaces:} Take two introductory chemistry sources:
+
+\begin{itemize*}
+  \item \Sexpr{geo.chem$Course[1]}
+  \item \Sexpr{geo.chem$Course[2]}
+  \item \Sexpr{geo.chem$Course[3]}
+  \item \Sexpr{geo.chem$Course[4]}
+  \item \Sexpr{geo.chem$Course[5]}
+\end{itemize*}
+
+\textbf{Biological Interfaces:} Take two biology\footnote{most have prerequisites} from \Sexpr{nrow(geo.biol)} potential courses: 
+
+\begin{itemize*}
+  \item \Sexpr{geo.biol$Course[1]}
+  \item \Sexpr{geo.biol$Course[2]}
+  \item \Sexpr{geo.biol$Course[3]}
+  \item \Sexpr{geo.biol$Course[4]}
+  \item \Sexpr{geo.biol$Course[5]}
+  \item \Sexpr{geo.biol$Course[6]}
+  \item \Sexpr{geo.biol$Course[7]}
+  \item \Sexpr{geo.biol$Course[8]}
+  \item \Sexpr{geo.biol$Course[9]}
+  \item \Sexpr{geo.biol$Course[10]}
+\end{itemize*}
+
+\textbf{Historical Interfaces:} Take from the following list of courses: 
+
+\begin{itemize*}
+  \item \Sexpr{geo.hist$Course[1]}
+  \item \Sexpr{geo.hist$Course[2]}
+  \item \Sexpr{geo.hist$Course[3]}
+  \item \Sexpr{geo.hist$Course[4]}
+  \item \Sexpr{geo.hist$Course[5]}
+  \item \Sexpr{geo.hist$Course[6]}
+  \item \Sexpr{geo.hist$Course[7]}
+  \item \Sexpr{geo.hist$Course[8]}
+  \item \Sexpr{geo.hist$Course[9]}
+  \item \Sexpr{geo.hist$Course[10]}
+\end{itemize*}
+
+\end{description}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.60\textwidth]{/home/mwl04747/beginnersluck/docs/figures/Graphic-illustration-of-the-two-different-concepts-of-anthropogeology-of-environmental.png}
+\caption{Graphic illustration of the two different concepts of anthropogeology, of environmental geology and neo-actuogeology in the context between geology, humans and environment (modified from Häusler Jr, 2016).}
+\end{figure}
+
+\newpage %##########################################################
+\section{Environmental Biology}
+
+<<echo=FALSE>>=
+biol.advisors = subset(advisors, subset=CoursePlan=="EA_Biol")
+biol.foundation = subset(electives, subset=EA_Biol=="foundations", select=c("CourseNo", "Title", "Offered", "Course", "EA_Biol"))
+biol.sem = subset(electives, subset=EA_Biol=="sem", select=c("CourseNo", "Title", "Offered", "Course", "EA_Biol"))
+biol.lab= subset(electives, subset=EA_Biol=="lab", select=c("CourseNo", "Title", "Offered", "Course", "EA_Biol"))
+biol.geol = subset(electives, subset=EA_Biol=="geol", select=c("CourseNo", "Title", "Offered", "Course", "EA_Biol"))
+biol.social = subset(electives, subset=EA_Biol=="social", select=c("CourseNo", "Title", "Offered", "Course", "EA_Biol"))
+@
+
+\subsection{Faculty Advsisor(s)}
+
+\begin{itemize*}
+  \item \Sexpr{biol.advisors$Advisor}
+\end{itemize*}
+
+\subsection{Affiliated Faculty}
+
+\begin{itemize*}
+  \item \Sexpr{biol.advisors$Affiliated1}
+  \item \Sexpr{biol.advisors$Affiliated2}
+  \item \Sexpr{biol.advisors$Affiliated3}
+\end{itemize*}
+
+\subsection{Description}
+
+In the EA Biology course plan, students will focus their Environmental Analysis major by incorporating the biological sciences into their training, and focusing on methods of biological inquiry and understanding biological concepts.
+
+Only one of the upper division Biology courses can be satisfied with a course from a study abroad program or domestic program. Pomona students may take courses that count towards the major at the other 5Cs if it is not offered at Pomona College.\footnote{Can be waived by advisor.} 
+
+Many upper division biology courses have Biology 41C PO Intro Cell Chemistry and Cell Biology w/lab as a prerequisite. In addition, the EA-Biology faculty also strongly recommend taking organic chemistry (CHEM 110A and 110B), mathematics and statistics (MATH 31 or MATH 60 and MATH 58 or MATH 58B). 
+
+Students interested in public policy might consider PPA-EA or PPA-Biology. 
+
+\subsection{Course Requirements (12 Courses)}
+
+\begin{description}
+
+ \item[Core Courses] Complete all three of these following:
+  
+\begin{itemize*}
+  \item \Sexpr{core$Course[1]}
+  \item \Sexpr{core$Course[2]}
+  \item \Sexpr{core$Course[3]}
+\end{itemize*}
+
+  \item[Senior Exercise] Complete one of the following:
+  
+\begin{itemize*}
+  \item \Sexpr{capstone$Course[1]}
+  \item \Sexpr{capstone$Course[2]}
+\end{itemize*}
+
+%and ECON 52, Microeconomics. 
+
+
+\item[Foundations in Biology] The following course are required.
+
+\begin{itemize*}
+  \item \Sexpr{biol.foundation$Course[1]}
+  \item \Sexpr{biol.foundation$Course[2]}
+  \item \Sexpr{biol.foundation$Course[3]}
+  \item \Sexpr{biol.foundation$Course[4]}
+\end{itemize*}
+
+\noindent CHEM051 substitute for CHEM001A and CHEM001B. 
+
+  \item[Biology Lab-based courses] Student will take 2 of the \Sexpr{nrow(biol.lab)} following courses: 
+
+\begin{itemize*}
+  \item \Sexpr{biol.lab$Course[1]}
+  \item \Sexpr{biol.lab$Course[2]}
+  \item \Sexpr{biol.lab$Course[3]}
+  \item \Sexpr{biol.lab$Course[4]}
+  \item \Sexpr{biol.lab$Course[5]}
+  \item \Sexpr{biol.lab$Course[6]}
+  \item \Sexpr{biol.lab$Course[7]}
+  \item \Sexpr{biol.lab$Course[8]}
+  \item \Sexpr{biol.lab$Course[9]}
+  \item \Sexpr{biol.lab$Course[10]}
+  \item \Sexpr{biol.lab$Course[11]}
+  \item \Sexpr{biol.lab$Course[12]}
+  \item \Sexpr{biol.lab$Course[13]}
+%  \item \Sexpr{biol.lab$Course[2]}
+%  \item \Sexpr{biol.lab$Course[3]}
+%  \item \Sexpr{biol.lab$Course[4]}
+\end{itemize*}
+
+\item[Seminar and Geology Options] Students will take an additional biology lab course or one of the following courses:
+
+\begin{itemize*}
+  \item \Sexpr{biol.sem$Course[1]}
+%  \item \Sexpr{biol.sem$Course[2]}
+  \item \Sexpr{biol.geol$Course[1]}
+  \item \Sexpr{biol.geol$Course[2]}
+\end{itemize*}
+
+\item[Social Sciences] EA-Biology students should also take an applicable social sciece course with consultation with their advisor. Below are potential options: 
+
+<<echo=FALSE, results='asis'>>=
+print(xtable(subset(biol.social, select= c(-Course, -EA_Biol)), include.rownames=FALSE))
+
+@
+
+\begin{itemize*}
+  \item \Sexpr{biol.social$Course[1]}
+  \item \Sexpr{biol.social$Course[2]}
+  \item \Sexpr{biol.social$Course[3]}
+  \item \Sexpr{biol.social$Course[4]}
+\end{itemize*}
+
+
+\end{description}
+
+\newpage %######################################################
+\section{Environmental Chemistry}
+
+<<echo=FALSE>>=
+chem.advisors = subset(advisors, subset=CoursePlan=="EA_Chem")
+chem.basic = subset(electives, subset=EA_Chem=="basic", select=c("CourseNo", "Course", "Title", "Offered", "EA_Chem"))
+chem.chem = subset(electives, subset=EA_Chem=="chem", select=c("CourseNo", "Course", "Title", "Offered", "EA_Chem"))
+chem.env = subset(electives, subset=EA_Chem=="env", select=c("CourseNo", "Course", "Title", "Offered", "EA_Chem"))
+chem.adv = subset(electives, subset=EA_Chem=="adv", select=c("CourseNo", "Course", "Title", "Offered", "EA_Chem"))
+@
+
+\subsection{Faculty Advsisor(s)}
+
+\begin{itemize*}
+  \item \Sexpr{chem.advisors$Advisor}
+\end{itemize*}
+
+\subsection{Affiliated Faculty}
+
+\begin{itemize*}
+  \item \Sexpr{chem.advisors$Affiliated1}
+  \item \Sexpr{chem.advisors$Affiliated2}
+%  \item \Sexpr{chem.advisors$Affiliated3}
+\end{itemize*}
+
+\subsection{Description}
+
+The EA-Chemistry provides students tools for understand the transport and fate of toxins in the environment, including heavy metals, metalloids, and natural and synthetic organic chemicals mobilized by manufacturing, mining, drilling, and combustion. 
+
+\subsection{Course Requirements (XX Courses)}
+
+\begin{description}
+
+ \item[Core Courses] Complete all three of these following:
+  
+\begin{itemize*}
+  \item \Sexpr{core$Course[1]}
+  \item \Sexpr{core$Course[2]}
+  \item \Sexpr{core$Course[3]}
+\end{itemize*}
+
+  \item[Senior Exercise] Complete one of the following:
+  
+\begin{itemize*}
+  \item \Sexpr{capstone$Course[1]}
+  \item \Sexpr{capstone$Course[2]}
+\end{itemize*}
+
+\item[General Chemistry] Complete one of the following series:
+
+\begin{itemize*}
+  \item \Sexpr{paste0(chem.basic$CourseNo[1], "(Offered ", chem.basic$Offered[1], ")")} and \Sexpr{paste0(chem.basic$CourseNo[2], "(Offered ", chem.basic$Offered[2], ")")}
+  \item \Sexpr{paste0(chem.basic$CourseNo[3], "(Offered ", chem.basic$Offered[3], ")")} and 
+  \Sexpr{paste0(chem.basic$CourseNo[4], "(Offered ", chem.basic$Offered[4], ")")}
+  \item \Sexpr{paste0(chem.basic$CourseNo[5], "(Offered ", chem.basic$Offered[5], ")")}
+\end{itemize*}
+
+\item[Foundation in Chemistry] Complete all of the following courses:
+
+<<echo=FALSE, results='asis'>>=
+print(xtable(subset(chem.chem, select=c(-EA_Chem, -Course))), include.rownames=FALSE)
+@
+
+\item[Environmental Chemistry] Take one of the following: 
+
+\begin{itemize*}
+  \item \Sexpr{chem.env$Course[1]}
+  \item \Sexpr{chem.env$Course[2]}
+\end{itemize*}
+
+
+
+\end{description}
+
+\newpage %#########################################################
+\section{Environmental Physics \& Engineering}
+
+<<echo=FALSE, PhyEngDataset>>=
+PhyEng.advisors = subset(advisors, subset=CoursePlan=="EA_PhyEng")
+math.PhyEng = subset(electives, subset=EA_PhyEng=="math", select=c("CourseNo", "Title", "Offered", "EA_PhyEng", "Course"))
+intro41.PhyEng = subset(electives, subset=EA_PhyEng=="intro41", select=c("CourseNo", "Title", "Offered", "EA_PhyEng", "Course"))
+intro70.PhyEng = subset(electives, subset=EA_PhyEng=="intro70", select=c("CourseNo", "Title", "Offered", "EA_PhyEng", "Course"))
+
+foundation.PhyEng = subset(electives, subset=EA_PhyEng=="foundation", select=c("CourseNo", "Title", "Offered", "EA_PhyEng", "Course"))
+
+elective.PhyEng = subset(electives, subset=EA_PhyEng=="elective", select=c("CourseNo", "Title", "Offered", "EA_PhyEng", "Course"))
+
+@
+
+\subsection{Faculty Advsisor(s)}
+
+\begin{itemize*}
+  \item \Sexpr{PhyEng.advisors$Advisor}
+\end{itemize*}
+
+\subsection{Affiliated Faculty}
+
+\begin{itemize*}
+  \item \Sexpr{PhyEng.advisors$Affiliated1}
+%  \item \Sexpr{PhyEng.advisors$Affiliated2}
+%  \item \Sexpr{PhyEng.advisors$Affiliated3}
+\end{itemize*}
+
+\subsection{Description}
+
+This course plan combines the principles of physics with engineering practices to study and solve environmental problems, essentially using physics to understand and design solutions. Topics might include the analysis of energy transfer, fluid dynamics, and other physical phenomena within environmental systems or how to design materials for a green economy. 
+
+\begin{figure}[h]
+\centering
+  \includegraphics[width=0.90\textwidth]{"/home/mwl04747/beginnersluck/docs/figures/MS-scale-length-NTOPT"}
+\end{figure}
+
+
+\subsection{Course Requirements (11/12 Courses)}
+
+\begin{description}
+  
+ \item[Core Courses] Complete all three of these following:
+  
+\begin{itemize*}
+  \item \Sexpr{core$Course[1]}
+  \item \Sexpr{core$Course[2]}
+  \item \Sexpr{core$Course[3]}
+\end{itemize*}
+
+  \item[Senior Exercise] Complete one of the following:
+  
+\begin{itemize*}
+  \item \Sexpr{capstone$Course[1]}
+  \item \Sexpr{capstone$Course[2]}
+\end{itemize*}
+
+\end{description}
+
+\noindent EA-Physics/Engineering majors are required to take the following courses.
+
+\begin{description}
+  \item[Math] Depending on math placement results, take one combination of the following two courses; 
+  
+\begin{itemize*}
+  \item \Sexpr{math.PhyEng$CourseNo[1]} \& \Sexpr{math.PhyEng$CourseNo[7]}
+  \item \Sexpr{math.PhyEng$CourseNo[3]} \& \Sexpr{math.PhyEng$CourseNo[4]}
+  \item \Sexpr{math.PhyEng$CourseNo[3]} \& \Sexpr{math.PhyEng$CourseNo[7]}
+  \item \Sexpr{math.PhyEng$CourseNo[2]} \& \Sexpr{math.PhyEng$CourseNo[6]}
+  \item \Sexpr{math.PhyEng$CourseNo[4]} \& \Sexpr{math.PhyEng$CourseNo[5]}
+  \item \Sexpr{math.PhyEng$CourseNo[4]} \& \Sexpr{math.PhyEng$CourseNo[6]}
+  \item \Sexpr{math.PhyEng$CourseNo[4]} \& \Sexpr{math.PhyEng$CourseNo[7]}
+ 
+%  \item \Sexpr{math.PhyEng$Course[1]} \& \Sexpr{math.PhyEng$Course[7]}
+\end{itemize*}
+
+  
+  \item[Introductory Physics] Take all of the courses from one of the following series: 
+  \begin{itemize}
+  \item \Sexpr{intro41.PhyEng$CourseNo}
+  \item \Sexpr{intro70.PhyEng$CourseNo}
+\end{itemize}
+ 
+  \item[Foundations in Modern Physics]
+~~
+  \begin{itemize}
+  \item \Sexpr{foundation.PhyEng$Course}
+\end{itemize}
+
+
+  \item[Advanced Topics] Take two additional 100+ level courses, e.g. \Sexpr{elective.PhyEng$Course}. 
+  
+\end{description}
+
+
+
+\clearpage
+\newpage %---------------------------------------------------
+\section{Quantitative Skills and Environment}
+
+<<echo=FALSE>>=
+math.advisors = subset(advisors, subset=CoursePlan=="EA_Quan")
+math.rcg = subset(electives, subset=!is.na(electives[,5]), select=c("CourseNo", "Title", "Offered", "EA_Quan"))
+@
+
+\subsection{Faculty Advsisor(s)}
+
+\begin{itemize*}
+  \item \Sexpr{math.advisors$Advisor}
+\end{itemize*}
+
+\subsection{Affiliated Faculty}
+
+\begin{itemize*}
+  \item \Sexpr{math.advisors$Affiliated1}
+  \item \Sexpr{math.advisors$Affiliated2}
+  \item \Sexpr{math.advisors$Affiliated3}
+\end{itemize*}
+
+\subsection{Description}
+
+Students learn to use mathematical tools and techniques to understand the real-world processes and implications of environmental problem-solving and decision making; apply mathematical and statistical models to clarify and respond to environmental issues; and read, critically evaluate, synthesize, and analyze a range of issues based on data and literature in the mathematical sciences.
+
+
+\subsection{Course Requirements (12 Courses)}
+
+\begin{description}
+
+ \item[Core Courses] Complete all three of these following:
+  
+\begin{itemize*}
+  \item \Sexpr{core$Course[1]}
+  \item \Sexpr{core$Course[2]}
+  \item \Sexpr{core$Course[3]}
+\end{itemize*}
+
+  \item[Senior Exercise] Complete one of the following:
+  
+\begin{itemize*}
+  \item \Sexpr{capstone$Course[1]}
+  \item \Sexpr{capstone$Course[2]}
+\end{itemize*}
+
+
+
+
+\end{description}
+
+\newpage %#########################################################
+\section{Environmental History}
+
+<<echo=FALSE>>=
+EA_Hist.advisors = subset(advisors, subset=CoursePlan=="EA_Hist")
+EA_Hist.H = subset(courses, subset=EA_Hist=="H", select=c("CourseNo", "Title", "Offered", "EA_Hist"))
+@
+
+\subsection{Faculty Advsisor(s)}
+
+\begin{itemize*}
+  \item \Sexpr{EA_Hist.advisors$Advisor}
+\end{itemize*}
+
+\subsection{Affiliated Faculty}
+
+\begin{itemize*}
+  \item \Sexpr{EA_Hist.advisors$Affiliated1}
+  \item \Sexpr{EA_Hist.advisors$Affiliated2}
+  \item \Sexpr{EA_Hist.advisors$Affiliated3}
+  \item \Sexpr{EA_Hist.advisors$Affiliated4}
+  \item \Sexpr{EA_Hist.advisors$Affiliated5}
+\end{itemize*}
+
+\subsection{Description}
+
+This concentration within PO-EA\footnote{for PO students only?} is designed to appeal to students interested in studying the relationships between humans and their environments over time—and to do so utilizing the methods and frameworks of Environmental Analysis and History. In consultation with their adviser, students will complete a minimum of 12 classes, including the four EA Core courses, five in the History concentration, and three in related fields.
+
+\subsection{Course Requirements (12 Courses)}
+
+\begin{description}
+
+ \item[Core Courses] Complete all three of these following:
+  
+\begin{itemize*}
+  \item \Sexpr{core$Course[1]}
+  \item \Sexpr{core$Course[2]}
+  \item \Sexpr{core$Course[3]}
+\end{itemize*}
+
+  \item[Senior Exercise] Complete one of the following:
+  
+\begin{itemize*}
+  \item \Sexpr{capstone$Course[1]}
+  \item \Sexpr{capstone$Course[2]}
+\end{itemize*}
+
+
+\item[History Concentration Courses] In consultation with theri adviser, students will take five courses from amount those currently offered or similar courses (Note: EA113 CM and EA150 PO cannot both be taken for credit): \Sexpr{EA_Hist.H$CourseNo}
+
+\item[Related Fields] In consultation with their adviser, students will take three environment-themed classes from such departments as Anthropology, Art History, English, German and Russian, Geology, Philosophy, Politics, and Religion.
+
+\end{description}
+
+\newpage
+\section{Values and the Environment}
+
+<<echo=FALSE>>=
+advisors.values = subset(advisors, subset=CoursePlan=="Values")
+values.values = subset(courses, subset=Values=="V", select=c("CourseNo", "Title", "Course", "Offered", "Values"))
+values.social = subset(courses, subset=Values=="S", select=c("CourseNo", "Title", "Course", "Offered", "Values")) 
+@
+
+\subsection{Faculty Advsisor(s)}
+
+\begin{itemize*}
+  \item \Sexpr{advisors.values$Advisor}
+\end{itemize*}
+
+\subsection{Affiliated Faculty}
+
+\begin{itemize*}
+  \item \Sexpr{advisors.values$Affiliated1}
+  \item \Sexpr{advisors.values$Affiliated2}
+  \item \Sexpr{advisors.values$Affiliated3}
+\end{itemize*}
+
+\subsection{Description}
+
+The Values and the Environment concentration enables students to explore the ethical, legal, social and historical frameworks that have shaped and are shaping urban, agricultural, and natural or quasi-natural environments, as well as the cell-based bodies of plants, animals, fungi and microbes. Students will also focus on economic and health inequalities of human societies created by state forms, market arrangements, and historically-embedded caste systems.
+
+\subsection{Course Requirements (12 Courses)}
+
+\begin{description}
+
+  \item[Core Courses] Complete all three of these following:
+  
+\begin{itemize*}
+  \item \Sexpr{core$Course[1]}
+  \item \Sexpr{core$Course[2]}
+  \item \Sexpr{core$Course[3]}
+\end{itemize*}
+
+  \item[Senior Exercise] Complete one of the following:
+  
+\begin{itemize*}
+  \item \Sexpr{capstone$Course[1]}
+  \item \Sexpr{capstone$Course[2]}
+\end{itemize*}
+
+
+\item[Values] Three from the \Sexpr{nrow(values.values)} courses to provide a basic background knowledge with the following courses:
+
+
+\begin{itemize*}
+  \item \Sexpr{values.values$Course[1]}
+  \item \Sexpr{values.values$Course[2]}
+  \item \Sexpr{values.values$Course[3]}
+  \item \Sexpr{values.values$Course[4]}
+  \item \Sexpr{values.values$Course[5]}
+  \item \Sexpr{values.values$Course[6]}
+  \item \Sexpr{values.values$Course[7]}
+%  \item \Sexpr{values.values$Course[4]}
+\end{itemize*}
+
+\item[Social Science Applications] to build content specialization, students will take two of the following \Sexpr{nrow(values.social)} courses: \Sexpr{values.social$CourseNo}
+
+<<echo=FALSE, results='asis', eval=FALSE>>=
+print(xtable(values.social[,c(1,2,4)]), include.rownames=FALSE)
+
+@
+
+\end{description}
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
