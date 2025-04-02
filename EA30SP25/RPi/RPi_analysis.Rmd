@@ -67,7 +67,7 @@ summary(rpi_aov)
 
 
 
-
+## stuff that hasn't been finised.
 
 
 f1a = data.frame(ID = IDs[1:4], factor1 = "indoor")
