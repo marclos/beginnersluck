@@ -1,0 +1,86 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+
+
+
+\title{Flood Interval Analysis}
+\author{EA030}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Flood Interval (Return Period)}
+
+In hydrology, the \textbf{flood interval} (or \textbf{return period}) represents the average time between floods of a certain magnitude. The return period \( T \) is defined as:
+
+\[
+T = \frac{n + 1}{m}
+\]
+
+Where:
+\begin{itemize}
+  \item \( T \) is the return period in years
+  \item \( n \) is the number of years of record
+  \item \( m \) is the rank of the flood event (1 = largest, 2 = second largest, etc.)
+\end{itemize}
+
+\section*{R Code: Flood Frequency Analysis}
+
+Below is an R code chunk that demonstrates how to calculate flood intervals using annual peak discharge data.
+
+<<r flood_analysis, echo=TRUE, results='hide'>>=
+# Sample annual peak discharge data (in cubic meters per second)
+discharge <- c(400, 520, 610, 700, 650, 720, 800, 750, 680, 670)
+
+# Sort in descending order
+sorted_discharge <- sort(discharge, decreasing = TRUE)
+
+# Rank and return period
+rank <- 1:length(sorted_discharge)
+n <- length(discharge)
+return_period <- (n + 1) / rank
+
+# Create a data frame
+flood_data <- data.frame(
+  Rank = rank,
+  Discharge = sorted_discharge,
+  Return_Period = return_period
+)
+
+# Print table
+print(flood_data)
+@
+
+
+<<>>=
+
+
+
+\section*{Flood Data Table}
+
+Below is the table of calculated return periods for each ranked discharge.
+
+<<flood_table, results=tex, echo=FALSE>>=
+library(xtable)
+xtable(flood_data, caption = "Flood Return Period Table", digits = 2)
+@
+
+\section*{Flood Frequency Plot}
+
+The following plot shows the discharge against its return period on a semi-logarithmic scale.
+
+<<flood_plot, echo=FALSE, fig=TRUE, fig.cap="Flood Frequency Curve">>=
+plot(return_period, sorted_discharge, log = "x", type = "b",
+     xlab = "Return Period (years)", ylab = "Discharge (m^3/s)",
+     main = "Flood Frequency Curve", col = "blue", pch = 19)
+grid()
+@
+
+
+
+
+\end{document}

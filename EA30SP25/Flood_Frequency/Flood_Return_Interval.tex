@@ -1,0 +1,69 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\title{Flood Interval Analysis}
+\author{EA030}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Flood Interval (Return Period)}
+
+In hydrology, the \textbf{flood interval} (or \textbf{return period}) represents the average time between floods of a certain magnitude. The return period \( T \) is defined as:
+
+\[
+T = \frac{n + 1}{m}
+\]
+
+Where:
+\begin{itemize}
+  \item \( T \) is the return period in years
+  \item \( n \) is the number of years of record
+  \item \( m \) is the rank of the flood event (1 = largest, 2 = second largest, etc.)
+\end{itemize}
+
+\section*{R Code: Flood Frequency Analysis}
+
+Below is an R code chunk that demonstrates how to calculate flood intervals using annual peak discharge data.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Sample annual peak discharge data (in cubic meters per second)}
+\hlstd{discharge} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{400}\hlstd{,} \hlnum{520}\hlstd{,} \hlnum{610}\hlstd{,} \hlnum{700}\hlstd{,} \hlnum{650}\hlstd{,} \hlnum{720}\hlstd{,} \hlnum{800}\hlstd{,} \hlnum{750}\hlstd{,} \hlnum{680}\hlstd{,} \hlnum{670}\hlstd{)}
+
+\hlcom{# Sort in descending order}
+\hlstd{sorted_discharge} \hlkwb{<-} \hlkwd{sort}\hlstd{(discharge,} \hlkwc{decreasing} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+
+\hlcom{# Rank and return period}
+\hlstd{rank} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(sorted_discharge)}
+\hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(discharge)}
+\hlstd{return_period} \hlkwb{<-} \hlstd{(n} \hlopt{+} \hlnum{1}\hlstd{)} \hlopt{/} \hlstd{rank}
+
+\hlcom{# Create a data frame}
+\hlstd{flood_data} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{Rank} \hlstd{= rank,}
+  \hlkwc{Discharge} \hlstd{= sorted_discharge,}
+  \hlkwc{Return_Period} \hlstd{= return_period}
+\hlstd{)}
+
+\hlcom{# Print table}
+\hlkwd{print}\hlstd{(flood_data)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+\section*{Flood Data Table}
+
+Below is the table of calculated return periods for each ranked discharge.
+
+
+
+
+

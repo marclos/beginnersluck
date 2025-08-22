@@ -1,0 +1,51 @@
+---
+title: "Planetary Boundaries"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+library(boundaries)
+```
+
+
+```{r}
+# set paths to lpjml configuration files and outputs
+path_configurations <- "home/mwl04747/beginnersluck/boundaries/lpjml/configurations/"
+config_path_scenario <- paste0(path_configurations, "config_scenario.json")
+config_path_reference <- paste0(path_configurations, "config_reference.json")
+path_outputs <- "home/mwl04747/beginnersluck/boundaries/lpjml/output/"
+path_outputs_pnv <- paste0(path_outputs, "pnv/")
+
+plotpath <- paste0("./R/plots/")
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+global_status <- calc_status(
+  boundary = c("bluewater", "greenwater", "lsc", "nitrogen", "biosphere"),
+  config_scenario = config_path_scenario,
+  config_reference = config_path_reference,
+  spatial_scale = "global",
+  path_baseline = output_path_baseline,
+  time_span_scenario = as.character(1901:2017),
+  time_span_reference = as.character(1500:1699),
+  time_span_baseline = as.character(1901:2017),
+  time_series_avg = 1, # computation of timeseries, no moving average
+  approach = list("bluewater" = "porkka2024",
+                  "greenwater" = "porkka2024",
+                  "nitrogen" = "schulte_uebbing2022")
+)
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).

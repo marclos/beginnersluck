@@ -53,7 +53,7 @@
 library(readxl)
 library(xtable)
 xlsxpath = "C:\\Users\\mwl04747\\Box\\3. College Service\\1. EA Program\\0. Coordinator Materials\\Curriculum\\Course Plans\\CoursePlanDatabase.xlsx"
-xlsxpath = "/home/mwl04747/beginnersluck/docs/CoursePlanDatabaseSpring2025.xlsx"
+xlsxpath = "/home/mwl04747/beginnersluck/docs/CoursePlanDatabaseFall2025.xlsx"
 advisors <- read_xlsx(xlsxpath, sheet = "Advisors")
 courses<- read_xlsx(xlsxpath, sheet = "CoursePlanDatabaseSpring2025")
 
@@ -68,10 +68,11 @@ electives = subset(courses, subset=c(CourseNo!="EA010" & CourseNo!="EA020" & Cou
 
 \newpage
 \section{Sustainable Built Environment}
+Updated: April, 15, 2025 %\Sexpr{format(Sys.Date(), "%B %d, %Y")}
 
 <<echo=FALSE>>=
 advisors.sbe = subset(advisors, subset=CoursePlan=="SBE")
-electives.sbe = subset(electives, subset=!is.na(electives[,4]), select=c("CourseNo", "Title", "Offered", "SBE"))
+electives.sbe = subset(electives, subset=!is.na(electives[,4]), select=c("CourseNo", "Title", "Offered", "SBE", "Course"))
 @
 
 \subsection{Faculty Advsisor(s)}
@@ -86,7 +87,7 @@ electives.sbe = subset(electives, subset=!is.na(electives[,4]), select=c("Course
   \item \Sexpr{advisors.sbe$Affiliated1}
   \item \Sexpr{advisors.sbe$Affiliated2}
   \item \Sexpr{advisors.sbe$Affiliated3}
-%  \item \Sexpr{advisors.sbe$Affiliated4}
+  \item \Sexpr{advisors.sbe$Affiliated4}
 \end{itemize*}
 
 \subsection{Description}
@@ -96,7 +97,7 @@ The Sustainability and the Built Environment Concentration (SBE) focuses on urba
 The SBE course plan interrogates the built environment, whether urban, suburban, or rural (and every place in between). It is designed for students seeking a comprehensive curriculum that is focused on how to plan, design, construct and manage communities from a more sustainable perspective. Learn about the latest planning approaches and policy/regulatory requirement; green architecture, sustainable site design and landscapes; renewable energy and energy efficiency; sustainable water resources management; and green infrastructure. Acquire the skills necessary to integrate sustainable design principles into long-range visions and the day-to-day development and management of the built environment.
 
 
-\subsection{Course Requirements (12 Courses)}
+\subsection{Course Requirements (11 Courses)}
 
 \begin{description}
 
@@ -116,29 +117,39 @@ The SBE course plan interrogates the built environment, whether urban, suburban,
 \end{itemize*}
 
 
-\item[Design and Representation] Complete at least one design and representation course. For example, \Sexpr{electives.sbe$CourseNo[electives.sbe$SBE=="R"]}.
+\item[Representation (1+)] Complete at least one representation course: 
 
-<<echo=FALSE, results='asis', eval=FALSE>>=
+\begin{itemize*}
+\item Studio art, photography, design, or production-based media studies courses
+\item GIS or similar spatial-analysis training
+\end{itemize*}
+
+For example, \Sexpr{electives.sbe$Course[electives.sbe$SBE=="R"]}.
+
+<<echo=FALSE, results='asis', eval=FALSE, fig.cap="Potential Representation Courses">>=
 print(xtable(subset(electives.sbe, subset=electives.sbe$SBE=="R", select= -SBE)), include.rownames=FALSE)
 @
 
-\item[Design Studio/Labs] Complete at least one design studio course or lab. Examples might include: \Sexpr{electives.sbe$CourseNo[electives.sbe$SBE=="D"]}.
 
-<<echo=FALSE, results='asis', eval=FALSE>>=
+\item[Design Studio/Labs (1+)] Complete at least one design studio course or lab. 
+
+Examples might include: \Sexpr{electives.sbe$Course[electives.sbe$SBE=="D"]}.
+
+<<echo=FALSE, results='asis', eval=FALSE, fig.cap="Potential Design Courses">>=
 print(xtable(subset(electives.sbe, subset=electives.sbe$SBE=="D", select= -SBE)), include.rownames=FALSE)
 @
 
-\item[Electives] Elective courses in SBE should be selected in close consultation with the major adviser and coordinator. Select five courses from the following or similar options, generally no more than two from a group:
-\begin{itemize}
+\item[Electives (5)] Elective courses in SBE should be selected in close consultation with the major adviser and coordinator. Select five courses from the following or similar options, generally no more than two from a group:
+\begin{itemize*}
   \item Urban history, geography, theory and ecology
   \item Design and Planning
   \item Environmental Justice/Policy/Economics/Sociology
-\end{itemize}
+\end{itemize*}
 
-\noindent Electives might include: \Sexpr{electives.sbe$CourseNo[electives.sbe$SBE=="O"]}.
+\noindent Electives might include: \Sexpr{electives.sbe$Course[electives.sbe$SBE=="E"]}.
 
 <<echo=FALSE, results='asis', eval=FALSE>>=
-print(xtable(subset(electives.sbe, subset=electives.sbe$SBE=="O", select= -SBE)), include.rownames=FALSE)
+print(xtable(subset(electives.sbe, subset=electives.sbe$SBE=="E", select= -SBE)), include.rownames=FALSE)
 @
 
 \end{description}
@@ -586,27 +597,20 @@ Students interested in public policy might consider PPA-EA or PPA-Biology.
 
 \item[Social Sciences] EA-Biology students should also take an applicable social sciece course with consultation with their advisor. Below are potential options: 
 
-For example, courses include: \Sexpr{biol.social$Course}
+<<echo=FALSE, results='asis'>>=
+print(xtable(subset(biol.social, select= c(-Course, -EA_Biol)), include.rownames=FALSE))
 
-
-<<echo=FALSE, results='asis', eval="FALSE">>=
-# print(xtable(subset(biol.social, select= c(-CourseNo, -EA_Biol)), include.rownames=FALSE))
 @
-% \begin{itemize*}
-%  \item \Sexpr{biol.social$Course[1]}
-%  \item \Sexpr{biol.social$Course[2]}
-%  \item \Sexpr{biol.social$Course[3]}
-%  \item \Sexpr{biol.social$Course[4]}
-%\end{itemize*}
+
+\begin{itemize*}
+  \item \Sexpr{biol.social$Course[1]}
+  \item \Sexpr{biol.social$Course[2]}
+  \item \Sexpr{biol.social$Course[3]}
+  \item \Sexpr{biol.social$Course[4]}
+\end{itemize*}
 
 
 \end{description}
-
-\begin{figure}
-\centering
-\includegraphics[width=0.8\textwidth]{figures/Clare-Flynn-birds.jpg}
-\end{figure}
-
 
 \newpage %######################################################
 \section{Environmental Chemistry}
@@ -887,11 +891,12 @@ This concentration within PO-EA\footnote{for PO students only?} is designed to a
 
 \newpage
 \section{Values and the Environment}
+Updated: April, 15, 2025
 
 <<echo=FALSE>>=
 advisors.values = subset(advisors, subset=CoursePlan=="Values")
-values.values = subset(courses, subset=Values=="V", select=c("CourseNo", "Title", "Course", "Offered", "Values"))
-values.social = subset(courses, subset=Values=="S", select=c("CourseNo", "Title", "Course", "Offered", "Values")) 
+values.values = subset(courses, subset=Values=="values", select=c("CourseNo", "Title", "Course", "Offered", "Values"))
+values.social = subset(courses, subset=Values=="social", select=c("CourseNo", "Title", "Course", "Offered", "Values")) 
 @
 
 \subsection{Faculty Advsisor(s)}
@@ -943,10 +948,11 @@ The Values and the Environment concentration enables students to explore the eth
   \item \Sexpr{values.values$Course[5]}
   \item \Sexpr{values.values$Course[6]}
   \item \Sexpr{values.values$Course[7]}
-%  \item \Sexpr{values.values$Course[4]}
+  \item \Sexpr{values.values$Course[8]}
+    \item \Sexpr{values.values$Course[9]}
 \end{itemize*}
 
-\item[Social Science Applications] to build content specialization, students will take two of the following \Sexpr{nrow(values.social)} courses: \Sexpr{values.social$CourseNo}
+\item[Social Science Applications] to build content specialization, students will take three of the following \Sexpr{nrow(values.social)} courses: \Sexpr{values.social$Course}
 
 <<echo=FALSE, results='asis', eval=FALSE>>=
 print(xtable(values.social[,c(1,2,4)]), include.rownames=FALSE)
