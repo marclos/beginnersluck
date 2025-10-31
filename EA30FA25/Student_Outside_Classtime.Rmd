@@ -24,6 +24,37 @@ week1 =c(6, 4.5, 13.5, NA, 5, 4, 3.5, 5, 11.5, 6)
 
 ```{r, echo=FALSE}
 hist(week1)
+
+```
+
+
+```{r}
+library(ggplot2)
+ 
+# dataset:
+data=data.frame(value=rnorm(100))
+
+# basic histogram
+p <- ggplot(data, aes(x=value)) + 
+  geom_histogram()
+
+p
+```
+```{r}
+# dataset:
+data=data.frame(value=week1)
+
+# basic histogram
+p <- ggplot(data, aes(x=value)) + 
+  geom_histogram(binwidth=.25)
+
+p
+```
+
+
+```{r}
+
+
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

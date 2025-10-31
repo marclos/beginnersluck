@@ -1,0 +1,12 @@
+name: cap_and_trade
+title: cap_and_trade
+username: marclos
+account: marclos
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 15925640
+bundleId: 11111096
+url: https://marclos.shinyapps.io/cap_and_trade/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

@@ -1,0 +1,309 @@
+\documentclass{tufte-handout}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{units}
+
+\title{Understanding Cap and Trade Systems:\\ An Interactive Simulation Guide}
+\author{Environmental Economics Laboratory}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+
+\noindent This guide introduces students to tradable emission permits through an interactive simulation. You will learn the history, theory, and practical application of cap-and-trade systems---one of the most powerful market-based tools for environmental regulation.
+
+
+\section{The Origins of Tradable Permits}
+
+The concept of tradable pollution permits emerged from economic theory in the 1960s.\sidenote{Dales, J.H. (1968). \textit{Pollution, Property \& Prices}. University of Toronto Press.} John Dales first proposed the idea that pollution rights could be bought and sold like any other commodity, creating incentives for efficient pollution reduction.
+
+\subsection{Why Tradable Permits?}
+
+Traditional environmental regulation often uses \textit{command-and-control} approaches\sidenote{Command-and-control regulations specify exactly how much each polluter must reduce emissions, regardless of the cost.}---telling each polluter exactly how much to reduce. This is inefficient because:
+
+\begin{itemize}
+\item Different firms face different costs of reducing pollution
+\item A firm that can reduce cheaply should reduce more
+\item A firm facing high reduction costs should reduce less
+\item Markets can find this efficient allocation automatically
+\end{itemize}
+
+\marginnote{The key insight: Let those who can reduce pollution cheaply do more of the reduction, while those facing high costs can buy permits instead.}
+
+The tradable permit system harnesses market forces to achieve environmental goals at the lowest possible cost to society.
+
+\section{Real-World Applications}
+
+\subsection{The U.S. Acid Rain Program (1990)}
+
+The most celebrated success story is the U.S. SO$_2$ trading program under the Clean Air Act Amendments of 1990.\sidenote{Schmalensee, R., \& Stavins, R.N. (2013). The SO$_2$ Allowance Trading System: The Ironic History of a Grand Policy Experiment. \textit{Journal of Economic Perspectives}, 27(1), 103-122.}
+
+\begin{itemize}
+\item \textbf{Goal}: Reduce sulfur dioxide emissions by 50\%
+\item \textbf{Result}: Goal achieved two years early
+\item \textbf{Cost}: One-third of initial estimates
+\item \textbf{Innovation}: Spurred development of scrubber technology
+\end{itemize}
+
+\subsection{The European Union Emissions Trading System}
+
+Launched in 2005, the EU ETS is the world's largest carbon market, covering over 11,000 installations.\sidenote{As of 2024, the EU ETS covers approximately 40\% of the EU's greenhouse gas emissions.}
+
+\subsection{California's Cap-and-Trade Program}
+
+California's program, started in 2013, covers about 80\% of the state's greenhouse gas emissions and has been linked with Quebec's system since 2014.
+
+\section{How the Model Works}
+
+Our simulation models a simplified cap-and-trade market with 24 firms. Understanding the model requires grasping four key concepts.
+
+\subsection{The Emissions Cap}
+
+The regulator sets a total emissions cap---the maximum amount of pollution allowed across all firms.\sidenote{In the simulation, this is the \textit{Emissions Cap} slider.} This cap is typically set below current emissions levels to force overall reductions.
+
+\marginnote[-1cm]{The cap is the environmental guarantee: total emissions cannot exceed this level, regardless of economic conditions.}
+
+\subsection{Initial Allocation}
+
+Permits are initially distributed to firms. There are two main approaches:\sidenote{The simulation uses grandfathering, distributing permits equally among firms. In practice, allocation formulas are often based on historical emissions.}
+
+\begin{description}
+\item[Grandfathering] Free distribution based on past emissions
+\item[Auctioning] Firms must purchase permits from the government
+\end{description}
+
+\subsection{Firm Heterogeneity}
+
+Each firm has a unique \textit{cost level}\sidenote{In the simulation, you set this via the cost level inputs, ranging from 0.5 to 1.5.} representing the cost of reducing emissions:
+
+\begin{itemize}
+\item \textbf{Low-cost firms} (0.5--0.8): Can reduce emissions cheaply through efficiency improvements or fuel switching
+\item \textbf{Medium-cost firms} (0.8--1.2): Face moderate abatement costs
+\item \textbf{High-cost firms} (1.2--1.5): Expensive to reduce emissions; may need to buy permits
+\end{itemize}
+
+The cost level determines each firm's \textit{willingness to pay} for permits:
+
+\begin{equation}
+\text{Max WTP} = \text{Price Floor} + (\text{Price Ceiling} - \text{Price Floor}) \times \text{Cost Level}
+\end{equation}
+
+\subsection{Market Trading}
+
+After initial allocation, firms compare their allocation to their desired emissions:\sidenote{Desired emissions reflect the firm's production needs and abatement opportunities.}
+
+\begin{description}
+\item[Surplus firms] Allocated more than needed $\rightarrow$ \textbf{Sellers}
+\item[Deficit firms] Allocated less than needed $\rightarrow$ \textbf{Buyers}
+\end{description}
+
+\marginnote{A firm with surplus permits can profit by selling to deficit firms, while buyers avoid costly emission reductions.}
+
+Trading continues until the market reaches equilibrium, where supply equals demand at a market price that clears the market.
+
+\section{Understanding Market Dynamics}
+
+\subsection{Supply and Demand Curves}
+
+The simulation displays supply and demand curves:\sidenote{These curves are stylized representations. In reality, they would be step functions reflecting individual firm decisions.}
+
+\begin{itemize}
+\item \textbf{Supply curve}: Upward sloping, showing that higher prices induce more permit sales (firms reduce emissions more)
+\item \textbf{Demand curve}: Downward sloping, showing that higher prices reduce permit demand (firms reduce emissions to avoid buying)
+\item \textbf{Equilibrium}: Where curves intersect, determining market price and quantity traded
+\end{itemize}
+
+\subsection{Price Floor and Ceiling}
+
+Real markets often include price constraints:\sidenote{California's cap-and-trade has both a price floor (auction reserve price) and a ceiling (allowance price containment reserve).}
+
+\begin{description}
+\item[Price Floor] Prevents permits from becoming too cheap, maintaining abatement incentives
+\item[Price Ceiling] Prevents excessive costs that could harm the economy
+\end{description}
+
+\section{Using the Simulation}
+
+\subsection{Basic Exploration}
+
+\textbf{Step 1: Observe the baseline}
+\begin{itemize}
+\item Start with default parameters
+\item Note the equilibrium price and quantity
+\item Examine which firms are buyers vs. sellers
+\end{itemize}
+
+\textbf{Step 2: Adjust the cap}
+\begin{itemize}
+\item Reduce the emissions cap from 100 to 80 tons
+\item What happens to the price?
+\item Which firms can no longer afford to trade?
+\end{itemize}
+
+\textbf{Step 3: Explore firm heterogeneity}
+\begin{itemize}
+\item Set Firms 1--8 to cost level 1.5 (high cost)
+\item Set Firms 9--16 to cost level 0.5 (low cost)
+\item Set Firms 17--24 to cost level 1.0 (medium cost)
+\item Observe trading patterns
+\end{itemize}
+
+\subsection{Advanced Scenarios}
+
+\subsubsection{Scenario 1: Stringent Cap}
+
+\textbf{Setup:}
+\begin{itemize}
+\item Emissions Cap: 70 tons
+\item Total Demand: 140 tons
+\item Price Floor: \$20
+\item Price Ceiling: \$150
+\end{itemize}
+
+\textbf{Questions to explore:}
+\begin{enumerate}
+\item What is the shortage of permits?
+\item How many firms cannot afford to trade?
+\item What is the equilibrium price?
+\item How does this compare to a less stringent cap?
+\end{enumerate}
+
+\marginnote{A stringent cap creates scarcity, driving up prices and forcing more emission reductions.}
+
+\subsubsection{Scenario 2: Technology Shock}
+
+Imagine a breakthrough in clean technology reduces costs for half the firms.
+
+\textbf{Setup:}
+\begin{itemize}
+\item Set Firms 1--12 to cost level 0.6 (new technology)
+\item Keep Firms 13--24 at their original levels
+\end{itemize}
+
+\textbf{Observe:}
+\begin{itemize}
+\item How does equilibrium price change?
+\item Do low-cost firms become sellers?
+\item What happens to market value?
+\end{itemize}
+
+\subsubsection{Scenario 3: Price Controls}
+
+Test the impact of regulatory price constraints.
+
+\textbf{Setup A: Binding floor}
+\begin{itemize}
+\item Set Price Floor to \$40 (high)
+\item Observe which trades don't occur
+\end{itemize}
+
+\textbf{Setup B: Binding ceiling}
+\begin{itemize}
+\item Set Price Ceiling to \$60 (low)
+\item Emissions Cap: 70 tons
+\item Demand: 140 tons
+\item What happens when demand exceeds supply at the ceiling price?
+\end{itemize}
+
+\section{Key Economic Concepts}
+
+\subsection{Equimarginal Principle}
+
+Tradable permits achieve the \textit{equimarginal principle}:\sidenote{At the optimum, the marginal cost of abatement should be equal across all firms.} all firms face the same marginal cost of reducing emissions (the permit price).
+
+\begin{itemize}
+\item Firms with low abatement costs reduce emissions and sell permits
+\item Firms with high abatement costs buy permits instead of reducing
+\item This achieves the cap at minimum total cost
+\end{itemize}
+
+\subsection{Static vs. Dynamic Efficiency}
+
+\textbf{Static efficiency}: Achieving today's emissions target at lowest cost
+
+\textbf{Dynamic efficiency}: Creating incentives for long-term innovation
+
+\marginnote{Permit systems encourage firms to develop cleaner technologies. A firm that innovates can sell more permits or buy fewer.}
+
+The simulation focuses on static efficiency, but real markets also drive innovation through the ongoing incentive to reduce costs.
+
+\subsection{Market Power Concerns}
+
+In real markets with few participants, firms might manipulate prices:\sidenote{The simulation assumes perfect competition, but real markets may have strategic behavior.}
+
+\begin{itemize}
+\item \textbf{Banking}: Saving permits for future use
+\item \textbf{Hoarding}: Withholding permits to drive up prices
+\item \textbf{Strategic allocation}: Gaming initial distribution
+\end{itemize}
+
+\section{Extensions and Limitations}
+
+\subsection{What the Model Includes}
+
+\begin{itemize}
+\item Heterogeneous firms with different abatement costs
+\item Initial allocation and trading
+\item Price constraints
+\item Market equilibrium
+\end{itemize}
+
+\subsection{What the Model Omits}
+
+\begin{itemize}
+\item \textbf{Banking and borrowing}: Firms cannot save permits for future periods
+\item \textbf{Uncertainty}: Firms have perfect information
+\item \textbf{Transaction costs}: Trading is costless
+\item \textbf{Monitoring and enforcement}: Compliance is assumed
+\item \textbf{Offsets}: No credits from external reduction projects
+\item \textbf{International linkages}: No connection to other markets
+\end{itemize}
+
+\section{Discussion Questions}
+
+\begin{enumerate}
+\item Why might a firm prefer grandfathered permits over auctioned permits? What are the equity implications?
+
+\item If you were a regulator, how would you decide between a cap-and-trade system and a carbon tax?
+
+\item What happens to the equilibrium price as the cap becomes more stringent over time? How would firms respond?
+
+\item Why is it important that permits be tradable? What would happen if each firm simply had to meet its initial allocation?
+
+\item How do price floors and ceilings affect market efficiency? When might they be desirable?
+
+\item What role does initial allocation play in determining the final distribution of emissions? The final distribution of costs?
+
+\item How might banking (saving permits for future use) affect firm behavior and market prices?
+
+\item Consider environmental justice: Does a cap-and-trade system guarantee that pollution will be reduced in every location? Why or why not?
+\end{enumerate}
+
+\section{Further Reading}
+
+\begin{itemize}
+\item Stavins, R.N. (2008). Addressing climate change with a comprehensive US cap-and-trade system. \textit{Oxford Review of Economic Policy}, 24(2), 298-321.
+
+\item Tietenberg, T. (2006). \textit{Emissions Trading: Principles and Practice} (2nd ed.). Resources for the Future.
+
+\item Ellerman, A.D., Joskow, P.L., \& Harrison, D. (2003). \textit{Emissions Trading in the U.S.: Experience, Lessons, and Considerations for Greenhouse Gases}. Pew Center on Global Climate Change.
+
+\item Hahn, R.W., \& Stavins, R.N. (2011). The Effect of Allowance Allocations on Cap-and-Trade System Performance. \textit{Journal of Law and Economics}, 54(4), S267-S294.
+\end{itemize}
+
+\section{Conclusion}
+
+Cap-and-trade systems represent a powerful application of economic theory to environmental policy. By creating a market for pollution rights, they harness private incentives to achieve public environmental goals efficiently.
+
+The simulation allows you to explore how different firms with different costs interact in a permit market, how policy parameters affect outcomes, and why markets can achieve environmental goals more efficiently than command-and-control regulation.
+
+\marginnote{Remember: The goal is not just to understand how the model works, but to develop intuition about how market-based environmental policies function in the real world.}
+
+As you experiment with different scenarios, think about the policy trade-offs involved: stringency vs. cost, efficiency vs. equity, simplicity vs. precision. These are the challenges facing real-world environmental policymakers today.
+
+\end{document}

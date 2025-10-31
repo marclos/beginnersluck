@@ -1,0 +1,145 @@
+---
+title: "Understanding Cap and Trade Systems: An Interactive Simulation Guide"
+author: "Environmental Economics Laboratory"
+date: "`r Sys.Date()`"
+output:
+  tufte::tufte_handout:
+    toc: true
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center", out.width = "80%")
+library(ggplot2)
+```
+
+## Abstract
+
+This guide introduces students to tradable emission permits through an interactive simulation. You will learn the history, theory, and practical application of cap-and-trade systems—one of the most powerful market-based tools for environmental regulation.
+
+---
+
+## The Origins of Tradable Permits
+
+The concept of tradable pollution permits emerged from economic theory in the 1960s.\
+[^dales1968]: Dales, J.H. (1968). *Pollution, Property & Prices*. University of Toronto Press.
+
+John Dales first proposed that pollution rights could be bought and sold like any other commodity, creating incentives for efficient pollution reduction.
+
+### Why Tradable Permits?
+
+Traditional environmental regulation often uses *command-and-control* approaches[^cac]: telling each polluter exactly how much to reduce.
+
+[^cac]: Command-and-control regulations specify exactly how much each polluter must reduce emissions, regardless of the cost.
+
+This is inefficient because:
+
+- Different firms face different costs of reducing pollution  
+- A firm that can reduce cheaply should reduce more  
+- A firm facing high reduction costs should reduce less  
+- Markets can find this efficient allocation automatically  
+
+> **Key Insight:** Let those who can reduce pollution cheaply do more of the reduction, while those facing high costs can buy permits instead.
+
+The tradable permit system harnesses market forces to achieve environmental goals at the lowest possible cost to society.
+
+---
+
+## Real-World Applications
+
+### The U.S. Acid Rain Program (1990)
+
+The most celebrated success story is the U.S. SO₂ trading program under the Clean Air Act Amendments of 1990.\
+[^so2]: Schmalensee, R., & Stavins, R.N. (2013). *The SO₂ Allowance Trading System: The Ironic History of a Grand Policy Experiment.* *Journal of Economic Perspectives*, 27(1), 103–122.
+
+- **Goal:** Reduce sulfur dioxide emissions by 50%  
+- **Result:** Goal achieved two years early  
+- **Cost:** One-third of initial estimates  
+- **Innovation:** Spurred development of scrubber technology  
+
+### The European Union Emissions Trading System
+
+Launched in 2005, the EU ETS is the world’s largest carbon market, covering over 11,000 installations.\
+[^euets]: As of 2024, the EU ETS covers approximately 40% of the EU's greenhouse gas emissions.
+
+### California’s Cap-and-Trade Program
+
+California’s program, started in 2013, covers about 80% of the state’s greenhouse gas emissions and has been linked with Quebec’s system since 2014.
+
+---
+
+## Interactive Simulation
+
+This section provides an R-based simulation of a simplified cap-and-trade market with heterogeneous firms.
+
+```{r simulate-market}
+simulate_market <- function(n_firms = 24, cap = 100, price_floor = 20, price_ceiling = 150) {
+  set.seed(123)
+  cost_level <- runif(n_firms, 0.5, 1.5)
+  wtp <- price_floor + (price_ceiling - price_floor) * cost_level
+  allocation <- rep(cap / n_firms, n_firms)
+  desired <- runif(n_firms, 0, cap / n_firms * 1.5)
+  surplus <- allocation - desired
+  data.frame(Firm = 1:n_firms, CostLevel = cost_level, WTP = wtp,
+             Allocation = allocation, Desired = desired, Surplus = surplus)
+}
+
+market_data <- simulate_market()
+head(market_data)
+```
+
+### Supply and Demand Curves
+
+```{r market-curves, fig.height=5}
+ggplot(market_data, aes(x = WTP)) +
+  geom_histogram(fill="gray80", color="black", bins=15) +
+  labs(title="Distribution of Willingness to Pay for Permits",
+       x="Willingness to Pay ($)", y="Number of Firms")
+```
+
+This histogram approximates the demand for permits in the market.  
+We can also visualize stylized supply and demand curves.
+
+```{r supply-demand, fig.height=5}
+price <- seq(20, 150, length.out = 50)
+demand <- 120 - 0.7 * (price - 20)
+supply <- 0.6 * (price - 20)
+df <- data.frame(price, demand, supply)
+
+ggplot(df, aes(x=price)) +
+  geom_line(aes(y=demand, color="Demand")) +
+  geom_line(aes(y=supply, color="Supply")) +
+  geom_vline(xintercept=80, linetype="dashed") +
+  annotate("text", x=83, y=60, label="Equilibrium", hjust=0) +
+  labs(title="Stylized Cap-and-Trade Market Equilibrium",
+       x="Permit Price ($)", y="Quantity (tons)",
+       color="Curve") +
+  theme_minimal()
+```
+
+---
+
+## Key Economic Concepts
+
+### Equimarginal Principle
+
+Tradable permits achieve the *equimarginal principle*[^equimarginal]: all firms face the same marginal abatement cost (the permit price).
+
+[^equimarginal]: At the optimum, the marginal cost of abatement is equal across all firms.
+
+- Low-cost firms reduce and sell  
+- High-cost firms buy instead of reducing  
+- The cap is achieved at minimum total cost  
+
+### Static vs. Dynamic Efficiency
+
+- **Static efficiency:** Achieve today’s target at lowest cost  
+- **Dynamic efficiency:** Encourage innovation for the future  
+
+---
+
+## Conclusion
+
+Cap-and-trade systems harness private incentives to achieve public environmental goals efficiently. The simulation helps you understand firm behavior, market dynamics, and the efficiency of market-based environmental regulation.
+
+**Reflection:** The real challenge lies in balancing stringency vs. cost, efficiency vs. equity, and simplicity vs. precision—just as real-world policymakers must.
