@@ -12,9 +12,9 @@ output:
 
 ## Sandbox Respository for Various Projects 
 
-I am using this repository to host various R and RStudio related projects including teaching materials, Shiny apps, and other R related resources. To see the various projects, please explore the repository folders.
+I am use the [Beginnersluck repository](https://github.com/marclos/Beginnersluck) repository to host various R and RStudio related projects including teaching materials, Shiny apps, and other R related resources. To see the various projects, please explore the repository folders.
 
-[Beginnersluck repository](https://github.com/marclos/Beginnersluk is maintained by [marclos](https://github.com/marclos).
+You can also access all my repositories via [marclos](https://github.com/marclos).
 
 ### EA010 Resources
 
