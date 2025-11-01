@@ -4,7 +4,7 @@ library(dplyr)
 
 # Define UI
 ui <- fluidPage(
-  titlePanel("Supply & Demand Interactive Learning"),
+  titlePanel("Marc's Supply & Demand Interactive Model (v. 0.3)"),
   
   tags$head(
     tags$style(HTML("
