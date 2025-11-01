@@ -28,12 +28,8 @@ You can also access all my repositories via [marclos](https://github.com/marclos
 ### EA030 Resources
 
 #### Statistic Resources
- - [Doing Statistics in R](EA030/Doing_Statistics_in_R.Rmd)
- - [EA030 Syllabus](EA030/EA030_Syllabus_Fall_2024.pdf)
- - [EA030 Lecture Notes](EA030/EA030_Lecture_Notes_Fall_2024.pdf)
- - [EA030 Problem Sets](EA030/Problem_Sets/)
- - [EA030 Data Files](EA030/Data_Files/)
- - [EA030 Solutions](EA030/Solutions/)
+
+ - [R Reference Card](R/R_Reference_Card.pdf)
  
 #### R Scripts
 
