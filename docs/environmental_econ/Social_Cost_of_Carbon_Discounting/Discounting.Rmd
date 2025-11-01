@@ -1,64 +1,374 @@
 ---
-title: "Discount Rates"
+title: "Discount Rates and Environmental Policy"
 author: "Marc Los Huertos"
-date: "4/28/2021"
+date: "November 2025"
 output: ioslides_presentation
 ---
-
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(ggplot2)
+library(dplyr)
 ```
 
-## Long-term and Short-term Trade-offs
+## The Time Value Problem
 
-Most environmental policies involve a trade-off between short-term costs and longer-term benefits. 
+**Key Question:** How do we compare costs today with benefits decades or centuries from now?
 
-- Investments in cleaner technologies and abatement equipment, for example, require up front expenditures that produce environmental improvements over time. 
+- Clean energy infrastructure: costs now, benefits for 50+ years
+- Climate mitigation: costs now, benefits for centuries
+- Toxic waste cleanup: costs now, prevents harm for generations
 
-For example, if a pollutant decays within a few years, the time horizon for analyzing costs and benefits depends on the lifespan of the investment—perhaps as long as 50 or 100 years. 
+## Why Discounting Matters
 
-In contrast, the benefits of climate change mitigation measures are linked not only to the lifespan of physical capital but also to the lifespan of greenhouse gases (GHGs), which may remain in the atmosphere for centuries. 
-Climate change presents specific challenges for determining the proper balance between future benefits and present-day costs.
+**Environmental policies involve intertemporal trade-offs:**
 
-## Future Value Calculation
+- Initial investment costs (present)
+- Operating and maintenance costs (ongoing)
+- Environmental benefits (long-term)
+- Health improvements (delayed)
 
-Here's how future values (FV) are calculated based on present value (PV), rate (r), and time (t). 
+**The discount rate determines how we value the future**
 
-$FV = PV * (1 + r)^t$
+## Future Value: The Basics
 
-## Example (using R)
+**Starting point:** How does money grow over time?
 
-```{r cars, echo = TRUE}
+$$FV = PV \times (1 + r)^t$$
+
+Where:
+
+- $FV$ = Future Value (what you'll have)
+- $PV$ = Present Value (what you start with)
+- $r$ = interest rate (as decimal, e.g., 0.05 = 5%)
+- $t$ = time periods (usually years)
+
+## Future Value: Step-by-Step
+
+**Example:** $100 invested at 5% annual rate
+
+**Year 1:**
+$$FV_1 = 100 \times (1 + 0.05)^1 = 100 \times 1.05 = \$105$$
+
+**Year 2:**
+$$FV_2 = 100 \times (1 + 0.05)^2 = 100 \times 1.1025 = \$110.25$$
+
+**Year 3:**
+$$FV_3 = 100 \times (1 + 0.05)^3 = 100 \times 1.157625 = \$115.76$$
+
+Notice: Each year compounds on the previous total
+
+## Future Value Over 25 Years
+```{r future_value, echo = FALSE, fig.height=4}
 PV = 100
-r = .05
+r = 0.05
 t = 1:25
 
-plot(t, PV*(1+r)^t, ylab="FV")
+data <- data.frame(
+  Year = t,
+  FV = PV * (1 + r)^t
+)
+
+ggplot(data, aes(x = Year, y = FV)) +
+  geom_line(color = "#3b82f6", size = 1.2) +
+  geom_point(color = "#3b82f6", size = 2) +
+  labs(
+    title = "Growth of $100 at 5% Annual Rate",
+    x = "Years",
+    y = "Future Value ($)"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(plot.title = element_text(face = "bold"))
 ```
 
-## $30 present cost for future dollars?
+After 25 years: **$338.64** (more than 3× the original investment)
 
-$PV = FV/(1+r)^t$
+## Present Value: The Reverse Problem
 
-```{r futuredamages}
+**Question:** What is $100 of future benefit worth today?
+
+**Rearrange the formula:**
+$$PV = \frac{FV}{(1 + r)^t}$$
+
+**This is discounting:** Converting future values to present-day equivalents
+
+## Present Value: Step-by-Step
+
+**Question:** What is $100 received in 3 years worth today at 5% discount rate?
+
+**Step 1:** Calculate the discount factor
+$$(1 + 0.05)^3 = 1.157625$$
+
+**Step 2:** Divide future value by discount factor
+$$PV = \frac{100}{1.157625} = \$86.38$$
+
+**Interpretation:** $86.38 today is equivalent to $100 in 3 years (at 5% rate)
+
+## Present Value Example: 25 Years
+
+**How much is $100 of benefit in 25 years worth today?**
+
+At 5% discount rate:
+$$PV = \frac{100}{(1 + 0.05)^{25}} = \frac{100}{3.386} = \$29.53$$
+
+At 1% discount rate:
+$$PV = \frac{100}{(1 + 0.01)^{25}} = \frac{100}{1.282} = \$78.00$$
+
+**The choice of discount rate dramatically affects present values!**
+
+## The Discount Rate's Impact
+```{r discount_comparison, echo = FALSE, fig.height=4.5}
 FV = 100
+t = 1:50
+rates <- c(0.01, 0.03, 0.05, 0.07)
 
-(PV = FV/(1+.05)^25)
+data_list <- lapply(rates, function(r) {
+  data.frame(
+    Year = t,
+    PV = FV / (1 + r)^t,
+    Rate = paste0(r*100, "%")
+  )
+})
 
-(PV = FV/(1+0.05)^t)
+data <- do.call(rbind, data_list)
 
+ggplot(data, aes(x = Year, y = PV, color = Rate)) +
+  geom_line(size = 1.2) +
+  scale_color_manual(values = c("#10b981", "#3b82f6", "#f59e0b", "#ef4444")) +
+  labs(
+    title = "Present Value of $100 Future Benefit",
+    subtitle = "Effect of Different Discount Rates",
+    x = "Years in Future",
+    y = "Present Value ($)",
+    color = "Discount Rate"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    legend.position = "right"
+  )
 ```
-## Present Value 76 Cents of $100 of Future Damage
 
-```{r 76cents}
+## Extreme Case: 100 Years
+
+**Present value of $100 benefit in 100 years:**
+
+At 1% discount rate:
+$$PV = \frac{100}{(1.01)^{100}} = \$37.00$$
+
+At 5% discount rate:
+$$PV = \frac{100}{(1.05)^{100}} = \$0.76$$
+
+**At 5%, benefits a century from now are essentially worthless today!**
+
+## Long-term Environmental Damages
+```{r long_term, echo = FALSE, fig.height=4.5}
 FV = 100
-t=1:100
+t = 1:100
 
-PV = FV/(1+0.05)^t
+data <- data.frame(
+  Year = t,
+  PV_1pct = FV / (1 + 0.01)^t,
+  PV_5pct = FV / (1 + 0.05)^t
+)
 
-plot(t, PV, ylab="PV", ty='l')
-lines(t, FV/(1+.01)^t, col='red')
-text(40, 20, "5%")
-text(40, 75, "1%", col="red")
-
+ggplot(data, aes(x = Year)) +
+  geom_line(aes(y = PV_1pct, color = "1% Rate"), size = 1.2) +
+  geom_line(aes(y = PV_5pct, color = "5% Rate"), size = 1.2) +
+  geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.5) +
+  scale_color_manual(values = c("1% Rate" = "#10b981", "5% Rate" = "#ef4444")) +
+  labs(
+    title = "Present Value of $100 Environmental Damage",
+    subtitle = "Over 100 Years at Different Discount Rates",
+    x = "Years Until Damage Occurs",
+    y = "Present Value ($)",
+    color = "Discount Rate"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    legend.position = "top"
+  ) +
+  annotate("text", x = 80, y = 40, label = "At 1%: $37 after 100 years", 
+           color = "#10b981", fontface = "bold") +
+  annotate("text", x = 80, y = 5, label = "At 5%: $0.76 after 100 years", 
+           color = "#ef4444", fontface = "bold")
 ```
+
+## The Climate Change Challenge
+
+**Why discount rates matter for climate policy:**
+
+1. **Long time horizons:** GHG emissions cause damages centuries into future
+2. **Irreversibility:** Many climate impacts cannot be undone
+3. **Intergenerational equity:** High discount rates devalue future generations
+4. **Catastrophic risks:** Possibility of severe, irreversible damages
+
+**The Stern Review (2006):** Used ~1.4% rate → aggressive action warranted
+
+**Traditional economics:** Often uses 3-7% → less urgent action
+
+## Components of the Discount Rate
+
+**Social Discount Rate = Pure Time Preference + Growth Effect**
+
+$$r = \rho + \eta \times g$$
+
+Where:
+
+- $\rho$ = pure time preference (impatience)
+- $\eta$ = elasticity of marginal utility (inequality aversion)
+- $g$ = expected consumption growth rate
+
+**Each component is ethically debatable**
+
+## Pure Time Preference (ρ)
+
+**Question:** Should we value people in the future less than people today?
+
+**Ethical arguments:**
+
+- $\rho = 0$: Future people matter equally (Stern Review approach)
+- $\rho > 0$: We naturally prefer present over future (Nordhaus approach)
+
+**Example impact:**
+- If $\rho = 0$ and other components sum to 1.4%, total rate = 1.4%
+- If $\rho = 1.5\%$ and other components sum to 1.4%, total rate = 2.9%
+
+## Growth Effect (η × g)
+
+**Question:** Will future generations be richer than us?
+
+**Logic:** If future is richer, they can better afford costs, so we discount less
+
+**Consumption growth (g):**
+- Optimistic: $g = 2\%$ per year
+- Pessimistic: $g = 1\%$ per year
+
+**Inequality aversion (η):**
+- High $\eta = 2$: Strong preference for helping poorer people
+- Low $\eta = 1$: Weak preference for redistribution
+
+## Example Calculation
+
+**Calculate social discount rate:**
+
+Assumptions:
+- Pure time preference: $\rho = 0.5\%$
+- Inequality aversion: $\eta = 1.5$
+- Growth rate: $g = 2\%$
+
+$$r = 0.005 + (1.5 \times 0.02) = 0.005 + 0.03 = 0.035$$
+
+**Result: 3.5% social discount rate**
+
+## Real-World Examples
+
+**U.S. Government (OMB Circular A-4):**
+- Base case: 3% and 7%
+- Lower rates for intergenerational projects
+
+**UK Green Book:**
+- 3.5% declining to 3% after 30 years
+- Further declines for longer horizons
+
+**France:**
+- 4% for near-term
+- Declining scale for climate projects
+
+## Policy Implications
+```{r policy_comparison, echo = FALSE}
+# Calculate NPV of climate mitigation project
+years <- 0:100
+cost <- c(1000, rep(0, 100))  # $1000 upfront cost
+benefit <- c(rep(0, 20), rep(50, 81))  # $50/year benefit starting year 20
+
+npv_calc <- function(rate) {
+  discount_factors <- 1 / (1 + rate)^years
+  sum((benefit - cost) * discount_factors)
+}
+
+rates <- seq(0.01, 0.07, by = 0.005)
+npvs <- sapply(rates, npv_calc)
+
+data <- data.frame(
+  Rate = rates * 100,
+  NPV = npvs
+)
+
+ggplot(data, aes(x = Rate, y = NPV)) +
+  geom_line(size = 1.2, color = "#3b82f6") +
+  geom_point(size = 2, color = "#3b82f6") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red", size = 1) +
+  labs(
+    title = "Net Present Value of Climate Project",
+    subtitle = "$1000 upfront cost, $50/year benefit for 80 years starting in year 20",
+    x = "Discount Rate (%)",
+    y = "Net Present Value ($)"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(plot.title = element_text(face = "bold")) +
+  annotate("text", x = 2, y = 500, label = "Project worthwhile", 
+           color = "#10b981", fontface = "bold") +
+  annotate("text", x = 6, y = -200, label = "Project not worthwhile", 
+           color = "#ef4444", fontface = "bold")
+```
+
+## Ethical Considerations
+
+**The discounting debate raises fundamental questions:**
+
+1. **Intergenerational justice:** Do we owe duties to future generations?
+2. **Uncertainty:** What if damages are worse than expected?
+3. **Irreversibility:** Should we discount irreplaceable natural capital?
+4. **Catastrophic risk:** How to value low-probability, high-impact events?
+
+**No purely technical answer—requires ethical and political judgment**
+
+## Alternative Approaches
+
+**Beyond traditional discounting:**
+
+1. **Declining discount rates:** Lower rates for distant future (UK approach)
+2. **Dual discounting:** Different rates for different types of impacts
+3. **Precautionary principle:** Conservative approach under uncertainty
+4. **Safe minimum standards:** Protect critical thresholds regardless of NPV
+5. **Sustainability constraints:** Maintain natural capital stocks
+
+## Summary: Key Takeaways
+
+1. **Discount rates convert future values to present equivalents**
+   - Higher rates → future matters less
+   - Lower rates → future matters more
+
+2. **Formula:** $PV = \frac{FV}{(1 + r)^t}$
+
+3. **For long-term environmental problems:**
+   - Rate choice is ethically loaded
+   - Small rate differences = huge outcome differences
+   - Climate change most sensitive to this choice
+
+4. **Policy challenge:** Balance economic efficiency with intergenerational equity
+
+## Discussion Questions
+
+1. Is it ethical to use positive pure time preference rates for climate policy?
+
+2. If future generations are expected to be wealthier, should we do less for them today?
+
+3. How should we account for catastrophic but uncertain climate risks?
+
+4. Should discount rates differ for different types of environmental damages?
+
+5. What role should economic efficiency play versus ethical duties to the future?
+
+## Further Resources
+
+**Key Papers:**
+- Stern, N. (2007). *The Economics of Climate Change: The Stern Review*
+- Nordhaus, W. (2007). "A Review of the Stern Review"
+- Weitzman, M. (2007). "A Review of the Stern Review's Economics"
+
+**Government Guidance:**
+- OMB Circular A-4 (U.S.)
+- UK Green Book
+- EPA Guidelines for Economic Analysis
