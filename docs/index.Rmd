@@ -24,7 +24,7 @@ You can also access all my repositories via [marclos](https://github.com/marclos
 #### R Shiny Apps
  - [Supply and Demand](environmental_econ/supply_and_demand_v_0.2.R)
  - [Cap and Trade](environmental_econ/Cap_and_Trade_v_1.0.R)
- - [Social_Costs_of_Carbon-Discounting](environmental_econ/Social_Costs_of_Carbon-Discounting/Discounting.html)
+ - [Social_Costs_of_Carbon-Discounting](environmental_econ/Social_Cost_of_Carbon_Discounting/Discounting.html)
  
 ### EA030 Resources
 
