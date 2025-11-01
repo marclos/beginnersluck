@@ -66,7 +66,7 @@ Our simulation models a simplified cap-and-trade market with 24 firms. Understan
 
 The regulator sets a total emissions cap---the maximum amount of pollution allowed across all firms.\sidenote{In the simulation, this is the \textit{Emissions Cap} slider.} This cap is typically set below current emissions levels to force overall reductions.
 
-\marginnote[-1cm]{The cap is the environmental guarantee: total emissions cannot exceed this level, regardless of economic conditions.}
+\marginnote{The cap is the environmental guarantee: total emissions cannot exceed this level, regardless of economic conditions.}
 
 \subsection{Initial Allocation}
 

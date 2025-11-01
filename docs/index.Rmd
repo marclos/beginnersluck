@@ -1,0 +1,31 @@
+---
+title: "Beginnersluck"
+author: "Marc Los Huertos"
+output:
+  html_document:
+    theme: "flatly"
+    highlight: textmate
+    toc: false
+    self_contained: true
+    css: styles.css
+---
+
+# Sandbox Respository for Various Projects 
+
+## A repository for new users to play via RStudio  
+
+Welcome to a **Beginners Guide to R, RStudio, and GitHub**.
+
+Here’s a [link to a description of doing statistics in R](#).
+
+### EA010 Resources
+
+#### Environmental Economics
+
+- Shiny Apps
+ - [Supply and Demand](cap_and_trade/supply_and_demand_v0.2.R)
+ - [Cap and Trade](cap_and_trade/Cap_and_Trade_v0.9.R)
+ 
+
+
+[Beginnersluck repository](https://github.com/marclos/Beginnersluk is maintained by [marclos](https://github.com/marclos).
