@@ -1,5 +1,5 @@
 ---
-title: "Beginnersluck"
+title: "beginnersluck Respository"
 author: "Marc Los Huertos"
 date: "`r Sys.Date()`"
 output:
@@ -8,12 +8,12 @@ output:
     highlight: textmate
     toc: false
     self_contained: true
-    css: styles.css
+    css: marclos2.css
 ---
 
-## Sandbox Respository for Various Projects 
+## Respository to test half-baked ideas and resources 
 
-I am use the [Beginnersluck repository](https://github.com/marclos/Beginnersluck) repository to host various R and RStudio related projects including teaching materials, Shiny apps, and other R related resources. To see the various projects, please explore the repository folders.
+I am use my [beginnersluck](https://github.com/marclos/Beginnersluck) repository to host various R and RStudio related "draft" projects including teaching materials, Shiny apps, and other R related resources. These are often formalized into their own repositories later on, but this "sandbox" is used to test and share ideas in the meantime.
 
 You can also access all my repositories via [marclos](https://github.com/marclos).
 
@@ -24,6 +24,8 @@ You can also access all my repositories via [marclos](https://github.com/marclos
 #### R Shiny Apps
  - [Supply and Demand](environmental_econ/supply_and_demand_v_0.2.R)
  - [Cap and Trade](environmental_econ/Cap_and_Trade_v_1.0.R)
+ 
+#### Teaching Materials
  - [Social_Cost_of_Carbon-Discounting](environmental_econ/Social_Cost_of_Carbon_Discounting/Discounting.html)
  
 ### EA030 Resources
@@ -36,3 +38,7 @@ You can also access all my repositories via [marclos](https://github.com/marclos
 
 
 
+### EA Course Plans
+
+ - [EA Course Plan Fall 2025](Course_Plans_F2025.pdf)
+ - [EA Course Plan Spring 2026 -- NOT DONE YET]
