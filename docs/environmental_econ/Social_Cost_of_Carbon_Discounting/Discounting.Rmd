@@ -372,3 +372,191 @@ ggplot(data, aes(x = Rate, y = NPV)) +
 - OMB Circular A-4 (U.S.)
 - UK Green Book
 - EPA Guidelines for Economic Analysis
+
+## The Social Cost of Carbon (SCC)
+
+**Definition:**  
+The **Social Cost of Carbon (SCC)** is the **monetary value of the damages caused by emitting one additional ton of CO₂** into the atmosphere.
+
+It represents the **present value of future climate damages**, including:
+- Health impacts
+- Agricultural losses
+- Sea level rise and property damages
+- Ecosystem degradation
+
+**Key idea:** The SCC depends *heavily* on the **discount rate** — small changes in rate = large changes in SCC.
+
+---
+
+## Why Discount Rates Matter for SCC
+
+Since the SCC sums up damages occurring over centuries, the **discount rate** dramatically alters the estimated cost.
+
+| Discount Rate | Estimated SCC (2020$ per ton CO₂) | Source |
+|----------------|------------------------------------|--------|
+| 1%             | ~$190                              | EPA (2023) |
+| 2%             | ~$120                              | EPA (2023) |
+| 3%             | ~$56                               | EPA (2023) |
+| 5%             | ~$14                               | EPA (2010) |
+
+**Interpretation:**
+- A **lower discount rate** (1–2%) implies **high future damages** are given more weight → stronger climate action justified.
+- A **higher rate** (3–5%) discounts those damages → weaker incentives for mitigation.
+
+---
+
+## SCC and Policy Applications
+
+**Uses of SCC:**
+1. **Regulatory analysis:** Determines cost-benefit of emissions rules (e.g., fuel efficiency, power plant standards)
+2. **Carbon pricing:** Guides carbon taxes or cap-and-trade allowance prices
+3. **Public investment:** Evaluates long-term infrastructure resilience
+4. **Corporate strategy:** Used by firms to assess climate risk exposure
+
+**Example:**  
+If the SCC = $120/ton CO₂, a policy that cuts 10 million tons of CO₂ avoids **$1.2 billion in future climate damages** (in today’s dollars).
+
+---
+
+## The Discount Rate–SCC Relationship
+```{r scc_discount_plot, echo=FALSE, fig.height=4.5}
+rates <- c(0.01, 0.02, 0.03, 0.05)
+scc_values <- c(190, 120, 56, 14)
+data <- data.frame(Rate = rates * 100, SCC = scc_values)
+
+ggplot(data, aes(x = Rate, y = SCC)) +
+  geom_line(size = 1.2, color = "#3b82f6") +
+  geom_point(size = 3, color = "#3b82f6") +
+  labs(
+    title = "Impact of Discount Rate on the Social Cost of Carbon",
+    subtitle = "EPA 2023 estimates (2020$ per metric ton CO₂)",
+    x = "Discount Rate (%)",
+    y = "Social Cost of Carbon ($/ton CO₂)"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(plot.title = element_text(face = "bold")) +
+  annotate("text", x = 1.2, y = 185, label = "Low rate → high SCC", color = "#10b981", fontface = "bold") +
+  annotate("text", x = 4.8, y = 20, label = "High rate → low SCC", color = "#ef4444", fontface = "bold")
+```
+
+
+Ethical and Policy Implications of SCC
+
+Equity across generations: A higher SCC (from low discounting) values future lives and well-being more equally.
+
+Precaution under uncertainty: Climate damages are uncertain but potentially catastrophic — justifying low discount rates.
+
+Global coordination: The SCC reflects global damages, so ideally, it should be a global value, not country-specific.
+
+Policy sensitivity: Even modest changes in discount rate can shift climate policy cost-benefit outcomes by billions of dollars.
+
+Summary Connection
+
+The Social Cost of Carbon = Present Value of all future damages from 1 ton of CO₂
+
+Discount rates are the critical link between economics and ethics in SCC estimation.
+
+Policy takeaway:
+Choosing a discount rate is not just an economic decision — it’s a moral statement about how much we value the future.
+
+Updated Key Takeaways
+
+Discount rate choice determines the urgency of climate action.
+
+Social Cost of Carbon (SCC) operationalizes discounting in climate economics.
+
+Lower discount rates → higher SCC → stronger climate policy justification.
+
+Ethical considerations are inseparable from the economics of discounting.
+
+Discussion Extension
+
+Should the SCC use the same discount rate as traditional investments?
+
+Is it ethical to apply national (vs. global) SCC estimates?
+
+Should uncertainty in climate impacts justify a declining discount rate over time?
+
+
+
+## Simulating the Social Cost of Carbon Over Time
+```{r scc_simulation, echo=FALSE, fig.height=4.8}
+# Hypothetical stream of climate damages from 1 ton of CO2 (in $ per year)
+# Damages increase over time due to accumulating climate impacts
+years <- 1:200
+annual_damages <- 0.2 * years * exp(-years / 120)  # stylized damage curve
+
+# Function to calculate SCC (present value of future damages)
+calc_scc <- function(rate) {
+  discount_factors <- 1 / (1 + rate)^years
+  sum(annual_damages * discount_factors)
+}
+
+rates <- c(0.01, 0.02, 0.03, 0.05)
+scc_values <- sapply(rates, calc_scc)
+
+scc_data <- data.frame(
+  Rate = paste0(rates * 100, "%"),
+  SCC = round(scc_values, 1)
+)
+
+# Plot discounted damages over time
+damage_df <- data.frame(
+  Year = rep(years, each = length(rates)),
+  DiscountedDamage = as.vector(sapply(rates, function(r) annual_damages / (1 + r)^years)),
+  Rate = factor(rep(paste0(rates * 100, "%"), each = length(years)))
+)
+
+ggplot(damage_df, aes(x = Year, y = DiscountedDamage, color = Rate)) +
+  geom_line(size = 1.1) +
+  labs(
+    title = "Discounting Future Climate Damages from 1 Ton of CO₂",
+    subtitle = "Illustration of how discount rates affect the Social Cost of Carbon",
+    x = "Years After Emission",
+    y = "Discounted Damage ($ per year)",
+    color = "Discount Rate"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(plot.title = element_text(face = "bold")) +
+  annotate("text", x = 150, y = 2.2, 
+           label = paste("Approx. SCC ($ per ton CO₂):\n",
+                         paste0(scc_data$Rate, " = $", scc_data$SCC, collapse = ", ")),
+           hjust = 0, color = "black", size = 4)
+```
+
+
+## Cumulative Social Cost of Carbon Over Time
+```{r scc_cumulative_plot, echo=FALSE, fig.height=4.8}
+# Reuse variables from previous code
+rates <- c(0.01, 0.02, 0.03, 0.05)
+years <- 1:200
+annual_damages <- 0.2 * years * exp(-years / 120)
+
+# Build cumulative discounted damages
+cum_data <- do.call(rbind, lapply(rates, function(r) {
+  discounted_damages <- annual_damages / (1 + r)^years
+  data.frame(
+    Year = years,
+    CumulativeSCC = cumsum(discounted_damages),
+    Rate = paste0(r * 100, "%")
+  )
+}))
+
+# Plot cumulative present value of damages
+ggplot(cum_data, aes(x = Year, y = CumulativeSCC, color = Rate)) +
+  geom_line(size = 1.2) +
+  labs(
+    title = "Cumulative Social Cost of Carbon (SCC) Over Time",
+    subtitle = "How different discount rates affect the buildup of present value damages",
+    x = "Years After Emission",
+    y = "Cumulative Present Value ($ per ton CO₂)",
+    color = "Discount Rate"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(plot.title = element_text(face = "bold")) +
+  annotate("text", x = 160, y = 150, label = "Low rate → future matters more", 
+           color = "#10b981", fontface = "bold") +
+  annotate("text", x = 160, y = 40, label = "High rate → future discounted away", 
+           color = "#ef4444", fontface = "bold")
+```
+
