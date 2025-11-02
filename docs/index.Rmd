@@ -21,12 +21,15 @@ You can also access all my repositories via [marclos](https://github.com/marclos
 
 #### Environmental Economics
 
-#### R Shiny Apps
- - [Supply and Demand](environmental_econ/supply_and_demand_v_0.2.R)
+##### Teaching Materials/Handouts/Slides
+
+ - [Social_Cost_of_Carbon-Discounting (Slide Deck)](environmental_econ/Social_Cost_of_Carbon_Discounting/Discounting.html)
+
+##### R Shiny Apps
+ - [Supply and Demand](environmental_econ/supply_and_demand_v_0.4.R)
  - [Cap and Trade](environmental_econ/Cap_and_Trade_v_1.0.R)
  
-#### Teaching Materials
- - [Social_Cost_of_Carbon-Discounting](environmental_econ/Social_Cost_of_Carbon_Discounting/Discounting.html)
+
  
 ### EA030 Resources
 

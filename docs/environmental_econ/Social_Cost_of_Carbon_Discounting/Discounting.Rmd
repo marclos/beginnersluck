@@ -494,21 +494,20 @@ calc_scc <- function(rate) {
 
 rates <- c(0.01, 0.02, 0.03, 0.05)
 scc_values <- sapply(rates, calc_scc)
-
 scc_data <- data.frame(
   Rate = paste0(rates * 100, "%"),
   SCC = round(scc_values, 1)
 )
 
-# Plot discounted damages over time
+# Plot discounted damages over time - CORRECTED
 damage_df <- data.frame(
-  Year = rep(years, each = length(rates)),
+  Year = rep(years, times = length(rates)),  # Changed from 'each' to 'times'
   DiscountedDamage = as.vector(sapply(rates, function(r) annual_damages / (1 + r)^years)),
-  Rate = factor(rep(paste0(rates * 100, "%"), each = length(years)))
+  Rate = factor(rep(paste0(rates * 100, "%"), each = length(years)))  # This one stays 'each'
 )
 
 ggplot(damage_df, aes(x = Year, y = DiscountedDamage, color = Rate)) +
-  geom_line(size = 1.1) +
+  geom_line(linewidth = 1.1) +  # Changed 'size' to 'linewidth'
   labs(
     title = "Discounting Future Climate Damages from 1 Ton of CO₂",
     subtitle = "Illustration of how discount rates affect the Social Cost of Carbon",
@@ -520,7 +519,7 @@ ggplot(damage_df, aes(x = Year, y = DiscountedDamage, color = Rate)) +
   theme(plot.title = element_text(face = "bold")) +
   annotate("text", x = 150, y = 2.2, 
            label = paste("Approx. SCC ($ per ton CO₂):\n",
-                         paste0(scc_data$Rate, " = $", scc_data$SCC, collapse = ", ")),
+                         paste0(scc_data$Rate, " = $", scc_data$SCC, collapse = "\n")),
            hjust = 0, color = "black", size = 4)
 ```
 
