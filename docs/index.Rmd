@@ -30,7 +30,6 @@ You can also access all my repositories via [marclos](https://github.com/marclos
  - [Cap and Trade](environmental_econ/Cap_and_Trade_v_1.0.R)
  
 
- 
 ### EA030 Resources
 
 #### Statistic Resources

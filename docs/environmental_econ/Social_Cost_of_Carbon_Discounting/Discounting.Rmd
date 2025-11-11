@@ -517,7 +517,7 @@ ggplot(damage_df, aes(x = Year, y = DiscountedDamage, color = Rate)) +
   ) +
   theme_minimal(base_size = 14) +
   theme(plot.title = element_text(face = "bold")) +
-  annotate("text", x = 150, y = 2.2, 
+  annotate("text", x = 120, y = 3.3, 
            label = paste("Approx. SCC ($ per ton CO₂):\n",
                          paste0(scc_data$Rate, " = $", scc_data$SCC, collapse = "\n")),
            hjust = 0, color = "black", size = 4)
